@@ -1,27 +1,29 @@
 .css-1k8svhy {
-    width: 100%; /* 이미지를 부모 요소의 너비에 맞게 조정 */
-    max-width: 300px; /* 최대 너비를 248px로 제한 */
-    height: auto; /* 가로 비율에 맞게 세로 크기 자동 조정 */
-    object-fit: contain;
+  width: 100%; /* 이미지를 부모 요소의 너비에 맞게 조정 */
+  max-width: 300px; /* 최대 너비를 248px로 제한 */
+  height: auto; /* 가로 비율에 맞게 세로 크기 자동 조정 */
+  object-fit: contain;
 }
 
-
 body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    margin: 0;
-    padding: 0;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 0;
 }
 
 .message-container {
-    background-color: #fff;
-    border-radius: 17px;
-    padding: 29px;
-    margin: 101px auto;
-    max-width: 450px;
+  background-color: #fff;
+  border-radius: 17px;
+  padding: 29px;
+  margin: 101px auto;
+  max-width: 450px;
 }
 
-
 p {
-    color: #333;
+  color: #333;
+}
+
+.content {
+  margin-top: 50px;
 }
