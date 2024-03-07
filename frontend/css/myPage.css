@@ -433,7 +433,7 @@ button, input, textarea {
     flex: 1 1;
     min-width: 0.1rem;
     text-overflow: ellipsis;
-    color: rgba(51, 50, 54, 0.338);
+    color: rgb(0, 0, 0);
     height: 2.8rem;
     margin: 1.4rem 0.4rem;
     transition: color .2s ease-in-out;
