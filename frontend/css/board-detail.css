@@ -79,7 +79,7 @@ a{
         gap: 43px;
         max-width: 942px;
         margin: 0 auto;
-        padding: 40px 0 120px;
+        padding: 150px 0 120px;
 
     }
 }
@@ -338,6 +338,7 @@ a{
 
 .css-content{
     line-height: 30px;
+    font-size: 14px;
 }
 .css-iqys2n{
     display: flex;
@@ -463,8 +464,16 @@ a{
 .css-dyzp2y{
     display: flex;
     align-items: center;
-    justify-content: start;
+    justify-content: center;
     gap: 4px;
+}
+
+.css-dyzp2y-001{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    margin-left: 200px;
 }
 
 .css-wqf8ry{
