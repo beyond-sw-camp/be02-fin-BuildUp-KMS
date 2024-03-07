@@ -3,7 +3,7 @@ html {
   padding: 0;
   margin: 0;
   line-height: 1.5;
-  font-family: 'Noto Sans', sans-serif; /* 폰트 변경 */
+  font-family: "Noto Sans", sans-serif; /* 폰트 변경 */
 }
 
 body {
@@ -26,7 +26,7 @@ body {
 }
 
 .css-1gpya5f {
-    overflow-y: auto; /* 세로 스크롤을 자동으로 표시하도록 설정 */
+  overflow-y: auto; /* 세로 스크롤을 자동으로 표시하도록 설정 */
   z-index: 22;
   position: fixed;
   top: 50%;
@@ -36,17 +36,15 @@ body {
   height: 100%;
   overflow: scroll;
   display: flex;
-  -webkit-box-pack: center;
   justify-content: center;
-  -webkit-box-align: center;
   align-items: center;
   background: rgba(20, 22, 23, 0.4);
   scrollbar-width: none;
 }
 
 .css-4oebd2 {
-  width: 1000px;
-  height: 1200px;
+  width: 800px;
+  height: 980px;
   padding: 0px 20px 40px;
   background: rgb(255, 255, 255);
   border-radius: 12px;
@@ -75,14 +73,13 @@ body {
   line-height: 26px;
   color: rgb(58, 62, 65);
   display: flex;
-  -webkit-box-align: center;
   align-items: center;
   gap: 4px;
   cursor: pointer;
 }
 
 .css-1xpr18p {
-  width: 800px;
+  width: 750px;
   overflow: hidden;
   margin: auto;
   display: flex;
@@ -101,13 +98,26 @@ body {
 
 .guide-image {
   margin-top: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
+  margin-left: 80px;
   text-align: left; /* 왼쪽 정렬 추가 */
 }
 
+.guide-image-0 {
+  margin-bottom: 30px;
+  margin-left: 170px;
+  text-align: center; /* 왼쪽 정렬 추가 */
+}
+
+.guide-image-0 p {
+  font-weight: bold; /* 굵은 글꼴 추가 */
+  margin: 0; /* 문장의 기본 margin 제거 */
+  font-size: 30px;
+}
+
 .guide-image img {
-  width: 790px; /* 가로 크기 지정 */
-  height: 220px; /* 세로 크기 지정 */
+  width: 600px; /* 가로 크기 지정 */
+  height: 160px; /* 세로 크기 지정 */
   margin-top: 10px;
   margin-bottom: 10px;
   border: 1px solid #000; /* 테두리 추가 */
@@ -119,3 +129,65 @@ body {
   margin: 0; /* 문장의 기본 margin 제거 */
 }
 
+.guide-image-1 {
+  margin-top: 20px;
+  margin-bottom: 5px;
+  margin-left: 80px;
+  text-align: left; /* 왼쪽 정렬 추가 */
+}
+
+.guide-image-1 p {
+  font-weight: bold; /* 굵은 글꼴 추가 */
+  margin: 0; /* 문장의 기본 margin 제거 */
+}
+
+.guide-image-1 img {
+  width: 600px; /* 가로 크기 지정 */
+  height: 100px; /* 세로 크기 지정 */
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #000; /* 테두리 추가 */
+  border-radius: 8px; /* 테두리의 모서리를 둥글게 만듭니다. */
+}
+
+.guide-image-2 {
+  margin-top: 20px;
+  margin-bottom: 5px;
+  margin-left: 80px;
+  text-align: left; /* 왼쪽 정렬 추가 */
+}
+
+.guide-image-2 p {
+  font-weight: bold; /* 굵은 글꼴 추가 */
+  margin: 0; /* 문장의 기본 margin 제거 */
+}
+
+.guide-image-2 img {
+  width: 600px; /* 가로 크기 지정 */
+  height: 150px; /* 세로 크기 지정 */
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #000; /* 테두리 추가 */
+  border-radius: 8px; /* 테두리의 모서리를 둥글게 만듭니다. */
+}
+
+.guide-image-3 {
+  margin-top: 20px;
+  margin-bottom: 5px;
+  margin-left: 80px;
+  text-align: left; /* 왼쪽 정렬 추가 */
+}
+
+.guide-image-3 p {
+  font-weight: bold; /* 굵은 글꼴 추가 */
+  margin: 0; /* 문장의 기본 margin 제거 */
+}
+
+.guide-image-3 img {
+  width: 600px; /* 가로 크기 지정 */
+  height: 240px; /* 세로 크기 지정 */
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #000; /* 테두리 추가 */
+  border-radius: 8px; /* 테두리의 모서리를 둥글게 만듭니다. */
+}
