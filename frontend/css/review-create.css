@@ -22,6 +22,7 @@
         padding: 40px;
         width: 100%;
         margin: auto;
+        margin-top: 50px;
     }
 }
 
@@ -35,6 +36,7 @@
         width: 100%;
         margin: auto;
         height: 950px;
+        margin-top: 50px;
     }
 
 
@@ -544,7 +546,7 @@ input {
     margin-bottom: 60px;
     padding: 48px 20px;
     background-color: rgb(255, 255, 255);
-    z-index: 22;
+  
 }
 
 .css-wonqq0 {
