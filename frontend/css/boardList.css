@@ -24,9 +24,6 @@ div {
     line-height: 1.5;
 }
 
-.css-1hnxdb7 {
-}
-
 @media (min-width: 820px)
 {
 .css-mbwamd {
@@ -710,4 +707,77 @@ svg:not(:root) {
 .css-z2xt5y {
     display: flex;
 }
+}
+.List_pagination__OloJ2 {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+    margin-bottom: 3rem;
+}
+.Pagination_container__jFl63 {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.Pagination_pageWrapper__7PzJP {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+}
+.Pagination_page__nB9XK.Pagination_selected__9xhU5 {
+    background: rgba(84, 29, 112, 0.426);
+    color: rgb(255, 255, 255);
+}
+.Pagination_page__nB9XK {
+    min-width: 2.6rem;
+    padding: 0 0.8rem;
+    font-size: 1.5rem;
+    line-height: 2.6rem;
+    letter-spacing: -.03rem;
+    color: rgba(51, 50, 54, 0.8);
+    border-radius: 0.6rem;
+    border-color: #14161700;
+    background-color: #ffffff15;
+}
+.Pagination_nextButton__pTej1 {
+    margin-left: 1.939rem;
+    border-color: #14161700;
+    background-color: #ffffff15;
+}
+.Icon_container__KMOfZ {
+    display: inline-block;
+    position: relative;
+    line-height: 0;
+}
+.Icon_container__KMOfZ.Icon_xsmall__DpkJ3 {
+    --size: 1.2rem;
+}
+.Icon_container__KMOfZ svg {
+    width: 1.2rem, 2rem;
+    height: 1.2rem, 2rem;
+    transition: all .2s ease-in-out;
+}
+.Pagination_nextButton__pTej1 svg {
+    margin-top: 0.6rem;
+    width: 1.8rem;
+    height: 1.8rem;
+}
+.Icon_container__KMOfZ.Icon_rotate-90__ACeUg svg {
+    transform: rotate(90deg);
+}
+.Icon_container__KMOfZ path {
+    fill: #333236;
+}
+.Pagination_lastButton__IOXsq {
+    margin-left: 2.329rem;
+    border-color: #14161700;
+    background-color: #ffffff15;
+}
+.Pagination_buttonText__FGzcS {
+    font-size: 1.3rem;
+    line-height: 1.9rem;
+    letter-spacing: -.03rem;
+    color: #333236c8;
 }
