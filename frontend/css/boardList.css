@@ -26,6 +26,13 @@ div {
 
 .css-1hnxdb7 {
 }
+
+@media (min-width: 820px)
+{
+.css-mbwamd {
+    display: flex;
+}
+}
 .css-mbwamd {
     width: 100%;
     background-color: rgb(255, 255, 255);
@@ -140,7 +147,14 @@ div {
     visibility: hidden;
     transition: all 0.2s ease-in-out 0s;
 }
+@media (min-width: 820px)
+{.css-33zep3 {
+    margin-top: 8rem;
+    max-width: 680px;
+}
+}
 .css-33zep3 {
+    margin-top: 8rem;
     width: 100%;
     display: -webkit-box;
     display: -webkit-flex;
