@@ -1,239 +1,289 @@
 @font-face {
   font-display: swap;
-  font-family: 'SpoqaHanSansNeo';
+  font-family: "SpoqaHanSansNeo";
   font-style: normal;
   font-weight: 400;
-  src: url('https://static.spartacodingclub.kr/static/fonts/SpoqaHanSansNeo/SpoqaHanSansNeo-Regular.woff') format('woff'),
-      url('https://static.spartacodingclub.kr/static/fonts/SpoqaHanSansNeo/SpoqaHanSansNeo-Regular.otf') format('otf')
+  src: url("https://static.spartacodingclub.kr/static/fonts/SpoqaHanSansNeo/SpoqaHanSansNeo-Regular.woff")
+      format("woff"),
+    url("https://static.spartacodingclub.kr/static/fonts/SpoqaHanSansNeo/SpoqaHanSansNeo-Regular.otf")
+      format("otf");
 }
 
 @font-face {
   font-display: swap;
-  font-family: 'GmarketSans';
+  font-family: "GmarketSans";
   font-weight: 300;
   font-style: normal;
-  src: url('https://static.spartacodingclub.kr/static/fonts/GmarketSans/GmarketSansLight.woff2') format("woff2"),
-      url('https://static.spartacodingclub.kr/static/fonts/GmarketSans/GmarketSansLight.woff') format("woff");
+  src: url("https://static.spartacodingclub.kr/static/fonts/GmarketSans/GmarketSansLight.woff2")
+      format("woff2"),
+    url("https://static.spartacodingclub.kr/static/fonts/GmarketSans/GmarketSansLight.woff")
+      format("woff");
 }
 
 @font-face {
   font-display: swap;
-  font-family: 'GmarketSans';
+  font-family: "GmarketSans";
   font-weight: 400;
   font-style: normal;
-  src: url('https://static.spartacodingclub.kr/static/fonts/GmarketSans/GmarketSansMedium.woff2') format("woff2"),
-      url('https://static.spartacodingclub.kr/static/fonts/GmarketSans/GmarketSansMedium.woff') format("woff");
+  src: url("https://static.spartacodingclub.kr/static/fonts/GmarketSans/GmarketSansMedium.woff2")
+      format("woff2"),
+    url("https://static.spartacodingclub.kr/static/fonts/GmarketSans/GmarketSansMedium.woff")
+      format("woff");
 }
 
 @font-face {
   font-display: swap;
-  font-family: 'GmarketSans';
+  font-family: "GmarketSans";
   font-weight: 700;
   font-style: normal;
-  src: url('https://static.spartacodingclub.kr/static/fonts/GmarketSans/GmarketSansBold.woff2') format("woff2"),
-      url('https://static.spartacodingclub.kr/static/fonts/GmarketSans/GmarketSansBold.woff') format("woff");
+  src: url("https://static.spartacodingclub.kr/static/fonts/GmarketSans/GmarketSansBold.woff2")
+      format("woff2"),
+    url("https://static.spartacodingclub.kr/static/fonts/GmarketSans/GmarketSansBold.woff")
+      format("woff");
 }
 
 @font-face {
   font-display: swap;
-  font-family: 'Pretendard';
+  font-family: "Pretendard";
   font-weight: 100;
   font-style: normal;
-  src: local(Pretendard Thin), url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Thin.subset.woff2') format("woff2"),
-      url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Thin.subset.woff') format("woff"),
-      url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Thin.otf');
+  src: local(Pretendard Thin),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Thin.subset.woff2")
+      format("woff2"),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Thin.subset.woff")
+      format("woff"),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Thin.otf");
 }
 
 @font-face {
   font-display: swap;
-  font-family: 'Pretendard';
+  font-family: "Pretendard";
   font-weight: 200;
   font-style: normal;
-  src: local(Pretendard ExtraLight), url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-ExtraLight.subset.woff2') format("woff2"),
-      url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-ExtraLight.subset.woff') format("woff"),
-      url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-ExtraLight.otf');
+  src: local(Pretendard ExtraLight),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-ExtraLight.subset.woff2")
+      format("woff2"),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-ExtraLight.subset.woff")
+      format("woff"),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-ExtraLight.otf");
 }
 
 @font-face {
   font-display: swap;
-  font-family: 'Pretendard';
+  font-family: "Pretendard";
   font-weight: 300;
   font-style: normal;
-  src: local(Pretendard Light), url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Light.subset.woff2') format("woff2"),
-      url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Light.subset.woff') format("woff"),
-      url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Light.otf');
+  src: local(Pretendard Light),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Light.subset.woff2")
+      format("woff2"),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Light.subset.woff")
+      format("woff"),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Light.otf");
 }
 
 @font-face {
   font-display: swap;
-  font-family: 'Pretendard';
+  font-family: "Pretendard";
   font-weight: 400;
   font-style: normal;
-  src: local(Pretendard Regular), url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Regular.subset.woff2') format("woff2"),
-      url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Regular.subset.woff') format("woff"),
-      url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Regular.otf');
+  src: local(Pretendard Regular),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Regular.subset.woff2")
+      format("woff2"),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Regular.subset.woff")
+      format("woff"),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Regular.otf");
 }
 
 @font-face {
   font-display: swap;
-  font-family: 'Pretendard';
+  font-family: "Pretendard";
   font-weight: 500;
   font-style: normal;
-  src: local(Pretendard Medium), url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Medium.subset.woff2') format("woff2"),
-      url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Medium.subset.woff') format("woff"),
-      url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Medium.otf');
+  src: local(Pretendard Medium),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Medium.subset.woff2")
+      format("woff2"),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Medium.subset.woff")
+      format("woff"),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Medium.otf");
 }
 
 @font-face {
   font-display: swap;
-  font-family: 'Pretendard';
+  font-family: "Pretendard";
   font-weight: 600;
   font-style: normal;
-  src: local(Pretendard SemiBold), url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-SemiBold.subset.woff2') format("woff2"),
-      url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-SemiBold.subset.woff') format("woff"),
-      url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-SemiBold.otf');
+  src: local(Pretendard SemiBold),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-SemiBold.subset.woff2")
+      format("woff2"),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-SemiBold.subset.woff")
+      format("woff"),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-SemiBold.otf");
 }
 
 @font-face {
   font-display: swap;
-  font-family: 'Pretendard';
+  font-family: "Pretendard";
   font-weight: 700;
   font-style: normal;
-  src: local(Pretendard Bold), url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Bold.subset.woff2') format("woff2"),
-      url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Bold.subset.woff') format("woff"),
-      url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Bold.otf');
+  src: local(Pretendard Bold),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Bold.subset.woff2")
+      format("woff2"),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Bold.subset.woff")
+      format("woff"),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Bold.otf");
 }
 
 @font-face {
   font-display: swap;
-  font-family: 'Pretendard';
+  font-family: "Pretendard";
   font-weight: 800;
   font-style: normal;
-  src: url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-ExtraBold.subset.woff2') format("woff2"),
-      url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-ExtraBold.subset.woff') format("woff"),
-      url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-ExtraBold.otf');
+  src: url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-ExtraBold.subset.woff2")
+      format("woff2"),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-ExtraBold.subset.woff")
+      format("woff"),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-ExtraBold.otf");
 }
 
 @font-face {
   font-display: swap;
-  font-family: 'Pretendard';
+  font-family: "Pretendard";
   font-weight: 900;
   font-style: normal;
-  src: url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Black.subset.woff2') format("woff2"),
-      url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Black.subset.woff') format("woff"),
-      url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Black.otf');
+  src: url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Black.subset.woff2")
+      format("woff2"),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Black.subset.woff")
+      format("woff"),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Black.otf");
 }
 
 @font-face {
   font-display: swap;
-  font-family: 'SpoqaHanSans';
+  font-family: "SpoqaHanSans";
   font-weight: 300;
   font-style: normal;
-  src: url('https://static.spartacodingclub.kr/static/fonts/SpoqaHanSans/SpoqaHanSans-Light.woff') format('woff');
+  src: url("https://static.spartacodingclub.kr/static/fonts/SpoqaHanSans/SpoqaHanSans-Light.woff")
+    format("woff");
 }
 
 @font-face {
   font-display: swap;
-  font-family: 'SpoqaHanSans';
+  font-family: "SpoqaHanSans";
   font-weight: 400;
   font-style: normal;
-  src: url('https://static.spartacodingclub.kr/static/fonts/SpoqaHanSans/SpoqaHanSans-Regular.woff') format('woff');
+  src: url("https://static.spartacodingclub.kr/static/fonts/SpoqaHanSans/SpoqaHanSans-Regular.woff")
+    format("woff");
 }
 
 @font-face {
   font-display: swap;
-  font-family: 'SpoqaHanSans';
+  font-family: "SpoqaHanSans";
   font-weight: 700;
   font-style: normal;
-  src: url('https://static.spartacodingclub.kr/static/fonts/SpoqaHanSans/SpoqaHanSans-Bold.woff') format('woff');
+  src: url("https://static.spartacodingclub.kr/static/fonts/SpoqaHanSans/SpoqaHanSans-Bold.woff")
+    format("woff");
 }
 
 @font-face {
   font-display: swap;
-  font-family: 'Cafe24Ohsquare';
+  font-family: "Cafe24Ohsquare";
   font-weight: 500;
   font-style: normal;
-  src: url('https://static.spartacodingclub.kr/static/fonts/Cafe24Ohsquare/Cafe24Ohsquare.woff2') format("woff2"),
-      url('https://static.spartacodingclub.kr/static/fonts/Cafe24Ohsquare/Cafe24Ohsquare.woff') format("woff"),
-      url('https://static.spartacodingclub.kr/static/fonts/Cafe24Ohsquare/Cafe24Ohsquare.ttf');
+  src: url("https://static.spartacodingclub.kr/static/fonts/Cafe24Ohsquare/Cafe24Ohsquare.woff2")
+      format("woff2"),
+    url("https://static.spartacodingclub.kr/static/fonts/Cafe24Ohsquare/Cafe24Ohsquare.woff")
+      format("woff"),
+    url("https://static.spartacodingclub.kr/static/fonts/Cafe24Ohsquare/Cafe24Ohsquare.ttf");
 }
 
 @font-face {
-  font-family: 'NanumHandWritingDaughter';
+  font-family: "NanumHandWritingDaughter";
   font-style: normal;
   font-weight: 400;
-  src: url('https://static.spartacodingclub.kr/static/fonts/NanumHandWritingDaughter.subset.woff2') format("woff2");
+  src: url("https://static.spartacodingclub.kr/static/fonts/NanumHandWritingDaughter.subset.woff2")
+    format("woff2");
 }
 
 @font-face {
-  font-family: 'ThefaceshopInklipquid';
+  font-family: "ThefaceshopInklipquid";
   font-style: normal;
   font-weight: 400;
-  src: url('https://static.spartacodingclub.kr/static/fonts/ThefaceshopInklipquid/ThefaceshopInklipquid.woff') format("woff"),
-      url('https://static.spartacodingclub.kr/static/fonts/ThefaceshopInklipquid/ThefaceshopInklipquid.ttf');
+  src: url("https://static.spartacodingclub.kr/static/fonts/ThefaceshopInklipquid/ThefaceshopInklipquid.woff")
+      format("woff"),
+    url("https://static.spartacodingclub.kr/static/fonts/ThefaceshopInklipquid/ThefaceshopInklipquid.ttf");
 }
 
 @font-face {
-  font-family: 'SbAggroBold';
+  font-family: "SbAggroBold";
   font-weight: 700;
   font-style: normal;
-  src: url('https://static.spartacodingclub.kr/static/fonts/SbAggro/SB_aggro_bold.woff2') format("woff2"),
-      url('https://static.spartacodingclub.kr/static/fonts/SbAggro/SB_aggro_bold.woff') format("woff"),
-      url('https://static.spartacodingclub.kr/static/fonts/SbAggro/SB_aggro_bold.ttf');
+  src: url("https://static.spartacodingclub.kr/static/fonts/SbAggro/SB_aggro_bold.woff2")
+      format("woff2"),
+    url("https://static.spartacodingclub.kr/static/fonts/SbAggro/SB_aggro_bold.woff")
+      format("woff"),
+    url("https://static.spartacodingclub.kr/static/fonts/SbAggro/SB_aggro_bold.ttf");
 }
 
 @font-face {
-  font-family: 'DungGeunMo';
+  font-family: "DungGeunMo";
   font-style: normal;
   font-weight: 400;
-  src: url('https://static.spartacodingclub.kr/static/fonts/DungGeunMo/DungGeunMo.woff') format("woff"),
-      url('https://static.spartacodingclub.kr/static/fonts/DungGeunMo/DungGeunMo.ttf');
+  src: url("https://static.spartacodingclub.kr/static/fonts/DungGeunMo/DungGeunMo.woff")
+      format("woff"),
+    url("https://static.spartacodingclub.kr/static/fonts/DungGeunMo/DungGeunMo.ttf");
 }
 
 @font-face {
-  font-family: 'Tmoney RoundWind';
+  font-family: "Tmoney RoundWind";
   font-style: normal;
   font-weight: 400;
-  src: url('https://static.spartacodingclub.kr/static/fonts/TmoneyRoundWindExtraBold.woff2') format("woff2"),
-      url('https://static.spartacodingclub.kr/static/fonts/TmoneyRoundWindExtraBold.ttf');
+  src: url("https://static.spartacodingclub.kr/static/fonts/TmoneyRoundWindExtraBold.woff2")
+      format("woff2"),
+    url("https://static.spartacodingclub.kr/static/fonts/TmoneyRoundWindExtraBold.ttf");
 }
 
 @font-face {
-  font-family: 'Cafe24Surround';
+  font-family: "Cafe24Surround";
   font-style: normal;
   font-weight: 400;
-  src: url('https://static.spartacodingclub.kr/static/fonts/Cafe24Ssurround-v2.0.woff2') format("woff2"),
-      url('https://static.spartacodingclub.kr/static/fonts/Cafe24Ssurround-v2.0.woff')
+  src: url("https://static.spartacodingclub.kr/static/fonts/Cafe24Ssurround-v2.0.woff2")
+      format("woff2"),
+    url("https://static.spartacodingclub.kr/static/fonts/Cafe24Ssurround-v2.0.woff");
 }
 
 @font-face {
-  font-family: 'EBSHunminjeongeumSBA';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/EBSHunminjeongeum.woff') format('woff');
+  font-family: "EBSHunminjeongeumSBA";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/EBSHunminjeongeum.woff")
+    format("woff");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Dokrip';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.1/Dokrip.woff') format('woff');
+  font-family: "Dokrip";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.1/Dokrip.woff")
+    format("woff");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'DsDigital';
-  src: url('/fonts/DsDigital/DS-DIGIB.TTF') format('truetype');
+  font-family: "DsDigital";
+  src: url("/fonts/DsDigital/DS-DIGIB.TTF") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'YoonDokrip';
+  font-family: "YoonDokrip";
   font-style: normal;
   font-weight: 500;
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.1/Dokrip.woff') format('woff'),
-      url('https://static.spartacodingclub.kr/static/fonts/YoonDokrip.woff') format('woff'),
-      url('https://static.spartacodingclub.kr/static/fonts/YoonDokrip.otf') format('otf');
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.1/Dokrip.woff")
+      format("woff"),
+    url("https://static.spartacodingclub.kr/static/fonts/YoonDokrip.woff")
+      format("woff"),
+    url("https://static.spartacodingclub.kr/static/fonts/YoonDokrip.otf")
+      format("otf");
 }
 
 .css-huvhzc {
@@ -321,7 +371,6 @@
   /* Ensuring background doesn't interfere with outer border */
 }
 
-
 .ContentSearch_searchInput__dVET92 {
   margin-right: 1rem;
   display: flex;
@@ -343,7 +392,6 @@
   box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1);
   /* 그림자 색상과 크기 설정 */
 }
-
 
 .css-1llgdoe {
   font-family: Pretendard;
@@ -368,7 +416,6 @@
   -webkit-box-align: center;
   align-items: center;
 }
-
 
 /* 로그인 버튼 */
 .css-login-button {
@@ -418,7 +465,6 @@
   justify-content: center;
 }
 
-
 .css-1fgr4mj {
   display: block;
   padding: 32px 0 0 0;
@@ -453,8 +499,7 @@
   margin: 0px 16px;
 }
 
-
-.Icon_container__KMOfZ2+.ContentSearch_searchInput__dVET92 {
+.Icon_container__KMOfZ2 + .ContentSearch_searchInput__dVET92 {
   flex-grow: 1;
   color: rgb(82, 29, 112);
   /* 아이콘 색상 변경 */
@@ -469,7 +514,7 @@
   /* 아이콘의 너비를 3.2rem으로 조정합니다. */
   height: 4rem;
   /* 아이콘의 높이를 3.2rem으로 조정합니다. */
-  transition: all .2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 
 .css-un3w91 {
@@ -500,7 +545,8 @@
   -ms-flex-align: center;
   align-items: center;
   gap: 8px;
-  font-family: Pretendard, -apple-system, “system-ui”, "Malgun Gothic", "맑은 고딕", sans-serif;
+  font-family: Pretendard, -apple-system, “system-ui”, "Malgun Gothic",
+    "맑은 고딕", sans-serif;
   font-family: Pretendard;
   font-style: normal;
   font-weight: 600;
@@ -526,7 +572,7 @@
   line-height: 22px;
   color: #141617;
   color: #141617;
-  color: #3A3E41;
+  color: #3a3e41;
 }
 
 .css-1fgr4mj {
@@ -606,7 +652,8 @@
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  font-family: Pretendard, -apple-system, “system-ui”, "Malgun Gothic", "맑은 고딕", sans-serif;
+  font-family: Pretendard, -apple-system, “system-ui”, "Malgun Gothic",
+    "맑은 고딕", sans-serif;
   font-weight: 700;
   font-size: 18px;
   line-height: 140%;
@@ -631,7 +678,7 @@
 .css-1o9qtii {
   width: 100%;
   height: 1px;
-  background: #E4EBF0;
+  background: #e4ebf0;
   margin: 0 0;
 }
 
@@ -663,7 +710,7 @@
   -ms-flex: 1 0 0;
   flex: 1 0 0;
   border-radius: 8px;
-  background: #E7F9E7;
+  background: #e7f9e7;
   margin-top: 16px;
   cursor: pointer;
 }
@@ -723,7 +770,7 @@
   font-size: 11px;
   line-height: 16px;
   color: #141617;
-  color: #81898F;
+  color: #81898f;
 }
 
 .css-3aha2l {
@@ -733,7 +780,7 @@
   font-size: 16px;
   line-height: 22px;
   color: #141617;
-  color: #3A3E41;
+  color: #3a3e41;
 }
 
 .css-ik70s9 {
@@ -755,7 +802,7 @@
 }
 
 .css-28a73i {
-  color: #5F666B;
+  color: #5f666b;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -765,7 +812,8 @@
   -ms-flex-align: center;
   align-items: center;
   gap: 8px;
-  font-family: Pretendard, -apple-system, “system-ui”, "Malgun Gothic", "맑은 고딕", sans-serif;
+  font-family: Pretendard, -apple-system, “system-ui”, "Malgun Gothic",
+    "맑은 고딕", sans-serif;
   font-family: Pretendard;
   font-style: normal;
   font-weight: 600;
@@ -793,94 +841,94 @@
   color: #141617;
   font-size: 13px;
   font-weight: 500;
-  color: #5F666B;
+  color: #5f666b;
 }
 
 @media (min-width: 320px) and (max-width: 819px) {
   .css-gfzvs2 {
-      font-size: 16px;
-      padding: 0;
+    font-size: 16px;
+    padding: 0;
   }
 }
 
 @media (max-width: 820px) {
   .css-4l7ba3 {
-      font-family: Pretendard;
-      font-style: normal;
-      font-weight: 600;
-      font-size: 14px;
-      line-height: 22px;
-      color: #141617;
-      font-size: 13px;
-      font-weight: 500;
-      color: #5F666B;
+    font-family: Pretendard;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 22px;
+    color: #141617;
+    font-size: 13px;
+    font-weight: 500;
+    color: #5f666b;
   }
 
   .css-ik70s9:hover {
-      color: #e8344e;
+    color: #e8344e;
   }
 
   .css-3aha2l {
-      font-family: Pretendard;
-      font-style: normal;
-      font-weight: 600;
-      font-size: 14px;
-      line-height: 22px;
-      color: #141617;
-      color: #3A3E41;
+    font-family: Pretendard;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 22px;
+    color: #141617;
+    color: #3a3e41;
   }
 
   .css-17gywxx {
-      font-family: Pretendard;
-      font-style: normal;
-      font-weight: 600;
-      font-size: 14px;
-      line-height: 22px;
-      color: #141617;
-      color: #3A3E41;
+    font-family: Pretendard;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 22px;
+    color: #141617;
+    color: #3a3e41;
   }
 
   .css-13fd4ke:hover {
-      color: #e8344e;
+    color: #e8344e;
   }
 
   .css-1fgr4mj {
-      width: 100%;
-      height: calc(100dvh - 50px - 0px);
-      position: fixed;
-      top: calc(49px + 0px);
-      right: 0;
-      background-color: white;
-      opacity: 0;
-      visibility: hidden;
-      z-index: unset;
-      overflow: scroll;
-      border-radius: 0;
-      border: none;
+    width: 100%;
+    height: calc(100dvh - 50px - 0px);
+    position: fixed;
+    top: calc(49px + 0px);
+    right: 0;
+    background-color: white;
+    opacity: 0;
+    visibility: hidden;
+    z-index: unset;
+    overflow: scroll;
+    border-radius: 0;
+    border: none;
   }
 
   .css-ss0hg9 {
-      width: 250px;
+    width: 250px;
   }
 
   .css-1s9cv9y {
-      padding: 16px 0 0 0;
-      gap: 0;
+    padding: 16px 0 0 0;
+    gap: 0;
   }
 
   .css-zbmmrt {
-      padding: 12px;
-      margin: 16px 0;
+    padding: 12px;
+    margin: 16px 0;
   }
 }
 
 @media (min-width: 1200px) {
   .css-28a73i {
-      height: 24px;
+    height: 24px;
   }
 
   .css-16regn8 {
-      height: 24px;
+    height: 24px;
   }
 }
 /*-----------------------본문------------------------*/
@@ -901,7 +949,7 @@ body {
 
 @media (min-width: 768px) {
   .css-hhaf6z {
-    padding-top: 170px;
+    padding-top: 60px;
   }
 }
 
@@ -991,14 +1039,14 @@ body {
 }
 
 .css-1agvh3p {
-    display: flex;
-    -webkit-box-pack: justify;
-    justify-content: space-between;
-    -webkit-box-align: center;
-    align-items: center;
-    gap: 24px;
-    width: 100%;
-    cursor: pointer;
+  display: flex;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+  cursor: pointer;
 }
 
 @media (min-width: 768px) {
@@ -1006,12 +1054,12 @@ body {
     gap: 40px;
   }
 }
-
 .css-1x8gxrp {
   display: flex;
   flex-direction: column;
   gap: 4px;
   width: calc(100% - 44px);
+  margin-left: -140px;
 }
 
 .css-s3qw6k {
@@ -1280,7 +1328,7 @@ body {
 /*-----------------------풋터------------------------*/
 .css-88z093 {
   width: 100%;
-  background: #FFFFFF;
+  background: #ffffff;
   margin: 0 auto;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1298,11 +1346,12 @@ body {
   -ms-flex-positive: 1;
   flex-grow: 1;
   max-width: 1230;
-  border-top: 1px solid #E4EBF0;
+  border-top: 1px solid #e4ebf0;
 }
 
 .css-88z093 * {
-  font-family: Pretendard, -apple-system, “system-ui”, "Malgun Gothic", "맑은 고딕", sans-serif;
+  font-family: Pretendard, -apple-system, “system-ui”, "Malgun Gothic",
+    "맑은 고딕", sans-serif;
   line-height: 1.5;
 }
 
@@ -1342,7 +1391,6 @@ body {
   justify-content: flex-start;
 }
 
-
 .css-14cspio {
   font-family: Pretendard;
   font-style: normal;
@@ -1350,7 +1398,7 @@ body {
   font-size: 16px;
   line-height: 26px;
   color: #141617;
-  color: #5F666B;
+  color: #5f666b;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1377,7 +1425,6 @@ body {
   gap: 6px;
 }
 
-
 .css-w6ze0h {
   font-family: Pretendard;
   font-style: normal;
@@ -1385,7 +1432,7 @@ body {
   font-size: 13px;
   line-height: 20px;
   color: #141617;
-  color: #81898F;
+  color: #81898f;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1421,8 +1468,8 @@ body {
   align-items: flex-start;
   gap: 10px;
   border-radius: 4px;
-  background: #FFF1F4;
-  color: #FF6C7A;
+  background: #fff1f4;
+  color: #ff6c7a;
   font-family: Pretendard;
   font-size: 10px;
   font-style: normal;
@@ -1436,7 +1483,7 @@ body {
   -ms-flex-item-align: stretch;
   align-self: stretch;
   width: 100%;
-  background: #E4EBF0;
+  background: #e4ebf0;
   margin: 24px 0;
 }
 
@@ -1509,7 +1556,7 @@ body {
 }
 
 .css-y8zw8d {
-  color: #5F666B;
+  color: #5f666b;
   font-family: Pretendard;
   font-size: 13px;
   font-style: normal;
@@ -1525,7 +1572,7 @@ body {
   font-size: 13px;
   line-height: 20px;
   color: #141617;
-  color: #81898F;
+  color: #81898f;
   width: 100%;
   white-space: nowrap;
 }
@@ -1539,7 +1586,6 @@ body {
   -ms-flex-direction: column;
   flex-direction: column;
 }
-
 
 .css-16omddv {
   font-family: Pretendard;
@@ -1558,7 +1604,7 @@ body {
   -ms-flex-align: center;
   align-items: center;
   font-size: 12px;
-  color: #9DA7AE;
+  color: #9da7ae;
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
@@ -1577,7 +1623,7 @@ body {
   line-height: 18px;
   color: #141617;
   font-size: 12px;
-  color: #9DA7AE;
+  color: #9da7ae;
   display: none;
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
@@ -1625,157 +1671,156 @@ body {
   line-height: 18px;
   color: #141617;
   font-size: 12px;
-  color: #9DA7AE;
+  color: #9da7ae;
   padding-top: 16px;
 }
 
-
-@media(min-width: 320px) and (max-width: 819px) {
+@media (min-width: 320px) and (max-width: 819px) {
   .css-zkzuyb {
-      -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-      flex-direction: column;
-      gap: 24px;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    gap: 24px;
   }
 
   .css-w6ze0h {
-      -webkit-flex-direction: row;
-      -ms-flex-direction: row;
-      flex-direction: row;
-      gap: 6px;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    gap: 6px;
   }
 
   .css-tgyf2d {
-      padding: 16px 12px;
-      margin: 0;
+    padding: 16px 12px;
+    margin: 0;
   }
 
   .css-1h9xuna {
-      margin: 16px auto 100px;
-      padding: 0 16px;
+    margin: 16px auto 100px;
+    padding: 0 16px;
   }
 
   .css-ajaiss {
-      height: 0;
+    height: 0;
   }
 
   .css-1qzhyb0 {
-      gap: 24px;
+    gap: 24px;
   }
 
   .css-1ccrqs4 {
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -ms-flexbox;
-      display: flex;
-      padding: 16px 0;
-      -webkit-box-pack: start;
-      -ms-flex-pack: start;
-      -webkit-justify-content: flex-start;
-      justify-content: flex-start;
-      border-bottom: 1px solid #E4EBF0;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    padding: 16px 0;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    -webkit-justify-content: flex-start;
+    justify-content: flex-start;
+    border-bottom: 1px solid #e4ebf0;
   }
 
   .css-b54cxe {
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-flex-direction: row;
-      -ms-flex-direction: row;
-      flex-direction: row;
-      -webkit-align-items: center;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
-      align-items: center;
-      gap: 4px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    gap: 4px;
   }
 }
 
 @media (min-width: 820px) {
   .css-hdat01 {
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -ms-flexbox;
-      display: flex;
-      width: 700px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    width: 700px;
   }
 
   .css-zkzuyb {
-      margin-bottom: 0;
-      font-size: 14px;
+    margin-bottom: 0;
+    font-size: 14px;
   }
 }
 
 @media (min-width: 820px) and (max-width: 1023px) {
   .css-1h9xuna {
-      margin: 40px auto 100px;
+    margin: 40px auto 100px;
   }
 
   .css-vn5ffn {
-      display: grid;
-      grid-template-rows: repeat(2, 1fr);
-      grid-template-columns: repeat(4, 1fr);
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
 
-  .css-vn5ffn>:first-child {
-      grid-row: 1/span 1;
-      grid-column: 1/span 4;
+  .css-vn5ffn > :first-child {
+    grid-row: 1 / span 1;
+    grid-column: 1 / span 4;
   }
 
-  .css-vn5ffn>:nth-child(2) {
-      grid-row: 2;
-      grid-column: 1;
+  .css-vn5ffn > :nth-child(2) {
+    grid-row: 2;
+    grid-column: 1;
   }
 
-  .css-vn5ffn>:nth-child(3) {
-      grid-row: 2;
-      grid-column: 2;
+  .css-vn5ffn > :nth-child(3) {
+    grid-row: 2;
+    grid-column: 2;
   }
 
-  .css-vn5ffn>:nth-child(4) {
-      grid-row: 2;
-      grid-column: 3;
+  .css-vn5ffn > :nth-child(4) {
+    grid-row: 2;
+    grid-column: 3;
   }
 
-  .css-vn5ffn>:nth-child(5) {
-      grid-row: 2;
-      grid-column: 4;
+  .css-vn5ffn > :nth-child(5) {
+    grid-row: 2;
+    grid-column: 4;
   }
 }
 
-@media(min-width: 1024px) {
+@media (min-width: 1024px) {
   .css-1h9xuna {
-      margin: 32px auto 100px;
+    margin: 32px auto 100px;
   }
 
   .css-4mb2gv {
-      text-align: right;
+    text-align: right;
   }
 
   .css-5znsbo {
-      -webkit-flex-direction: row;
-      -ms-flex-direction: row;
-      flex-direction: row;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
   }
 
   .css-k50gal {
-      -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-      flex-direction: column;
-      -webkit-box-pack: justify;
-      -webkit-justify-content: space-between;
-      justify-content: space-between;
-      -webkit-align-items: flex-start;
-      -webkit-box-align: flex-start;
-      -ms-flex-align: flex-start;
-      align-items: flex-start;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    -webkit-align-items: flex-start;
+    -webkit-box-align: flex-start;
+    -ms-flex-align: flex-start;
+    align-items: flex-start;
   }
 
   .css-vn5ffn {
-      display: grid;
-      gap: 24px;
-      grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    display: grid;
+    gap: 24px;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
   }
 }
 /*--------------------퀵메뉴-------------------*/
