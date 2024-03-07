@@ -191,6 +191,16 @@ element.style {
     width: 3.25rem;
 }
 
+.btn-primary {
+    color: var(--white);
+    background-color: rgba(84, 29, 112);
+    border-color: transparent;
+}
+
+.text-blue-500 {
+    color: rgba(84, 29, 112) !important;
+}
+
 ._1isiv,
 .ODppI {
     grid-gap: var(--spacer-sm);
