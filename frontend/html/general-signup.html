@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="../css/general-signup.css" />
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
   </head>
   <body>
     <div class="css-12gtq4k">
@@ -13,14 +18,35 @@
           <div class="css-1wlmsap">
             <img src="../img/002.png" class="css-1k8svhy" />
             <div class="line"></div>
-
             <div direction="vertical" size="20" class="css-1i0k62c"></div>
-            <img src="../img/profile.jpg" class="css-profile" />
-            <div direction="vertical" size="60" class="css-1bisjhm"></div>
-            <div class="css-666rgn">
-              <div class="css-hg8qtm">이메일</div>
+            <div class="pic-holder">
+              <!-- uploaded pic shown here -->
+              <img id="profilePic" class="pic" src="../img/profile.jpg" />
               <input
-                placeholder="이메일 입력"
+                class="uploadProfileInput"
+                type="file"
+                name="profile_pic"
+                id="newProfilePhoto"
+                accept="image/*"
+                style="opacity: 0"
+              />
+              <label for="newProfilePhoto" class="upload-file-block">
+                <div class="text-center">
+                  <div class="mb-2">
+                    <i class="fa fa-camera fa-2x"></i>
+                  </div>
+                  <div class="text-uppercase">
+                    프로필 이미지 <br />
+                    업로드
+                  </div>
+                </div>
+              </label>
+            </div>
+            <div direction="vertical" size="60" class="css-1bisjhm"></div>
+            <div class="css-1b8vwo3">이메일</div>
+            <div class="css-666rgn">
+              <input
+                placeholder="이메일을 입력해 주세요."
                 type="string"
                 autocapitalize="off"
                 class="login-custom-input css-ownijh"
@@ -29,10 +55,10 @@
             </div>
             <div direction="vertical" size="20" class="css-1i0k62c"></div>
 
+            <div class="css-1b8vwo3-1">비밀번호</div>
             <div class="css-666rgn">
-              <div class="css-hg8qtm">비밀번호</div>
               <input
-                placeholder="비밀번호 입력"
+                placeholder="비밀번호를 입력해주세요."
                 type="string"
                 autocapitalize="off"
                 class="login-custom-input css-1f4y3nx"
@@ -40,10 +66,10 @@
               />
             </div>
             <div direction="vertical" size="20" class="css-1i0k62c"></div>
+            <div class="css-1b8vwo3-2">이름</div>
             <div class="css-666rgn">
-              <div class="css-hg8qtm">이름</div>
               <input
-                placeholder="이름 입력"
+                placeholder="이름을 입력해주세요."
                 type="string"
                 autocapitalize="off"
                 class="login-custom-input css-ownijh"
@@ -52,22 +78,16 @@
             </div>
             <div direction="vertical" size="20" class="css-1i0k62c"></div>
 
+            <div class="css-1b8vwo3-3">닉네임</div>
             <div class="css-666rgn">
-              <div class="css-hg8qtm">닉네임</div>
               <input
-                placeholder="닉네임 입력"
+                placeholder="닉네임을 입력해주세요."
                 type="string"
                 autocapitalize="off"
                 class="login-custom-input css-ownijh"
                 value=""
               />
             </div>
-            <!-- 이미지 첨부 버튼 영역 -->
-
-            <!-- 이미지 첨부 버튼 영역 -->
-            <div direction="vertical" size="20" class="css-1i0k62c"></div>
-            <div direction="vertical" size="20" class="css-1i0k62c"></div>
-            <div direction="vertical" size="32" class="css-h23ofx"></div>
             <div class="css-17w7nyr"></div>
             <div class="css-8luw5u">
               <button class="css-27eumk">

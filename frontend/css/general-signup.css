@@ -47,13 +47,6 @@ element.style {
   flex-direction: column;
 }
 
-.css-1n1k95p {
-  width: 100%;
-  height: 48px;
-  position: relative;
-  flex-shrink: 0;
-}
-
 .css-111ukc0 {
   width: 450px;
   overflow: visible;
@@ -64,43 +57,6 @@ element.style {
   justify-content: space-between;
   -webkit-box-flex: 1;
   flex-grow: 1;
-}
-
-.css-16q6yfy {
-  z-index: 20;
-  display: flex;
-  flex-direction: column;
-  height: fit-content;
-  overflow: hidden;
-  position: fixed;
-  width: 100%;
-  box-shadow: rgb(238, 243, 246) 0px -2px 0px inset;
-}
-
-.css-13rwtbb {
-  height: 50px;
-  white-space: initial;
-  content: " ";
-  opacity: 0;
-  flex: 0 0 50px;
-  -webkit-box-flex: 0;
-}
-
-.css-1a96vvi {
-  position: absolute;
-  top: 18px;
-  left: 0px;
-  font-family: Pretendard;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 26px;
-  color: rgb(58, 62, 65);
-  display: flex;
-  -webkit-box-align: center;
-  align-items: center;
-  gap: 4px;
-  cursor: pointer;
 }
 
 path {
@@ -125,71 +81,6 @@ svg:not(:root) {
   overflow: hidden;
 }
 
-path {
-  d: path("M 4.16663 4.16669 L 15.8333 15.8334");
-  stroke: rgb(58, 62, 65);
-  stroke-width: 1.75;
-  stroke-linecap: round;
-}
-
-:not(svg) {
-  transform-origin: 0px 0px;
-}
-
-path {
-  d: path("M 15.8334 4.16669 L 4.16671 15.8334");
-  stroke: rgb(58, 62, 65);
-  stroke-width: 1.75;
-  stroke-linecap: round;
-}
-
-svg {
-  width: 20;
-  height: 20;
-  fill: none;
-}
-
-.css-myjkxi {
-  position: absolute;
-  top: 18px;
-  right: 0px;
-  font-family: Pretendard;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 26px;
-  color: rgb(58, 62, 65);
-  display: flex;
-  -webkit-box-align: center;
-  align-items: center;
-  gap: 4px;
-  cursor: pointer;
-}
-
-.css-bbe5fx {
-  font-family: Pretendard;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 20px;
-  line-height: 26px;
-  color: rgb(20, 22, 23);
-}
-
-.css-13z7p23 {
-  width: 100%;
-  height: 8px;
-}
-
-.css-1hal8c {
-  font-family: Pretendard;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 26px;
-  color: rgb(95, 102, 107);
-  white-space: pre-line;
-}
-
 .css-1k8svhy {
   width: 248px;
   object-fit: contain;
@@ -200,13 +91,6 @@ svg {
   margin: 0 auto;
   width: 120px;
   object-fit: contain;
-}
-
-img {
-  image-rendering: -moz-crisp-edges;
-  image-rendering: -o-crisp-edges;
-  image-rendering: -webkit-optimize-contrast;
-  -ms-interpolation-mode: nearest-neighbor;
 }
 
 .css-1bisjhm {
@@ -229,36 +113,16 @@ img {
   position: relative;
 }
 
-.css-hg8qtm {
-  font-family: Pretendard;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 18px;
-  color: rgb(58, 62, 65);
-}
-
-input:not(
-    [type="file" i],
-    [type="image" i],
-    [type="checkbox" i],
-    [type="radio" i]
-  ) {
-}
-
 input {
   border: none;
   background: none;
   outline: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
   appearance: none;
 }
 
 .css-ownijh {
   display: flex;
   flex-direction: row;
-  -webkit-box-align: center;
   align-items: center;
   box-sizing: border-box;
   background: rgb(246, 249, 250);
@@ -277,39 +141,7 @@ input {
   padding: 0px;
 }
 
-.css-162yza3 {
-  display: flex;
-  flex-direction: row;
-  -webkit-box-align: center;
-  align-items: center;
-  box-sizing: border-box;
-  background: rgb(246, 249, 250);
-  border-radius: 8px;
-  outline: none;
-  border: none;
-  caret-color: rgb(20, 22, 23);
-  font-family: Pretendard;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 22px;
-  color: rgb(20, 22, 23);
-  font-size: 14px;
-  width: 100%;
-  height: 36px;
-  padding: 0px;
-}
-
-input {
-  border: none;
-  background: none;
-  outline: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-}
-
 input[type="password" i] {
-  -webkit-text-security: disc !important;
   padding-block: 1px;
   padding-inline: 2px;
 }
@@ -322,16 +154,9 @@ input:not(
   ) {
 }
 
-.css-1ap4l8j {
-  height: 1px;
-  width: 100%;
-  background: rgb(228, 235, 240);
-}
-
 .css-1f4y3nx {
   display: flex;
   flex-direction: row;
-  -webkit-box-align: center;
   align-items: center;
   box-sizing: border-box;
   background: rgb(246, 249, 250);
@@ -355,21 +180,6 @@ input:not(
   height: 20px;
 }
 
-.css-dfxgr5 {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  -webkit-box-pack: center;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 20px;
-  box-sizing: border-box;
-  gap: 16px;
-  background: rgb(246, 249, 250);
-  border-radius: 12px;
-  position: relative;
-}
-
 .css-ygt1wz {
   width: 100%;
   height: 40px;
@@ -387,11 +197,11 @@ input:not(
   flex-direction: column;
   gap: 20px;
   align-items: flex-start;
+  margin-top: 50px;
 }
 
 a,
 button {
-  -webkit-text-decoration: none;
   text-decoration: none;
   cursor: pointer;
 }
@@ -400,20 +210,6 @@ button {
   background: unset;
   border: unset;
   padding: unset;
-}
-
-rect {
-  x: 3.33331;
-  y: 3.33331;
-  width: 13.3333;
-  height: 13.3333;
-  rx: 2;
-  stroke: rgb(157, 167, 174);
-  stroke-width: 1.75;
-}
-
-:not(svg) {
-  transform-origin: 0px 0px;
 }
 
 .css-27eumk {
@@ -425,7 +221,6 @@ rect {
   cursor: pointer;
   display: flex;
   gap: 12px;
-  -webkit-box-align: center;
   align-items: center;
   font-family: Pretendard;
   font-style: normal;
@@ -524,6 +319,7 @@ svg {
   text-align: center;
   font-size: 14px; /* 글씨 크기 조정 */
   line-height: 1.4; /* 줄 간격 조정 */
+  font-weight: bold;
 }
 
 .css-j27xag {
@@ -583,103 +379,262 @@ svg {
 
 /* 이미지 첨부 버튼 */
 
-/* 코드잇 */
-
-.SignUpHeader_container__zjR3_ .SignUpHeader_message__L6eiM {
-  margin-top: 2rem;
-  font-size: 1.4rem;
-  color: #333236;
+/*---------------------------------*/
+* {
+  font-family: "Metro Sans", sans-serif;
+  box-sizing: border-box;
 }
 
-*,
-:after,
-:before {
-  margin: 0;
-  padding: 0;
-  box-sizing: inherit;
-  background-color: transparent;
+.css-1b8vwo3::after {
+  position: relative;
+  left: 2px;
+  top: -2px;
+  content: "*";
+  color: rgb(255, 114, 98);
+}
+.css-1b8vwo3-1::after {
+  position: relative;
+  left: 2px;
+  top: -2px;
+  content: "*";
+  color: rgb(255, 114, 98);
+}
+.css-1b8vwo3-2::after {
+  position: relative;
+  left: 2px;
+  top: -2px;
+  content: "*";
+  color: rgb(255, 114, 98);
+}
+.css-1b8vwo3-3::after {
+  position: relative;
+  left: 2px;
+  top: -2px;
+  content: "*";
+  color: rgb(255, 114, 98);
 }
 
-p {
-  display: block;
-  margin-block-start: 1em;
-  margin-block-end: 1em;
-  margin-inline-start: 0px;
-  margin-inline-end: 0px;
+.css-1b8vwo3 {
+  font-size: 14px;
+  color: rgb(85, 89, 105);
+  margin-bottom: 8px;
+  position: relative;
+  font-weight: bold;
+  padding-right: 389px;
 }
 
-.SignUpHeader_container__zjR3_ .SignUpHeader_link__m5Bac {
-  margin-left: 0.6rem;
-  font-weight: 500;
-  color: #6500c2;
+.css-1b8vwo3-1 {
+  font-size: 14px;
+  color: rgb(85, 89, 105);
+  margin-top: 8px;
+  margin-bottom: 8px;
+  position: relative;
+  font-weight: bold;
+  padding-right: 374px;
 }
 
-.SignUpHeader_container__zjR3_ a {
-  height: 4.8rem;
+.css-1b8vwo3-2 {
+  font-size: 14px;
+  color: rgb(85, 89, 105);
+  margin-top: 8px;
+  margin-bottom: 8px;
+  position: relative;
+  font-weight: bold;
+  padding-right: 400px;
 }
 
-a {
-  text-decoration: none;
+.css-1b8vwo3-3 {
+  font-size: 14px;
+  color: rgb(85, 89, 105);
+  margin-top: 8px;
+  margin-bottom: 8px;
+  position: relative;
+  font-weight: bold;
+  padding-right: 386px;
 }
 
-a,
-button {
-  color: inherit;
-}
-
-*,
-:after,
-:before {
-  margin: 0;
-  padding: 0;
-  box-sizing: inherit;
-  background-color: transparent;
-}
-
-a:-webkit-any-link {
-  color: -webkit-link;
+.css-1b8vwo3-new {
+  font-size: 14px;
+  color: rgb(85, 89, 105);
+  margin-bottom: 8px;
+  position: relative;
+  font-weight: bold;
+  margin-top: 30px;
+  padding-right: 170px;
   cursor: pointer;
+}
+
+.text {
   text-decoration: underline;
 }
 
-.SignUpHeader_container__zjR3_ .SignUpHeader_message__L6eiM {
-  margin-top: 2rem;
-  font-size: 1.4rem;
-  color: #333236;
+/* ---------- 이미지 첨부 버튼-------------*/
+._17nutjM9EW1e6w7K8cCfKS {
+  text-align: center;
+  margin-top: 10px;
+  margin-right: 300px;
 }
 
-*,
-:after,
-:before {
-  margin: 0;
-  padding: 0;
-  box-sizing: inherit;
-  background-color: transparent;
+.btn-primary {
+  display: inline-block;
+  cursor: pointer;
+  font-weight: 300;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  user-select: none;
+  border: 1px solid transparent;
+  padding: 0.3125rem 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.714286;
+  border-radius: 20px;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-p {
-  display: block;
-  margin-block-start: 1em;
-  margin-block-end: 1em;
-  margin-inline-start: 0px;
-  margin-inline-end: 0px;
+.btn-primary {
+  color: #fff;
+  background-color: #609ae9;
+  border-color: #609ae9;
 }
-
-.SignUpHeader_container__zjR3_ {
+/*-------------프로필 이미지 업로드---------------*/
+.h1 {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+}
+.profile-pic-wrapper {
+  height: 100vh;
+  width: 100%;
+  position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
 }
-
-*,
-:after,
-:before {
-  margin: 0;
-  padding: 0;
-  box-sizing: inherit;
-  background-color: transparent;
+.pic-holder {
+  text-align: center;
+  position: relative;
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-div {
-  display: block;
+.pic-holder .pic {
+  height: 100%;
+  width: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+  -o-object-position: center;
+  object-position: center;
 }
+
+.pic-holder .upload-file-block,
+.pic-holder .upload-loader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(90, 92, 105, 0.7);
+  color: #f8f9fc;
+  font-size: 12px;
+  font-weight: 600;
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.pic-holder .upload-file-block {
+  cursor: pointer;
+}
+
+.pic-holder:hover .upload-file-block,
+.uploadProfileInput:focus ~ .upload-file-block {
+  opacity: 1;
+}
+
+.pic-holder.uploadInProgress .upload-file-block {
+  display: none;
+}
+
+.pic-holder.uploadInProgress .upload-loader {
+  opacity: 1;
+}
+
+/* Snackbar css */
+.snackbar {
+  visibility: hidden;
+  min-width: 250px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  bottom: 30px;
+  font-size: 14px;
+  transform: translateX(-50%);
+}
+
+.snackbar.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+.text-uppercase {
+  font-size: 16px;
+}
+@-webkit-keyframes fadein {
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+  to {
+    bottom: 30px;
+    opacity: 1;
+  }
+}
+
+@keyframes fadein {
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+  to {
+    bottom: 30px;
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadeout {
+  from {
+    bottom: 30px;
+    opacity: 1;
+  }
+  to {
+    bottom: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes fadeout {
+  from {
+    bottom: 30px;
+    opacity: 1;
+  }
+  to {
+    bottom: 0;
+    opacity: 0;
+  }
+}
+/*-------------프로필 이미지 업로드---------------*/
