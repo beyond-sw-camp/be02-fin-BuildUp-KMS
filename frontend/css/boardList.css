@@ -791,7 +791,7 @@ svg:not(:root) {
     display: flex;
     justify-content: center;
     margin-top: 3rem;
-    margin-bottom: 4rem;
+    margin-bottom: 10rem;
 }
 .Pagination_container__jFl63 {
     position: relative;
