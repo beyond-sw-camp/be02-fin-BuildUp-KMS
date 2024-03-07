@@ -65,6 +65,7 @@ h2 {
     max-width: 300px; /* 최대 너비를 248px로 제한 */
     height: auto; /* 가로 비율에 맞게 세로 크기 자동 조정 */
     object-fit: contain;
+    margin-top: 120px;
 }
 
 
