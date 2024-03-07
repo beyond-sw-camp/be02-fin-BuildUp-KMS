@@ -16465,8 +16465,8 @@ body {
   .container-lg,
   .container-xl,
   .container-xxl {
-    padding-right: 1.625rem;
-    padding-left: 1.625rem;
+    padding-right: 8rem;
+    padding-left: 8rem;
   }
 }
 
@@ -17111,7 +17111,6 @@ html:not(.layout-menu-fixed) .menu-inner-shadow {
   padding-bottom: 0.2rem;
   height: 3.875rem;
   flex-wrap: nowrap;
-  color: #697a8d;
   z-index: 2;
 }
 .layout-navbar .navbar {
