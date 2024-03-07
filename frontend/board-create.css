@@ -140,6 +140,7 @@ element.style {
     background-color: rgb(255, 255, 255);
     font-family: Pretendard;
     line-height: 18px;
+    margin-top: 8px;
 }
 
 .css-1iqxhyo {
@@ -178,7 +179,7 @@ element.style {
     font-family: Helvetica, Arial, sans-serif;
     font-size: 13px;
     height: 100%;
-    margin: 0;
+    margin-top: 6px;
     position: relative;
 }
 
@@ -458,7 +459,7 @@ button {
     padding: 16px 12px;
     border-radius: 8px;
     border: 1px solid rgb(228, 235, 240);
-    margin-top: 8px;
+    margin-top: 3px;
 }
 
 .css-1vitttd {
@@ -510,6 +511,7 @@ input {
     background-color: #541D7A;
     width: inherit;
     opacity: 0.3;
+    margin-right: 14px;
 }
 
 
@@ -604,7 +606,7 @@ input {
     border: 1px solid rgb(219, 221, 224);
     border-radius: 8px;
     margin-right: 12px;
-    width: 200px;
+    width: 364px;
     height: 56px;
     background-color: rgb(255, 255, 255);
     font-size: 16px;
