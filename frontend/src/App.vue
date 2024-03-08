@@ -1,6 +1,6 @@
 <template>
   <HeaderComponent/>
-  <router-view/>
+  <router-view />
   <FooterComponent />
   <QuickMenuComponent />
 </template>
