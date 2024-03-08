@@ -62,7 +62,7 @@ a{
     padding: 2px 0;
     border-radius: 40px;
     /* border: solid 1px #dbdde0; */
-    background-color: #9378FF;
+    background-color: rgb(84, 29, 112);
     color: #fff;
     font-size: 10px;
     display: flex;
@@ -611,7 +611,7 @@ a{
 }
 
 .css-btn{
-    background-color: #EAEAEA;
+    background-color: rgb(52, 152, 219, 0.2);
     font-size: 12px;
     color: black;
     font-weight: 700;
@@ -691,12 +691,13 @@ a{
 
 .css-board-back{
     cursor: pointer;
-    width: 110px;
+    width: 80px;
+    height: 50px;
     padding: 15px 0;
     border-radius: 10px;
-    background-color: #9378FF;
+    /* background-color: #9378FF; */
+    background-color: rgb(84, 29, 112);
     font-size: 13px;
-    font-weight: 600;
     display: flex;
     /* align-items: center; */
     justify-content: center;
@@ -706,4 +707,5 @@ a{
 
 .css-back-div{
     text-align: center;
+    margin-top: 50px;
 }
