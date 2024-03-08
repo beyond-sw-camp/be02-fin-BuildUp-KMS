@@ -1,23 +1,8 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
-    <link rel="shortcut icon" href="../img/icon.png">
-    <title>BOOTSHELF</title>
-    <link rel="stylesheet" type="text/css" href="../css/header.css">
-    <link rel="stylesheet" type="text/css" href="../css/home.css">
-    <link rel="stylesheet" type="text/css" href="../css/footer.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-</head>
-
-<body>
+<template>
     <header>
         <div class="css-wkr2a">
             <div class="css-we70d5">
-                <div class="css-un3w91"><img src="../img/logo.png" alt="BOOKSHELF 로고" class="css-huvhzc"></div>
+                <div class="css-un3w91"><img src="../assets/img/logo.png" alt="BOOKSHELF 로고" class="css-huvhzc"></div>
                 <div class="css-1butcu2">
                     <div class="css-1llgdoe">지식공유</div>
                     <div class="css-1llgdoe">Q&A</div>
@@ -305,139 +290,891 @@
             </div>
         </div>
     </header>
+</template>
+
+<script>
+export default {
+    name: "HeaderComponent",
+};
+</script>
+
+<style scoped>
+@font-face {
+    font-display: swap;
+    font-family: 'SpoqaHanSansNeo';
+    font-style: normal;
+    font-weight: 400;
+    src: url('https://static.spartacodingclub.kr/static/fonts/SpoqaHanSansNeo/SpoqaHanSansNeo-Regular.woff') format('woff'),
+        url('https://static.spartacodingclub.kr/static/fonts/SpoqaHanSansNeo/SpoqaHanSansNeo-Regular.otf') format('otf')
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'GmarketSans';
+    font-weight: 300;
+    font-style: normal;
+    src: url('https://static.spartacodingclub.kr/static/fonts/GmarketSans/GmarketSansLight.woff2') format("woff2"),
+        url('https://static.spartacodingclub.kr/static/fonts/GmarketSans/GmarketSansLight.woff') format("woff");
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'GmarketSans';
+    font-weight: 400;
+    font-style: normal;
+    src: url('https://static.spartacodingclub.kr/static/fonts/GmarketSans/GmarketSansMedium.woff2') format("woff2"),
+        url('https://static.spartacodingclub.kr/static/fonts/GmarketSans/GmarketSansMedium.woff') format("woff");
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'GmarketSans';
+    font-weight: 700;
+    font-style: normal;
+    src: url('https://static.spartacodingclub.kr/static/fonts/GmarketSans/GmarketSansBold.woff2') format("woff2"),
+        url('https://static.spartacodingclub.kr/static/fonts/GmarketSans/GmarketSansBold.woff') format("woff");
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'Pretendard';
+    font-weight: 100;
+    font-style: normal;
+    src: local(Pretendard Thin), url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Thin.subset.woff2') format("woff2"),
+        url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Thin.subset.woff') format("woff"),
+        url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Thin.otf');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'Pretendard';
+    font-weight: 200;
+    font-style: normal;
+    src: local(Pretendard ExtraLight), url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-ExtraLight.subset.woff2') format("woff2"),
+        url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-ExtraLight.subset.woff') format("woff"),
+        url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-ExtraLight.otf');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'Pretendard';
+    font-weight: 300;
+    font-style: normal;
+    src: local(Pretendard Light), url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Light.subset.woff2') format("woff2"),
+        url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Light.subset.woff') format("woff"),
+        url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Light.otf');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'Pretendard';
+    font-weight: 400;
+    font-style: normal;
+    src: local(Pretendard Regular), url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Regular.subset.woff2') format("woff2"),
+        url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Regular.subset.woff') format("woff"),
+        url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Regular.otf');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'Pretendard';
+    font-weight: 500;
+    font-style: normal;
+    src: local(Pretendard Medium), url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Medium.subset.woff2') format("woff2"),
+        url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Medium.subset.woff') format("woff"),
+        url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Medium.otf');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'Pretendard';
+    font-weight: 600;
+    font-style: normal;
+    src: local(Pretendard SemiBold), url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-SemiBold.subset.woff2') format("woff2"),
+        url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-SemiBold.subset.woff') format("woff"),
+        url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-SemiBold.otf');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'Pretendard';
+    font-weight: 700;
+    font-style: normal;
+    src: local(Pretendard Bold), url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Bold.subset.woff2') format("woff2"),
+        url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Bold.subset.woff') format("woff"),
+        url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Bold.otf');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'Pretendard';
+    font-weight: 800;
+    font-style: normal;
+    src: url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-ExtraBold.subset.woff2') format("woff2"),
+        url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-ExtraBold.subset.woff') format("woff"),
+        url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-ExtraBold.otf');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'Pretendard';
+    font-weight: 900;
+    font-style: normal;
+    src: url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Black.subset.woff2') format("woff2"),
+        url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Black.subset.woff') format("woff"),
+        url('https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Black.otf');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'SpoqaHanSans';
+    font-weight: 300;
+    font-style: normal;
+    src: url('https://static.spartacodingclub.kr/static/fonts/SpoqaHanSans/SpoqaHanSans-Light.woff') format('woff');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'SpoqaHanSans';
+    font-weight: 400;
+    font-style: normal;
+    src: url('https://static.spartacodingclub.kr/static/fonts/SpoqaHanSans/SpoqaHanSans-Regular.woff') format('woff');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'SpoqaHanSans';
+    font-weight: 700;
+    font-style: normal;
+    src: url('https://static.spartacodingclub.kr/static/fonts/SpoqaHanSans/SpoqaHanSans-Bold.woff') format('woff');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'Cafe24Ohsquare';
+    font-weight: 500;
+    font-style: normal;
+    src: url('https://static.spartacodingclub.kr/static/fonts/Cafe24Ohsquare/Cafe24Ohsquare.woff2') format("woff2"),
+        url('https://static.spartacodingclub.kr/static/fonts/Cafe24Ohsquare/Cafe24Ohsquare.woff') format("woff"),
+        url('https://static.spartacodingclub.kr/static/fonts/Cafe24Ohsquare/Cafe24Ohsquare.ttf');
+}
+
+@font-face {
+    font-family: 'NanumHandWritingDaughter';
+    font-style: normal;
+    font-weight: 400;
+    src: url('https://static.spartacodingclub.kr/static/fonts/NanumHandWritingDaughter.subset.woff2') format("woff2");
+}
+
+@font-face {
+    font-family: 'ThefaceshopInklipquid';
+    font-style: normal;
+    font-weight: 400;
+    src: url('https://static.spartacodingclub.kr/static/fonts/ThefaceshopInklipquid/ThefaceshopInklipquid.woff') format("woff"),
+        url('https://static.spartacodingclub.kr/static/fonts/ThefaceshopInklipquid/ThefaceshopInklipquid.ttf');
+}
+
+@font-face {
+    font-family: 'SbAggroBold';
+    font-weight: 700;
+    font-style: normal;
+    src: url('https://static.spartacodingclub.kr/static/fonts/SbAggro/SB_aggro_bold.woff2') format("woff2"),
+        url('https://static.spartacodingclub.kr/static/fonts/SbAggro/SB_aggro_bold.woff') format("woff"),
+        url('https://static.spartacodingclub.kr/static/fonts/SbAggro/SB_aggro_bold.ttf');
+}
+
+@font-face {
+    font-family: 'DungGeunMo';
+    font-style: normal;
+    font-weight: 400;
+    src: url('https://static.spartacodingclub.kr/static/fonts/DungGeunMo/DungGeunMo.woff') format("woff"),
+        url('https://static.spartacodingclub.kr/static/fonts/DungGeunMo/DungGeunMo.ttf');
+}
+
+@font-face {
+    font-family: 'Tmoney RoundWind';
+    font-style: normal;
+    font-weight: 400;
+    src: url('https://static.spartacodingclub.kr/static/fonts/TmoneyRoundWindExtraBold.woff2') format("woff2"),
+        url('https://static.spartacodingclub.kr/static/fonts/TmoneyRoundWindExtraBold.ttf');
+}
+
+@font-face {
+    font-family: 'Cafe24Surround';
+    font-style: normal;
+    font-weight: 400;
+    src: url('https://static.spartacodingclub.kr/static/fonts/Cafe24Ssurround-v2.0.woff2') format("woff2"),
+        url('https://static.spartacodingclub.kr/static/fonts/Cafe24Ssurround-v2.0.woff')
+}
+
+@font-face {
+    font-family: 'EBSHunminjeongeumSBA';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/EBSHunminjeongeum.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Dokrip';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.1/Dokrip.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'YoonDokrip';
+    font-style: normal;
+    font-weight: 500;
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.1/Dokrip.woff') format('woff'),
+        url('https://static.spartacodingclub.kr/static/fonts/YoonDokrip.woff') format('woff'),
+        url('https://static.spartacodingclub.kr/static/fonts/YoonDokrip.otf') format('otf');
+}
+
+.css-huvhzc {
+    width: 250%;
+    height: 250%;
+}
+
+.css-13fd4ke {
+    padding: 12px 0;
+    cursor: pointer;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+    width: 100%;
+}
+
+.css-wkr2a ::before,
+.css-wkr2a ::after {
+    box-sizing: inherit;
+}
+
+.css-wkr2a {
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.4s ease 0s;
+    background-color: white;
+    height: 70px;
+    width: 100%;
+    border-bottom: 1px solid rgb(228, 235, 240);
+    position: fixed;
+}
+
+.css-wkr2a * {
+    word-break: normal;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+
+.css-we70d5 {
+    width: 100%;
+    height: 34px;
+    max-width: 1100px;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: nowrap;
+    min-width: 820px;
+    margin: 12px auto 10px;
+    padding-top: 10px;
+}
+
+/* 상단 검색 창  */
+.css-1butcu2 {
+    position: relative;
+    display: flex;
+    gap: 50px;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.ContentSearch_searchWrapper__3xeqG2 {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    max-width: 50rem;
+    height: 7.6rem;
+    padding: 0;
+    /* Adjusted for direct child input styling */
+    border: 0.6rem solid var(rgb(84, 29, 112));
+    /* Light Blue outer border */
+    border-radius: 8.4rem;
+    background: transparent;
+    /* Ensuring background doesn't interfere with outer border */
+}
 
 
-    <div class="css-1hnxdb7">
-        <div class="css-16z0wya">
-            <section class="css-zea7jz0">
-                <div class="ContentSearch_container__RFyCa">
-                    <div class="SectionTitle_container__PcXfF SectionTitle_center__bSviY SectionTitle_size-48__RYzIo">
-                        <p class="SectionTitle_label__cEYNl default SectionTitle_size-48__RYzIo"></p>
-                        <p class="SectionTitle_title__iqOHl default SectionTitle_size-48__RYzIo">
-                            <img src="../img/logo.png" alt="BOOKSHELF" width="500px">
-                        </p>
-                        <p class="SectionTitle_description__3Deqx default SectionTitle_size-48__RYzIo"></p>
-                        <div class="SectionTitle_button__vZ_Mf SectionTitle_size-48__RYzIo"></div>
-                    </div>
-                    <div class="ContentSearch_searchWrapper__3xeqG">
-                        <input class="ContentSearch_searchInput__dVET9" id="content-search" type="search"
-                            placeholder="Search here...">
-                        <span class="Icon_container__KMOfZ rotate-0 Icon_l-large__pSyZb Icon_m-large__BQ2ze"
-                            style="--color:var(rgb(84, 29, 112))">
-                            <svg width="50" height="50" viewBox="0 0 20 20" fill="purple"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M2.45005 8.74999C2.45005 5.27059 5.27065 2.44999 8.75005 2.44999C12.2294 2.44999 15.05 5.27059 15.05 8.74999C15.05 12.2294 12.2294 15.05 8.75005 15.05C5.27065 15.05 2.45005 12.2294 2.45005 8.74999ZM8.75005 1.04999C4.49746 1.04999 1.05005 4.4974 1.05005 8.74999C1.05005 13.0026 4.49746 16.45 8.75005 16.45C10.6243 16.45 12.3421 15.7804 13.6774 14.6673L18.2551 19.245C18.5284 19.5183 18.9717 19.5183 19.245 19.245C19.5184 18.9716 19.5184 18.5284 19.245 18.255L14.6673 13.6773C15.7804 12.3421 16.45 10.6242 16.45 8.74999C16.45 4.4974 13.0026 1.04999 8.75005 1.04999Z"
-                                    fill="purple" stroke="purple" stroke-width="2"></path>
-                            </svg>
-                        </span>
-                    </div>
-
-                </div>
-            </section>
-        </div>
-    </div>
+.ContentSearch_searchInput__dVET92 {
+    margin-right: 1rem;
+    display: flex;
+    align-items: center;
+    width: calc(100% - 1rem);
+    /* Adjusting width to fit within the wrapper */
+    height: 4rem;
+    /* Adjusting height to fit within the wrapper */
+    padding: 1.7rem 2rem;
+    gap: 1.5rem;
+    font-size: 1.5rem;
+    border: 0.2rem solid var(--border-inner);
+    /* Blue inner border */
+    border-radius: 8.5rem;
+    background: white;
+    /* White inner background */
+    color: red;
+    /* Text color */
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1);
+    /* 그림자 색상과 크기 설정 */
+}
 
 
-    <div class="css-1hnxdb7">
-        <div class="css-16z0wya">
-            <section class="css-zea7jz">
-                <div class="css-143hej"><button class="css-bcb9a9">
-                        <div class="css-197aby8">
-                            <p class="css-1r2nemk">지식 공유 서비스</p>
-                            <p class="css-12j2poz">집단 지성이 참여하고 <br>토론할 수 있는 문화</p>
-                        </div><img src="../img/knowledge.png" loading="lazy" class="css-1522xt9">
-                    </button><button class="css-bcb9a9">
-                        <div class="css-197aby8">
-                            <p class="css-1r2nemk">무엇이든 물어보세요</p>
-                            <p class="css-12j2poz">구성원이 서로 소통하며 <br>관심 분야에 대해<br>자연스럽게 공유하는 환경 제공</p>
-                        </div><img src="../img/qna.png" loading="lazy" class="css-1522xt9">
-                    </button><button class="css-bcb9a9">
-                        <div class="css-197aby8">
-                            <p class="css-1r2nemk">프로그램 참여 후기</p>
-                            <p class="css-12j2poz">실제 부트캠프에 참여한 <br>구성원들의 생생한 후기를 <br>공유하는 문화 형성</p>
-                        </div><img src="../img/ddabong.png" loading="lazy" class="css-1522xt9">
-                    </button>
-                </div>
-            </section>
-            <section class="css-zea7jz2">
-                <div class="css-143hej"><button class="css-bcb9a9">
-                        <div class="css-197aby8">
-                            <p class="css-1r2nemk">인기 게시글</p>
-                            <p class="css-12j2poz">회원들의 HOT ISSUE</p>
-                        </div><img src="../img/danger.png" loading="lazy" class="css-1522xt9">
-                    </button><button class="css-bcb9a9">
-                        <div class="css-197aby8">
-                            <p class="css-1r2nemk">스터디원 모집</p>
-                            <p class="css-12j2poz">함꼐 프로그래밍 공부를 할 <br>팀원을 모을 수 있는 환경</p>
-                        </div><img src="../img/study.png" loading="lazy" class="css-1522xt9">
-                    </button><button class="css-bcb9a9">
-                        <div class="css-197aby8">
-                            <p class="css-1r2nemk">공지사항</p>
-                            <p class="css-12j2poz">BOOTSHELF 공지사항</p>
-                        </div><img src="../img/notice.png" loading="lazy" class="css-1522xt9">
-                    </button>
-                </div>
-            </section>
-        </div>
-    </div>
+.css-1llgdoe {
+    font-family: Pretendard;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 26px;
+    padding: 9px 10px 8px;
+    color: rgb(20, 22, 23);
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+    -webkit-box-align: center;
+    align-items: center;
+}
 
-    <footer class="css-88z093">
-        <footer class="css-1h9xuna">
-            <section class="css-1qzhyb0">
-                <ul class="css-zkzuyb">
-                    <div class="css-t0ptnf">
-                        <li class="css-516vln"><a target="_blank"
-                                href="https://teamsparta.notion.site/7b1dc644460946f08bab08b794de685f"
-                                class="css-y8zw8d">개인정보처리방침</a></li>
-                        <li class="css-516vln"><a target="_blank"
-                                href="https://teamsparta.notion.site/247d57da1322424d8e8c551df21a048e"
-                                class="css-1vh48ao">서비스
-                                이용약관</a></li>
-                    </div>
-                </ul>
-            </section>
-            <div class="css-k50gal">
-                <section class="css-0">
-                    <h4 class="css-16omddv">(주)BOOTSHELF 사업자 정보<!-- -->&nbsp;</h4>
-                    <dl class="css-hdat01">
-                        <div class="css-5znsbo">
-                            <dt class="css-184cnz3">대표자:</dt>
-                            <dd class="css-184cnz3">북셸프</dd><span class="css-17y1dcm"> | </span>
-                        </div>
-                        <div class="css-5znsbo">
-                            <dt class="css-184cnz3">사업자 등록번호:</dt>
-                            <dd class="css-184cnz3">000-000-0000</dd><span class="css-17y1dcm"> | </span>
-                        </div>
-                        <div class="css-5znsbo">
-                            <dt class="css-184cnz3">통신판매업 신고번호:</dt>
-                            <dd class="css-184cnz3">0000-서울동작-00000</dd><span class="css-17y1dcm"> | </span>
-                        </div>
-                        <div class="css-5znsbo"><a target="_blank"
-                                href="https://drive.google.com/file/d/1xtT3BX_uowATTC7X788a0EYYTkVx551r/view?usp=sharing"
-                                class="css-v0a2uo">평생교육시설 신고번호: 제 000호</a></div>
-                        <div class="css-5znsbo">
-                            <dt class="css-184cnz3">주소:</dt>
-                            <dd class="css-184cnz3">서울특별시 동작구 보라매로 87 신이빌딩 402호</dd><span class="css-17y1dcm"> |
-                            </span>
-                        </div>
-                        <div class="css-5znsbo">
-                            <dt class="css-184cnz3">이메일:</dt>
-                            <dd class="css-184cnz3">bootshelf@ohyeah.com</dd><span class="css-17y1dcm"> |
-                            </span>
-                        </div>
-                        <div class="css-5znsbo">
-                            <dt class="css-184cnz3">전화: </dt>
-                            <dd class="css-184cnz3">0000-0000</dd>
-                        </div>
-                    </dl>
-                </section>
-                <p class="css-4mb2gv">Copyright ©2024 TEAMSPARTA. All rights reserved.</p>
-            </div>
-        </footer>
-    </footer>
-</body>
+.css-1butcu {
+    position: relative;
+    display: flex;
+    gap: 16px;
+    -webkit-box-align: center;
+    align-items: center;
+}
 
-</html>
 
-</html>
+/* 로그인 버튼 */
+.css-login-button {
+    margin-right: 10px;
+    background-color: white;
+    /* 초록색 배경색 */
+    color: black;
+    /* 글자색 */
+    font-size: 16px;
+    font-weight: 620;
+    width: 100px;
+    border: 0.2rem solid var(--border-inner);
+    /* Blue inner border */
+    border-radius: 8.5rem;
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 회원가입 버튼 */
+.css-signup-button {
+    margin-right: 10px;
+    background-color: rgb(84, 29, 112);
+    /* 파란색 배경색 */
+    color: #fff;
+    /* 글자색 */
+    font-size: 16px;
+    font-weight: 620;
+    width: 100px;
+    border: 0.2rem solid var(--border-inner);
+    /* Blue inner border */
+    border-radius: 8.5rem;
+    box-shadow: 2px 8px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 호버 효과 */
+.css-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.css-26c0za {
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+}
+
+
+.css-1fgr4mj {
+    display: block;
+    padding: 32px 0 0 0;
+    border: #d7e0e6 solid 1px;
+    border-radius: 10px;
+    position: absolute;
+    top: calc(40px + 0px);
+    right: 0;
+    background-color: white;
+    opacity: 0;
+    visibility: hidden;
+    z-index: unset;
+    width: 282px;
+    transform: translateX(-50%);
+    box-shadow: 0px 8px 24px rgba(95, 102, 107, 0.12);
+    font-family: "Pretendard";
+    overflow: scroll;
+    scrollbar-width: none;
+}
+
+.css-13t7veh {
+    display: flex;
+    padding: 16px;
+    -webkit-box-align: center;
+    align-items: center;
+    gap: 12px;
+    align-self: stretch;
+    border-radius: 8px;
+    border: 1px solid rgb(228, 235, 240);
+    background: rgb(255, 255, 255);
+    box-shadow: rgba(95, 102, 107, 0.12) 0px 8px 24px 0px;
+    margin: 0px 16px;
+}
+
+
+.Icon_container__KMOfZ2+.ContentSearch_searchInput__dVET92 {
+    flex-grow: 1;
+    color: rgb(82, 29, 112);
+    /* 아이콘 색상 변경 */
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    /* 그림자 색상과 크기 설정 */
+    margin-right: 1.5rem;
+    /* Adding space between icon and input field */
+}
+
+.Icon_container__KMOfZ2 svg {
+    width: 4rem;
+    /* 아이콘의 너비를 3.2rem으로 조정합니다. */
+    height: 4rem;
+    /* 아이콘의 높이를 3.2rem으로 조정합니다. */
+    transition: all .2s ease-in-out;
+}
+
+.css-un3w91 {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.css-1jibmi3 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.css-16regn8 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    gap: 8px;
+    font-family: Pretendard, -apple-system, “system-ui”, "Malgun Gothic", "맑은 고딕", sans-serif;
+    font-family: Pretendard;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
+    color: #141617;
+    color: #141617;
+}
+
+.css-17gywxx {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    font-family: Pretendard;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
+    color: #141617;
+    color: #141617;
+    color: #3A3E41;
+}
+
+.css-1fgr4mj {
+    display: block;
+    padding: 32px 0 0 0;
+    border: #d7e0e6 solid 1px;
+    border-radius: 10px;
+    position: absolute;
+    top: calc(40px + 0px);
+    right: 0;
+    background-color: white;
+    opacity: 0;
+    visibility: hidden;
+    z-index: unset;
+    width: 282px;
+    -webkit-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
+    box-shadow: 0px 8px 24px rgba(95, 102, 107, 0.12);
+    font-family: "Pretendard";
+    overflow: scroll;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.css-1fgr4mj::-webkit-scrollbar {
+    display: none;
+}
+
+.css-1fgr4mj::after {
+    border-color: #ffff transparent;
+    border-style: solid;
+    border-width: 0 6px 8px 6.5px;
+    content: "";
+    display: block;
+    right: 5%;
+    position: absolute;
+    top: -7px;
+    width: 0;
+    z-index: 1;
+}
+
+.css-1fgr4mj::before {
+    border-color: #d7e0e6 transparent;
+    border-style: solid;
+    border-width: 0 6px 8px 6.5px;
+    content: "";
+    display: block;
+    right: 5%;
+    position: absolute;
+    top: -8px;
+    width: 0;
+    z-index: 0;
+}
+
+.css-1bkawov {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    height: -webkit-fit-content;
+    height: -moz-fit-content;
+    height: fit-content;
+    padding-bottom: 12px;
+    gap: 16px;
+}
+
+.css-gfzvs2 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    font-family: Pretendard, -apple-system, “system-ui”, "Malgun Gothic", "맑은 고딕", sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 140%;
+    color: #141617;
+    text-align: center;
+    gap: 24px;
+}
+
+.css-gfzvs2::-moz-selection {
+    background: rgba(0, 0, 0, 0);
+}
+
+.css-gfzvs2::selection {
+    background: rgba(0, 0, 0, 0);
+}
+
+.css-ss0hg9 {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.css-1o9qtii {
+    width: 100%;
+    height: 1px;
+    background: #E4EBF0;
+    margin: 0 0;
+}
+
+.css-1s9cv9y {
+    padding: 16px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
+.css-zbmmrt {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    padding: 16px;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-flex: 1 0 0;
+    -ms-flex: 1 0 0;
+    flex: 1 0 0;
+    border-radius: 8px;
+    background: #E7F9E7;
+    margin-top: 16px;
+    cursor: pointer;
+}
+
+.css-wwyx62 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    width: 201.5px;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.css-1hq5jbp {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    width: 36px;
+    height: 36px;
+    padding: 5.76px 1.474px 7.103px 1.875px;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+}
+
+.css-1bku0gi {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-align-items: flex-start;
+    -webkit-box-align: flex-start;
+    -ms-flex-align: flex-start;
+    align-items: flex-start;
+}
+
+.css-1smjha1 {
+    font-family: Pretendard;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 16px;
+    color: #141617;
+    color: #81898F;
+}
+
+.css-3aha2l {
+    font-family: Pretendard;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
+    color: #141617;
+    color: #3A3E41;
+}
+
+.css-ik70s9 {
+    padding: 8px 0;
+    cursor: pointer;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+    width: 100%;
+}
+
+.css-28a73i {
+    color: #5F666B;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    gap: 8px;
+    font-family: Pretendard, -apple-system, “system-ui”, "Malgun Gothic", "맑은 고딕", sans-serif;
+    font-family: Pretendard;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
+    color: #141617;
+    color: #141617;
+}
+
+.css-4l7ba3 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    font-family: Pretendard;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
+    color: #141617;
+    color: #141617;
+    font-size: 13px;
+    font-weight: 500;
+    color: #5F666B;
+}
+
+@media (min-width: 320px) and (max-width: 819px) {
+    .css-gfzvs2 {
+        font-size: 16px;
+        padding: 0;
+    }
+}
+
+@media (max-width: 820px) {
+    .css-4l7ba3 {
+        font-family: Pretendard;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 22px;
+        color: #141617;
+        font-size: 13px;
+        font-weight: 500;
+        color: #5F666B;
+    }
+
+    .css-ik70s9:hover {
+        color: #e8344e;
+    }
+
+    .css-3aha2l {
+        font-family: Pretendard;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 22px;
+        color: #141617;
+        color: #3A3E41;
+    }
+
+    .css-17gywxx {
+        font-family: Pretendard;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 22px;
+        color: #141617;
+        color: #3A3E41;
+    }
+
+    .css-13fd4ke:hover {
+        color: #e8344e;
+    }
+
+    .css-1fgr4mj {
+        width: 100%;
+        height: calc(100dvh - 50px - 0px);
+        position: fixed;
+        top: calc(49px + 0px);
+        right: 0;
+        background-color: white;
+        opacity: 0;
+        visibility: hidden;
+        z-index: unset;
+        overflow: scroll;
+        border-radius: 0;
+        border: none;
+    }
+
+    .css-ss0hg9 {
+        width: 250px;
+    }
+
+    .css-1s9cv9y {
+        padding: 16px 0 0 0;
+        gap: 0;
+    }
+
+    .css-zbmmrt {
+        padding: 12px;
+        margin: 16px 0;
+    }
+}
+
+@media (min-width: 1200px) {
+    .css-28a73i {
+        height: 24px;
+    }
+
+    .css-16regn8 {
+        height: 24px;
+    }
+}
+</style>
