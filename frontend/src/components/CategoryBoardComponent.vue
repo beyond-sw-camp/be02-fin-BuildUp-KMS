@@ -12,17 +12,12 @@
             <!--게시글 타이틀-->
             <div class="css-cp47oo">한화 sw2기 후기</div>
             <div class="css-14bssip">임xx 독불장군 고집불통 어떻게 하죠??</div>
-            <!--이거는 태그-->
           </div>
-          <div class="css-sebsp7">
-            <div class="css-1ry6usatag">#불통</div>
-            <div class="css-1ry6usatag">#독불장군</div>
-            <div class="css-1ry6usatag">#독단적</div>
-          </div>
-          <!--여기서부터는 하단 아이디,추천수..등등-->
+          <!--태그 컴포넌트 자리-->
         </div>
         <div class="css-bt1qy"></div>
       </div>
+      <!--여기서부터는 하단 아이디,추천수..등등-->
       <div class="css-99cwur">
         <!--하단 프로필-->
         <div class="css-1fhge30">
