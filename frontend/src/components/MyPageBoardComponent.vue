@@ -16,9 +16,7 @@
             제목 그대로 코딩 교육생을 넘어서 개발자로써 활용하기에 m3 에어기
             낫나요 m3 프로가 낫나요??
           </div>
-          <div class="css-sebsp7">
-            <div class="css-1ry6usa">#맥북</div>
-          </div>
+          <!--태그 컴포넌트 자리-->
           <div class="css-99cwur">
             <div class="css-1ry6usa">2024년 3월 5일 오전 10:30</div>
             <div class="css-o01lup">
