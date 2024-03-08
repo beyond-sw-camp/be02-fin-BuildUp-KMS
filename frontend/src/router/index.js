@@ -13,10 +13,10 @@ const routes = [
   { path: "/", component: MainPage },
   { path: '/authsignup', component: AuthSignupPage },
   { path: '/signup', component: SignupPage},
-  { path: '/myactive', component: MyActivePage}
+  { path: '/myactive', component: MyActivePage},
   { path: '/result', component: SearchResultPage},
   { path: '/boardwrite', component: BoardWritePage},
-  { path: '/reviewwrite', component: ReviewWritePage}
+  { path: '/reviewwrite', component: ReviewWritePage},
   { path: '/study', component: StudyBoardPage},
 ];
 
