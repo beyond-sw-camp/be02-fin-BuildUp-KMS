@@ -1,6 +1,5 @@
 <template>
-
-<div>ddddd</div>
+<router-view />
 </template>
 
 <script>
