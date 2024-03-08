@@ -32,7 +32,7 @@ h2 {
 
 .button {
   display: inline-block;
-  padding: 10px 20px;
+  padding: 10px 40px;
   font-size: 16px;
   cursor: pointer;
   margin-right: 10px;
@@ -48,12 +48,14 @@ h2 {
   background-color: #5bb629;
   color: #fff;
   font-weight: bold;
+  box-shadow: rgb(0 0 0 / 15%) 7px 5px 8px;
 }
 
 .corporate-member {
   background-color: #541d7a;
   color: #fff;
   font-weight: bold;
+  box-shadow: rgb(0 0 0 / 15%) 7px 5px 8px;
 }
 
 .description {
