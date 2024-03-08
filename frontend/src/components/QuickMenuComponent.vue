@@ -118,7 +118,7 @@ export default {
 }
 
 .quickmenu .inner-quickmenu .btn.btn-top.active {
-  margin-bottom: 0px;
+  margin-bottom: 13px;
   opacity: 1;
   visibility: visible;
 }
