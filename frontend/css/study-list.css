@@ -340,7 +340,7 @@ svg:not(:root) {
     gap: 4px;
     flex-shrink: 1;
     /* width: 350px; */
-    width: 410px;
+    width: 480px;
     align-items: center;
     text-align: center;
     justify-content: center;
@@ -357,12 +357,12 @@ svg:not(:root) {
         flex-shrink: 0;
         text-overflow: ellipsis;
         white-space: nowrap;
-        width: 360px;
+        width: 420px;
         align-items: center;
 }
 
 .css-search-002{
-    width: 360px;
+    width: 420px;
     outline: none;
     border: none;
 }
@@ -788,7 +788,7 @@ ol, ul {
 
 @media only screen and (max-width: 74.9375rem){
     .css-10c0kk0 {
-    grid-template-columns: repeat(3, minmax(16.6875rem, 1fr));
+    grid-template-columns: repeat(2, minmax(16.6875rem, 1fr));
     }
 }
 
@@ -979,7 +979,8 @@ a {
 
 /* 정렬 순서 셀렉터 */
 .css-select001{
-    width: 100px;
+    padding-left: 10px;
+    width: 80px;
     font-size: 14px;
     height: 35px;
     font-family: Pretendard;
