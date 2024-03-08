@@ -165,7 +165,6 @@
             <!-- Layout container -->
             <div class="layout-page">
                 <!-- Navbar -->
-
                 <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
                     id="layout-navbar">
                     <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
@@ -218,116 +217,52 @@
                         </ul>
                     </div>
                 </nav>
-
                 <!-- / Navbar -->
 
                 <!-- Content wrapper -->
                 <div class="content-wrapper">
                     <!-- Content -->
-
                     <div class="container-xxl flex-grow-1 container-p-y">
-                        <h4 class="py-3 mb-4"><span class="text-muted fw-light">카테고리 /</span> 목록</h4>
+                        <h3 class="py-3 mb-4"><span class="text-muted fw-light">공지사항 /</span> 수정</h3>
 
-                        <!-- 회원 목록 -->
-                        <div class="card">
-                            <!-- <h5 class="card-header">회원</h5> -->
-                            <div class="table-responsive text-nowrap">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>idx</th>
-                                            <th>카테고리명</th>
-                                            <th>수정/삭제</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="table-border-bottom-0">
-                                        <tr>
-                                            <td>
-                                                <span class="fw-medium">1</span>
-                                            </td>
-                                            <td>test01@test.com</td>
-                                            <td>
-                                                <div class="dropdown">
-                                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                        data-bs-toggle="dropdown">
-                                                        <i class="bx bx-dots-vertical-rounded"></i>
-                                                    </button>
-                                                    <div class="dropdown-menu">
-                                                        <a class="dropdown-item"
-                                                            href="../html/auth-category-update.html"><i
-                                                                class="bx bx-edit-alt me-1"></i>
-                                                            수정</a>
-                                                        <a class="dropdown-item" href="javascript:void(0);"><i
-                                                                class="bx bx-trash me-1"></i> 삭제</a>
-                                                    </div>
+                        <!-- Basic Layout -->
+                        <div class="row">
+                            <div class="col-xl">
+                                <div class="card mb-4">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0">제목</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <form>
+                                            <div class="mb-3">
+                                                <input type="text" class="form-control" id="basic-default-fullname"
+                                                    placeholder="공지사항 제목" />
+                                            </div>
+                                            <div class="mb-3">
+                                                <div
+                                                    class="card-header d-flex justify-content-between align-items-center">
                                                 </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <span class="fw-medium">1</span>
-                                            </td>
-                                            <td>test02@test.com</td>
-                                            <td>
-                                                <div class="dropdown">
-                                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                        data-bs-toggle="dropdown">
-                                                        <i class="bx bx-dots-vertical-rounded"></i>
-                                                    </button>
-                                                    <div class="dropdown-menu">
-                                                        <a class="dropdown-item"
-                                                            href="../html/auth-category-update.html"><i
-                                                                class="bx bx-edit-alt me-1"></i>
-                                                            수정</a>
-                                                        <a class="dropdown-item" href="javascript:void(0);"><i
-                                                                class="bx bx-trash me-1"></i> 삭제</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <span class="fw-medium">1</span>
-                                            </td>
-                                            <td>test03@test.com</td>
-                                            <td>
-                                                <div class="dropdown">
-                                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                        data-bs-toggle="dropdown">
-                                                        <i class="bx bx-dots-vertical-rounded"></i>
-                                                    </button>
-                                                    <div class="dropdown-menu">
-                                                        <a class="dropdown-item"
-                                                            href="../html/auth-category-update.html"><i
-                                                                class="bx bx-edit-alt me-1"></i>
-                                                            수정</a>
-                                                        <a class="dropdown-item" href="javascript:void(0);"><i
-                                                                class="bx bx-trash me-1"></i> 삭제</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                                <h5 class="mb-0">내용</h5>
+                                            </div>
+                                            <textarea id="basic-default-message" class="form-control"
+                                                placeholder="공지사항 내용"></textarea>
+                                    </div>
+                                    </form>
+                                </div>
+                                <button type="submit" class="btn btn-primary">저장</button>
                             </div>
                         </div>
-                        <!--/ 회원 목록 -->
-
                     </div>
-                    <!-- / Content -->
-
-                    <div class="content-backdrop fade"></div>
                 </div>
-                <!-- Content wrapper -->
-            </div>
-            <!-- / Layout page -->
-        </div>
 
-        <!-- Overlay -->
-        <div class="layout-overlay layout-menu-toggle"></div>
+                <div class="content-backdrop fade"></div>
+            </div>
+            <!-- Content wrapper -->
+        </div>
+        <!-- / Layout page -->
+    </div>
     </div>
     <!-- / Layout wrapper -->
-
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
