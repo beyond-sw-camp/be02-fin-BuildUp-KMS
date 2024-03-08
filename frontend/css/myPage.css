@@ -413,17 +413,6 @@ button:lang(ko), input:lang(ko), textarea:lang(ko) {
     margin-bottom: 2rem;
 }
 }
-.inputField_label__y8y2P {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 100%;
-    padding: 0 1.6rem;
-    border-radius: 0.8rem;
-    border: 0.1rem solid rgba(51, 50, 54, 0.186);
-    box-sizing: border-box;
-    transition: background-color .2s ease-in-out, border-color .2s ease-in-out;
-}
 button, input, textarea {
     border: none;
     padding: 0;
@@ -441,7 +430,7 @@ button, input, textarea {
 .HelperText_helpText__qK_Jm {
     font-size: 1.3rem;
     margin-left: 2rem;
-    margin-bottom: 1rem;
+    margin-bottom: 3rem;
     text-align: left;
     color: rgba(136, 132, 132, 0.599);
     transition: color .2s ease-in-out;
@@ -479,6 +468,17 @@ button, input, textarea {
     border: 0.1rem solid rgba(136, 132, 132, 0.599);
     border-radius: 0.8rem;
     min-width: 10rem;
+}
+.Button_button___Dadr.Button_primary__BxDoK-A {
+    font-size: 1.3rem;
+    color: rgba(0, 0, 0, 0.623);
+    font-weight: bold;
+    box-shadow: -1px -1px 0px 1px rgba(136, 132, 132, 0.599)inset;
+    padding: 0.8rem 2.4rem;
+    border: 0.1rem solid rgba(136, 132, 132, 0.599);
+    border-radius: 0.8rem;
+    min-width: 10rem;
+    background-color: #ff000826;
 }
 .inputField_labelTextContainer__2BqZ5:before {
     content: "";
