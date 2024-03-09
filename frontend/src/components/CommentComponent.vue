@@ -71,7 +71,8 @@ html {
     display: flex;
     flex-direction: row;
     width: 100%;
-    gap: 16px
+    gap: 16px;
+    font-family: Pretendard;
 }
 
 .css-3o2y5e {
@@ -107,7 +108,7 @@ html {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 4px
+    gap: 3px
 }
 
 .css-dyzp2y-001 {
@@ -115,7 +116,7 @@ html {
     align-items: center;
     justify-content: center;
     gap: 4px;
-    margin-left: 200px
+    margin-left: 233px
 }
 
 .css-wqf8ry {
@@ -127,20 +128,22 @@ html {
 }
 
 .css-emxp16 {
-    font-size: 12px;
-    font-weight: 500;
+    font-size: 10px;
     line-height: 1.3;
     text-align: left;
-    color: #838689
+    color: #9da7ae
 }
 
 .css-emxp17 {
     font-size: 12px;
-    font-weight: 500;
     line-height: 1.3;
     text-align: left;
     color: #838689;
     cursor: pointer
+}
+
+.editedCommentContent{
+    color: #838689;
 }
 
 .css-comment {

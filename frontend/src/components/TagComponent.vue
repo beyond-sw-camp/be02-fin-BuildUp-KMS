@@ -6,6 +6,7 @@
 
 <style scoped>
 .css-1kc14yj {
+    font-family: Pretendard;
     cursor: pointer;
     width: 100px;
     padding: 7px 0;
@@ -16,6 +17,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px
+    gap: 6px;
+    color: #000;
 }
 </style>
