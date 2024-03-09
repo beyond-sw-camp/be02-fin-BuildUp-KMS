@@ -952,7 +952,7 @@ export default {
 .css-huvhzc {
   height: auto; /* 이미지의 높이를 자동 조정하여 헤더와 잘 맞게 배치 */
   max-height: 100%; /* 이미지가 너무 크게 확대되지 않도록 제한 */
-  max-width: 120px; /* 이미지의 최대 너비를 설정하여 헤더와 너무 커지지 않도록 제한 */
+  max-width: 110px; /* 이미지의 최대 너비를 설정하여 헤더와 너무 커지지 않도록 제한 */
 }
 
 .css-13fd4ke {
