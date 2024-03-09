@@ -6,7 +6,8 @@
           <img src="@/assets/img/002.png" class="css-1k8svhy" />
           <div class="line"></div>
           <div direction="vertical" size="20" class="css-1i0k62c"></div>
-          <div class="pic-holder">
+          <!-----------------프로필 이미지 업로드----------------->
+          <!-- <div class="pic-holder">
             <img id="profilePic" class="pic" src="@/assets/img/profile.jpg" />
             <input
               class="uploadProfileInput"
@@ -27,7 +28,47 @@
                 </div>
               </div>
             </label>
+          </div> -->
+          <div
+            class="pic-holder"
+            @mouseover="showUploadText = true"
+            @mouseleave="showUploadText = false"
+          >
+            <img
+              v-if="!selectedProfileImage"
+              class="pic"
+              :src="defaultProfileImage"
+            />
+            <img v-else class="pic" :src="selectedProfileImageURL" />
+            <input
+              class="uploadProfileInput"
+              type="file"
+              name="profile_pic"
+              id="newProfilePhoto"
+              accept="image/*"
+              style="opacity: 0"
+              @change="handleProfileImageChange"
+            />
+            <label
+              v-if="!selectedProfileImage || showUploadText"
+              for="newProfilePhoto"
+              class="upload-file-block"
+            >
+              <div class="text-center">
+                <div class="mb-2">
+                  <i class="fa fa-camera fa-2x"></i>
+                </div>
+                <div
+                  class="text-uppercase"
+                  v-if="!selectedProfileImage || showUploadText"
+                >
+                  프로필 이미지 <br />
+                  업로드
+                </div>
+              </div>
+            </label>
           </div>
+          <!-----------------프로필 이미지 업로드----------------->
           <div direction="vertical" size="60" class="css-1bisjhm"></div>
           <div class="css-1b8vwo3">이메일</div>
           <div class="css-666rgn">
@@ -77,29 +118,54 @@
 
           <div class="css-1b8vwo3-new">
             <i class="arrow-icon fas fa-hand-point-right"></i>&nbsp;
-            <span class="text">인증용 이미지 첨부하는 방법 확인하기</span>
+            <span class="text" @click="openGuideModal()"
+              >인증용 이미지 첨부하는 방법 확인하기</span
+            >
           </div>
           <!-- 이미지 첨부 버튼 영역 -->
           <div class="container">
             <div class="panel">
-              <div class="button_outer">
+              <div
+                :class="[
+                  'button_outer',
+                  {
+                    file_uploading: isUploading,
+                    'file_uploading file_uploaded': isUploaded && !isUploading,
+                  },
+                ]"
+              >
                 <div class="btn_upload">
-                  <input type="file" id="upload_file" />인증용 이미지 업로드
+                  <input
+                    type="file"
+                    id="upload_file"
+                    @change="handleFileUpload"
+                  />
+                  인증용 이미지 업로드
                 </div>
                 <div class="processing_bar"></div>
-                <div class="success_box"></div>
+                <div class="success_box" v-if="isUploaded"></div>
               </div>
             </div>
-            <div class="error_msg"></div>
-            <div class="uploaded_file_view" id="uploaded_view">
-              <span class="file_remove">X</span>
+            <div class="error_msg" v-if="errorMessage">{{ errorMessage }}</div>
+            <div
+              class="uploaded_file_view show"
+              id="uploaded_view"
+              v-if="isUploaded"
+            >
+              <span
+                class="file_remove"
+                v-if="isUploaded"
+                @click="removeUploadedFile"
+                >X</span
+              >
+              <img :src="uploadedFile" alt="Uploaded Image" />
             </div>
           </div>
           <!-- 이미지 첨부 버튼 영역 -->
           <div direction="vertical" size="32" class="css-h23ofx"></div>
           <div class="css-17w7nyr"></div>
           <div class="css-8luw5u">
-            <button class="css-27eumk">
+            <button class="css-27eumk" @click="toggleAllAgreements">
               <svg
                 width="20"
                 height="20"
@@ -113,18 +179,28 @@
                   width="13.3333"
                   height="13.3333"
                   rx="2"
-                  stroke="#9DA7AE"
+                  :fill="allAgreements ? '#141617' : 'none'"
+                  :stroke="allAgreements ? '#141617' : '#9DA7AE'"
                   stroke-width="1.75"
                 ></rect>
+                <path
+                  v-if="allAgreements"
+                  d="M6.8327 10.2727L8.91604 12.1667L13.4994 8"
+                  stroke="#FFFFFF"
+                  stroke-width="1.25"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
               </svg>
               전체 약관 동의
             </button>
             <div class="css-1jf7ho2">
-              <div class="css-d650kt">
-                <button class="css-7hwvbl"></button>
-              </div>
-              <div class="css-d650kt">
-                <button class="css-7hwvbl">
+              <div
+                v-for="(agreement, index) in agreements"
+                :key="index"
+                class="css-d650kt"
+              >
+                <button class="css-7hwvbl" @click="toggleAgreement(index)">
                   <svg
                     width="20"
                     height="20"
@@ -133,40 +209,25 @@
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
+                      v-if="!agreement.checked"
                       d="M3.33301 10L7.49967 14.1667L16.6663 5"
                       stroke="#B4BFC6"
                       stroke-width="1.75"
                       stroke-linecap="round"
                       stroke-linejoin="round"
                     ></path>
-                  </svg>
-                  <div class="css-w2z16z">
-                    [필수] 통합 서비스 이용약관
-                  </div></button
-                ><a class="css-1rvdgmi">보기</a>
-              </div>
-              <div class="css-d650kt">
-                <button class="css-7hwvbl">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
                     <path
+                      v-if="agreement.checked"
                       d="M3.33301 10L7.49967 14.1667L16.6663 5"
-                      stroke="#B4BFC6"
+                      stroke="#141617"
                       stroke-width="1.75"
                       stroke-linecap="round"
                       stroke-linejoin="round"
                     ></path>
                   </svg>
-                  <div class="css-w2z16z">[필수] 개인정보 처리방침</div></button
-                ><a class="css-1rvdgmi">보기</a>
-              </div>
-              <div class="css-d650kt">
-                <button class="css-7hwvbl"></button>
+                  <div class="css-w2z16z">{{ agreement.label }}</div>
+                </button>
+                <a class="css-1rvdgmi">보기</a>
               </div>
             </div>
           </div>
@@ -176,11 +237,156 @@
       </div>
     </div>
   </div>
+  <!------------가이드 모달창--------------->
+  <div class="css-1gpya5f" v-show="isOpenGuide">
+    <div class="css-4oebd2">
+      <div class="css-1n1k95p">
+        <div class="css-myjkxi" @click="closeGuideModal()">
+          <svg
+            width="30"
+            height="30"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4.16663 4.16669L15.8333 15.8334"
+              stroke="#3A3E41"
+              stroke-width="1.75"
+              stroke-linecap="round"
+            ></path>
+            <path
+              d="M15.8334 4.16669L4.16671 15.8334"
+              stroke="#3A3E41"
+              stroke-width="1.75"
+              stroke-linecap="round"
+            ></path>
+          </svg>
+        </div>
+      </div>
+      <div class="css-1xpr18p">
+        <!-- 가이드 이미지 섹션 -->
+        <div class="guide-images">
+          <!-- 첨부한 이미지 1 -->
+          <div class="guide-image-0">
+            <p>인증용 이미지 첨부하는 방법</p>
+          </div>
+          <div class="guide-image">
+            <p>STEP 1 : HRD-NET 직업훈련포털 사이트 로그인</p>
+          </div>
+          <div class="guide-image-1">
+            <p>STEP 2 : "나의 정보" 클릭</p>
+            <img src="@/assets/img/step-1.png" alt="Step 1: Login to HRD-NET" />
+          </div>
+          <div class="guide-image-2">
+            <p>STEP 3 : "나의 훈련이력" 클릭</p>
+            <img src="@/assets/img/step-2.png" alt="Step 1: Login to HRD-NET" />
+          </div>
+          <div class="guide-image-3">
+            <p>STEP 4 : 아래와 같이 수강한 과정 캡처 후 이미지 첨부</p>
+            <img src="@/assets/img/step-3.png" alt="Step 1: Login to HRD-NET" />
+          </div>
+        </div>
+        <!-- /가이드 이미지 섹션 -->
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
   name: "AuthSignupPage",
+  data() {
+    return {
+      defaultProfileImage: require("@/assets/img/profile.jpg"),
+      selectedProfileImage: null,
+      selectedProfileImageURL: "",
+      showUploadText: false,
+
+      isUploading: false,
+      isUploaded: false,
+      uploadProgress: 0,
+      uploadedFile: null,
+      errorMessage: "",
+
+      isOpenGuide: false,
+
+      allAgreements: false,
+      agreements: [
+        { label: "[필수] 만 14세 이상", checked: false },
+        { label: "[필수] 서비스 약관 동의", checked: false },
+        { label: "[필수] 개인정보처리방침 및 제3자 제공 동의", checked: false },
+        { label: "[선택] 광고성 정보 수신 동의", checked: false },
+      ],
+    };
+  },
+  mounted() {
+    this.$root.hideHeaderAndFooter = true;
+  },
+  methods: {
+    handleProfileImageChange(event) {
+      const file = event.target.files[0];
+      if (file) {
+        this.selectedProfileImage = file;
+        this.selectedProfileImageURL = URL.createObjectURL(file);
+        this.showUploadText = false; // 이미지가 선택되면 텍스트를 숨깁니다.
+      }
+    },
+
+    handleFileUpload(event) {
+      const file = event.target.files[0];
+      const ext = file.name.split(".").pop().toLowerCase();
+
+      if (["gif", "png", "jpg", "jpeg"].indexOf(ext) === -1) {
+        this.errorMessage = "이미지 파일이 아닙니다.";
+      } else {
+        this.errorMessage = "";
+        this.isUploading = true;
+        const reader = new FileReader();
+
+        reader.onload = () => {
+          setTimeout(() => {
+            this.uploadedFile = reader.result;
+            this.isUploaded = true;
+            this.isUploading = false;
+          }, 3000);
+        };
+
+        reader.onprogress = (e) => {
+          if (e.lengthComputable) {
+            this.uploadProgress = Math.round((e.loaded / e.total) * 100);
+          }
+        };
+
+        reader.readAsDataURL(file);
+      }
+    },
+    removeUploadedFile() {
+      this.uploadedFile = null;
+      this.isUploaded = false;
+      this.uploadProgress = 0;
+    },
+
+    openGuideModal() {
+      this.isOpenGuide = true;
+    },
+    closeGuideModal() {
+      this.isOpenGuide = false;
+    },
+
+    toggleAllAgreements() {
+      this.allAgreements = !this.allAgreements;
+      this.agreements.forEach(
+        (agreement) => (agreement.checked = this.allAgreements)
+      );
+    },
+    toggleAgreement(index) {
+      this.agreements[index].checked = !this.agreements[index].checked;
+      this.allAgreements = this.agreements.every(
+        (agreement) => agreement.checked
+      );
+    },
+  },
 };
 </script>
 
@@ -244,14 +450,6 @@ element.style {
   justify-content: space-between;
   -webkit-box-flex: 1;
   flex-grow: 1;
-}
-
-path {
-  d: path("M 9.16699 5 L 4.16699 10 L 9.16699 15");
-  stroke: rgb(58, 62, 65);
-  stroke-width: 1.75;
-  stroke-linecap: round;
-  stroke-linejoin: round;
 }
 
 :not(svg) {
@@ -446,13 +644,7 @@ button {
   cursor: pointer;
 }
 
-path {
-  d: path("M 3.33301 10 L 7.49967 14.1667 L 16.6663 5");
-  stroke: rgb(180, 191, 198);
-  stroke-width: 1.75;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
+/*----------체크박스 추가------------*/
 
 svg {
   width: 20;
@@ -831,7 +1023,7 @@ body {
 .container {
   max-width: 1100px;
   padding: 0 20px;
-  margin: -25px auto;
+  margin: -25px auto 40px;
 }
 
 .panel {
@@ -976,5 +1168,204 @@ body {
 .error_msg {
   text-align: center;
   color: #ed5464;
+  font-weight: bold;
+}
+/*--------------가이드 모달----------------*/
+body,
+html {
+  padding: 0;
+  margin: 0;
+  line-height: 1.5;
+  font-family: "Noto Sans", sans-serif; /* 폰트 변경 */
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  overflow-x: hidden;
+  font-size: 1.4rem;
+  box-sizing: border-box;
+}
+
+* {
+  line-height: 1.5;
+  box-sizing: border-box;
+  letter-spacing: normal;
+}
+
+* {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.css-1gpya5f {
+  overflow-y: auto; /* 세로 스크롤을 자동으로 표시하도록 설정 */
+  z-index: 22;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(20, 22, 23, 0.4);
+  scrollbar-width: none;
+}
+
+.css-4oebd2 {
+  width: 600px;
+  height: 800px;
+  padding: 0px 20px 40px;
+  background: rgb(255, 255, 255);
+  border-radius: 12px;
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow-x: auto; /* 스크롤바 자동 생성 */
+}
+
+.css-1n1k95p {
+  width: 100%;
+  height: 38px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.css-myjkxi {
+  position: absolute;
+  top: 18px;
+  right: 0px;
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 10px;
+  line-height: 26px;
+  color: rgb(58, 62, 65);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.css-1xpr18p {
+  width: 550px;
+  overflow: hidden;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+/* 추가한 CSS 스타일 */
+.guide-images {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+.guide-image {
+  margin-top: 20px;
+  margin-bottom: 5px;
+  margin-left: 30px;
+  text-align: left;
+}
+
+.guide-image-0 {
+  margin-bottom: 30px;
+  margin-left: 120px;
+  text-align: center;
+}
+
+.guide-image-0 p {
+  font-weight: bold;
+  margin: 0;
+  font-size: 24px;
+}
+
+.guide-image img {
+  width: 600px;
+  height: 160px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #000;
+  border-radius: 8px;
+}
+
+.guide-image p {
+  font-weight: bold;
+  margin: 0;
+  font-size: 18px;
+}
+
+.guide-image-1 {
+  margin-top: 20px;
+  margin-bottom: 5px;
+  margin-left: 30px;
+  text-align: left;
+}
+
+.guide-image-1 p {
+  font-weight: bold;
+  margin: 0;
+  font-size: 18px;
+}
+
+.guide-image-1 img {
+  width: 500px;
+  height: 80px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #000;
+  border-radius: 8px;
+}
+
+.guide-image-2 {
+  margin-top: 20px;
+  margin-bottom: 5px;
+  margin-left: 30px;
+  text-align: left;
+  font-size: 18px;
+}
+
+.guide-image-2 p {
+  font-weight: bold;
+  margin: 0;
+}
+
+.guide-image-2 img {
+  width: 500px;
+  height: 110px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #000;
+  border-radius: 8px;
+}
+
+.guide-image-3 {
+  margin-top: 20px;
+  margin-bottom: 5px;
+  margin-left: 30px;
+  text-align: left;
+}
+
+.guide-image-3 p {
+  font-weight: bold;
+  margin: 0;
+  font-size: 18px;
+}
+
+.guide-image-3 img {
+  width: 500px;
+  height: 160px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #000;
+  border-radius: 8px;
 }
 </style>
