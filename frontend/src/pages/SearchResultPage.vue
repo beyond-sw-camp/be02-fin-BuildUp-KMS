@@ -1822,16 +1822,24 @@
 
 <script>
 export default {
+  name: "SearchResultPage",
+  mounted() {
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href =
+      "https://statics.goorm.io/gds/goormstrap/v1.29.0/goormstrap.v4.min.css";
+    document.head.appendChild(link);
+  },
   data() {
     return {
-      dropdownOpen: false
+      dropdownOpen: false,
     };
   },
   methods: {
     toggleDropdown() {
       this.dropdownOpen = !this.dropdownOpen;
-    }
-  }
+    },
+  },
 };
 </script>
 

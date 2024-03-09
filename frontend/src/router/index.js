@@ -9,6 +9,8 @@ import BoardWritePage from '@/pages/BoardWritePage.vue';
 import ReviewWritePage from '@/pages/ReviewWritePage.vue';
 import StudyBoardPage from '@/pages/StudyBoardPage.vue'
 import MainSignupPage from '@/pages/MainSignupPage.vue'
+import BoardDetailsPage from '@/pages/BoardDetailsPage.vue'
+
 
 const routes = [
   { path: "/", component: MainPage },
@@ -20,6 +22,7 @@ const routes = [
   { path: '/reviewwrite', component: ReviewWritePage},
   { path: '/study', component: StudyBoardPage},
   { path: '/mainsignup', component: MainSignupPage},
+  { path: '/board/detail', component: BoardDetailsPage},
 ];
 
 const router = createRouter({
