@@ -75,6 +75,7 @@
             </div>
             <!-- /본격 글 리스트 -->
           </div>
+          <PaginationComponent/>
         </div>
       </div>
     </div>
@@ -84,11 +85,13 @@
 <script>
 import CategoryBoardComponent from "@/components/CategoryBoardComponent.vue";
 import HotTagComponent from "@/components/HotTagComponent.vue";
+import PaginationComponent from "@/components/PaginationComponent.vue";
 export default {
   name: "CategoryBoardPage",
   components: {
     CategoryBoardComponent,
     HotTagComponent,
+    PaginationComponent
   },
 };
 </script>
@@ -130,7 +133,7 @@ div {
 .css-1b9to7p {
     width: 942px;
     padding-top: 150px;
-    padding-bottom: 150px;
+    padding-bottom: 100px;
     margin: 0px auto;
     display: flex;
     flex-direction: row;
@@ -303,6 +306,7 @@ div {
     display: flex;
     flex-direction: column;
     background-color: rgb(246, 249, 250);
+    margin-bottom: 50px;
 }
 .css-6cwwok {
     background-color: rgb(255, 255, 255);
