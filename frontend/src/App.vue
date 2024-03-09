@@ -1,15 +1,8 @@
 <template>
-  <div>
-    <template v-if="!hideHeaderAndFooter">
-      <HeaderComponent />
-      <router-view />
-      <FooterComponent />
-      <QuickMenuComponent />
-    </template>
-    <template v-else>
-      <router-view />
-    </template>
-  </div>
+  <HeaderComponent/>
+  <router-view />
+  <FooterComponent />
+  <QuickMenuComponent />
 </template>
 
 <script>
