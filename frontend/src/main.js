@@ -2,6 +2,8 @@ window.__VUE_PROD_HYDRATION_MISMATCH_DETAILS__ = false;
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import LoadScript from 'vue-plugin-load-script';
+
 
 import App from './App.vue'
 
@@ -11,5 +13,6 @@ const pinia = createPinia();
 const app = createApp(App)
 
 app.use(pinia);
+app.use(LoadScript);
 app.use(router);
 app.mount('#app')

@@ -13,6 +13,8 @@ import BoardDetailsPage from '@/pages/BoardDetailsPage.vue'
 import EmailValidationPage from '@/pages/EmailValidationPage.vue'
 
 
+import AdminMainPage from "@/pages/AdminMainPage.vue";
+
 const routes = [
   { path: "/", component: MainPage },
   { path: '/authsignup', component: AuthSignupPage },
@@ -25,6 +27,7 @@ const routes = [
   { path: '/board/detail', component: BoardDetailsPage},
   { path: '/mainsignup', component: MainSignupPage},
   { path: '/emailvalidation', component: EmailValidationPage},
+  { path: '/admin/', component: AdminMainPage},
 ];
 
 const router = createRouter({

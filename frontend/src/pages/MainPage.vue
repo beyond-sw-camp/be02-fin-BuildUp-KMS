@@ -1,4 +1,5 @@
 <template>
+  <HeaderComponent :showBorder="showBorder" :showMenu="showMenu" :showLogo="showLogo"/>
   <div class="css-1hnxdb7">
     <div class="css-16z0wya">
       <section class="css-zea7jz0">
@@ -6,7 +7,9 @@
           <div class="SectionTitle_container__PcXfF SectionTitle_center__bSviY SectionTitle_size-48__RYzIo">
             <p class="SectionTitle_label__cEYNl default SectionTitle_size-48__RYzIo"></p>
             <p class="SectionTitle_title__iqOHl default SectionTitle_size-48__RYzIo">
-              <img src="../assets/img/logo.png" alt="BOOKSHELF" width="500px" />
+              <router-link to="/">
+                <img src="../assets/img/logo.png" alt="BOOKSHELF" width="500px" />
+              </router-link>
             </p>
             <p class="SectionTitle_description__3Deqx default SectionTitle_size-48__RYzIo"></p>
             <div class="SectionTitle_button__vZ_Mf SectionTitle_size-48__RYzIo"></div>
@@ -92,9 +95,18 @@
 </template>
 
 <script>
+import HeaderComponent from '@/components/HeaderComponent.vue';
+
 export default {
-  mounted() {
-    this.$root.hideHeaderAndFooter = true;
+  components: {
+    HeaderComponent,
+  },
+  data() {
+    return {
+      showBorder: false, 
+      showMenu: false,
+      showLogo: false,
+    };
   },
 };
 </script>
@@ -231,7 +243,6 @@ ul {
   display: flex;
   width: 100vw;
   height: 20vw;
-  padding-top: 20px;
   padding-bottom: 0px;
   flex-direction: column;
   gap: 30px;
@@ -249,7 +260,7 @@ ul {
   display: flex;
   width: 100vw;
   padding-top: 0px;
-  padding-bottom: 300px;
+  padding-bottom: 200px;
   flex-direction: column;
   gap: 30px;
   background: white;
@@ -260,7 +271,7 @@ ul {
     align-items: center;
     gap: 60px;
     padding-top: 0px;
-    padding-bottom: 300px;
+    padding-bottom: 200px;
   }
 }
 
@@ -473,13 +484,9 @@ ul {
 
 @media (min-width: 820px) {
   .css-zea7jz {
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     gap: 60px;
-    margin-top: 50px;
-    padding-top: 50px;
+    padding-top: 240px;
     padding-bottom: 30px;
   }
 }
@@ -492,6 +499,7 @@ ul {
 }
 
 .SectionTitle_container__PcXfF.SectionTitle_center__bSviY {
+  padding-top: 120px;
   align-items: center;
   text-align: center;
 }
@@ -870,7 +878,6 @@ textarea:lang(ko) {
 }
 
 .css-16z0wya {
-  padding-top: 100px;
   display: flex;
   flex-direction: column;
 }
