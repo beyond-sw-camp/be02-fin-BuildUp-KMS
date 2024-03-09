@@ -171,7 +171,7 @@
 
 <script>
 export default {
-  name: "AuthSignupPage",
+  name: "SignupPage",
   data() {
     return {
       defaultProfileImage: require("@/assets/img/profile.jpg"),
