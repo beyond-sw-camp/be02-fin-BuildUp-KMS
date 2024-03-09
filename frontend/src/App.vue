@@ -1,8 +1,15 @@
 <template>
-  <HeaderComponent/>
-  <router-view />
-  <FooterComponent />
-  <QuickMenuComponent />
+  <div>
+    <template v-if="!hideHeaderAndFooter">
+      <HeaderComponent />
+      <router-view />
+      <FooterComponent />
+      <QuickMenuComponent />
+    </template>
+    <template v-else>
+      <router-view />
+    </template>
+  </div>
 </template>
 
 <script>
@@ -16,6 +23,11 @@ export default {
     HeaderComponent,
     FooterComponent,
     QuickMenuComponent,
+  },
+  data() {
+    return {
+      hideHeaderAndFooter: false,
+    };
   },
 };
 </script>
