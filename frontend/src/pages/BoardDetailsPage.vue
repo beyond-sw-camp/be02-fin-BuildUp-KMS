@@ -54,7 +54,6 @@
                                                 <img width="23px" height="23px"
                                                     src="https://img.icons8.com/windows/64/bookmark-ribbon--v1.png"
                                                     alt="bookmark-ribbon--v1" />
-                                                <!-- <i class="fa-regular fa-thumbs-up css-icon"></i> -->
                                                 <p style="font-size: 10px; text-align: center">
                                                     20
                                                 </p>
@@ -167,17 +166,18 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- 목록으로 돌아가기 버튼 -->
+                            <div class="css-back-div">
+                                <button class="css-board-back">
+                                    목록가기
+                                </button>
+                            </div>
+                            <!-- 돌아가기 버튼 끝 -->
                         </div>
-                    </div> 
+                    </div>
                 </div>
             </div>
-            <!-- 목록으로 돌아가기 버튼 -->
-            <div class="css-back-div">
-                <button class="css-board-back">
-                    목록가기
-                </button>
-            </div>
-            <!-- 버튼 끝 -->
+
         </div>
     </div>
 
