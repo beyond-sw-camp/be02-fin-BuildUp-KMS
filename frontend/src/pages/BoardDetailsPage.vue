@@ -11,17 +11,6 @@
         </div>
         <div height="120px" class="css-jbj5u0"></div>
         <div class="css-1g39gls">
-            <div class="css-1f9h8vh">
-                <div class="css-110bgim">
-                    <div class="css-28nsux">
-                        <!-- <div class="css-19831hi">자유게시판</div>
-              <div class="css-nw8p9d">학습 질문</div>
-              <div class="css-nw8p9d">개발일지</div>
-              <div class="css-17ta9kq"></div>
-              <div class="css-nw8p9d">나의 활동</div> -->
-                    </div>
-                </div>
-            </div>
             <div class="css-1qjp6uf">
                 <div class="css-axl4y">
                     <div class="css-1yuvfju">
@@ -234,6 +223,10 @@ a {
     cursor: pointer
 }
 
+.css-1hnxdb7{
+    background-color: #fff;
+}
+
 .css-icon {
     font-size: 18px;
     color: #9da7ae
@@ -263,6 +256,9 @@ a {
         margin: 0 auto;
         padding: 150px 0 120px
     }
+}
+.css-1g39gls{
+    background-color: #fff;
 }
 
 @media (min-width:820px) {
