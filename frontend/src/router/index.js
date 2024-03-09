@@ -10,6 +10,7 @@ import ReviewWritePage from '@/pages/ReviewWritePage.vue';
 import StudyBoardPage from '@/pages/StudyBoardPage.vue'
 import MainSignupPage from '@/pages/MainSignupPage.vue'
 import BoardDetailsPage from '@/pages/BoardDetailsPage.vue'
+import EmailValidationPage from '@/pages/EmailValidationPage.vue'
 
 
 const routes = [
@@ -23,6 +24,7 @@ const routes = [
   { path: '/study', component: StudyBoardPage},
   { path: '/board/detail', component: BoardDetailsPage},
   { path: '/mainsignup', component: MainSignupPage},
+  { path: '/emailvalidation', component: EmailValidationPage},
 ];
 
 const router = createRouter({
