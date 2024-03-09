@@ -6,29 +6,6 @@
           <img src="@/assets/img/002.png" class="css-1k8svhy" />
           <div class="line"></div>
           <div direction="vertical" size="20" class="css-1i0k62c"></div>
-          <!-----------------프로필 이미지 업로드----------------->
-          <!-- <div class="pic-holder">
-            <img id="profilePic" class="pic" src="@/assets/img/profile.jpg" />
-            <input
-              class="uploadProfileInput"
-              type="file"
-              name="profile_pic"
-              id="newProfilePhoto"
-              accept="image/*"
-              style="opacity: 0"
-            />
-            <label for="newProfilePhoto" class="upload-file-block">
-              <div class="text-center">
-                <div class="mb-2">
-                  <i class="fa fa-camera fa-2x"></i>
-                </div>
-                <div class="text-uppercase">
-                  프로필 이미지 <br />
-                  업로드
-                </div>
-              </div>
-            </label>
-          </div> -->
           <div
             class="pic-holder"
             @mouseover="showUploadText = true"
@@ -122,7 +99,7 @@
               >인증용 이미지 첨부하는 방법 확인하기</span
             >
           </div>
-          <!-- 이미지 첨부 버튼 영역 -->
+          <!-- 인증용 이미지 첨부 버튼 영역 -->
           <div class="container">
             <div class="panel">
               <div
@@ -161,7 +138,7 @@
               <img :src="uploadedFile" alt="Uploaded Image" />
             </div>
           </div>
-          <!-- 이미지 첨부 버튼 영역 -->
+          <!-- 인증용 이미지 첨부 버튼 영역 -->
           <div direction="vertical" size="32" class="css-h23ofx"></div>
           <div class="css-17w7nyr"></div>
           <div class="css-8luw5u">
@@ -842,35 +819,6 @@ svg {
   text-decoration: underline;
 }
 
-/* ---------- 이미지 첨부 버튼-------------*/
-._17nutjM9EW1e6w7K8cCfKS {
-  text-align: center;
-  margin-top: 10px;
-  margin-right: 300px;
-}
-
-.btn-primary {
-  display: inline-block;
-  cursor: pointer;
-  font-weight: 300;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
-  user-select: none;
-  border: 1px solid transparent;
-  padding: 0.3125rem 0.75rem;
-  font-size: 0.875rem;
-  line-height: 1.714286;
-  border-radius: 20px;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
-
-.btn-primary {
-  color: #fff;
-  background-color: #609ae9;
-  border-color: #609ae9;
-}
 /*-------------프로필 이미지 업로드---------------*/
 .h1 {
   text-align: center;
