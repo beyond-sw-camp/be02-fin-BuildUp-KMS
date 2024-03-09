@@ -24,7 +24,7 @@ const routes = [
   { path: '/reviewwrite', component: ReviewWritePage},
   { path: '/study', component: StudyBoardPage},
   { path: '/board/detail', component: BoardDetailsPage},
-  { path: '/categorylist', component: CategoryBoardPage}
+  { path: '/categorylist', component: CategoryBoardPage},
   { path: '/mainsignup', component: MainSignupPage},
   { path: '/emailvalidation', component: EmailValidationPage},
   { path: '/admin/', component: AdminMainPage},

@@ -56,6 +56,7 @@
                 <div>
                   <select class="css-select001">
                     <option value="최신순">최신순</option>
+                    <option value="조회순">추천순</option>
                     <option value="조회순">조회순</option>
                     <option value="스크랩순">스크랩순</option>
                   </select>
@@ -1057,7 +1058,7 @@ a {
 
 /* 정렬 순서 셀렉터 */
 .css-select001{
-    padding-left: 10px;
+    padding-left: 5px;
     width: 80px;
     font-size: 14px;
     height: 35px;
