@@ -240,10 +240,7 @@ div {
     transition: all 0.2s ease-in-out 0s;
 }
 .css-33zep3 {
-    width: 942px;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
+    width: 100%;
     display: flex;
     -webkit-flex-direction: column;
     -ms-flex-direction: column;
