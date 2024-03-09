@@ -21,8 +21,8 @@ const routes = [
   { path: '/boardwrite', component: BoardWritePage},
   { path: '/reviewwrite', component: ReviewWritePage},
   { path: '/study', component: StudyBoardPage},
-  { path: '/mainsignup', component: MainSignupPage},
   { path: '/board/detail', component: BoardDetailsPage},
+  { path: '/mainsignup', component: MainSignupPage},
 ];
 
 const router = createRouter({

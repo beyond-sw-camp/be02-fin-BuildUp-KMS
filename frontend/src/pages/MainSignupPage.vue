@@ -12,9 +12,10 @@
                 한 번도 수강한 이력이 없는
                 회원입니다.&nbsp;&nbsp;&nbsp;&nbsp;
               </p>
-              <button class="button normal-member">
+              <router-link class="button normal-member" to="/signup">일반 회원가입</router-link>
+              <!-- <button class="button normal-member">
                 일반 회원가입
-              </button>
+              </button> -->
             </div>
           </div>
           <br>
@@ -26,9 +27,10 @@
                 한 번이라도 수강한 이력이 있는 회원입니다.
               </p>
               &nbsp;&nbsp;
-              <button class="button corporate-member">
+              <router-link class="button corporate-member" to="/authsignup">인증 회원가입</router-link>
+              <!-- <button class="button corporate-member">
                 인증 회원가입
-              </button>
+              </button> -->
             </div>
           </div>
         </div>
@@ -36,14 +38,15 @@
     </div>
 </template>
 <script>
+
 export default {
   name: 'MainSignupPage',
 }
+
 </script>
 <style scoped>
 body {
   font-family: Arial, sans-serif;
-
   text-align: center;
   margin: 0;
   padding: 0;
@@ -75,15 +78,11 @@ h2 {
 
 .button {
   display: inline-block;
-  padding: 10px 40px;
+  padding: 32px 40px;
   font-size: 16px;
   cursor: pointer;
   margin-right: 10px;
-
-  /* 테두리 스타일 제거 */
   border: none;
-
-  /* 둥근 테두리 설정 */
   border-radius: 8px;
 }
 
@@ -102,9 +101,9 @@ h2 {
 }
 
 .description {
-  flex-grow: 0.1; /* 오른쪽에 공간을 차지하도록 설정 */
+  flex-grow: 0.1; 
   text-align: left;
-  padding-left: 20px; /* 오른쪽 여백을 설정하여 내용을 가운데 정렬하지 않게 함 */
+  padding-left: 20px; 
   display: flex;
   justify-content: space-between;
   max-width: 1000px;
@@ -118,9 +117,9 @@ h2 {
   margin-bottom: 20px;
 }
 .css-1k8svhy {
-  width: 100%; /* 이미지를 부모 요소의 너비에 맞게 조정 */
-  max-width: 300px; /* 최대 너비를 248px로 제한 */
-  height: auto; /* 가로 비율에 맞게 세로 크기 자동 조정 */
+  width: 100%; 
+  max-width: 300px; 
+  height: auto; 
   object-fit: contain;
   margin-top: 120px;
 }

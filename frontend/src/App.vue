@@ -3,6 +3,9 @@
   <router-view />
   <FooterComponent />
   <QuickMenuComponent />
+  <HeaderComponent v-if="$route.name !== 'MainSignupPage'"></HeaderComponent>
+  <FooterComponent v-if="$route.name !== 'MainSignupPage'"></FooterComponent>
+ 
 </template>
 
 <script>
