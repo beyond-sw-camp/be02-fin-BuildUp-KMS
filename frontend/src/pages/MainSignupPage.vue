@@ -9,9 +9,9 @@
               <p>
                 일반회원은 국비지원교육, 부트캠프를
                 <br>
-                한 번도 수강한 이력이 없는
-                회원입니다.&nbsp;&nbsp;&nbsp;&nbsp;
+                한 번도 수강한 이력이 없는 회원입니다.
               </p>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <router-link class="button normal-member" to="/signup">일반 회원가입</router-link>
               <!-- <button class="button normal-member">
                 일반 회원가입
@@ -26,7 +26,7 @@
                 <br>
                 한 번이라도 수강한 이력이 있는 회원입니다.
               </p>
-              &nbsp;&nbsp;
+              
               <router-link class="button corporate-member" to="/authsignup">인증 회원가입</router-link>
               <!-- <button class="button corporate-member">
                 인증 회원가입
@@ -41,7 +41,11 @@
 
 export default {
   name: 'MainSignupPage',
+  mounted() {
+    this.$root.hideHeaderAndFooter = true;
+},
 }
+
 
 </script>
 <style scoped>
@@ -51,6 +55,7 @@ body {
   margin: 0;
   padding: 0;
 }
+
 
 .container {
   margin: 1px auto;
@@ -66,8 +71,15 @@ body {
   padding: 20px;
 }
 
+
 h2 {
   color: #333;
+  margin-bottom: 20px;
+  height: 100%;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .button-container {
@@ -84,6 +96,7 @@ h2 {
   margin-right: 10px;
   border: none;
   border-radius: 8px;
+  text-decoration: none;
 }
 
 .normal-member {
@@ -112,16 +125,18 @@ h2 {
   margin-top: 20px;
 }
 
-h2 {
-  color: #333;
-  margin-bottom: 20px;
-}
 .css-1k8svhy {
   width: 100%; 
   max-width: 300px; 
   height: auto; 
   object-fit: contain;
   margin-top: 120px;
+  display: flex; /* Flexbox 사용을 위해 추가 */
+  flex-direction: column; /* 세로 방향으로 정렬 */
+  align-items: center;
+  justify-content: center;
+  margin-left: auto; /* 가운데 정렬을 위한 추가 스타일 */
+  margin-right: auto; /* 가운데 정렬을 위한 추가 스타일 */
 }
 
 </style>
