@@ -123,6 +123,7 @@ body {
   overflow-x: hidden;
   font-size: 1.4rem;
   box-sizing: border-box;
+  background-color: #fff;
 }
 
 @media screen and (max-width: 320px) {
