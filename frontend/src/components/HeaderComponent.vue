@@ -950,8 +950,9 @@ export default {
 }
 
 .css-huvhzc {
-  width: 250%;
-  height: 250%;
+  height: auto; /* 이미지의 높이를 자동 조정하여 헤더와 잘 맞게 배치 */
+  max-height: 100%; /* 이미지가 너무 크게 확대되지 않도록 제한 */
+  max-width: 120px; /* 이미지의 최대 너비를 설정하여 헤더와 너무 커지지 않도록 제한 */
 }
 
 .css-13fd4ke {
@@ -980,14 +981,17 @@ export default {
 .css-wkr2a {
   z-index: 20;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* 헤더 내의 요소들을 수평 중앙으로 정렬합니다. */
   transition: all 0.4s ease 0s;
   background-color: white;
   height: 70px;
   width: 100%;
   border-bottom: 1px solid rgb(228, 235, 240);
   position: fixed;
+  top: 0; /* 헤더를 화면 상단에 고정시킵니다. */
 }
+
 
 .css-wkr2a * {
   word-break: normal;
@@ -997,14 +1001,11 @@ export default {
 
 .css-we70d5 {
   width: 100%;
-  height: 34px;
   max-width: 1100px;
   display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  flex-wrap: nowrap;
-  min-width: 820px;
-  margin: 12px auto 10px;
+  justify-content: space-between; /* 요소들을 양쪽 끝에 배치 */
+  align-items: center; /* 세로 중앙 정렬 */
+  margin: 0 auto; /* 가운데 정렬을 위해 margin을 0으로 설정 */
   padding-top: 10px;
 }
 
@@ -1181,11 +1182,9 @@ export default {
 }
 
 .css-un3w91 {
-  display: flex;
-  -webkit-box-align: center;
-  align-items: center;
   cursor: pointer;
 }
+
 
 .css-1jibmi3 {
   display: -webkit-box;
