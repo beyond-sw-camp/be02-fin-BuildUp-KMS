@@ -10,9 +10,8 @@ import ReviewWritePage from '@/pages/ReviewWritePage.vue';
 import StudyBoardPage from '@/pages/StudyBoardPage.vue'
 import MainSignupPage from '@/pages/MainSignupPage.vue'
 import BoardDetailsPage from '@/pages/BoardDetailsPage.vue'
+import CategoryBoardPage from "@/pages/CategoryBoardPage.vue";
 import EmailValidationPage from '@/pages/EmailValidationPage.vue'
-
-
 import AdminMainPage from "@/pages/AdminMainPage.vue";
 
 const routes = [
@@ -25,6 +24,7 @@ const routes = [
   { path: '/reviewwrite', component: ReviewWritePage},
   { path: '/study', component: StudyBoardPage},
   { path: '/board/detail', component: BoardDetailsPage},
+  { path: '/categorylist', component: CategoryBoardPage}
   { path: '/mainsignup', component: MainSignupPage},
   { path: '/emailvalidation', component: EmailValidationPage},
   { path: '/admin/', component: AdminMainPage},

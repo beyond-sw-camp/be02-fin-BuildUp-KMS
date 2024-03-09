@@ -101,7 +101,6 @@
           <div class="css-1ry6usa">1000</div>
         </div>
       </div>
-      <div class="css-z2xt5y"></div>
     </div>
     <!--모바일 추천수-->
     <div class="css-k9ergi">
@@ -219,7 +218,7 @@ export default {
 @media (min-width: 820px)
 {
 .css-aw1sgr {
-    padding: 24px 0px;
+    padding: 15px 0px;
     border-bottom: 1px solid rgb(228, 235, 240);
     gap: 14px;
     cursor: pointer;

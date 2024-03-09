@@ -1,5 +1,5 @@
 <template>
-  <div class="css-1hnxdb7">
+    <div class="css-1hnxdb7">
     <div class="css-mbwamd">
       <div class="css-1b9to7p">
         <!-- 여기는 왼쪽 사이드바-->
@@ -16,7 +16,7 @@
           <div class="css-17t7asl">
             <div class="css-1jibmi3">
               <div class="css-1mpmq0i">
-                <div class="css-18vdxik">스터디 모집 게시판</div>
+                <div class="css-18vdxik">카테고리별 게시판</div>
               </div>
               <!--부제-->
               <div class="css-1qzbd5x">
@@ -66,7 +66,10 @@
             <div class="css-1csvk83">
               <ul class="css-10c0kk0 e15eiqsa1">
                 <!-- 스터디 글 목록 컴포넌트-->
-                <StudyBoardComponent></StudyBoardComponent>
+                <CategoryBoardComponent/>
+                <CategoryBoardComponent/>
+                <CategoryBoardComponent/>
+                <CategoryBoardComponent/>
               </ul>
             </div>
             <!-- /본격 글 리스트 -->
@@ -78,16 +81,15 @@
 </template>
 
 <script>
-import HotTagComponent from '../components/HotTagComponent.vue';
-import StudyBoardComponent from '../components/StudyBoardComponent.vue';
-
+import CategoryBoardComponent from "@/components/CategoryBoardComponent.vue";
+import HotTagComponent from "@/components/HotTagComponent.vue";
 export default {
-  name: "StudyBoardPage",
+  name: "CategoryBoardPage",
   components: {
+    CategoryBoardComponent,
     HotTagComponent,
-    StudyBoardComponent,
-  }
-}
+  },
+};
 </script>
 
 <style scoped>
@@ -310,7 +312,7 @@ div {
     flex-direction: row;
     gap: 12px;
     padding: 12px 16px;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
     align-items: center;
     position: relative;
 }
@@ -865,26 +867,12 @@ svg:not(:root) {
 }
 }
 
-/* 스터디 포스트잇 */
 ol, ul {
     list-style: none;
 }
 
-@media only screen and (max-width: 61.9375rem){
-    .css-10c0kk0 {
-        grid-template-columns: repeat(1, minmax(16.6875rem, 1fr));
-        }
-    }
-
-@media only screen and (max-width: 74.9375rem){
-    .css-10c0kk0 {
-    grid-template-columns: repeat(2, minmax(16.6875rem, 1fr));
-    }
-}
-
 .css-10c0kk0{
     width: 100%;
-    display: grid;
     grid-gap: 1rem;
     grid-template-columns: repeat(3, minmax(15rem, 1fr));
     grid-auto-flow: dense row;

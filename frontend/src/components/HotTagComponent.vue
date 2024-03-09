@@ -26,6 +26,7 @@ export default {
     top: 140px;
     max-height: 490px;
     transition: all 0.4s ease 0s;
+    margin-top: 70px;
 }
 .css-110bgim {
     width: 180px;
@@ -42,7 +43,7 @@ export default {
     width: 100%;
 }
 .css-19831hi {
-  width: 100%;
+  width: 80%;
   border-radius: 8px;
   padding: 0px 16px;
   /* 클릭하면 배경이 아래 색상으로 변경됨 */
