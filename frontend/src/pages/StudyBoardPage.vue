@@ -72,6 +72,7 @@
             </div>
             <!-- /본격 글 리스트 -->
           </div>
+          <PaginationComponent></PaginationComponent>
         </div>
       </div>
     </div>
@@ -81,12 +82,14 @@
 <script>
 import HotTagComponent from '../components/HotTagComponent.vue';
 import StudyBoardComponent from '../components/StudyBoardComponent.vue';
+import PaginationComponent from '../components/PaginationComponent.vue';
 
 export default {
   name: "StudyBoardPage",
   components: {
     HotTagComponent,
     StudyBoardComponent,
+    PaginationComponent,
   }
 }
 </script>
@@ -893,6 +896,7 @@ ol, ul {
     justify-content: space-around;
     position: relative;
     padding-left: 0px;
+    margin-bottom: 80px;
 }
 
 
