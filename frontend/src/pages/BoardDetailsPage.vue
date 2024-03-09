@@ -54,7 +54,6 @@
                                                 <img width="23px" height="23px"
                                                     src="https://img.icons8.com/windows/64/bookmark-ribbon--v1.png"
                                                     alt="bookmark-ribbon--v1" />
-                                                <!-- <i class="fa-regular fa-thumbs-up css-icon"></i> -->
                                                 <p style="font-size: 10px; text-align: center">
                                                     20
                                                 </p>
@@ -126,9 +125,7 @@
                             </div>
                             <div class="css-iqys2n">
                                 <!-- 태그 컴포넌트 자리-->
-                                <div class="css-1kc14yj">#&nbsp;백엔드</div>
-                                <div class="css-1kc14yj">#&nbsp;스프링</div>
-                                <div class="css-1kc14yj">#&nbsp;프론트엔드</div>
+                                <TagComponent></TagComponent>
                             </div>
                         </div>
                         <div class="css-1k90lkz">
@@ -167,17 +164,18 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- 목록으로 돌아가기 버튼 -->
+                            <div class="css-back-div">
+                                <button class="css-board-back">
+                                    목록가기
+                                </button>
+                            </div>
+                            <!-- 돌아가기 버튼 끝 -->
                         </div>
-                    </div> 
+                    </div>
                 </div>
             </div>
-            <!-- 목록으로 돌아가기 버튼 -->
-            <div class="css-back-div">
-                <button class="css-board-back">
-                    목록가기
-                </button>
-            </div>
-            <!-- 버튼 끝 -->
+
         </div>
     </div>
 
@@ -186,11 +184,13 @@
 
 <script>
 import CommentComponent from '../components/CommentComponent.vue';
+import TagComponent from '../components/TagComponent.vue';
 
 export default {
     name: "StudyBoardPage",
     components: {
-        CommentComponent
+        CommentComponent,
+        TagComponent
     }
 }
 </script>
@@ -249,7 +249,8 @@ a {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px
+    gap: 6px;
+    font-family: Pretendard;
 }
 
 @media (min-width:820px) {
@@ -336,7 +337,8 @@ a {
         color: #141617;
         max-width: 83%;
         font-size: 20px;
-        font-weight: 700
+        font-weight: 700;
+        font-family: Pretendard;
     }
 }
 
@@ -454,7 +456,8 @@ a {
 
 .css-content {
     line-height: 30px;
-    font-size: 14px
+    font-size: 14px;
+    font-family: Pretendard;
 }
 
 .css-iqys2n {
@@ -497,7 +500,7 @@ a {
     display: flex;
     align-items: center;
     gap: 6px;
-    font-family: Pretendard, -apple-system, “system-ui”, "Malgun Gothic", "맑은 고딕", sans-serif;
+    font-family: Pretendard;
     font-size: 16px;
     font-weight: 700;
     line-height: 1.5;
@@ -654,7 +657,8 @@ a {
     flex: 1;
     margin: 10px;
     outline: 0;
-    border: none
+    border: none;
+    font-family: Pretendard;
 }
 
 .css-btn-div {
@@ -673,7 +677,8 @@ a {
     border-radius: 10px;
     float: right;
     margin-right: 10px;
-    cursor: pointer
+    cursor: pointer;
+    font-family: Pretendard;
 }
 
 .css-5zcuov {
@@ -724,7 +729,8 @@ a {
     display: flex;
     justify-content: center;
     gap: 6px;
-    color: #fff
+    color: #fff;
+    font-family: Pretendard;
 }
 
 .css-back-div {
