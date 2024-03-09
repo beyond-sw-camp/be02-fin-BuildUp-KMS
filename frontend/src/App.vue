@@ -11,12 +11,10 @@
     </template>
   </div>
 </template>
-
 <script>
 import HeaderComponent from "./components/HeaderComponent.vue";
 import FooterComponent from "./components/FooterComponent.vue";
 import QuickMenuComponent from "./components/QuickMenuComponent.vue";
-
 export default {
   name: "App",
   components: {
@@ -31,5 +29,4 @@ export default {
   },
 };
 </script>
-
 <style></style>
