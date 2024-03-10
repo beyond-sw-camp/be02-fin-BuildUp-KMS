@@ -452,12 +452,7 @@ select:disabled {
   display: none !important;
 }
 
-button,
-[type='button'],
-[type='reset'],
-[type='submit'] {
-  -webkit-appearance: button;
-}
+
 button:not(:disabled),
 [type='button']:not(:disabled),
 [type='reset']:not(:disabled),
@@ -513,7 +508,6 @@ legend + * {
 }
 
 [type='search'] {
-  -webkit-appearance: textfield;
   outline-offset: -2px;
 }
 
@@ -535,7 +529,6 @@ legend + * {
 
 ::file-selector-button {
   font: inherit;
-  -webkit-appearance: button;
 }
 
 output {
@@ -16421,8 +16414,6 @@ button.list-group-item-gray.active {
 }
 body {
   text-rendering: optimizeLegibility;
-  font-smoothing: antialiased;
-  -moz-font-feature-settings: 'liga' on;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -16636,7 +16627,6 @@ body {
   -khtml-user-drag: none;
   -moz-user-drag: none;
   -o-user-drag: none;
-  user-drag: none;
 }
 
 .ui-stars {
