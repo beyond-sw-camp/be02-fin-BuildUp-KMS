@@ -8,7 +8,7 @@ import SearchResultPage from "@/pages/SearchResultPage.vue";
 import BoardWritePage from "@/pages/BoardWritePage.vue";
 import ReviewWritePage from "@/pages/ReviewWritePage.vue";
 import StudyBoardPage from "@/pages/StudyBoardPage.vue";
-import MainSignupPage from "@/pages/MainSignupPage.vue";
+import SelectSignupPage from "@/pages/SelectSignupPage.vue";
 import BoardDetailsPage from "@/pages/BoardDetailsPage.vue";
 import BoardListPage from "@/pages/BoardListPage.vue";
 import EmailValidationPage from "@/pages/EmailValidationPage.vue";
@@ -25,7 +25,7 @@ const routes = [
   { path: "/study", component: StudyBoardPage },
   { path: "/board/detail", component: BoardDetailsPage },
   { path: "/board", component: BoardListPage },
-  { path: "/select/signup", component: MainSignupPage },
+  { path: "/select/signup", component: SelectSignupPage },
   { path: "/email/verify", component: EmailValidationPage },
   { path: "/admin/", component: AdminMainPage },
 ];

@@ -134,14 +134,164 @@
 <script>
 export default {
   name: "PaginationComponent",
-  mounted() {
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.href =
-      "https://statics.goorm.io/gds/goormstrap/v1.29.0/goormstrap.v4.min.css";
-    document.head.appendChild(link);
-  },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+* {
+  margin: 0;
+  line-height: 1.5;
+}
+
+@media (min-width: 768px) {
+  .pt-md-4,
+  .py-md-4 {
+    padding-top: 1.5rem !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .pb-md-4,
+  .py-md-4 {
+    padding-bottom: 1.5rem !important;
+  }
+}
+article,
+aside,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+nav,
+section {
+  display: block;
+}
+
+dl,
+ol,
+ul {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+.pagination {
+  display: flex;
+  padding-left: 0;
+  list-style: none;
+  border-radius: 0.5rem;
+}
+
+.pagination {
+  margin-left: -0.125rem;
+}
+
+*,
+::after,
+::before {
+  box-sizing: border-box;
+}
+.page-item {
+  margin: 0 0.125rem;
+}
+[role="button"] {
+  cursor: pointer;
+}
+.btn {
+  display: inline-block;
+  font-weight: 500;
+  color: #2b2d36;
+  text-align: center;
+  vertical-align: middle;
+  user-select: none;
+  background-color: transparent;
+  border: 0 solid transparent;
+  padding: 0.3125rem 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.375rem;
+  border-radius: var(--border-radius-300);
+  transition: color 0.12s ease, background-color 0.12s ease,
+    border-color 0.12s ease, box-shadow 0.12s ease;
+}
+.btn {
+  height: 2rem;
+  padding: 0.3125rem 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.375rem;
+  border-radius: var(--border-radius-300);
+  transition: color 0.12s ease, background-color 0.12s ease,
+    border-color 0.12s ease, box-shadow 0.12s ease;
+}
+.page-link {
+  position: relative;
+  display: block;
+  padding: 0.3125rem 0.75rem;
+  margin-left: 0;
+  line-height: 1.5;
+  color: var(--text-alternative);
+  background-color: transparent;
+  border: 0 solid transparent;
+}
+.page-link {
+  font-weight: 400;
+  border-radius: 0.5rem;
+}
+.d-flex {
+  display: flex !important;
+}
+.p-0 {
+  padding: 0 !important;
+}
+.btn:not(:disabled):not(.disabled) {
+  cursor: pointer;
+}
+.page-item:first-child .page-link {
+  margin-left: 0;
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+}
+svg {
+  overflow: hidden;
+  vertical-align: middle;
+}
+.page-item {
+  margin: 0 0.125rem;
+}
+.page-item.active .page-link,
+.page-item.active .page-link:hover,
+.page-item.active .page-link:focus,
+.pagination li.active > a:not(.page-link),
+.pagination li.active > a:not(.page-link):hover,
+.pagination li.active > a:not(.page-link):focus {
+  border-color: #696cff;
+  background-color: #541d7a; /* 마우스 포인터 올렸을 때 배경색 */
+  color: #fff;
+  box-shadow: 0 0.125rem 0.25rem rgba(105, 108, 255, 0.4);
+}
+.page-item.active .page-link {
+  z-index: 3;
+  color: white; /*글자색*/
+  background-color: rgba(84, 29, 112, 0.426); /* 버튼 배경색 */
+  border-color: transparent;
+}
+.page-item.active .page-link {
+  font-weight: 500;
+}
+.page-item:not(:first-child) .page-link {
+  margin-left: 0.1875rem;
+}
+
+.page-item .page-link {
+  border-radius: var(--bs-pagination-border-radius);
+}
+.btn:not([class*="btn-"]):active,
+.btn:not([class*="btn-"]).active,
+.btn:not([class*="btn-"]).show,
+.btn:not([class*="btn-"]) {
+  border: none;
+}
+.page-item:last-child .page-link {
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+</style>
