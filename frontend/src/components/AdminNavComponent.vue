@@ -1,116 +1,69 @@
 <template>
-    <!-- Menu -->
-    <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme" @mouseenter="delayMenuToggle"
-        @mouseleave="removeMenuToggle">
-        <div class="app-brand demo">
-            <a href="#" class="app-brand-link" @click.prevent>
-                <span class="app-brand-logo demo">
-                    <img src="../assets/img/icon.png" alt="icon" width="30px" />
-                </span>
-                <span class="app-brand-text demo menu-text fw-bold ms-2">
-                    <img src="../assets/img/logo.png" alt="logo" width="120px" />
-                </span>
-            </a>
-            <a href="#" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none"
-                @click.prevent="toggleMenu">
-                <i class="bx bx-chevron-left bx-sm align-middle"></i>
+    <!-- Navbar -->
+    <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
+        <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+            <a class="nav-item nav-link px-0 me-xl-4" href="#" @click.prevent="toggleMenu">
+                <i class="bx bx-menu bx-sm"></i>
             </a>
         </div>
-        <div class="menu-inner-shadow"></div>
-        <ul class="menu-inner py-1">
-            <!-- Menu Header -->
-            <li class="menu-header small text-uppercase">
-                <span class="menu-header-text">admin</span>
-            </li>
-            <!-- Menu Items -->
-            <li class="menu-item" v-for="(item, key) in submenuVisible" :key="key">
-                <a href="#" class="menu-link menu-toggle" @click.prevent="toggleSubmenu(key)">
-                    <i class="menu-icon tf-icons" :class="item.icon"></i>
-                    <div>{{ item.name }}</div>
-                </a>
-                <ul class="menu-sub" :class="{ 'd-block': item.visible, 'd-none': !item.visible }">
-                    <li class="menu-item" v-for="subItem in item.submenu" :key="subItem.name">
-                        <a href="#" class="menu-link">
-                            <div>{{ subItem.name }}</div>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </aside>
-    <!-- /Menu -->
+
+        <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+            <!-- Navbar items -->
+            <ul class="navbar-nav flex-row align-items-center ms-auto">
+                <!-- User -->
+                <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                    <a class="nav-link dropdown-toggle hide-arrow" href="#" @click.prevent="toggleUserMenu">
+                        <div class="avatar avatar-online">
+                            <img src="../assets/img/profile.jpg" alt="User profile" class="w-px-40 h-auto rounded-circle" />
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" v-show="userMenuVisible">
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <div class="d-flex">
+                                    <div class="flex-shrink-0 me-3">
+                                        <div class="avatar avatar-online">
+                                            <img src="../assets/img/profile.jpg" alt="User profile" class="w-px-40 h-auto rounded-circle" />
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <span class="fw-semibold d-block">John Doe</span>
+                                        <small class="text-muted">Admin</small>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <div class="dropdown-divider"></div>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <i class="bx bx-power-off me-2"></i>
+                                <span class="align-middle">Log Out</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!--/ User -->
+            </ul>
+        </div>
+    </nav>
+    <!-- /Navbar -->
 </template>
 
 <script>
-import { reactive } from 'vue';
+import { ref } from 'vue';
 
 export default {
-    name: "AdminMenuComponent",
+    name: "AdminNavComponent",
     setup() {
-        const submenuVisible = reactive({
-            adminAccount: {
-                name: '관리자 계정',
-                icon: 'bx bx-lock-open-alt',
-                visible: false,
-                submenu: [
-                    { name: '관리자 회원 가입' },
-                    { name: '관리자 회원 탈퇴' },
-                ],
-            },
-            member: {
-                name: '회원',
-                icon: 'bx bx-dock-top',
-                visible: false,
-                submenu: [
-                    { name: '회원 조회' },
-                ],
-            },
-            category: {
-                name: '카테고리',
-                icon: 'bx bx-cube-alt',
-                visible: false,
-                submenu: [
-                    { name: '카테고리 등록' },
-                    { name: '카테고리 조회' },
-                ],
-            },
-            tag: {
-                name: '태그',
-                icon: 'bx bx-tag',
-                visible: false,
-                submenu: [
-                    { name: '태그 등록' },
-                    { name: '태그 조회' },
-                ],
-            },
-            notice: {
-                name: '공지사항',
-                icon: 'bx bx-news',
-                visible: false,
-                submenu: [
-                    { name: '공지사항 등록' },
-                    { name: '공지사항 조회' },
-                ],
-            },
-        });
+        const userMenuVisible = ref(false);
 
-        const toggleSubmenu = (key) => {
-            submenuVisible[key].visible = !submenuVisible[key].visible;
+        const toggleUserMenu = () => {
+            userMenuVisible.value = !userMenuVisible.value;
         };
 
-        const toggleMenu = () => {
-            // Implement if needed
-        };
-
-        const delayMenuToggle = () => {
-            // Implement if needed
-        };
-
-        const removeMenuToggle = () => {
-            // Implement if needed
-        };
-
-        return { submenuVisible, toggleSubmenu, toggleMenu, delayMenuToggle, removeMenuToggle };
+        return { userMenuVisible, toggleUserMenu };
     },
 };
 </script>
@@ -5635,6 +5588,7 @@ html:not(.layout-footer-fixed) .content-wrapper {
 
 .layout-menu {
     position: relative;
+    flex: 1 0 auto;
 }
 
 .layout-menu a:focus-visible {
