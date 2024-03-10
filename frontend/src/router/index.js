@@ -11,6 +11,7 @@ import StudyBoardPage from "@/pages/StudyBoardPage.vue";
 import SelectSignupPage from "@/pages/SelectSignupPage.vue";
 import BoardDetailsPage from "@/pages/BoardDetailsPage.vue";
 import BoardListPage from "@/pages/BoardListPage.vue";
+import ReviewListPage from "@/pages/ReviewListPage.vue";
 import EmailValidationPage from "@/pages/EmailValidationPage.vue";
 import NoticeBoardPage from "@/pages/NoticeBoardPage.vue";
 import AdminMainPage from "@/pages/AdminMainPage.vue";
@@ -26,6 +27,7 @@ const routes = [
   { path: "/study", component: StudyBoardPage },
   { path: "/board/detail", component: BoardDetailsPage },
   { path: "/board", component: BoardListPage },
+  { path: "/review", component: ReviewListPage },
   { path: "/select/signup", component: SelectSignupPage },
   { path: "/email/verify", component: EmailValidationPage },
   { path: "/notice", component: NoticeBoardPage },

@@ -99,7 +99,7 @@
                 class="css-1522xt9"
               /></button
           ></a>
-          <a href="/board">
+          <a href="/review">
             <button class="css-bcb9a9">
               <div class="css-197aby8">
                 <p class="css-1r2nemk">프로그램 참여 후기</p>
