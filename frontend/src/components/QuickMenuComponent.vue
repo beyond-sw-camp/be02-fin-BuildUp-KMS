@@ -125,6 +125,7 @@ export default {
 .up-icon {
   width: 42px;
   height: 42px;
+  cursor: pointer;
 }
 
 .quickmenu .inner-quickmenu .btn.btn-bottom.active {
@@ -136,5 +137,6 @@ export default {
 .down-icon {
   width: 42px;
   height: 42px;
+  cursor: pointer;
 }
 </style>
