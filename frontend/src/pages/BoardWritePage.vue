@@ -46,16 +46,44 @@
           </div>
         </div>
         <div class="css-agejl7">
-          <div class="css-r8q25b">자유게시판 작성하기</div>
+          <div class="css-r8q25b">게시글 작성하기</div>
           <div class="css-1iyoj2o">
             <div class="css-1odc90o">
               <div class="css-1t5srfe">
-                <button class="css-pfhqzm">
-                  카테고리 선택<img
+                <button
+                  :class="selectedCategory ? 'css-1w5123m' : 'css-pfhqzm'"
+                  @click="showCategory()"
+                >
+                  {{ selectedCategory || "카테고리 선택"
+                  }}<img
                     src="@/assets/img/9042707_nav_arrow_down_icon.svg"
-                    class="css-1bhrqo4"
+                    :class="{
+                      'css-1bhrqo4': !isClicked,
+                      'css-yewqag': isClicked,
+                    }"
                   />
                 </button>
+                <ul class="css-l2t941" v-show="isClicked">
+                  <li
+                    v-for="(category, index) in categories"
+                    :key="index"
+                    @click="selectCategory(category)"
+                    :class="{
+                      'css-nyb6vk': !category.selected,
+                      'css-16uk8or': category.selected,
+                    }"
+                  >
+                    {{ category.name }}
+                    <div v-if="category.selected">
+                      <img
+                        alt="체크"
+                        width="16px"
+                        height="16px"
+                        src="https://static.spartacodingclub.kr/TeamSparta-Inc/scc-frontend/assets/images/icon-check-red.png"
+                      />
+                    </div>
+                  </li>
+                </ul>
               </div>
               <div class="css-1iqxhyo">
                 <textarea
@@ -65,15 +93,48 @@
                   style="overflow: hidden; resize: none"
                 ></textarea>
               </div>
+              <div class="css-1yfg4fi">
+                <div class="css-1vitttd"></div>
+                <input
+                  placeholder="# 태그를 입력해주세요. (최대 3개)"
+                  class="css-9y3tf9"
+                  value=""
+                />
+              </div>
+              <!-- <div class="css-1yfg4fi">
+            <div v-for="(tag, index) in tags" :key="index" class="css-170uj16">
+              <div class="css-dcsj63">{{ tag }}</div>
+              <svg
+                @click="removeTag(index)"
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M3.33435 3.33435L12.6677 12.6677"
+                  stroke="#9DA7AE"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M12.6656 3.33435L3.33232 12.6677"
+                  stroke="#9DA7AE"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+              </svg>
             </div>
-          </div>
-          <div class="css-1yfg4fi">
-            <div class="css-1vitttd"></div>
             <input
-              placeholder="#태그를 입력해주세요. (최대 3개)"
+              placeholder="# 태그를 입력해주세요. (최대 3개)"
               class="css-9y3tf9"
-              value=""
+              @focus="onFocus"
+              @keyup.enter="addTag"
+              v-model="inputValue"
             />
+          </div> -->
+            </div>
           </div>
           <br />
           <div class="css-17wj0zk">
@@ -84,8 +145,8 @@
                     class="ql-editor ql-blank"
                     placeholder="내용을 입력하세요
 
- • 게시판 특성에 맞지 않는 내용(분란성 글 및 댓글) 작성시 별도의
- 통보 없이 활동 정지, 글 이동 및 삭제될 수 있습니다."
+ • 게시판 특성에 맞지 않는 내용(분란성 글 및 댓글) 작성 시 별도의
+ &nbsp;&nbsp;통보 없이 활동 정지, 글 이동 및 삭제될 수 있습니다."
                   ></textarea>
                   <div
                     class="ql-clipboard"
@@ -110,7 +171,7 @@
               </div>
             </div>
             <div id="toolbar" class="ql-toolbar ql-snow">
-              <span class="ql-formats"
+              <!-- <span class="ql-formats"
                 ><button
                   content="코드 블록"
                   class="ql-code-block css-1qhzcav"
@@ -134,11 +195,13 @@
                       stroke-linecap="round"
                     ></path>
                   </svg></button></span
-              ><span class="ql-formats"
+              > -->
+              <span class="ql-formats"
                 ><button
                   content="이미지 첨부"
                   class="ql-image css-1qhzcav"
                   type="button"
+                  @click="uploadImage()"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -172,43 +235,33 @@
                       rx="1.25"
                       fill="#505254"
                     ></rect>
-                  </svg></button></span
-              ><span class="ql-formats"
-                ><button content="파일 첨부" class="attachments css-1qhzcav">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                  >
-                    <path
-                      d="M5 9.478v3.02a5 5 0 0 0 5 5v0a5 5 0 0 0 5-5V5.833"
-                      stroke="#505254"
-                      stroke-width="1.75"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    ></path>
-                    <path
-                      d="M11.667 7.5V5.833A3.333 3.333 0 0 0 8.333 2.5v0A3.333 3.333 0 0 0 5 5.833V12.5"
-                      stroke="#505254"
-                      stroke-width="1.75"
-                      stroke-linecap="round"
-                    ></path>
-                    <path
-                      d="M8.336 5.832v6.667c0 .92.746 1.666 1.667 1.666v0c.92 0 1.666-.746 1.666-1.666v-5"
-                      stroke="#505254"
-                      stroke-width="1.75"
-                      stroke-linecap="round"
-                    ></path>
                   </svg></button
               ></span>
             </div>
           </div>
-          <input id="input_file" type="file" class="css-38lglc" />
+          <input
+            id="input_file"
+            type="file"
+            class="css-38lglc"
+            style="display: none"
+            @change="handleImageUpload"
+          />
+          <div class="css-image" style="text-align: center">
+            <div
+              class="image-container"
+              style="max-width: 100%; display: inline-block"
+            >
+              <img
+                v-if="imageUrl"
+                :src="imageUrl"
+                alt="Uploaded Image"
+                style="max-width: 100%; height: auto"
+              />
+            </div>
+          </div>
           <div class="css-lycl0a">
-            <button class="css-1c8gn7d">등록하기</button>
             <button class="css-9ns22y">취소</button>
+            <button class="css-1c8gn7d">등록하기</button>
           </div>
         </div>
       </div>
@@ -216,8 +269,91 @@
   </div>
 </template>
 <script>
+import { ref } from "vue";
+
 export default {
   name: "BoardWritePage",
+  setup() {
+    /*-----------카테고리-----------------*/
+    const isClicked = ref(false);
+    const selectedCategory = ref("");
+    const categories = ref([
+      { name: "지식 공유", selected: false },
+      { name: "QnA", selected: false },
+      { name: "스터디", selected: false },
+    ]);
+
+    function showCategory() {
+      isClicked.value = !isClicked.value;
+    }
+
+    function selectCategory(category) {
+      categories.value.forEach((cat) => {
+        cat.selected = false;
+      });
+      category.selected = true;
+      selectedCategory.value = category.name;
+      isClicked.value = false;
+    }
+    /*-----------태그-----------------*/
+    const tags = ref([]);
+    const inputValue = ref("");
+
+    const addTag = () => {
+      if (
+        inputValue.value.startsWith("#") &&
+        inputValue.value.length > 1 &&
+        tags.value.length < 3
+      ) {
+        tags.value.push(inputValue.value);
+        inputValue.value = ""; // 태그를 추가한 후 입력 필드 초기화
+      }
+    };
+
+    const removeTag = (index) => {
+      tags.value.splice(index, 1);
+    };
+
+    const onFocus = () => {
+      if (!inputValue.value) {
+        inputValue.value = "#";
+      }
+    };
+    /*-----------이미지-----------------*/
+    const imageUrl = ref(null);
+
+    const uploadImage = () => {
+      const input = document.getElementById("input_file");
+      input.click();
+    };
+    const handleImageUpload = (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        imageUrl.value = reader.result;
+      };
+      reader.readAsDataURL(file);
+    };
+    return {
+      isClicked,
+      categories,
+      selectedCategory,
+      showCategory,
+      selectCategory,
+
+      tags,
+      inputValue,
+      addTag,
+      removeTag,
+      onFocus,
+
+      imageUrl,
+      uploadImage,
+      handleImageUpload,
+    };
+  },
 };
 </script>
 
@@ -360,7 +496,6 @@ element.style {
 
 .css-1iqxhyo {
   width: 100%;
-  margin-bottom: 12px;
 }
 
 .css-17wj0zk {
@@ -691,13 +826,51 @@ button {
   margin-top: 3px;
 }
 
-.css-1vitttd {
+/*-------------태크------------------*/
+/* .css-1vitttd {
   display: flex;
   flex-flow: wrap;
   gap: 8px;
   -webkit-box-align: center;
   align-items: center;
 }
+.css-170uj16 {
+  height: 26px;
+  padding: 4px 8px;
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: row;
+  gap: 4px;
+  -webkit-box-align: center;
+  align-items: center;
+  border-radius: 4px;
+  background-color: rgb(242, 246, 248);
+}
+.css-dcsj63 {
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 150%;
+  color: rgb(129, 137, 143);
+}
+.css-170uj16 svg {
+  width: 12px;
+  height: 12px;
+}
+.css-ih6wu3 {
+  width: unset;
+  border: none;
+  outline: none;
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 150%;
+  color: rgb(95, 102, 107);
+} */
+
+/*-------------태크------------------*/
 
 .css-9y3tf9 {
   width: 100%;
@@ -741,7 +914,10 @@ input {
   opacity: 0.3;
   margin-right: 14px;
 }
-
+.css-1c8gn7d:hover {
+  opacity: 1;
+  background-color: #541d7a;
+}
 .css-agejl7 {
   max-width: 980px;
   width: 100%;
@@ -749,7 +925,6 @@ input {
   position: relative;
   border-radius: 20px;
   margin-top: 0px;
-  margin-bottom: 60px;
   padding: 48px 20px;
   background-color: rgb(255, 255, 255);
   z-index: 22;
@@ -787,9 +962,85 @@ input {
   background: transparent;
   cursor: pointer;
 }
+.css-1w5123m {
+  font-family: Pretendard;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  width: 100%;
+  height: inherit;
+  color: rgb(0, 0, 0);
+  border: 0px none;
+  outline: none 0px;
+  padding-left: 20px;
+  padding-right: 20px;
+  background: transparent;
+  cursor: pointer;
+}
+/* 카테고리 선택 */
+ul {
+  margin-block-start: 0;
+  margin-block-end: 0;
+  -webkit-padding-start: 0;
+  padding-inline-start: 0;
+}
+.css-l2t941 {
+  position: absolute;
+  top: 63px;
+  padding: 8px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgb(234, 235, 237);
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 8px 20px 0px;
+  z-index: 30;
+  left: 0px;
+  width: 100%;
+  background: rgb(255, 255, 255);
+  color: black;
+  list-style-type: none;
+  transition: all 0.3s ease-in 0s;
+}
 
+.css-nyb6vk {
+  padding: 14.5px 20px;
+  height: 50px;
+  flex-direction: row;
+  gap: 10px;
+  transition: all 0.1s ease 0s;
+  display: flex;
+  border-radius: 8px;
+  font-weight: 500;
+  color: rgb(80, 82, 84);
+  background-color: rgb(255, 255, 255);
+  cursor: pointer;
+}
+
+.css-nyb6vk:hover {
+  background-color: rgb(255, 241, 244);
+  background-size: 100px 100%;
+}
+.css-16uk8or {
+  padding: 14.5px 20px;
+  height: 50px;
+  flex-direction: row;
+  gap: 10px;
+  transition: all 0.1s ease 0s;
+  display: flex;
+  border-radius: 8px;
+  font-weight: 700;
+  color: rgb(232, 52, 78);
+  background-color: rgb(255, 255, 255);
+  cursor: pointer;
+}
+/* 카테고리 선택 */
 .css-1bhrqo4 {
   transform: none;
+  transition-duration: 0.5s;
+}
+.css-yewqag {
+  transform: rotate(180deg);
   transition-duration: 0.5s;
 }
 
@@ -837,5 +1088,9 @@ input {
 
 .css-lycl0a {
   width: 400px;
+}
+
+.css-image {
+  margin-top: 20px;
 }
 </style>

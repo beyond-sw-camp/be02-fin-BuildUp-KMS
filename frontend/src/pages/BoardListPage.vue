@@ -33,7 +33,9 @@
                   <div class="css-1tttep5">
                     <div class="css-1pbcmmt-001">
                       <div class="css-5ala5m-001">
-                        <div class="css-nmdn6a-001">작성하기</div>
+                        <router-link to="/board/new">
+                          <div class="css-nmdn6a-001">작성하기</div>
+                        </router-link>
                       </div>
                     </div>
                   </div>

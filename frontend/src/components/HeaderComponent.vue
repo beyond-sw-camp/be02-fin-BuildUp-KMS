@@ -18,17 +18,19 @@
           </router-link>
         </div>
         <div class="css-1butcu2" v-if="showMenu">
-          <div class="css-1llgdoe">지식공유</div>
-          <div class="css-1llgdoe">Q&A</div>
-          <div class="css-1llgdoe">후기</div>
-          <div class="css-1llgdoe">스터디</div>
+          <a href="/board"><div class="css-1llgdoe">지식공유</div></a>
+          <a href="/board"><div class="css-1llgdoe">Q&A</div></a>
+          <a href="/review"><div class="css-1llgdoe">후기</div></a>
+          <a href="/study"><div class="css-1llgdoe">스터디</div></a>
         </div>
         <div class="css-1butcu">
           <div>
             <button class="css-login-button" @click="openLoginModal()">
               로그인
             </button>
-            <button class="css-signup-button">회원가입</button>
+            <button class="css-signup-button" @click="selectSignUp()">
+              회원가입
+            </button>
           </div>
           <div class="css-26c0za">
             <svg
@@ -534,6 +536,7 @@
             color="#81898F"
             class="css-1cap2q"
             style="text-decoration: underline"
+            @click="selectSignUp()"
             >회원가입</span
           >
         </div>
@@ -621,6 +624,7 @@
               color="#81898F"
               class="css-1cap2q"
               style="text-decoration: none"
+              @click="selectSignUp()"
               >회원가입</span
             >
             <div class="css-1653a83"></div>
@@ -684,6 +688,9 @@ export default {
     closeAllLoginModal() {
       this.isLogin = false;
       this.isEmailLogin = false;
+    },
+    selectSignUp() {
+      window.location.href = "/select/signup";
     },
   },
 };

@@ -8,11 +8,14 @@ import SearchResultPage from "@/pages/SearchResultPage.vue";
 import BoardWritePage from "@/pages/BoardWritePage.vue";
 import ReviewWritePage from "@/pages/ReviewWritePage.vue";
 import StudyBoardPage from "@/pages/StudyBoardPage.vue";
-import MainSignupPage from "@/pages/MainSignupPage.vue";
+import SelectSignupPage from "@/pages/SelectSignupPage.vue";
 import BoardDetailsPage from "@/pages/BoardDetailsPage.vue";
 import BoardListPage from "@/pages/BoardListPage.vue";
+import ReviewListPage from "@/pages/ReviewListPage.vue";
 import EmailValidationPage from "@/pages/EmailValidationPage.vue";
+import NoticeBoardPage from "@/pages/NoticeBoardPage.vue";
 import AdminMainPage from "@/pages/AdminMainPage.vue";
+import MyPage from "@/pages/MyPage.vue";
 
 import AdminWithdrawPage from "@/pages/AdminWithdrawPage.vue";
 import AdminCategoryRegisterPage from "@/pages/AdminCategoryRegisterPage.vue";
@@ -29,10 +32,12 @@ const routes = [
   { path: "/study", component: StudyBoardPage },
   { path: "/board/detail", component: BoardDetailsPage },
   { path: "/board", component: BoardListPage },
-  { path: "/select/signup", component: MainSignupPage },
+  { path: "/review", component: ReviewListPage },
+  { path: "/select/signup", component: SelectSignupPage },
   { path: "/email/verify", component: EmailValidationPage },
+  { path: "/notice", component: NoticeBoardPage },
+  { path: "/mypage/", component: MyPage },
   { path: "/admin", component: AdminMainPage },
-
   { path: "/admin/withdraw", component: AdminWithdrawPage },
   { path: "/admin/category/register", component: AdminCategoryRegisterPage },
   { path: "/admin/tag/register", component: AdminTagRegisterPage },
