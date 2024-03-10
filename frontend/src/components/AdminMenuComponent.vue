@@ -126,7 +126,6 @@
                     </div>
 
                     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-
                         <ul class="navbar-nav flex-row align-items-center ms-auto">
                             <!-- Place this tag where you want the button to render. -->
                             <!-- User -->
@@ -184,20 +183,17 @@
 </template>
 
 <script>
-// Import the required CSS files
-import "@/assets/css/auth-boxicons.css";
-import "@/assets/css/auth-theme-default.css";
-import "@/assets/css/auth.css";
-import "@/assets/css/auth-perfect-scrollbar.css";
-import "@/assets/css/auth-page.css";
-
 export default {
     name: "AdminMenuComponent",
 };
 </script>
 
 <style scoped>
-@charset "UTF-8";
+@import url("@/assets/css/auth-boxicons.css");
+@import url("@/assets/css/auth-theme-default.css");
+@import url("@/assets/css/auth.css");
+@import url("@/assets/css/auth-perfect-scrollbar.css");
+@import url("@/assets/css/auth-page.css");
 
 .nav,
 .navbar-nav {
@@ -297,10 +293,10 @@ html:not(.layout-navbar-fixed) .layout-content-navbar .layout-page {
 }
 
 /*!
- * Bootstrap  v5.3.2 (https://getbootstrap.com/)
- * Copyright 2011-2023 The Bootstrap Authors
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
- */
+   * Bootstrap  v5.3.2 (https://getbootstrap.com/)
+   * Copyright 2011-2023 The Bootstrap Authors
+   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+   */
 .card .card-link,
 label {
     display: inline-block;
@@ -866,10 +862,10 @@ button:focus:not(:focus-visible) {
 }
 
 /*!
- * Bootstrap  v5.3.2 (https://getbootstrap.com/)
- * Copyright 2011-2023 The Bootstrap Authors
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
- */
+   * Bootstrap  v5.3.2 (https://getbootstrap.com/)
+   * Copyright 2011-2023 The Bootstrap Authors
+   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+   */
 button,
 input {
     margin: 0;
@@ -1688,10 +1684,10 @@ sub {
 }
 
 /*!
- * Bootstrap  v5.3.2 (https://getbootstrap.com/)
- * Copyright 2011-2023 The Bootstrap Authors
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
- */
+   * Bootstrap  v5.3.2 (https://getbootstrap.com/)
+   * Copyright 2011-2023 The Bootstrap Authors
+   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+   */
 :root,
 [data-bs-theme="light"] {
     --bs-blue: #007bff;
@@ -1842,6 +1838,8 @@ body {
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: rgba(67, 89, 113, 0);
     text-rendering: optimizeLegibility;
+    font-smoothing: antialiased;
+    -moz-font-feature-settings: "liga" on;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -1970,6 +1968,9 @@ button {
 [type="button"],
 [type="reset"],
 [type="submit"],
+button {
+    -webkit-appearance: button;
+}
 
 ::-moz-focus-inner {
     padding: 0;
@@ -1991,6 +1992,7 @@ button {
 }
 
 [type="search"] {
+    -webkit-appearance: textfield;
     outline-offset: -2px;
 }
 
@@ -2014,6 +2016,7 @@ button {
 
 ::file-selector-button {
     font: inherit;
+    -webkit-appearance: button;
 }
 
 .display-1,
