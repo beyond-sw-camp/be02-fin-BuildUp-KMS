@@ -15,6 +15,8 @@ import EmailValidationPage from "@/pages/EmailValidationPage.vue";
 import AdminMainPage from "@/pages/AdminMainPage.vue";
 
 import AdminWithdrawPage from "@/pages/AdminWithdrawPage.vue";
+import AdminCategoryRegisterPage from "@/pages/AdminCategoryRegisterPage.vue";
+import AdminTagRegisterPage from "@/pages/AdminTagRegisterPage.vue";
 
 const routes = [
   { path: "/", component: MainPage },
@@ -32,6 +34,8 @@ const routes = [
   { path: "/admin", component: AdminMainPage },
 
   { path: "/admin/withdraw", component: AdminWithdrawPage },
+  { path: "/admin/category/register", component: AdminCategoryRegisterPage },
+  { path: "/admin/tag/register", component: AdminTagRegisterPage },
 ];
 
 const router = createRouter({
