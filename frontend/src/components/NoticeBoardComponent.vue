@@ -1,7 +1,7 @@
 <template>
-  <div class="css-1agvh3p">
+  <div class="css-1agvh3p" @click="showContent()">
     <div class="css-1x8gxrp">
-      <div class="css-s3qw6k">
+      <div :class="{ 'css-s3qw6k': !isClicked, 'css-1b9opqm': isClicked }">
         <span class="css-0">[공지] 팀스파르타 개인정보 처리방침 개정 안내</span
         ><span class="css-1wp0bsh"></span><span class="css-1hkyyfd">N</span>
       </div>
@@ -10,7 +10,7 @@
       <div class="css-1p269h3">
         <span class="css-1d3nptd">24.02.16</span>
       </div>
-      <div class="css-wh2oxb">
+      <div :class="{ 'css-wh2oxb': !isClicked, 'css-1ks2stu': isClicked }">
         <svg
           width="24"
           height="24"
@@ -26,7 +26,7 @@
       </div>
     </div>
   </div>
-  <div class="css-173r1bj">
+  <div :class="{ 'css-173r1bj': !isClicked, 'css-gx45j9': isClicked }">
     <p>안녕하세요.</p>
     <p>
       스파르타코딩클럽을 비롯한 팀스파르타의 서비스를 이용해주시는 여러분들께
@@ -101,9 +101,25 @@
 <script>
 export default {
   name: "NoticeBoardComponent",
+  data() {
+    return {
+      isClicked: false,
+    };
+  },
+  methods: {
+    showContent() {
+      this.isClicked = !this.isClicked;
+      this.$emit("select", this.isClicked); // 클릭 상태를 함께 전달
+    },
+  },
 };
 </script>
 <style scoped>
+* {
+  margin: 0;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+}
+
 .css-1agvh3p {
   display: flex;
   -webkit-box-pack: justify;
@@ -125,7 +141,7 @@ export default {
   flex-direction: column;
   gap: 4px;
   width: calc(100% - 44px);
-  margin-left: -140px;
+  margin-left: -20px;
 }
 
 .css-s3qw6k {
@@ -149,6 +165,30 @@ export default {
     line-height: 150%;
     color: rgb(58, 62, 65);
     font-family: __pretendard_1fdc56, __pretendard_Fallback_1fdc56;
+  }
+}
+.css-1b9opqm {
+  font-style: normal;
+  font-size: 14px;
+  line-height: 150%;
+  color: rgb(58, 62, 65);
+  font-family: __pretendard_1fdc56, __pretendard_Fallback_1fdc56;
+  white-space: pre-wrap;
+  -webkit-box-align: center;
+  align-items: center;
+  display: inline-block;
+  font-weight: 700;
+}
+
+@media (min-width: 768px) {
+  .css-1b9opqm {
+    display: unset;
+    font-style: normal;
+    font-size: 16px;
+    line-height: 150%;
+    color: rgb(58, 62, 65);
+    font-family: __pretendard_1fdc56, __pretendard_Fallback_1fdc56;
+    font-weight: 700;
   }
 }
 
@@ -257,6 +297,45 @@ export default {
 }
 
 .css-173r1bj strong {
+  font-weight: 700;
+  color: rgb(58, 62, 65) !important;
+}
+
+.css-1ks2stu {
+  cursor: pointer;
+  transform: rotate(-180deg);
+  transition: all 0.4s ease 0s;
+}
+.css-gx45j9 {
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
+  color: rgb(129, 137, 143);
+  height: fit-content;
+  overflow: hidden;
+  transition: all 0.4s ease 0s;
+  max-height: unset;
+  padding: 24px 44px 0px 0px;
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  .css-gx45j9 {
+    padding: 32px 64px 0px 0px;
+    font-family: Pretendard;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+    color: rgb(129, 137, 143);
+    font-size: 16px;
+  }
+}
+.css-gx45j9 p {
+  color: rgb(95, 102, 107);
+  line-height: 150%;
+  font-weight: 500;
+}
+.css-gx45j9 strong {
   font-weight: 700;
   color: rgb(58, 62, 65) !important;
 }
