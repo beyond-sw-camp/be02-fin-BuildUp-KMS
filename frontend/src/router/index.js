@@ -4,6 +4,7 @@ import MainPage from "@/pages/MainPage.vue";
 import AuthSignupPage from "@/pages/AuthSignupPage.vue";
 import SignupPage from "@/pages/SignupPage.vue";
 import MyActivePage from "@/pages/MyActivePage.vue";
+import MyProfilePage from "@/pages/MyProfilePage.vue";
 import SearchResultPage from "@/pages/SearchResultPage.vue";
 import BoardWritePage from "@/pages/BoardWritePage.vue";
 import ReviewWritePage from "@/pages/ReviewWritePage.vue";
@@ -15,12 +16,12 @@ import ReviewListPage from "@/pages/ReviewListPage.vue";
 import EmailValidationPage from "@/pages/EmailValidationPage.vue";
 import NoticeBoardPage from "@/pages/NoticeBoardPage.vue";
 import AdminMainPage from "@/pages/AdminMainPage.vue";
-import MyPage from "@/pages/MyPage.vue";
 
 const routes = [
   { path: "/", component: MainPage },
   { path: "/auth/signup", component: AuthSignupPage },
   { path: "/signup", component: SignupPage },
+  { path: "/profile/", component: MyProfilePage },
   { path: "/active", component: MyActivePage },
   { path: "/result", component: SearchResultPage },
   { path: "/board/new", component: BoardWritePage },
@@ -33,7 +34,6 @@ const routes = [
   { path: "/email/verify", component: EmailValidationPage },
   { path: "/notice", component: NoticeBoardPage },
   { path: "/admin/", component: AdminMainPage },
-  { path: "/mypage/", component: MyPage },
 ];
 
 const router = createRouter({

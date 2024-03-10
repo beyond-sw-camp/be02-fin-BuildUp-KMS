@@ -7,7 +7,9 @@
             <div class="css-110bgim">
               <div class="css-28nsux">
                 <div class="css-titlegms">계정 설정</div>
-                <div class="css-nw8p9d">프로필</div>
+                <a href="/profile">
+                  <div class="css-nw8p9d">프로필</div>
+                </a>
                 <div class="css-19831hi">나의 활동</div>
               </div>
             </div>
@@ -60,20 +62,50 @@
                 </div>
               </div>
             </div>
-            <div class="css-164vtnj">
+            <!-- <div class="css-164vtnj">
               <div class="css-cqjiz9">스크랩</div>
               <div class="css-2120cz">작성글</div>
               <div class="css-cqjiz9">댓글</div>
               <div class="css-cqjiz9">스터디</div>
+            </div> -->
+            <div class="css-164vtnj">
+              <div
+                class="css-cqjiz9"
+                :class="{ 'css-2120cz': currentTab === '스크랩' }"
+                @click="changeTab('스크랩')"
+              >
+                스크랩
+              </div>
+              <div
+                class="css-cqjiz9"
+                :class="{ 'css-2120cz': currentTab === '작성글' }"
+                @click="changeTab('작성글')"
+              >
+                작성글
+              </div>
+              <div
+                class="css-cqjiz9"
+                :class="{ 'css-2120cz': currentTab === '댓글' }"
+                @click="changeTab('댓글')"
+              >
+                댓글
+              </div>
+              <div
+                class="css-cqjiz9"
+                :class="{ 'css-2120cz': currentTab === '스터디' }"
+                @click="changeTab('스터디')"
+              >
+                스터디
+              </div>
             </div>
             <div class="css-1csvk83">
               <div class="css-k59gj9">
                 <!--MyPageBoardComponent 자리-->
                 <div>
-                  <MyPageBoardComponent/>
-                  <MyPageBoardComponent/>
-                  <MyPageBoardComponent/>
-                  <MyPageBoardComponent/>
+                  <MyPageBoardComponent />
+                  <MyPageBoardComponent />
+                  <MyPageBoardComponent />
+                  <MyPageBoardComponent />
                 </div>
                 <!--MyPageBoardComponent 자리-->
               </div>
@@ -87,17 +119,32 @@
   </div>
 </template>
 
+<script setup>
+import { ref } from "vue";
+import router from "@/router";
+
+const currentTab = ref("");
+
+const changeTab = (tabName) => {
+  currentTab.value = tabName;
+  router.push({ path: "/active" });
+};
+</script>
+
 <script>
-import MyPageBoardComponent from '@/components/MyPageBoardComponent.vue';
+import MyPageBoardComponent from "@/components/MyPageBoardComponent.vue";
 export default {
   name: "MyActivePage",
   components: {
     MyPageBoardComponent,
-  }
+  },
 };
 </script>
 
 <style scoped>
+a {
+  text-decoration: none;
+}
 .css-mbwamd {
   width: 100%;
   background-color: rgb(255, 255, 255);
@@ -253,78 +300,80 @@ export default {
   }
 }
 .css-vsssfb {
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
-    position: sticky;
-    top: 10rem;
-    max-height: 490px;
-    transition: all 0.4s ease 0s;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  position: sticky;
+  top: 10rem;
+  max-height: 490px;
+  transition: all 0.4s ease 0s;
 }
 .css-110bgim {
-    width: 180px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    background-color: rgb(255, 255, 255);
-    flex-shrink: 0;
+  width: 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background-color: rgb(255, 255, 255);
+  flex-shrink: 0;
 }
 .css-28nsux {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
 }
 .css-19831hi {
-    width: 100%;
-    border-radius: 8px;
-    padding: 0px 50px 0px 16px;
-    background-color: rgba(242, 246, 248, 0);
-    height: 48px;
-    font-family: Pretendard;
-    font-style: normal;
-    font-size: 23px;
-    line-height: 48px;
-    font-weight: 700;
-    color: rgb(84,29,112);
-    cursor: pointer;
-    text-align: right;
+  width: 100%;
+  border-radius: 8px;
+  padding: 0px 50px 0px 16px;
+  background-color: rgba(242, 246, 248, 0);
+  height: 48px;
+  font-family: Pretendard;
+  font-style: normal;
+  font-size: 23px;
+  line-height: 48px;
+  font-weight: 700;
+  color: rgb(84, 29, 112);
+  cursor: pointer;
+  text-align: right;
 }
 .css-nw8p9d {
-    width: 100%;
-    border-radius: 8px;
-    padding: 0px 50px 0px 16px;
-    background-color: rgba(255, 255, 255, 0);
-    height: 48px;
-    font-family: Pretendard;
-    font-style: normal;
-    font-size: 23px;
-    line-height: 48px;
-    font-weight: 700;
-    color: rgba(157, 167, 174, 0.758);
-    cursor: pointer;
-    text-align: right;
+  width: 100%;
+  border-radius: 8px;
+  padding: 0px 50px 0px 16px;
+  background-color: rgba(255, 255, 255, 0);
+  height: 48px;
+  font-family: Pretendard;
+  font-style: normal;
+  font-size: 23px;
+  line-height: 48px;
+  font-weight: 700;
+  color: rgba(157, 167, 174, 0.758);
+  cursor: pointer;
+  text-align: right;
 }
 .css-titlegms {
-    width: 100%;
-    border-radius: 8px;
-    padding: 0px 16px;
-    background-color: rgba(255, 255, 255, 0);
-    height: 48px;
-    font-family: Pretendard;
-    font-style: normal;
-    font-size: 32px;
-    line-height: 48px;
-    font-weight: 400;
-    color: rgba(0, 0, 0, 0.905);
-    font-weight: bold;
-    cursor: pointer;
+  width: 100%;
+  border-radius: 8px;
+  padding: 0px 16px;
+  background-color: rgba(255, 255, 255, 0);
+  height: 48px;
+  font-family: Pretendard;
+  font-style: normal;
+  font-size: 32px;
+  line-height: 48px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.905);
+  font-weight: bold;
+  cursor: pointer;
 }
-*, ::after, ::before {
-    box-sizing: border-box;
+*,
+::after,
+::before {
+  box-sizing: border-box;
 }
 * {
-    margin: 0;
-    line-height: 1.5;
+  margin: 0;
+  line-height: 1.5;
 }
 </style>

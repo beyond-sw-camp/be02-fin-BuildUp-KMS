@@ -8,7 +8,9 @@
               <div class="css-28nsux">
                 <div class="css-titlegms">계정 설정</div>
                 <div class="css-19831hi">프로필</div>
-                <div class="css-nw8p9d" @click="$router.push('/active')">나의 활동</div>
+                <a class="new" href="/active">
+                  <div class="css-nw8p9d">나의 활동</div>
+                </a>
               </div>
             </div>
           </div>
@@ -33,7 +35,7 @@
                     "
                   >
                     <img
-                      src="../assets/img/bbb.png"
+                      :src="previewImage"
                       decoding="async"
                       data-nimg="fill"
                       sizes="100vw"
@@ -59,12 +61,26 @@
                   <div
                     class="Button_button___Dadr Button_secondary__A1XYJ Button_medium__BjTrN"
                   >
-                    <div class="css-1sika4i">
-                      ⚙ 이미지 변경
-                      <input type="file" accept="image/*" />
+                    <div class="css-1sika4i" @click="triggerFileInput()">
+                      ⚙ 프로필 이미지 선택
+                      <input
+                        type="file"
+                        accept="image/*"
+                        @change="previewFile"
+                        ref="fileInput"
+                        style="display: none"
+                      />
                     </div>
                   </div>
                 </div>
+              </div>
+              <div class="Edit_submit__FGvIA">
+                <button
+                  class="Button_button___Dadr Button_primary__BxDoK"
+                  type="submit"
+                >
+                  <div class="Button_contentWrapper__ek4Um">이미지 저장</div>
+                </button>
               </div>
             </div>
             <div class="Edit_variables__S8TBF">
@@ -81,12 +97,6 @@
                     placeholder="닉네임"
                     value=""
                   />
-                  <div
-                    class="InputTextField_right__aDZX4 InputTextField_lengthCount__AGkOH"
-                  >
-                    <span class="InputTextField_currentLength__ok03_"> 0 </span>
-                    / 16
-                  </div>
                 </label>
                 <p class="HelperText_helpText__qK_Jm">
                   한글 8자, 영문 및 숫자 16자까지 혼용할 수 있어요.
@@ -96,9 +106,10 @@
                     class="Button_button___Dadr Button_primary__BxDoK"
                     type="submit"
                   >
-                    <div class="Button_contentWrapper__ek4Um">변경 하기</div>
+                    <div class="Button_contentWrapper__ek4Um">닉네임 변경</div>
                   </button>
                 </div>
+                <div class="jollkutgi"></div>
                 <p class="HelperText_helpText__qK_Jm_PASS">비밀번호 변경</p>
                 <div class="PasswordChange_container__h0ww6">
                   <div class="PasswordChange_input__RuHYP">
@@ -182,14 +193,39 @@
                     귀속됩니다.
                   </div>
                   <span class="checkbox">
-                    <input type="checkbox" />
-                    <label for="checkbox"
-                      >회원 탈퇴에 관한 정책을 읽었으며, 이에 동의합니다.</label
-                    >
+                    <button class="css-27eumk" @click="agreeDelete()">
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <rect
+                          x="3.33331"
+                          y="3.33331"
+                          width="13.3333"
+                          height="13.3333"
+                          rx="2"
+                          :fill="isClicked ? '#141617' : 'none'"
+                          :stroke="isClicked ? '#141617' : '#9DA7AE'"
+                          stroke-width="1.75"
+                        ></rect>
+                        <path
+                          v-if="isClicked"
+                          d="M6.8327 10.2727L8.91604 12.1667L13.4994 8"
+                          stroke="#FFFFFF"
+                          stroke-width="1.25"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></path>
+                      </svg>
+                      회원 탈퇴에 관한 정책을 읽었으며, 이에 동의합니다.
+                    </button>
                   </span>
                   <div class="withdrawal_membership_buttonWrapper_kkkkk">
                     <button
-                      class="Button_button___Dadr Button_primary__BxDoK"
+                      class="Button_button___Dadr Button_primary__BxDoKs"
                       type="submit"
                     >
                       <div class="Button_contentWrapper__ek4Um">회원 탈퇴</div>
@@ -219,14 +255,51 @@
   </div>
 </template>
 
+<script setup>
+import { ref } from "vue";
+
+const previewImage = ref(
+  "https://github.com/hyungdoyou/devops/assets/148875644/68eff1e5-caef-40ec-83f4-e653ee1f9247"
+);
+const fileInput = ref(null);
+
+const triggerFileInput = () => {
+  fileInput.value.click();
+};
+
+const previewFile = (event) => {
+  const file = event.target.files[0];
+  if (file && file.type.startsWith("image/")) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      previewImage.value = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+};
+</script>
+
 <script>
 export default {
-  name: "MyPage",
-  components: {},
+  name: "MyProfilePage",
+  data() {
+    return {
+      isClicked: false,
+    };
+  },
+  methods: {
+    agreeDelete() {
+      this.isClicked = !this.isClicked;
+    },
+  },
 };
 </script>
 
 <style scoped>
+a {
+  text-decoration: none;
+}
+
 .css-mbwamd {
   width: 100%;
   background-color: rgb(255, 255, 255);
@@ -297,8 +370,8 @@ export default {
   padding: 0 20px;
 }
 .css-aw18wm {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   position: relative;
   border-radius: 100%;
   overflow: hidden;
@@ -482,6 +555,22 @@ export default {
 .css-1sika4i {
   text-align: center;
 }
+.css-1sika4i {
+  display: inline-block;
+  padding: 5px 7px;
+  background-color: white;
+  border: 1px solid black;
+  opacity: 0.3;
+  color: black;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  text-align: center;
+}
+
+.css-1sika4i:hover {
+  opacity: 1;
+}
 .Edit_uploadButton__WfnY3 input {
   cursor: pointer;
   position: absolute;
@@ -490,7 +579,7 @@ export default {
   transform: scale(3);
   opacity: 0;
 }
-.HelperText_helpText__qK_Jm_PASS{
+.HelperText_helpText__qK_Jm_PASS {
   font-family: pretended;
   font-style: normal;
   font-size: 20px;
@@ -498,92 +587,134 @@ export default {
   margin-bottom: 10px;
 }
 .inputField_label__y8y2P {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 100%;
-    padding: 0 16px 0 3px;
-    border-radius: 0.8rem;
-    border: 0.1rem solid rgba(51, 50, 54, 0.186);
-    box-sizing: border-box;
-    transition: background-color .2s ease-in-out, border-color .2s ease-in-out;
-    margin-bottom: 10px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0 16px 0 3px;
+  border-radius: 0.8rem;
+  border: 0.1rem solid rgba(51, 50, 54, 0.186);
+  box-sizing: border-box;
+  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+  margin-bottom: 10px;
 }
 .inputField_input__004jm {
-    font-size: 15px;
-    flex: 1 1;
-    min-width: 0.1rem;
-    text-overflow: ellipsis;
-    color: rgba(51, 50, 54, 0.919);
-    height: 2.8rem;
-    margin: 0.4rem 0.4rem;
-    transition: color .2s ease-in-out;
-    border-color: #ffffff00;
+  font-size: 15px;
+  flex: 1 1;
+  min-width: 0.1rem;
+  text-overflow: ellipsis;
+  color: rgba(51, 50, 54, 0.919);
+  height: 2.8rem;
+  margin: 0.2rem 0.4rem;
+  transition: color 0.2s ease-in-out;
+  border-color: #ffffff00;
 }
 .InputTextField_lengthCount__AGkOH {
-    font-size: 10px;
-    font-weight: bold;
-    color: rgb(51, 50, 54);
+  font-size: 14px;
+  font-weight: bold;
+  color: rgb(51, 50, 54);
 }
 .InputTextField_lengthCount__AGkOH .InputTextField_currentLength__ok03_ {
-    color: rgb(84, 29, 112);
-    font-weight: bold;
+  color: rgb(84, 29, 112);
+  font-weight: bold;
 }
 .HelperText_helpText__qK_Jm {
-    font-size: 12px;
-    margin-left: 10px;
-    margin-bottom: 10px;
-    text-align: left;
-    color: rgba(136, 132, 132, 0.599);
-    transition: color .2s ease-in-out;
-    white-space: pre-line;
+  font-size: 12px;
+  margin-left: 10px;
+  margin-bottom: 20px;
+  text-align: left;
+  color: rgba(136, 132, 132, 0.599);
+  transition: color 0.2s ease-in-out;
+  white-space: pre-line;
 }
 .Button_button___Dadr.Button_primary__BxDoK {
-    font-size: 12px;
-    color: rgb(110, 109, 113);
-    font-weight: bold;
-    padding: 3px 5px;
-    border: 0.1rem solid rgba(136, 132, 132, 0);
-    border-radius: 5px;
-    min-width: 15px;
-    background-color: rgba(84, 29, 112, 0.071);
-    margin-bottom: 10px;
+  font-size: 12px;
+  color: white;
+  font-weight: bold;
+  padding: 5px 10px;
+  border: 0.1rem solid rgba(136, 132, 132, 0);
+  border-radius: 5px;
+  min-width: 15px;
+  background-color: rgb(84, 29, 112);
+  opacity: 0.3;
+  margin-bottom: 10px;
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1);
 }
-@media (min-width: 48em)
-{
+.Button_button___Dadr.Button_primary__BxDoK:hover {
+  opacity: 1;
+}
+.Button_button___Dadr.Button_primary__BxDoKs {
+  font-size: 12px;
+  color: white;
+  font-weight: bold;
+  padding: 5px 10px;
+  border: 0.1rem solid rgba(136, 132, 132, 0);
+  border-radius: 5px;
+  min-width: 15px;
+  background-color: rgb(232, 52, 78);
+  opacity: 0.3;
+  margin-bottom: 10px;
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1);
+}
+.Button_button___Dadr.Button_primary__BxDoKs:hover {
+  opacity: 1;
+}
+@media (min-width: 48em) {
   .Edit_submit__FGvIA {
     display: flex;
     justify-content: flex-end;
+  }
 }
-}
-[type=button]:not(:disabled), [type=reset]:not(:disabled), [type=submit]:not(:disabled), button:not(:disabled) {
-    cursor: pointer;
+[type="button"]:not(:disabled),
+[type="reset"]:not(:disabled),
+[type="submit"]:not(:disabled),
+button:not(:disabled) {
+  cursor: pointer;
 }
 .Textarea_container__BlWoX {
-    font-size: 15px;
-    color: rgba(136, 132, 132, 0.811);
-    border: 0.1rem solid #dde0ea;
-    border-radius: 0.8rem;
-    padding: 15px 20px;
-    margin-bottom: 5px;
+  font-size: 15px;
+  color: rgba(136, 132, 132, 0.811);
+  border: 0.1rem solid #dde0ea;
+  border-radius: 0.8rem;
+  padding: 15px 20px;
+  margin-bottom: 5px;
 }
 .checkbox {
-    margin-left: 10px;
-    font-size: 12px;
-    color: rgb(110, 109, 113);
-    font-weight: bold;
-    text-align: center;
+  margin-left: 10px;
+  font-size: 12px;
+  color: rgb(110, 109, 113);
+  font-weight: bold;
+  text-align: center;
 }
-@media (min-width: 48em)
-{
+@media (min-width: 48em) {
   .withdrawal_membership_buttonWrapper_kkkkk {
     display: flex;
     justify-content: flex-end;
-}
+  }
 }
 .jollkutgi {
-    padding-bottom: 10px;
-    border-bottom: 1px solid rgba(110, 109, 113, 0.215);
-    margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(110, 109, 113, 0.215);
+  margin-bottom: 20px;
+}
+
+.css-27eumk {
+  background: none;
+  border: none;
+  padding: 0px;
+  /* margin-top: 20px; */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 22px;
+  color: rgb(20, 22, 23);
 }
 </style>
