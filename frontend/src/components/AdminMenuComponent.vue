@@ -1,9 +1,9 @@
 <template>
     <!-- Menu -->
-    <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme" @mouseenter="delayMenuToggle"
-        @mouseleave="removeMenuToggle">
+    <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme"
+        :class="{ 'is-active': menuVisible.visible }">
         <div class="app-brand demo">
-            <a href="#" class="app-brand-link" @click.prevent>
+            <a href="#" class="app-brand-link" @click.prevent="toggleMenu">
                 <span class="app-brand-logo demo">
                     <img src="../assets/img/icon.png" alt="icon" width="30px" />
                 </span>
@@ -11,6 +11,7 @@
                     <img src="../assets/img/logo.png" alt="logo" width="120px" />
                 </span>
             </a>
+            <!-- 메뉴 토글 버튼 -->
             <a href="#" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none"
                 @click.prevent="toggleMenu">
                 <i class="bx bx-chevron-left bx-sm align-middle"></i>
@@ -42,7 +43,7 @@
 </template>
 
 <script>
-import { reactive } from 'vue';
+import { reactive, ref, onMounted } from 'vue';
 
 export default {
     name: "AdminMenuComponent",
@@ -94,23 +95,25 @@ export default {
             },
         });
 
+        const menuVisible = ref(false);
+        const menuToggleButton = ref(null);
+
+        const toggleMenu = () => {
+            menuVisible.value = !menuVisible.value;
+            console.log("Menu visible:", menuVisible.value);
+        };
+
+        onMounted(() => {
+            if (menuToggleButton.value) {
+                menuToggleButton.value.addEventListener('click', toggleMenu);
+            }
+        });
+
         const toggleSubmenu = (key) => {
             submenuVisible[key].visible = !submenuVisible[key].visible;
         };
 
-        const toggleMenu = () => {
-            // Implement if needed
-        };
-
-        const delayMenuToggle = () => {
-            // Implement if needed
-        };
-
-        const removeMenuToggle = () => {
-            // Implement if needed
-        };
-
-        return { submenuVisible, toggleSubmenu, toggleMenu, delayMenuToggle, removeMenuToggle };
+        return { submenuVisible, toggleSubmenu, toggleMenu, menuVisible, menuToggleButton };
     },
 };
 </script>
@@ -122,6 +125,32 @@ export default {
 @import url("@/assets/css/auth.css");
 @import url("@/assets/css/auth-perfect-scrollbar.css");
 @import url("@/assets/css/auth-page.css");
+
+.bx-menu:before {
+    content: "\eb5f";
+}
+
+.bx-chevron-left:before {
+    content: "\ea4d";
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+@media (max-width: 1199.98px) {
+    .layout-menu-expanded body {
+        overflow: hidden;
+    }
+}
+
+body {
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
 
 .nav,
 .navbar-nav {
