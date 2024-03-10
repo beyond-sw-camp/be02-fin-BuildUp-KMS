@@ -53,7 +53,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 @import url("@/assets/css/auth-boxicons.css");
 @import url("@/assets/css/auth-theme-default.css");
 @import url("@/assets/css/auth.css");
@@ -224,7 +224,7 @@ html:not(.layout-footer-fixed) .content-wrapper {
 
 .container-p-y:not([class^='pt-']):not([class*=' pt-']) {
     padding-top: 1.625rem !important;
-    padding: 70px;
+    padding: 100px;
 }
 
 .py-3 {
