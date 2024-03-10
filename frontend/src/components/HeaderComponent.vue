@@ -20,7 +20,7 @@
         <div class="css-1butcu2" v-if="showMenu">
           <a href="/board"><div class="css-1llgdoe">지식공유</div></a>
           <a href="/board"><div class="css-1llgdoe">Q&A</div></a>
-          <a href="/board"><div class="css-1llgdoe">후기</div></a>
+          <a href="/review"><div class="css-1llgdoe">후기</div></a>
           <a href="/study"><div class="css-1llgdoe">스터디</div></a>
         </div>
         <div class="css-1butcu">

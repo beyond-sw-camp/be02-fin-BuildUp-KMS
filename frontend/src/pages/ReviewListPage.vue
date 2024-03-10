@@ -16,7 +16,7 @@
           <div class="css-17t7asl">
             <div class="css-1jibmi3">
               <div class="css-1mpmq0i">
-                <div class="css-18vdxik">스터디 모집 게시판</div>
+                <div class="css-18vdxik">후기 게시판</div>
               </div>
               <!--부제-->
               <div class="css-1qzbd5x">
@@ -33,7 +33,7 @@
                   <div class="css-1tttep5">
                     <div class="css-1pbcmmt-001">
                       <div class="css-5ala5m-001">
-                        <router-link to="/board/new">
+                        <router-link to="/review/new">
                           <div class="css-nmdn6a-001">작성하기</div>
                         </router-link>
                       </div>
@@ -65,7 +65,7 @@
                 <div>
                   <select class="css-select001">
                     <option value="최신순">최신순</option>
-                    <option value="추천순">추천순</option>
+                    <option value="조회순">추천순</option>
                     <option value="조회순">조회순</option>
                     <option value="스크랩순">스크랩순</option>
                   </select>
@@ -76,12 +76,15 @@
             <div class="css-1csvk83">
               <ul class="css-10c0kk0 e15eiqsa1">
                 <!-- 스터디 글 목록 컴포넌트-->
-                <StudyBoardComponent></StudyBoardComponent>
+                <CategoryBoardComponent />
+                <CategoryBoardComponent />
+                <CategoryBoardComponent />
+                <CategoryBoardComponent />
               </ul>
             </div>
             <!-- /본격 글 리스트 -->
           </div>
-          <PaginationComponent></PaginationComponent>
+          <PaginationComponent />
         </div>
       </div>
     </div>
@@ -89,15 +92,14 @@
 </template>
 
 <script>
-import HotTagComponent from "../components/HotTagComponent.vue";
-import StudyBoardComponent from "../components/StudyBoardComponent.vue";
-import PaginationComponent from "../components/PaginationComponent.vue";
-
+import CategoryBoardComponent from "@/components/CategoryBoardComponent.vue";
+import HotTagComponent from "@/components/HotTagComponent.vue";
+import PaginationComponent from "@/components/PaginationComponent.vue";
 export default {
-  name: "StudyBoardPage",
+  name: "ReviewListPage",
   components: {
+    CategoryBoardComponent,
     HotTagComponent,
-    StudyBoardComponent,
     PaginationComponent,
   },
 };
@@ -141,7 +143,7 @@ div {
 .css-1b9to7p {
   width: 942px;
   padding-top: 150px;
-  padding-bottom: 150px;
+  padding-bottom: 100px;
   margin: 0px auto;
   display: flex;
   flex-direction: row;
@@ -313,6 +315,7 @@ div {
   display: flex;
   flex-direction: column;
   background-color: rgb(246, 249, 250);
+  margin-bottom: 50px;
 }
 .css-6cwwok {
   background-color: rgb(255, 255, 255);
@@ -323,7 +326,7 @@ div {
   flex-direction: row;
   gap: 12px;
   padding: 12px 16px;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
   align-items: center;
   position: relative;
 }
@@ -862,27 +865,13 @@ svg:not(:root) {
   }
 }
 
-/* 스터디 포스트잇 */
 ol,
 ul {
   list-style: none;
 }
 
-@media only screen and (max-width: 61.9375rem) {
-  .css-10c0kk0 {
-    grid-template-columns: repeat(1, minmax(16.6875rem, 1fr));
-  }
-}
-
-@media only screen and (max-width: 74.9375rem) {
-  .css-10c0kk0 {
-    grid-template-columns: repeat(2, minmax(16.6875rem, 1fr));
-  }
-}
-
 .css-10c0kk0 {
   width: 100%;
-  display: grid;
   grid-gap: 1rem;
   grid-template-columns: repeat(3, minmax(15rem, 1fr));
   grid-auto-flow: dense row;
@@ -890,7 +879,6 @@ ul {
   justify-content: space-around;
   position: relative;
   padding-left: 0px;
-  margin-bottom: 80px;
 }
 
 .css-1myomkm {
@@ -1042,11 +1030,11 @@ a {
 }
 
 /* li{
-    letter-spacing: -0.009em;
-    font-family: Pretendard;
-    line-height: 1.6;
-    list-style: none;
-} */
+      letter-spacing: -0.009em;
+      font-family: Pretendard;
+      line-height: 1.6;
+      list-style: none;
+  } */
 
 .css-li-001 {
   letter-spacing: -0.009em;
