@@ -15,6 +15,7 @@ import ReviewListPage from "@/pages/ReviewListPage.vue";
 import EmailValidationPage from "@/pages/EmailValidationPage.vue";
 import NoticeBoardPage from "@/pages/NoticeBoardPage.vue";
 import AdminMainPage from "@/pages/AdminMainPage.vue";
+import MyPage from "@/pages/MyPage.vue";
 
 const routes = [
   { path: "/", component: MainPage },
@@ -32,6 +33,7 @@ const routes = [
   { path: "/email/verify", component: EmailValidationPage },
   { path: "/notice", component: NoticeBoardPage },
   { path: "/admin/", component: AdminMainPage },
+  { path: "/mypage/", component: MyPage },
 ];
 
 const router = createRouter({
