@@ -2,9 +2,10 @@
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
             <!-- Menu -->
-            <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+            <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme" @mouseenter="delayMenuToggle"
+                @mouseleave="removeMenuToggle">
                 <div class="app-brand demo">
-                    <a href="#" class="app-brand-link">
+                    <a href="#" class="app-brand-link" @click.prevent>
                         <span class="app-brand-logo demo">
                             <img src="../assets/img/icon.png" alt="icon" width="30px" />
                         </span>
@@ -12,132 +13,59 @@
                             <img src="../assets/img/logo.png" alt="logo" width="120px" />
                         </span>
                     </a>
-
-                    <a href="javascript:void(0);"
-                        class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+                    <a href="#" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none"
+                        @click.prevent="toggleMenu">
                         <i class="bx bx-chevron-left bx-sm align-middle"></i>
                     </a>
                 </div>
-
                 <div class="menu-inner-shadow"></div>
-
                 <ul class="menu-inner py-1">
+                    <!-- Menu Header -->
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">admin</span>
                     </li>
-                    <!-- Pages -->
-                    <li class="menu-item">
-                        <a href="javascript:void(0);" class="menu-link menu-toggle">
-                            <i class="menu-icon tf-icons bx bx-lock-open-alt"></i>
-                            <div data-i18n="Authentications">관리자 계정</div>
+                    <!-- Menu Items -->
+                    <li class="menu-item" v-for="(item, key) in submenuVisible" :key="key">
+                        <a href="#" class="menu-link menu-toggle" @click.prevent="toggleSubmenu(key)">
+                            <i class="menu-icon tf-icons" :class="item.icon"></i>
+                            <div>{{ item.name }}</div>
                         </a>
-                        <ul class="menu-sub">
-                            <li class="menu-item">
-                                <a href="#" class="menu-link" target="_blank">
-                                    <div data-i18n="Basic">관리자 회원 가입</div>
-                                </a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="menu-link" target="_blank">
-                                    <div data-i18n="Basic">관리자 회원 탈퇴</div>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="menu-item">
-                        <a href="javascript:void(0);" class="menu-link menu-toggle">
-                            <i class="menu-icon tf-icons bx bx-dock-top"></i>
-                            <div data-i18n="Account Settings">회원</div>
-                        </a>
-                        <ul class="menu-sub">
-                            <li class="menu-item">
+                        <ul class="menu-sub" :class="{ 'd-block': item.visible, 'd-none': !item.visible }">
+                            <li class="menu-item" v-for="subItem in item.submenu" :key="subItem.name">
                                 <a href="#" class="menu-link">
-                                    <div data-i18n="Notifications">회원 조회</div>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="menu-item">
-                        <a href="javascript:void(0);" class="menu-link menu-toggle">
-                            <i class="menu-icon tf-icons bx bx-cube-alt"></i>
-                            <div data-i18n="Misc">카테고리</div>
-                        </a>
-                        <ul class="menu-sub">
-                            <li class="menu-item">
-                                <a href="#" class="menu-link">
-                                    <div data-i18n="Error">카테고리 등록</div>
-                                </a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="menu-link">
-                                    <div data-i18n="Under Maintenance">카테고리 조회</div>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="menu-item">
-                        <a href="javascript:void(0);" class="menu-link menu-toggle">
-                            <i class="menu-icon tf-icons bx bx-cube-alt"></i>
-                            <div data-i18n="Misc">태그</div>
-                        </a>
-                        <ul class="menu-sub">
-                            <li class="menu-item">
-                                <a href="#" class="menu-link">
-                                    <div data-i18n="Error">태그 등록</div>
-                                </a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="menu-link">
-                                    <div data-i18n="Under Maintenance">태그 조회</div>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="menu-item">
-                        <a href="javascript:void(0);" class="menu-link menu-toggle">
-                            <i class="menu-icon tf-icons bx bx-cube-alt"></i>
-                            <div data-i18n="Misc">공지사항</div>
-                        </a>
-                        <ul class="menu-sub">
-                            <li class="menu-item">
-                                <a href="#" class="menu-link">
-                                    <div data-i18n="Error">공지사항 등록</div>
-                                </a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="menu-link">
-                                    <div data-i18n="Under Maintenance">공지사항 조회</div>
+                                    <div>{{ subItem.name }}</div>
                                 </a>
                             </li>
                         </ul>
                     </li>
                 </ul>
             </aside>
-            <!-- / Menu -->
+            <!-- /Menu -->
 
             <!-- Layout container -->
             <div class="layout-page">
+                <!-- Navbar -->
                 <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
                     id="layout-navbar">
                     <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
-                        <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                        <a class="nav-item nav-link px-0 me-xl-4" href="#" @click.prevent="toggleMenu">
                             <i class="bx bx-menu bx-sm"></i>
                         </a>
                     </div>
 
                     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+                        <!-- Navbar items -->
                         <ul class="navbar-nav flex-row align-items-center ms-auto">
-                            <!-- Place this tag where you want the button to render. -->
                             <!-- User -->
                             <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
-                                    data-bs-toggle="dropdown">
+                                <a class="nav-link dropdown-toggle hide-arrow" href="#" role="button"
+                                    aria-haspopup="true" aria-expanded="false" @click.prevent="toggleUserMenu">
                                     <div class="avatar avatar-online">
                                         <img src="../assets/img/profile.jpg" alt
                                             class="w-px-40 h-auto rounded-circle" />
                                     </div>
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end">
+                                <ul class="dropdown-menu dropdown-menu-end" v-show="userMenuVisible">
                                     <li>
                                         <a class="dropdown-item" href="#">
                                             <div class="d-flex">
@@ -148,7 +76,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="flex-grow-1">
-                                                    <span class="fw-medium d-block">John Doe</span>
+                                                    <span class="fw-semibold d-block">John Doe</span>
                                                     <small class="text-muted">Admin</small>
                                                 </div>
                                             </div>
@@ -158,7 +86,7 @@
                                         <div class="dropdown-divider"></div>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="javascript:void(0);">
+                                        <a class="dropdown-item" href="#">
                                             <i class="bx bx-power-off me-2"></i>
                                             <span class="align-middle">Log Out</span>
                                         </a>
@@ -169,24 +97,101 @@
                         </ul>
                     </div>
                 </nav>
+                <!-- /Navbar -->
 
                 <!-- Content wrapper -->
                 <div class="content-wrapper">
                     <!-- Content -->
                     <div class="content-backdrop fade"></div>
                 </div>
-                <!-- Content wrapper -->
+                <!-- /Content wrapper -->
             </div>
-            <!-- / Layout page -->
+            <!-- /Layout page -->
         </div>
     </div>
 </template>
 
 <script>
+import { reactive, ref } from 'vue';
+
 export default {
     name: "AdminMenuComponent",
+    setup() {
+        const submenuVisible = reactive({
+            adminAccount: {
+                name: '관리자 계정',
+                icon: 'bx bx-lock-open-alt',
+                visible: false,
+                submenu: [
+                    { name: '관리자 회원 가입' },
+                    { name: '관리자 회원 탈퇴' },
+                ],
+            },
+            member: {
+                name: '회원',
+                icon: 'bx bx-dock-top',
+                visible: false,
+                submenu: [
+                    { name: '회원 조회' },
+                ],
+            },
+            category: {
+                name: '카테고리',
+                icon: 'bx bx-cube-alt',
+                visible: false,
+                submenu: [
+                    { name: '카테고리 등록' },
+                    { name: '카테고리 조회' },
+                ],
+            },
+            tag: {
+                name: '태그',
+                icon: 'bx bx-tag',
+                visible: false,
+                submenu: [
+                    { name: '태그 등록' },
+                    { name: '태그 조회' },
+                ],
+            },
+            notice: {
+                name: '공지사항',
+                icon: 'bx bx-news',
+                visible: false,
+                submenu: [
+                    { name: '공지사항 등록' },
+                    { name: '공지사항 조회' },
+                ],
+            },
+        });
+
+        const userMenuVisible = ref(false);
+
+        const toggleSubmenu = (key) => {
+            submenuVisible[key].visible = !submenuVisible[key].visible;
+        };
+
+        const toggleMenu = () => {
+            // Implement if needed
+        };
+
+        const delayMenuToggle = () => {
+            // Implement if needed
+        };
+
+        const removeMenuToggle = () => {
+            // Implement if needed
+        };
+
+        const toggleUserMenu = () => {
+            userMenuVisible.value = !userMenuVisible.value;
+            console.log("User menu visibility toggled:", userMenuVisible.value); // 디버깅 로그
+        };
+
+        return { submenuVisible, toggleSubmenu, toggleMenu, delayMenuToggle, removeMenuToggle, userMenuVisible, toggleUserMenu };
+    },
 };
 </script>
+
 
 <style scoped>
 @import url("@/assets/css/auth-boxicons.css");
@@ -1838,8 +1843,6 @@ body {
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: rgba(67, 89, 113, 0);
     text-rendering: optimizeLegibility;
-    font-smoothing: antialiased;
-    -moz-font-feature-settings: "liga" on;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -1968,9 +1971,7 @@ button {
 [type="button"],
 [type="reset"],
 [type="submit"],
-button {
-    -webkit-appearance: button;
-}
+
 
 ::-moz-focus-inner {
     padding: 0;
@@ -1992,7 +1993,6 @@ button {
 }
 
 [type="search"] {
-    -webkit-appearance: textfield;
     outline-offset: -2px;
 }
 
@@ -2016,7 +2016,6 @@ button {
 
 ::file-selector-button {
     font: inherit;
-    -webkit-appearance: button;
 }
 
 .display-1,
@@ -3103,10 +3102,56 @@ html:not(.layout-menu-fixed) .menu-inner-shadow {
     display: none;
 }
 
+.layout-navbar-fixed .layout-wrapper:not(.layout-horizontal) .layout-page:before {
+    content: "";
+    width: 100%;
+    height: 0.75rem;
+    position: fixed;
+    top: 0px;
+    z-index: 10;
+}
+
+.layout-navbar-fixed .layout-page:before {
+    backdrop-filter: saturate(200%) blur(10px);
+    background: rgba(245, 245, 249, 0.6);
+}
+
+.layout-navbar-fixed .layout-wrapper:not(.layout-horizontal):not(.layout-without-menu) .layout-page {
+    padding-top: 76px !important;
+}
+
+/* Default navbar */
+.layout-navbar-fixed .layout-wrapper:not(.layout-without-menu) .layout-page {
+    padding-top: 64px !important;
+}
+
+.docs-page .layout-navbar-fixed.layout-wrapper:not(.layout-without-menu) .layout-page,
+.docs-page .layout-menu-fixed.layout-wrapper:not(.layout-without-menu) .layout-page {
+    padding-top: 62px !important;
+}
+
+html:not(.layout-navbar-fixed):not(.layout-menu-fixed):not(.layout-menu-fixed-offcanvas) .layout-page,
+html:not(.layout-navbar-fixed) .layout-content-navbar .layout-page {
+    padding-top: 0 !important;
+}
+
+@media (min-width: 1200px) {
+
+    .layout-menu-fixed:not(.layout-menu-collapsed) .layout-page,
+    .layout-menu-fixed-offcanvas:not(.layout-menu-collapsed) .layout-page {
+        padding-left: 16.25rem;
+    }
+}
+
 .dropdown-menu,
 .navbar-expand .navbar-nav .dropdown-menu {
     position: absolute;
+    right: auto;
+    /* 오른쪽 위치 조정 해제 */
+    left: 0;
+    /* 왼쪽에 위치하도록 설정 */
 }
+
 
 .dropdown-toggle::after {
     display: inline-block;
@@ -3147,7 +3192,6 @@ html:not(.layout-menu-fixed) .menu-inner-shadow {
     --bs-dropdown-header-padding-x: 1.25rem;
     --bs-dropdown-header-padding-y: 0.3125rem;
     z-index: var(--bs-dropdown-zindex);
-    display: none;
     min-width: var(--bs-dropdown-min-width);
     padding: var(--bs-dropdown-padding-y) var(--bs-dropdown-padding-x);
     margin: 0;
@@ -3158,6 +3202,11 @@ html:not(.layout-menu-fixed) .menu-inner-shadow {
     background-clip: padding-box;
     border: var(--bs-dropdown-border-width) solid var(--bs-dropdown-border-color);
     border-radius: var(--bs-dropdown-border-radius);
+    right: auto;
+    /* 오른쪽 정렬 해제 */
+    left: 0;
+    /* 왼쪽 정렬 지정 */
+    box-shadow: 0 0.25rem 1rem rgba(161, 172, 184, 0.45);
 }
 
 .card,
@@ -3643,6 +3692,15 @@ a.bg-light:hover {
         display: inline-table;
     }
 }
+
+.dropdown-menu.show {
+    display: block;
+    right: 0;
+    /* 드랍다운 메뉴를 오른쪽으로 정렬합니다. */
+    left: auto;
+    /* 왼쪽 정렬을 해제합니다. */
+}
+
 
 .table th {
     font-size: 0.75rem;
