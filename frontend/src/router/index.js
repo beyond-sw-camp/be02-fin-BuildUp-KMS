@@ -14,6 +14,8 @@ import BoardListPage from "@/pages/BoardListPage.vue";
 import EmailValidationPage from "@/pages/EmailValidationPage.vue";
 import AdminMainPage from "@/pages/AdminMainPage.vue";
 
+import AdminWithdrawPage from "@/pages/AdminWithdrawPage.vue";
+
 const routes = [
   { path: "/", component: MainPage },
   { path: "/auth/signup", component: AuthSignupPage },
@@ -27,7 +29,9 @@ const routes = [
   { path: "/board", component: BoardListPage },
   { path: "/select/signup", component: MainSignupPage },
   { path: "/email/verify", component: EmailValidationPage },
-  { path: "/admin/", component: AdminMainPage },
+  { path: "/admin", component: AdminMainPage },
+
+  { path: "/admin/withdraw", component: AdminWithdrawPage },
 ];
 
 const router = createRouter({
