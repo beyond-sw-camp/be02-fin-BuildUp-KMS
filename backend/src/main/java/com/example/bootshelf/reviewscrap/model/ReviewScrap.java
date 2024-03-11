@@ -1,6 +1,7 @@
 package com.example.bootshelf.reviewscrap.model;
 
 import com.example.bootshelf.review.model.entity.Review;
+import com.example.bootshelf.reviewscrap.model.request.PostCreateReviewScrapReq;
 import com.example.bootshelf.user.model.entity.User;
 import lombok.*;
 
