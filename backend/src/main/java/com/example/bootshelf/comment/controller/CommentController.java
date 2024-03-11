@@ -32,7 +32,7 @@ public class CommentController {
     @RequestMapping(method = RequestMethod.POST, value = "/{reviewIdx}/comment/create")
     public ResponseEntity createComment(@PathVariable @NotNull @Positive Integer reviewIdx,@RequestBody PostCreateCommentReq commentCreateReq) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        BaseRes baseRes = commentService.createComment(user, reviewIdx, commentCreateReq);
+        BaseRes baseRes = commentService.createComment(user,reviewIdx, commentCreateReq);
 
         return ResponseEntity.ok().body(baseRes);
     }

@@ -81,7 +81,7 @@ public class CommentService {
     }
 
     @Transactional(readOnly = false)
-    public BaseRes updateComment(Integer reviewIdx, PatchUpdateCommentReq patchUpdateCommentReq, User user) {
+    public BaseRes updateComment(Integer reviewIdx, PatchUpdateCommentReq patchUpdateCommentReq,User user) {
 
         Optional<Comment> result = commentRepository.findByCommentIdx(patchUpdateCommentReq.getCommentIdx());
 
