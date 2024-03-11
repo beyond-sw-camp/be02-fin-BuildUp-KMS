@@ -87,7 +87,6 @@ public class UserService {
 
 
         BaseRes baseRes = BaseRes.builder()
-                .code(200)
                 .isSuccess(true)
                 .message("회원가입에 성공하였습니다.")
                 .result(PostSignupRes.builder()
@@ -119,7 +118,6 @@ public class UserService {
         }
 
         return BaseRes.builder()
-                .code(200)
                 .isSuccess(true)
                 .message("요청 성공")
                 .result(getListUserResList)
@@ -140,7 +138,6 @@ public class UserService {
                     .build();
 
             return BaseRes.builder()
-                    .code(200)
                     .isSuccess(true)
                     .message("요청 성공")
                     .result(getListUserRes)
@@ -166,7 +163,6 @@ public class UserService {
                     .build();
 
             return BaseRes.builder()
-                    .code(200)
                     .isSuccess(true)
                     .message("로그인에 성공하였습니다.")
                     .result(postUserLoginRes)
@@ -214,7 +210,6 @@ public class UserService {
             entityManager.flush();
 
             return BaseRes.builder()
-                    .code(200)
                     .isSuccess(true)
                     .message("메일 인증에 성공하였습니다.")
                     .result(GetEmailVerifyRes.builder()
@@ -281,7 +276,6 @@ public class UserService {
                     .build();
 
             return BaseRes.builder()
-                    .code(200)
                     .isSuccess(true)
                     .message("회원정보 수정 성공")
                     .result(patchUserUpdateRes)
@@ -291,13 +285,12 @@ public class UserService {
     }
 
     @Transactional(readOnly = false)
-    public BaseRes cancle(Integer userIdx) {
+    public BaseRes cancel(Integer userIdx) {
 
         Integer result = userRepository.deleteByIdx(userIdx);
         if (!result.equals(0)) {
 
             return BaseRes.builder()
-                    .code(200)
                     .isSuccess(true)
                     .message("요청 성공")
                     .result("회원이 삭제되었습니다.")
@@ -317,7 +310,6 @@ public class UserService {
                     userRepository.save(loginUser);
 
                 return BaseRes.builder()
-                    .code(200)
                     .isSuccess(true)
                     .message("요청 성공")
                     .result("회원의 상태가 탈퇴 상태로 변경되었습니다.")
