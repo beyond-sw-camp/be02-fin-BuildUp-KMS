@@ -12,9 +12,6 @@ import lombok.*;
 @ApiModel(description = "Base response")
 public class BaseRes {
 
-    @ApiModelProperty(value = "Response code", example = "200")
-    private Integer code;
-
     @ApiModelProperty(value = "Is success flag", example = "true")
     private Boolean isSuccess;
 

@@ -52,18 +52,7 @@ public class ReviewComment {
     private Boolean status;
 
     @Column(updatable = false, nullable = false)
-    private Date createdAt;
+    private String createdAt;
 
-    private Date updatedAt;
-
-    @PrePersist
-    void createdAt() {
-        this.createdAt = Timestamp.from(Instant.now());
-        this.updatedAt = Timestamp.from(Instant.now());
-    }
-
-    @PreUpdate
-    void updatedAt() {
-        this.updatedAt = Timestamp.from(Instant.now());
-    }
+    private String updatedAt;
 }
