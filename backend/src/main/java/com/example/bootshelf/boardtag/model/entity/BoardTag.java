@@ -34,19 +34,9 @@ public class BoardTag {
     private Boolean status;
 
     @Column(nullable = false)
-    private Date createdAt;
+    private String createdAt;
 
     @Column(nullable = false)
-    private Date updatedAt;
+    private String updatedAt;
 
-    @PrePersist
-    void createdAt() {
-        this.createdAt = Timestamp.from(Instant.now());
-        this.updatedAt = Timestamp.from(Instant.now());
-    }
-
-    @PreUpdate
-    void updatedAt() {
-        this.updatedAt = Timestamp.from(Instant.now());
-    }
 }

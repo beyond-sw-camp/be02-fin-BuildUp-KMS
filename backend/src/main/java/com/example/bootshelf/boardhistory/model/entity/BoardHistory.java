@@ -33,11 +33,6 @@ public class BoardHistory {
     private Board board;
 
     @Column(nullable = false)
-    private Date deletedAt;
-
-    @PrePersist
-    void deletedAt() {
-        this.deletedAt = Timestamp.from(Instant.now());
-    }
+    private String deletedAt;
 
 }
