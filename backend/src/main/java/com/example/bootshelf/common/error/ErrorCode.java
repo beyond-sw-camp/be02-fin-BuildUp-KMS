@@ -15,13 +15,14 @@ public enum ErrorCode {
     INVALID_VERIFICATION_TOKEN(HttpStatus.UNAUTHORIZED, "ACCOUNT-003", "토큰이 유효하지 않은 경우"),
     EXPIRED_VERIFICATION_TOKEN(HttpStatus.UNAUTHORIZED, "ACCOUNT-004", "토큰의 유효기간이 만료된 경우"),
 
+    // 회원
+    DUPLICATE_SIGNUP_EMAIL(HttpStatus.BAD_REQUEST, "USER-001", "회원 이메일이 중복된 경우"),
+    DUPLICATE_SIGNUP_NICKNAME(HttpStatus.BAD_REQUEST, "USER-002", "회원 닉네임이 중복된 경우"),
+    USER_NOT_EXISTS(HttpStatus.NOT_FOUND, "USER-003", "회원을 찾을 수 없는 경우"),
+    DIFFERENT_USER_PASSWORD(HttpStatus.BAD_REQUEST, "USER-004", "회원의 패스워드가 저장된 데이터와 다른 경우"),
 
     // 리뷰
-    REVIEW_NOT_EXISTS(HttpStatus.UNAUTHORIZED, "REVIEW-001", "해당 리뷰가 존재하지 않습니다."),
-
-
-    ;
-
+    REVIEW_NOT_EXISTS(HttpStatus.UNAUTHORIZED, "REVIEW-001", "해당 리뷰가 존재하지 않습니다.");
 
     private final HttpStatus status;  // 헤더로 반환할 Http 상태 코드
     private final String code;    // 페이로드로 반환할 에러 코드
