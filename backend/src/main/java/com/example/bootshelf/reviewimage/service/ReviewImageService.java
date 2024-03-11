@@ -73,6 +73,7 @@ public class ReviewImageService {
             reviewImageRepository.save(ReviewImage.builder()
                     .review(review)
                     .reviewImage(saveFileName.replace(File.separator, "/"))
+                    .status(true)
                     .build());
 
             reviewImageList.add(saveFileName.replace(File.separator, "/"));
