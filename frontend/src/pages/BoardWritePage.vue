@@ -46,7 +46,13 @@
           </div>
         </div>
         <div class="css-agejl7">
-          <div class="css-r8q25b">게시글 작성하기</div>
+          <div class="css-r8q25b">
+            {{
+              selectedCategory
+                ? "[ " + selectedCategory + "] 게시글 작성하기"
+                : "게시글 작성하기"
+            }}
+          </div>
           <div class="css-1iyoj2o">
             <div class="css-1odc90o">
               <div class="css-1t5srfe">
@@ -141,6 +147,21 @@
             <div class="">
               <div class="quill">
                 <div class="ql-container ql-snow">
+                  <!-----이미지 들어가는 곳----->
+                  <div class="css-image" style="text-align: center">
+                    <div
+                      class="image-container"
+                      style="max-width: 100%; display: inline-block"
+                    >
+                      <img
+                        v-if="imageUrl"
+                        :src="imageUrl"
+                        alt="Uploaded Image"
+                        style="max-width: 100%; height: auto"
+                      />
+                    </div>
+                  </div>
+                  <!-----이미지 들어가는 곳----->
                   <textarea
                     class="ql-editor ql-blank"
                     placeholder="내용을 입력하세요
@@ -246,19 +267,6 @@
             style="display: none"
             @change="handleImageUpload"
           />
-          <div class="css-image" style="text-align: center">
-            <div
-              class="image-container"
-              style="max-width: 100%; display: inline-block"
-            >
-              <img
-                v-if="imageUrl"
-                :src="imageUrl"
-                alt="Uploaded Image"
-                style="max-width: 100%; height: auto"
-              />
-            </div>
-          </div>
           <div class="css-lycl0a">
             <button class="css-9ns22y">취소</button>
             <button class="css-1c8gn7d">등록하기</button>
