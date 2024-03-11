@@ -45,9 +45,8 @@ public class CommentService {
                 .build();
 
         BaseRes baseRes = BaseRes.builder()
-                .code(200)
                 .isSuccess(true)
-                .message("댓글 등록 성공")
+                .message("후기글 댓글 등록 성공")
                 .result(createCommentResponse)
                 .build();
 
@@ -72,7 +71,6 @@ public class CommentService {
         }
 
         BaseRes baseRes = BaseRes.builder()
-                .code(200)
                 .isSuccess(true)
                 .message("요청 성공")
                 .result(response)
@@ -100,7 +98,6 @@ public class CommentService {
                         .build();
 
                 BaseRes baseRes = BaseRes.builder()
-                        .code(200)
                         .isSuccess(true)
                         .message("댓글 수정 성공")
                         .result(patchUpdateCommentRes)
@@ -112,7 +109,6 @@ public class CommentService {
 
         } else {
             return BaseRes.builder()
-                    .code(400)
                     .isSuccess(false)
                     .message("댓글 수정 실패")
                     .result("잘못된 요청입니다.")
@@ -127,14 +123,12 @@ public class CommentService {
 
         if(!result.equals(0)) {
             return BaseRes.builder()
-                    .code(200)
                     .isSuccess(true)
                     .message("댓글 삭제 성공")
                     .result(commentIdx)
                     .build();
         }
         return BaseRes.builder()
-                .code(400)
                 .isSuccess(false)
                 .message("댓글 삭제 실패")
                 .result("잘못된 요청입니다.")
