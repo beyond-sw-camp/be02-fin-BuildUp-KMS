@@ -29,10 +29,5 @@ public class ReviewHistory {
     private Review review;
 
     @Column(updatable = false, nullable = false)
-    private Date deletedAt;
-
-    @PrePersist
-    void deletedAt() {
-        this.deletedAt = Timestamp.from(Instant.now());
-    }
+    private String deletedAt;
 }

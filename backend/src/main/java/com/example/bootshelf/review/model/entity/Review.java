@@ -58,23 +58,12 @@ public class Review {
     private Boolean status;
 
     @Column(updatable = false, nullable = false)
-    private Date createdAt;
+    private String createdAt;
 
-    private Date updatedAt;
+    private String updatedAt;
 
     private Integer viewCnt;
     private Integer upCnt;
     private Integer scrapCnt;
     private Integer commentCnt;
-
-    @PrePersist
-    void createdAt() {
-        this.createdAt = Timestamp.from(Instant.now());
-        this.updatedAt = Timestamp.from(Instant.now());
-    }
-
-    @PreUpdate
-    void updatedAt() {
-        this.updatedAt = Timestamp.from(Instant.now());
-    }
 }

@@ -15,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @Service
@@ -28,11 +30,7 @@ public class ReviewScrapService {
         Review review = reviewRepository.findById(req.getReviewIdx())
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.REVIEW_NOT_EXISTS, "해당 리뷰가 존재하지 않습니다." + req.getReviewIdx()));
 
-        ReviewScrap reviewScrap = ReviewScrap.builder()
-                .user(User.builder().idx(user.getIdx()).build())
-                .review(Review.builder().idx(req.getReviewIdx()).build())
-                .status(true)
-                .build();
+        ReviewScrap reviewScrap = ReviewScrap.toEntity(user, req);
 
         reviewScrap = reviewScrapRepository.save(reviewScrap);
 

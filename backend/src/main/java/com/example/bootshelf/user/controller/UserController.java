@@ -109,22 +109,21 @@ public class UserController {
     @ApiOperation(value = "회원 탈퇴", response = BaseRes.class, notes = "회원이 회원 탈퇴를 진행한다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class)) }) })
-    @RequestMapping(method = RequestMethod.DELETE, value = "/delete/{userIdx}")
-    public ResponseEntity delete(@PathVariable @NotNull @Positive Integer userIdx) {
-        BaseRes baseRes = userService.delete(userIdx);
+    @RequestMapping(method = RequestMethod.GET, value = "/cancel")
+    public ResponseEntity cancel() {
+        User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 
-        return ResponseEntity.ok().body(baseRes);
-
+        return ResponseEntity.ok().body(userService.cancel(user.getIdx()));
     }
 
     @ApiOperation(value = "회원 삭제", response = BaseRes.class, notes = "관리자가 탈퇴한 회원의 정보를 삭제한다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class)) }) })
-    @RequestMapping(method = RequestMethod.GET, value = "/cancel")
-    public ResponseEntity cancel() {
-        User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+    @RequestMapping(method = RequestMethod.DELETE, value = "/delete/{userIdx}")
+    public ResponseEntity delete(@PathVariable @NotNull @Positive Integer userIdx) {
+        BaseRes baseRes = userService.delete(userIdx);
 
-        return ResponseEntity.ok().body(userService.delete(user.getIdx()));
+        return ResponseEntity.ok().body(baseRes);
     }
 
         @ApiOperation(value = "회원 정보 수정 시 비밀번호 확인", response = BaseRes.class, notes = "회원이 회원 정보를 수정하기 위해서 비밀번호를 입력한다.")
