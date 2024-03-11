@@ -34,8 +34,6 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idx;
 
-    private String email;
-
     @OneToMany(mappedBy = "user")
     private List<Review> reviewList = new ArrayList<>();
 
