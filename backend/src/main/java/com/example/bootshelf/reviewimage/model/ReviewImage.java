@@ -18,7 +18,7 @@ public class ReviewImage {
 
     @ManyToOne
     @JoinColumn(name = "Review_idx")
-    private Review reviewIdx;
+    private Review review;
 
     private String reviewImage;
     private Boolean status;

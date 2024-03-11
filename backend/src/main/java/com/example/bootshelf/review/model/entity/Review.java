@@ -29,25 +29,25 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(name = "User_idx")
-    private User userIdx;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "ReviewCategory_idx")
-    private ReviewCategory reviewCategoryIdx;
+    private ReviewCategory reviewCategory;
 
-    @OneToMany(mappedBy = "reviewIdx")
+    @OneToMany(mappedBy = "review")
     private List<ReviewUp> reviewUpList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "reviewIdx")
+    @OneToMany(mappedBy = "review")
     private List<ReviewScrap> reviewScrapList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "reviewIdx")
+    @OneToMany(mappedBy = "review")
     private List<ReviewImage> reviewImageList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "reviewIdx")
+    @OneToMany(mappedBy = "review")
     private List<ReviewHistory> reviewHistoryList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "reviewIdx")
+    @OneToMany(mappedBy = "review")
     private List<ReviewComment> reviewCommentList = new ArrayList<>();
 
     private String reviewTitle;

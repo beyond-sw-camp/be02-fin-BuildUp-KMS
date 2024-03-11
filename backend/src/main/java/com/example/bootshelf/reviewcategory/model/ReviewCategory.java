@@ -21,6 +21,6 @@ public class ReviewCategory {
     private String categoryName;
     private Boolean status;
 
-    @OneToMany(mappedBy = "reviewCategoryIdx")
+    @OneToMany(mappedBy = "reviewCategory")
     private List<Review> reviewList = new ArrayList<>();
 }

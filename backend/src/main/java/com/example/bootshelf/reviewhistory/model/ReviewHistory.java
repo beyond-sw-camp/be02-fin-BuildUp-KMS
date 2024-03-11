@@ -22,11 +22,11 @@ public class ReviewHistory {
 
     @ManyToOne
     @JoinColumn(name = "User_idx")
-    private User userIdx;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "Review_idx")
-    private Review reviewIdx;
+    private Review review;
 
     @Column(updatable = false, nullable = false)
     private Date deletedAt;

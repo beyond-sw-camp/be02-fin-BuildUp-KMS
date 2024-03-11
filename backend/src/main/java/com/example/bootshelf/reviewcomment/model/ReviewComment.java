@@ -35,13 +35,13 @@ public class ReviewComment {
 
     @ManyToOne
     @JoinColumn(name = "User_idx")
-    private User userIdx;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "Review_idx")
-    private Review reviewIdx;
+    private Review review;
 
-    @OneToMany(mappedBy = "reviewCommentIdx")
+    @OneToMany(mappedBy = "reviewComment")
     private List<ReviewCommentUp> reviewCommentUpList = new ArrayList<>();
 
 

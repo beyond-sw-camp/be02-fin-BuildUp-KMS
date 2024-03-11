@@ -23,21 +23,21 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idx;
 
-    @OneToMany(mappedBy = "userIdx")
+    @OneToMany(mappedBy = "user")
     private List<Review> reviewList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "userIdx")
+    @OneToMany(mappedBy = "user")
     private List<ReviewUp> reviewUpList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "userIdx")
+    @OneToMany(mappedBy = "user")
     private List<ReviewScrap> reviewScrapList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "userIdx")
+    @OneToMany(mappedBy = "user")
     private List<ReviewHistory> reviewHistoryList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "userIdx")
+    @OneToMany(mappedBy = "user")
     private List<ReviewComment> reviewCommentList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "userIdx")
+    @OneToMany(mappedBy = "user")
     private List<ReviewCommentUp> reviewCommentUpList = new ArrayList<>();
 }
