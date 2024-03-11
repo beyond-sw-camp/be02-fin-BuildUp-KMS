@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -88,7 +89,7 @@ public class CommentService {
 
         if (result.isPresent()) {
          Comment comment = result.get();
-            if(comment.getReview().getIdx().equals(reviewIdx)){
+            if(Objects.equals(comment.getReview().getIdx(), reviewIdx)){
 
                 comment.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
                 commentRepository.save(comment);
@@ -121,7 +122,7 @@ public class CommentService {
     }
 
     @Transactional(readOnly = false)
-    public BaseRes deleteComment(Integer commentIdx, User user) {
+    public BaseRes deleteComment(Integer reviewIdx, Integer commentIdx, User user) {
         Integer result = commentRepository.deleteByCommentIdxAndUser_userIdx(commentIdx, user.getIdx());
 
         if(!result.equals(0)) {

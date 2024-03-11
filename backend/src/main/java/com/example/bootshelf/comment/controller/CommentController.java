@@ -61,10 +61,10 @@ public class CommentController {
     @ApiOperation(value = "등록한 댓글 삭제", response = BaseRes.class, notes = "회원은 등록한 댓글을 삭제할 수 있다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class)) }) })
-    @RequestMapping(method = RequestMethod.DELETE, value = "/{reviewIdx}/delete")
-    public ResponseEntity deleteReview(@PathVariable @NotNull @Positive Integer commentIdx) {
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{reviewIdx}/delete/{commentIdx}")
+    public ResponseEntity deleteReview(@PathVariable @NotNull @Positive Integer reviewIdx, @PathVariable @NotNull @Positive Integer commentIdx) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        BaseRes baseRes =  commentService.deleteComment(commentIdx);
+        BaseRes baseRes =  commentService.deleteComment(reviewIdx, commentIdx, user);
 
         return ResponseEntity.ok().body(baseRes);
     }
