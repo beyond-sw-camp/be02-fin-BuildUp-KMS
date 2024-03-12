@@ -2,8 +2,7 @@ package com.example.bootshelf.reviewscrap.service;
 
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.common.error.ErrorCode;
-import com.example.bootshelf.common.error.exception.EntityDuplicateException;
-import com.example.bootshelf.common.error.exception.EntityNotFoundException;
+
 import com.example.bootshelf.review.model.entity.Review;
 import com.example.bootshelf.review.repository.ReviewRepository;
 import com.example.bootshelf.reviewscrap.model.ReviewScrap;

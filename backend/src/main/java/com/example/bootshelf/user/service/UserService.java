@@ -1,16 +1,17 @@
 package com.example.bootshelf.user.service;
 
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.example.bootshelf.common.BaseRes;
+import com.example.bootshelf.common.error.ErrorCode;
 import com.example.bootshelf.config.utils.JwtUtils;
-import com.example.bootshelf.user.exception.UserAccountException;
-import com.example.bootshelf.user.exception.UserDuplicateException;
-import com.example.bootshelf.user.exception.UserNotFoundException;
+import com.example.bootshelf.user.exception.UserException;
 import com.example.bootshelf.user.model.entity.User;
-import com.example.bootshelf.user.model.entity.request.PatchUserUpdateReq;
+import com.example.bootshelf.user.model.entity.request.PatchUpdateUserReq;
 import com.example.bootshelf.user.model.entity.request.PostCheckPasswordReq;
-import com.example.bootshelf.user.model.entity.request.PostSignUpReq;
-import com.example.bootshelf.user.model.entity.request.PostUserLoginReq;
+import com.example.bootshelf.user.model.entity.request.PostSignUpUserReq;
+import com.example.bootshelf.user.model.entity.request.PostLoginUserReq;
 import com.example.bootshelf.user.model.entity.response.*;
 import com.example.bootshelf.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +25,12 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -41,41 +46,72 @@ public class UserService {
     private String secretKey;
     @Value("${jwt.token.expired-time-ms}")
     private Long expiredTimeMs;
+    @Value("${cloud.aws.s3.profile-bucket}")
+    private String profileBucket;
 
     @Autowired
     private EntityManager entityManager;
-
-
+    private final AmazonS3 s3;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JavaMailSender emailSender;
     private final EmailVerifyService emailVerifyService;
 
+    public String makeFolder() {
+        String str = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+        String folderPath = str.replace("/", File.separator);
+        return folderPath;
+    }
 
+    public String saveFile(MultipartFile profileImage) {
+        String originalName = profileImage.getOriginalFilename();
+
+        String folderPath = makeFolder();
+        String uuid = UUID.randomUUID().toString();
+        String saveFileName = folderPath + File.separator + uuid + "_" + originalName;
+
+        try {
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentLength(profileImage.getSize());
+            metadata.setContentType(profileImage.getContentType());
+
+            s3.putObject(profileBucket, saveFileName.replace(File.separator, "/"), profileImage.getInputStream(), metadata);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            // 로컬 파일 시스템에서 파일 삭제
+            File localFile = new File(saveFileName);
+            if (localFile.exists()) {
+                localFile.delete();
+            }
+            return s3.getUrl(profileBucket, saveFileName.replace(File.separator, "/")).toString();
+
+        }
+    }
 
     // 회원가입
     @Transactional(readOnly = false)
-    public BaseRes signup(PostSignUpReq postSignUpReq) {
-        Optional<User> resultEmail = userRepository.findByEmail(postSignUpReq.getUserEmail());
-        Optional<User> resultUserNickName = userRepository.findByNickName(postSignUpReq.getUserNickName());
-
+    public BaseRes signup(PostSignUpUserReq postSignUpUserReq, MultipartFile profileImage) {
+        Optional<User> resultEmail = userRepository.findByEmail(postSignUpUserReq.getEmail());
+        Optional<User> resultUserNickName = userRepository.findByNickName(postSignUpUserReq.getNickName());
 
         // 중복된 이메일에 대한 예외처리
         if (resultEmail.isPresent()) {
-            throw UserDuplicateException.forSignupEmail(postSignUpReq.getUserEmail());
+            throw new UserException(ErrorCode.DUPLICATE_SIGNUP_EMAIL, String.format("SignUp Email [ %s ] is duplicated.", postSignUpUserReq.getEmail()));
         }
         // 중복된 닉네임에 대한 예외처리
         if (resultUserNickName.isPresent()) {
-            throw UserDuplicateException.forSignupUserNickName(postSignUpReq.getUserNickName());
+            throw new UserException(ErrorCode.DUPLICATE_SIGNUP_NICKNAME, String.format("SignUp NickName [ %s ] is duplicated.", postSignUpUserReq.getNickName()));
         }
 
+        String profilePhoto = saveFile(profileImage);
 
         User user = User.builder()
-                .password(passwordEncoder.encode(postSignUpReq.getUserPassword()))
-                .name(postSignUpReq.getUserName())
-                .email(postSignUpReq.getUserEmail())
-                .nickName(postSignUpReq.getUserNickName())
-                .profileImage(postSignUpReq.getUserProfileImage())
+                .password(passwordEncoder.encode(postSignUpUserReq.getPassword()))
+                .name(postSignUpUserReq.getName())
+                .email(postSignUpUserReq.getEmail())
+                .nickName(postSignUpUserReq.getNickName())
+                .profileImage(profilePhoto.replace(File.separator, "/"))
                 .authority("ROLE_USER")
                 .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
                 .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
@@ -84,12 +120,10 @@ public class UserService {
 
         userRepository.save(user);
 
-
-
         BaseRes baseRes = BaseRes.builder()
                 .isSuccess(true)
                 .message("회원가입에 성공하였습니다.")
-                .result(PostSignupRes.builder()
+                .result(PostSignUpUserRes.builder()
                         .userEmail(user.getEmail())
                         .userName(user.getName())
                         .build())
@@ -101,7 +135,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public BaseRes list(Integer page, Integer size) {
 
-        Pageable pageable = PageRequest.of(page-1, size);
+        Pageable pageable = PageRequest.of(page - 1, size);
 
         Page<User> userList = userRepository.findUserList(pageable);
 
@@ -128,7 +162,7 @@ public class UserService {
     public BaseRes read(String email) {
         Optional<User> result = userRepository.findUser(email);
 
-        if(result.isPresent()) {
+        if (result.isPresent()) {
             User user = result.get();
 
             GetListUserRes getListUserRes = GetListUserRes.builder()
@@ -143,32 +177,32 @@ public class UserService {
                     .result(getListUserRes)
                     .build();
         } else {
-            throw UserNotFoundException.forEmail(email);
+            throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("User email [ %s ] is not exists.", email));
         }
     }
 
     // 회원 로그인
     @Transactional(readOnly = false)
-    public BaseRes login(PostUserLoginReq postUserLoginReq) {
-        Optional<User> result = userRepository.findByEmail(postUserLoginReq.getEmail());
+    public BaseRes login(PostLoginUserReq postLoginUserReq) {
+        Optional<User> result = userRepository.findByEmail(postLoginUserReq.getEmail());
 
-        if(result.isEmpty()) {
-            throw UserNotFoundException.forEmail(postUserLoginReq.getEmail());
+        if (result.isEmpty()) {
+            throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("User email [ %s ] is not exists.", postLoginUserReq.getEmail()));
         }
 
         User user = result.get();
-        if (passwordEncoder.matches(postUserLoginReq.getPassword(), user.getPassword()) && user.getStatus().equals(true)) {
-            PostUserLoginRes postUserLoginRes = PostUserLoginRes.builder()
+        if (passwordEncoder.matches(postLoginUserReq.getPassword(), user.getPassword()) && user.getStatus().equals(true)) {
+            PostLoginUserRes postLogInUserRes = PostLoginUserRes.builder()
                     .token(JwtUtils.generateAccessToken(user, secretKey, expiredTimeMs))
                     .build();
 
             return BaseRes.builder()
                     .isSuccess(true)
                     .message("로그인에 성공하였습니다.")
-                    .result(postUserLoginRes)
+                    .result(postLogInUserRes)
                     .build();
         } else {
-            throw UserAccountException.forInvalidPassword(postUserLoginReq.getPassword());
+            throw new UserException(ErrorCode.DIFFERENT_USER_PASSWORD, String.format("User Password [ %s ] is different.", postLoginUserReq.getPassword()));
         }
     }
 
@@ -182,20 +216,18 @@ public class UserService {
         }
     }
 
-
-
     // 인증메일 발송
     @Transactional(readOnly = false)
-    public void sendEmail(PostSignUpReq postSignUpReq) {
+    public void sendEmail(PostSignUpUserReq postSignUpUserReq) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(postSignUpReq.getUserEmail());
+        message.setTo(postSignUpUserReq.getEmail());
         message.setSubject("[BootShelf] 회원가입을 완료하기 위해서 이메일 인증을 진행해 주세요"); // 메일 제목
 
         String uuid = UUID.randomUUID().toString();
-        message.setText("http://localhost:8080/user/verify?email=" + postSignUpReq.getUserEmail() + "&uuid=" + uuid);    // 메일 내용
+        message.setText("http://localhost:8080/user/verify?email=" + postSignUpUserReq.getEmail() + "&uuid=" + uuid);    // 메일 내용
 
         emailSender.send(message);
-        emailVerifyService.create(postSignUpReq.getUserEmail(), uuid);
+        emailVerifyService.create(postSignUpUserReq.getEmail(), uuid);
     }
 
     // 메일 인증 완료 후 회원 상태 수정
@@ -218,7 +250,7 @@ public class UserService {
                             .build())
                     .build();
         } else {
-            throw UserNotFoundException.forEmail(email);
+            throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("User email [ %s ] is not exists.", email));
         }
     }
 
@@ -255,21 +287,21 @@ public class UserService {
 
     // 회원정보 수정
     @Transactional(readOnly = false)
-    public BaseRes update(String userEmail, PatchUserUpdateReq patchUserUpdateReq) {
+    public BaseRes update(String userEmail, PatchUpdateUserReq patchUpdateUserReq) {
         Optional<User> result = userRepository.findByEmail(userEmail);
 
         if (result.isPresent()) {
             User user = result.get();
 
-            if(patchUserUpdateReq.getPassword() != null) {
-                user.update(patchUserUpdateReq, passwordEncoder.encode(patchUserUpdateReq.getPassword()));
+            if (patchUpdateUserReq.getPassword() != null) {
+                user.update(patchUpdateUserReq, passwordEncoder.encode(patchUpdateUserReq.getPassword()));
             } else {
-                user.update(patchUserUpdateReq, null);
+                user.update(patchUpdateUserReq, null);
             }
             user.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
             userRepository.save(user);
 
-            PatchUserUpdateRes patchUserUpdateRes = PatchUserUpdateRes.builder()
+            PatchUpdateUserRes patchUpdateUserRes = PatchUpdateUserRes.builder()
                     .userPassWord(user.getPassword())
                     .userNickName(user.getNickName())
                     .profileImage(user.getProfileImage())
@@ -278,14 +310,34 @@ public class UserService {
             return BaseRes.builder()
                     .isSuccess(true)
                     .message("회원정보 수정 성공")
-                    .result(patchUserUpdateRes)
+                    .result(patchUpdateUserRes)
                     .build();
         } else {
-            throw UserNotFoundException.forEmail(userEmail);        }
+            throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("User email [ %s ] is not exists.", userEmail));
+        }
     }
 
     @Transactional(readOnly = false)
     public BaseRes cancel(Integer userIdx) {
+
+        Optional<User> byUserIdx = userRepository.findByIdx(userIdx);
+        if (byUserIdx.isPresent()) {
+            User loginUser = byUserIdx.get();
+            loginUser.setStatus(false);
+            userRepository.save(loginUser);
+
+            return BaseRes.builder()
+                    .isSuccess(true)
+                    .message("요청 성공")
+                    .result("회원의 상태가 탈퇴 상태로 변경되었습니다.")
+                    .build();
+        } else {
+            throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("UserIdx [ %s ] is not exists.", userIdx));
+        }
+    }
+
+    @Transactional(readOnly = false)
+    public BaseRes delete(Integer userIdx) {
 
         Integer result = userRepository.deleteByIdx(userIdx);
         if (!result.equals(0)) {
@@ -296,27 +348,7 @@ public class UserService {
                     .result("회원이 삭제되었습니다.")
                     .build();
         } else {
-            throw UserNotFoundException.forIdx(userIdx);
-        }
-    }
-
-    @Transactional(readOnly = false)
-    public BaseRes delete(Integer idx) {
-
-        Optional<User> byUserIdx = userRepository.findByIdx(idx);
-                if (byUserIdx.isPresent()) {
-                    User loginUser = byUserIdx.get();
-                    loginUser.setStatus(false);
-                    userRepository.save(loginUser);
-
-                return BaseRes.builder()
-                    .isSuccess(true)
-                    .message("요청 성공")
-                    .result("회원의 상태가 탈퇴 상태로 변경되었습니다.")
-                    .build();
-        } else {
-
-            throw UserNotFoundException.forIdx(idx);
+            throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("UserIdx [ %s ] is not exists.", userIdx));
         }
     }
 }
