@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
@@ -23,8 +24,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 @RestController
-@RequestMapping("/user")
 @RequiredArgsConstructor
+@RequestMapping("/user")
 @CrossOrigin("*")
 @Api(value="회원 컨트롤러 v1", tags="회원 API")
 public class UserController {
@@ -37,11 +38,12 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class)) }) })
     @RequestMapping(method = RequestMethod.POST, value = "/signup")
-    public ResponseEntity signup(@RequestBody @Valid PostSignUpReq postSignUpReq) {
-        BaseRes baseRes = userService.signup(postSignUpReq);
-
+    public ResponseEntity signup(
+            @RequestPart(value = "user") @Valid PostSignUpUserReq postSignUpUserReq,
+            @RequestPart(value = "profileImage") MultipartFile profileImage) {
+        BaseRes baseRes = userService.signup(postSignUpUserReq, profileImage);
         // 인증메일 발송
-        userService.sendEmail(postSignUpReq);
+        userService.sendEmail(postSignUpUserReq);
 
         return ResponseEntity.ok().body(baseRes);
     }
@@ -68,9 +70,9 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class)) }) })
     @RequestMapping(method = RequestMethod.POST, value = "/login")
-    public ResponseEntity login(@RequestBody @Valid PostUserLoginReq postUserLoginReq) {
+    public ResponseEntity login(@RequestBody @Valid PostLoginUserReq postLoginUserReq) {
 
-        BaseRes baseRes = userService.login(postUserLoginReq);
+        BaseRes baseRes = userService.login(postLoginUserReq);
         return ResponseEntity.ok().body(baseRes);
     }
 
@@ -99,9 +101,10 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class)) }) })
     @RequestMapping(method = RequestMethod.PATCH, value = "/update")
-    public ResponseEntity update(@RequestBody @Valid PatchUserUpdateReq patchUserUpdateReq) {
+    public ResponseEntity update( @RequestPart(value = "user") @Valid PatchUpdateUserReq patchUpdateUserReq,
+                                  @RequestPart(value = "profileImage") MultipartFile profileImage) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        BaseRes baseRes = userService.update(user.getEmail(), patchUserUpdateReq);
+        BaseRes baseRes = userService.update(user.getEmail(), patchUpdateUserReq);
 
         return ResponseEntity.ok().body(baseRes);
     }

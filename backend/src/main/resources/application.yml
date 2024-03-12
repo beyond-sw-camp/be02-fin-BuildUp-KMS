@@ -13,7 +13,7 @@ spring:
               - profile_nickname
               - profile_image
             authorization-grant-type: authorization_code
-            redirect-uri:  https://www.lonuashop.kro.kr/api/login/oauth2/code/kakao
+            redirect-uri:  http://localhost:8080/login/oauth2/code/kakao
             client-name: Kakao
             client-authentication-method: POST
         provider:

@@ -1,15 +1,13 @@
-package com.example.bootshelf.reviewcomment.model;
+package com.example.bootshelf.reviewcomment.model.entity;
 
 import com.example.bootshelf.review.model.entity.Review;
 import com.example.bootshelf.reviewcommentup.model.ReviewCommentUp;
 import com.example.bootshelf.user.model.entity.User;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -47,6 +45,7 @@ public class ReviewComment {
 
     private String reviewCommentContent;
 
+    @ColumnDefault("0")
     private Integer upCnt;
 
     private Boolean status;

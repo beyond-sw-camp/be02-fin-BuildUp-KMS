@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PatchUserUpdateRes {
+public class PatchUpdateUserRes {
     private String userPassWord;
     private String userNickName;
     private String profileImage;

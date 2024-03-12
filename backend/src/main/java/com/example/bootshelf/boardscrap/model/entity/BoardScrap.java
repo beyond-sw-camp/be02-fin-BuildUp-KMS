@@ -1,13 +1,14 @@
 package com.example.bootshelf.boardscrap.model.entity;
 
 import com.example.bootshelf.board.model.entity.Board;
+import com.example.bootshelf.boardscrap.model.request.PostCreateBoardScrapReq;
 import com.example.bootshelf.user.model.entity.User;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.util.Date;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter
@@ -38,4 +39,13 @@ public class BoardScrap {
     @Column(nullable = false)
     private String updatedAt;
 
+    public static BoardScrap toEntity(User user, PostCreateBoardScrapReq req) {
+        return BoardScrap.builder()
+                .user(User.builder().idx(user.getIdx()).build())
+                .board(Board.builder().idx(req.getBoardIdx()).build())
+                .status(true)
+                .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+                .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+                .build();
+    }
 }
