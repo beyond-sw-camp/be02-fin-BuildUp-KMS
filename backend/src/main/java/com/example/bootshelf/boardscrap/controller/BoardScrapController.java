@@ -2,6 +2,7 @@ package com.example.bootshelf.boardscrap.controller;
 
 import com.example.bootshelf.boardscrap.model.request.PostCreateBoardScrapReq;
 import com.example.bootshelf.boardscrap.service.BoardScrapService;
+import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.user.model.entity.User;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,12 +35,14 @@ public class BoardScrapController {
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
     @PostMapping("/create")
-    public ResponseEntity createBoardScrap(
+    public ResponseEntity<BaseRes> createBoardScrap(
             @AuthenticationPrincipal User user,
             @RequestBody PostCreateBoardScrapReq postCreateBoardScrapReq
-    ) throws Exception {
+    ) {
         return ResponseEntity.ok().body(boardScrapService.createBoardScrap(user, postCreateBoardScrapReq));
     }
+
+
 
     @Operation(summary = "BoardScrap 목록 조회",
             description = "스크랩한 게시판 게시글 목록을 조회하는 API입니다.")
@@ -48,12 +51,28 @@ public class BoardScrapController {
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
     @GetMapping("/list")
-    public ResponseEntity findBoardScrapList(
+    public ResponseEntity<BaseRes> findBoardScrapList(
             @AuthenticationPrincipal User user,
             @PageableDefault(size = 10) Pageable pageable
-    ) throws Exception {
+    ) {
         return ResponseEntity.ok().body(boardScrapService.findBoardScrapList(user, pageable));
     }
+
+
+    @Operation(summary = "BoardScrap 여부 조회",
+            description = "게시글을 스크랩 여부를 확인하는 API입니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+    })
+    @GetMapping("/check/{boardIdx}")
+    public ResponseEntity<BaseRes> checkBoardScrap(
+            @AuthenticationPrincipal User user,
+            @PathVariable Integer boardIdx
+    ) {
+        return ResponseEntity.ok().body(boardScrapService.checkBoardScrap(user, boardIdx));
+    }
+
 
     @Operation(summary = "BoardScrap 스크랩 삭제",
             description = "스크랩한 게시판 게시글을 삭제하는 API입니다.")
@@ -62,10 +81,10 @@ public class BoardScrapController {
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
     @PatchMapping("/delete/{boardScrapIdx}")
-    public ResponseEntity deleteBoardScrap(
+    public ResponseEntity<BaseRes> deleteBoardScrap(
             @AuthenticationPrincipal User user,
             @PathVariable Integer boardScrapIdx
-    ) throws Exception {
+    ) {
         return ResponseEntity.ok().body(boardScrapService.deleteBoardScrap(user, boardScrapIdx));
     }
 }
