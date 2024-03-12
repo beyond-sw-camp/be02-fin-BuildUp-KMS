@@ -100,4 +100,18 @@ public class ReviewController {
         return ResponseEntity.ok().body(baseRes);
     }
 
+    @ApiOperation(value = "본인이 작성한 후기글 삭제", response = BaseRes.class, notes = "인증회원은 본인이 작성한 후기글을 삭제할 수 있다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class))})})
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "/delete/{reviewIdx}")
+    public ResponseEntity deleteReview(
+            @PathVariable @NotNull(message = "후기 IDX는 필수 입력 항목입니다.") @Positive(message = "후기 IDX는 1이상의 양수입니다.") Integer reviewIdx
+    ) {
+        User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        BaseRes baseRes = reviewService.deleteReview(user, reviewIdx);
+
+        return ResponseEntity.ok().body(baseRes);
+    }
+
 }
