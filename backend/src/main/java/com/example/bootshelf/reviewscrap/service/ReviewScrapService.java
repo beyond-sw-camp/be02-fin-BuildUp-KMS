@@ -2,6 +2,7 @@ package com.example.bootshelf.reviewscrap.service;
 
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.common.error.ErrorCode;
+import com.example.bootshelf.common.error.exception.EntityDuplicateException;
 import com.example.bootshelf.common.error.exception.EntityNotFoundException;
 import com.example.bootshelf.review.model.entity.Review;
 import com.example.bootshelf.review.repository.ReviewRepository;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,9 +35,19 @@ public class ReviewScrapService {
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
 
-    public BaseRes createReviewScrap(User user, PostCreateReviewScrapReq req) {
+    public BaseRes createReviewScrap(User user, PostCreateReviewScrapReq req) throws Exception {
         Review review = reviewRepository.findByIdx(req.getReviewIdx())
-                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.REVIEW_NOT_EXISTS, "해당 리뷰가 존재하지 않습니다." + req.getReviewIdx()));
+                .orElseThrow(() -> new Exception("해당 리뷰가 존재하지 않습니다." + req.getReviewIdx()));
+
+        ReviewScrap reviewScrapResult = reviewScrapRepository.findByUserIdxAndReviewIdx(user.getIdx(), req.getReviewIdx());
+        if (reviewScrapResult != null) {
+            if (reviewScrapResult.getStatus().equals(true))
+                throw new Exception("이미 스크랩한 리뷰입니다.");
+            else {
+                reviewScrapResult.setStatus(true);
+                reviewScrapRepository.save(reviewScrapResult);
+            }
+        }
 
         ReviewScrap reviewScrap = ReviewScrap.toEntity(user, req);
 
@@ -50,19 +62,28 @@ public class ReviewScrapService {
                 .build();
     }
 
-    public BaseRes findReviewScrapList(User user) {
-        Pageable pageable = PageRequest.of(0, 10);
-        Page<ReviewScrap> reviewScrapList = reviewScrapRepository.findByUserIdx(user, pageable);
+    public BaseRes findReviewScrapList(User user, Pageable pageable) throws Exception {
+        Page<ReviewScrap> reviewScrapList = reviewScrapRepository.findByUser(user, pageable);
+        if (reviewScrapList.isEmpty())
+            throw new Exception("리뷰 스크랩한 내역이 존재하지 않습니다.");
 
-        List<GetFindReviewScrapRes> resultList = reviewScrapList.getContent().stream().map(reviewScrap -> GetFindReviewScrapRes.builder()
-                .reviewScrapIdx(reviewScrap.getIdx())
-                .reviewIdx(reviewScrap.getReview().getIdx())
-                .reviewCategoryIdx(reviewScrap.getReview().getReviewCategory() != null ? reviewScrap.getReview().getReviewCategory().getIdx() : null)
-                .categoryName(reviewScrap.getReview().getReviewCategory() != null ? reviewScrap.getReview().getReviewCategory().getCategoryName() : null)
-                .reviewTitle(reviewScrap.getReview().getReviewTitle())
-                .courseName(reviewScrap.getReview().getCourseName())
-                .createdAt(reviewScrap.getCreatedAt())
-                .build()).collect(Collectors.toList());
+        List<GetFindReviewScrapRes> resultList = new ArrayList<>();
+        for (ReviewScrap reviewScrap : reviewScrapList.getContent()) {
+            GetFindReviewScrapRes res = GetFindReviewScrapRes.builder()
+                    .reviewScrapIdx(reviewScrap.getIdx())
+                    .reviewIdx(reviewScrap.getReview().getIdx())
+                    .reviewTitle(reviewScrap.getReview().getReviewTitle())
+                    .courseName(reviewScrap.getReview().getCourseName())
+                    .createdAt(reviewScrap.getCreatedAt())
+                    .build();
+
+            if (reviewScrap.getReview().getReviewCategory() != null) {
+                res.setReviewCategoryIdx(reviewScrap.getReview().getReviewCategory().getIdx());
+                res.setCategoryName(reviewScrap.getReview().getReviewCategory().getCategoryName());
+            }
+
+            resultList.add(res);
+        }
 
         return BaseRes.builder()
                 .isSuccess(true)
@@ -75,13 +96,17 @@ public class ReviewScrapService {
         Optional<ReviewScrap> result = reviewScrapRepository.findByIdx(reviewScrapIdx);
         if (result.isPresent()) {
             ReviewScrap reviewScrap = result.get();
-            reviewScrap.setStatus(false);
-            reviewScrapRepository.save(reviewScrap);
 
-            return BaseRes.builder()
-                    .isSuccess(true)
-                    .message("리뷰 스크랩 삭제 성공")
-                    .build();
+            if (reviewScrap.getUser().getIdx().equals(user.getIdx())) {
+                reviewScrap.setStatus(false);
+                reviewScrapRepository.save(reviewScrap);
+
+                return BaseRes.builder()
+                        .isSuccess(true)
+                        .message("리뷰 스크랩 삭제 성공")
+                        .build();
+            }
+            throw new Exception("스크랩한 유저와 현재 유저가 일치하지 않습니다.");
         }
         throw new Exception("해당 리뷰가 존재하지 않습니다.");
     }
