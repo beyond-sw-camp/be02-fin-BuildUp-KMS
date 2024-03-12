@@ -1,7 +1,7 @@
 package com.example.bootshelf.review.model.entity;
 
 import com.example.bootshelf.reviewcategory.model.ReviewCategory;
-import com.example.bootshelf.reviewcomment.model.ReviewComment;
+import com.example.bootshelf.reviewcomment.model.entity.ReviewComment;
 import com.example.bootshelf.reviewhistory.model.ReviewHistory;
 import com.example.bootshelf.reviewimage.model.ReviewImage;
 import com.example.bootshelf.reviewscrap.model.ReviewScrap;
@@ -10,10 +10,7 @@ import com.example.bootshelf.user.model.entity.User;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
