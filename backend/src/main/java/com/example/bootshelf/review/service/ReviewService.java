@@ -8,7 +8,7 @@ import com.example.bootshelf.review.model.request.PostCreateReviewReq;
 import com.example.bootshelf.review.model.response.*;
 import com.example.bootshelf.review.repository.ReviewRepository;
 import com.example.bootshelf.reviewcategory.model.ReviewCategory;
-import com.example.bootshelf.reviewcomment.model.ReviewComment;
+import com.example.bootshelf.reviewcomment.model.entity.ReviewComment;
 import com.example.bootshelf.reviewimage.model.ReviewImage;
 import com.example.bootshelf.reviewimage.service.ReviewImageService;
 import com.example.bootshelf.user.model.entity.User;
