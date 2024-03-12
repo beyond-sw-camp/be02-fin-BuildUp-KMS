@@ -2,6 +2,7 @@ package com.example.bootshelf.board.service;
 
 import com.amazonaws.services.kms.model.NotFoundException;
 import com.example.bootshelf.board.model.entity.Board;
+import com.example.bootshelf.board.model.entity.req.PatchUpdateBoardReq;
 import com.example.bootshelf.board.model.entity.req.PostCreateBoardReq;
 import com.example.bootshelf.board.model.entity.res.GetListBoardRes;
 import com.example.bootshelf.board.model.entity.res.PostCreateBoardRes;
@@ -142,5 +143,32 @@ public class BoardService {
                 return baseRes;
             }
         }
+    }
+    public BaseRes updateBoard (User user, PatchUpdateBoardReq patchUpdateBoardReq, Integer boardIdx){
+        Optional<Board> result = boardRepository.findByIdxAndUserIdx(user.getIdx(), boardIdx);
+
+        if(!result.isPresent()){
+            throw new NotFoundException("게시글을 찾을 수 없습니다.");
+        }
+        Optional<Board> resultTitle = boardRepository.findByBoardTitle(patchUpdateBoardReq.getBoardTitle());
+
+        if(result.isPresent()){
+            throw new DuplicateRequestException("이미 존재하는 게시글 제목입니다.");
+        }
+
+
+        Board board = result.get();
+
+        board.setBoardTitle(patchUpdateBoardReq.getBoardTitle());
+        board.setBoardContent(patchUpdateBoardReq.getBoardContent());
+        board.setBoardCategory(BoardCategory.builder().idx(patchUpdateBoardReq.getBoardCategoryIdx()).build());
+
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("게시글 수정 성공")
+                .result("요청 성공")
+                .build();
+
+        return baseRes;
     }
 }
