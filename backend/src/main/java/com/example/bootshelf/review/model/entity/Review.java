@@ -5,8 +5,8 @@ import com.example.bootshelf.reviewcategory.model.ReviewCategory;
 import com.example.bootshelf.reviewcomment.model.entity.ReviewComment;
 import com.example.bootshelf.reviewhistory.model.ReviewHistory;
 import com.example.bootshelf.reviewimage.model.ReviewImage;
-import com.example.bootshelf.reviewscrap.model.ReviewScrap;
-import com.example.bootshelf.reviewup.model.ReviewUp;
+import com.example.bootshelf.reviewscrap.model.entity.ReviewScrap;
+import com.example.bootshelf.reviewup.model.entity.ReviewUp;
 import com.example.bootshelf.user.model.entity.User;
 import lombok.*;
 
@@ -26,11 +26,11 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idx;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "User_idx")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ReviewCategory_idx")
     private ReviewCategory reviewCategory;
 

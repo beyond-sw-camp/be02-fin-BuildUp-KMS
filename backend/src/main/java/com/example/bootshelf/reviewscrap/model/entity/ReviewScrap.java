@@ -1,4 +1,4 @@
-package com.example.bootshelf.reviewscrap.model;
+package com.example.bootshelf.reviewscrap.model.entity;
 
 import com.example.bootshelf.review.model.entity.Review;
 import com.example.bootshelf.reviewscrap.model.request.PostCreateReviewScrapReq;
@@ -6,11 +6,8 @@ import com.example.bootshelf.user.model.entity.User;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 @Entity
 @Getter
@@ -23,11 +20,11 @@ public class ReviewScrap {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idx;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "User_idx")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Review_idx")
     private Review review;
 

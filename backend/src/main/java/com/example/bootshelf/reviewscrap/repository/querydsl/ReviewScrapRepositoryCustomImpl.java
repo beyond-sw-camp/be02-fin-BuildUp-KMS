@@ -1,9 +1,7 @@
 package com.example.bootshelf.reviewscrap.repository.querydsl;
 
-import com.example.bootshelf.review.model.entity.QReview;
-import com.example.bootshelf.reviewscrap.model.QReviewScrap;
-import com.example.bootshelf.reviewscrap.model.ReviewScrap;
-import com.example.bootshelf.user.model.entity.QUser;
+import com.example.bootshelf.reviewscrap.model.entity.QReviewScrap;
+import com.example.bootshelf.reviewscrap.model.entity.ReviewScrap;
 import com.example.bootshelf.user.model.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -11,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ReviewScrapRepositoryCustomImpl extends QuerydslRepositorySupport implements ReviewScrapRepositoryCustom {
@@ -32,15 +29,12 @@ public class ReviewScrapRepositoryCustomImpl extends QuerydslRepositorySupport i
                 .limit(pageable.getPageSize())
                 .fetch().stream().collect(Collectors.toList());
 
-
         return new PageImpl<>(result, pageable, pageable.getPageSize());
     }
 
     @Override
     public ReviewScrap findByUserIdxAndReviewIdx(Integer userIdx, Integer reviewIdx) {
         QReviewScrap reviewScrap = new QReviewScrap("reviewScrap");
-        QReview review = new QReview("review");
-        QUser user = new QUser("user");
 
         ReviewScrap result = from(reviewScrap)
                 .leftJoin(reviewScrap.user).fetchJoin()
@@ -50,6 +44,4 @@ public class ReviewScrapRepositoryCustomImpl extends QuerydslRepositorySupport i
 
         return result;
     }
-
-
 }

@@ -1,13 +1,11 @@
-package com.example.bootshelf.reviewhistory.model;
+package com.example.bootshelf.reviewup.model.entity;
 
 import com.example.bootshelf.review.model.entity.Review;
+import com.example.bootshelf.reviewup.model.request.PostCreateReviewUpReq;
 import com.example.bootshelf.user.model.entity.User;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.util.Date;
 
 @Entity
 @Getter
@@ -15,7 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ReviewHistory {
+public class ReviewUp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idx;
@@ -28,6 +26,14 @@ public class ReviewHistory {
     @JoinColumn(name = "Review_idx")
     private Review review;
 
-    @Column(updatable = false, nullable = false)
-    private String deletedAt;
+    @Column(nullable = false)
+    private Boolean status;
+
+    public static ReviewUp toEntity(User user, PostCreateReviewUpReq req) {
+        return ReviewUp.builder()
+                .user(User.builder().idx(user.getIdx()).build())
+                .review(Review.builder().idx(req.getReviewIdx()).build())
+                .status(true)
+                .build();
+    }
 }

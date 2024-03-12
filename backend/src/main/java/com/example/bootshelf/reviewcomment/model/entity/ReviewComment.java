@@ -22,7 +22,7 @@ public class ReviewComment {
     private Integer idx;
 
     // 자기 참조를 위한 부모 댓글
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_idx") // 부모 댓글의 외래키
     private ReviewComment parent;
 
@@ -31,11 +31,11 @@ public class ReviewComment {
     private List<ReviewComment> children = new ArrayList<>();
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "User_idx")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Review_idx")
     private Review review;
 

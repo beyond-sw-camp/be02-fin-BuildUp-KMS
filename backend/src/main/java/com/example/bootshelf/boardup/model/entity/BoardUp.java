@@ -1,11 +1,11 @@
 package com.example.bootshelf.boardup.model.entity;
 
 import com.example.bootshelf.board.model.entity.Board;
+import com.example.bootshelf.boardup.model.request.PostCreateBoardUpReq;
 import com.example.bootshelf.user.model.entity.User;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Getter
@@ -27,4 +27,14 @@ public class BoardUp {
     @JoinColumn(name = "Board_idx")
     private Board board;
 
+    @Column(nullable = false)
+    private Boolean status;
+
+    public static BoardUp toEntity(User user, PostCreateBoardUpReq req) {
+        return BoardUp.builder()
+                .user(User.builder().idx(user.getIdx()).build())
+                .board(Board.builder().idx(req.getBoardIdx()).build())
+                .status(true)
+                .build();
+    }
 }

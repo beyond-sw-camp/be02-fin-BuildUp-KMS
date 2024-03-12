@@ -1,7 +1,7 @@
-package com.example.bootshelf.boardscrap.controller;
+package com.example.bootshelf.boardup.controller;
 
-import com.example.bootshelf.boardscrap.model.request.PostCreateBoardScrapReq;
-import com.example.bootshelf.boardscrap.service.BoardScrapService;
+import com.example.bootshelf.boardup.model.request.PostCreateBoardUpReq;
+import com.example.bootshelf.boardup.service.BoardUpService;
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.user.model.entity.User;
 import io.swagger.annotations.Api;
@@ -18,73 +18,72 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "게시판", description = "게시판 CRUD")
-@Api(tags = "게시판 스크랩")
+@Api(tags = "게시판 추천")
 @RestController
 @Slf4j
 @RequiredArgsConstructor
 @CrossOrigin("*")
-@RequestMapping("/boardscrap")
-public class BoardScrapController {
-    private final BoardScrapService boardScrapService;
+@RequestMapping("/boardup")
+public class BoardUpController {
+    private final BoardUpService boardUpService;
 
-    @Operation(summary = "BoardScrap 추가",
-            description = "게시판 게시글을 스크랩하는 API입니다.")
+    @Operation(summary = "BoardUp 게시글 추천 추가",
+            description = "게시판 게시글을 추천하는 API입니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "404", description = "해당 게시글이 존재하지 않음"),
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
     @PostMapping("/create")
-    public ResponseEntity<BaseRes> createBoardScrap(
+    public ResponseEntity<BaseRes> createBoardUp(
             @AuthenticationPrincipal User user,
-            @RequestBody PostCreateBoardScrapReq postCreateBoardScrapReq
+            @RequestBody PostCreateBoardUpReq postCreateBoardUpReq
     ) {
-        return ResponseEntity.ok().body(boardScrapService.createBoardScrap(user, postCreateBoardScrapReq));
+        return ResponseEntity.ok().body(boardUpService.createBoardUp(user, postCreateBoardUpReq));
     }
 
 
-
-    @Operation(summary = "BoardScrap 목록 조회",
-            description = "스크랩한 게시판 게시글 목록을 조회하는 API입니다.")
+    @Operation(summary = "BoardUp 게시글 추천 목록 조회",
+            description = "추천한 게시판 게시글 목록을 조회하는 API입니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
     @GetMapping("/list")
-    public ResponseEntity<BaseRes> findBoardScrapList(
+    public ResponseEntity<BaseRes> findBoardUpList(
             @AuthenticationPrincipal User user,
             @PageableDefault(size = 10) Pageable pageable
     ) {
-        return ResponseEntity.ok().body(boardScrapService.findBoardScrapList(user, pageable));
+        return ResponseEntity.ok().body(boardUpService.findBoardUpList(user, pageable));
     }
 
 
-    @Operation(summary = "BoardScrap 여부 조회",
-            description = "게시글을 스크랩 여부를 확인하는 API입니다.")
+    @Operation(summary = "BoardUp 게시글 추천 여부 조회",
+            description = "게시글 추천 여부를 확인하는 API입니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
     @GetMapping("/check/{boardIdx}")
-    public ResponseEntity<BaseRes> checkBoardScrap(
+    public ResponseEntity<BaseRes> checkBoardUp(
             @AuthenticationPrincipal User user,
             @PathVariable Integer boardIdx
     ) {
-        return ResponseEntity.ok().body(boardScrapService.checkBoardScrap(user, boardIdx));
+        return ResponseEntity.ok().body(boardUpService.checkBoardUp(user, boardIdx));
     }
 
 
-    @Operation(summary = "BoardScrap 스크랩 삭제",
-            description = "스크랩한 게시판 게시글을 삭제하는 API입니다.")
+    @Operation(summary = "BoardUp 게시글 추천 삭제",
+            description = "추천한 게시판 게시글을 삭제하는 API입니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
-    @PatchMapping("/delete/{boardScrapIdx}")
-    public ResponseEntity<BaseRes> deleteBoardScrap(
+    @PatchMapping("/delete/{boardUpIdx}")
+    public ResponseEntity<BaseRes> deleteBoardUp(
             @AuthenticationPrincipal User user,
-            @PathVariable Integer boardScrapIdx
+            @PathVariable Integer boardUpIdx
     ) {
-        return ResponseEntity.ok().body(boardScrapService.deleteBoardScrap(user, boardScrapIdx));
+        return ResponseEntity.ok().body(boardUpService.deleteBoardUp(user, boardUpIdx));
     }
 }

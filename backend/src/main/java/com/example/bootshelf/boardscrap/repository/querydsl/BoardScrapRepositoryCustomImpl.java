@@ -1,9 +1,7 @@
 package com.example.bootshelf.boardscrap.repository.querydsl;
 
-import com.example.bootshelf.board.model.entity.QBoard;
 import com.example.bootshelf.boardscrap.model.entity.BoardScrap;
 import com.example.bootshelf.boardscrap.model.entity.QBoardScrap;
-import com.example.bootshelf.user.model.entity.QUser;
 import com.example.bootshelf.user.model.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -38,8 +36,6 @@ public class BoardScrapRepositoryCustomImpl extends QuerydslRepositorySupport im
     @Override
     public BoardScrap findByUserIdxAndBoardIdx(Integer userIdx, Integer boardIdx) {
         QBoardScrap boardScrap = new QBoardScrap("boardScrap");
-        QBoard board = new QBoard("board");
-        QUser user = new QUser("user");
 
         BoardScrap result = from(boardScrap)
                 .leftJoin(boardScrap.user).fetchJoin()
