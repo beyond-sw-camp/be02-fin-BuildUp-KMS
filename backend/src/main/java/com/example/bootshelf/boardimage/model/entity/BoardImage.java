@@ -21,6 +21,8 @@ public class BoardImage {
     @JoinColumn(name = "Board_idx")
     private Board board;
 
+    private String filename;
+
     @Column(nullable = false, length = 200)
     private String boardImage;
 
