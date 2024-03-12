@@ -28,7 +28,6 @@ public enum ErrorCode {
     REVIEW_NOT_EXISTS(HttpStatus.NOT_FOUND, "REVIEW-001", "해당 후기 IDX 가 존재하지 않는 경우"),
     DUPLICATE_REVIEW_TITLE(HttpStatus.BAD_REQUEST, "REVIEW-002", "후기글의 제목이 중복된 경우"),
 
-
     // 후기 스크랩
     DUPLICATED_REVIEW_SCRAP(HttpStatus.CONFLICT, "REVIEWSCRAP-001", "이미 스크랩한 후기입니다."),
 
@@ -38,10 +37,8 @@ public enum ErrorCode {
 
     REVIEW_SCRAP_NOT_EXISTS(HttpStatus.NOT_FOUND, "REVIEWSCRAP-004", "해당 후기 스크랩 데이터가 존재하지 않습니다."),
 
-
     // 게시판
     BOARD_NOT_EXISTS(HttpStatus.NOT_FOUND, "BOARD-001", "해당 게시글 IDX 가 존재하지 않는 경우"),
-
 
     // 게시판 스크랩
     DUPLICATED_BOARD_SCRAP(HttpStatus.CONFLICT, "BOARDSCRAP-001", "이미 스크랩한 게시판입니다."),
@@ -49,6 +46,8 @@ public enum ErrorCode {
     UNAUTHORIZED_BOARD_SCRAP(HttpStatus.UNAUTHORIZED, "BOARDSCRAP-003", "게시글을 스크랩한 회원과 현재 회원이 일치하지 않습니다."),
     BOARD_SCRAP_NOT_EXISTS(HttpStatus.NOT_FOUND, "BOARDSCRAP-004", "해당 후기 스크랩 데이터가 존재하지 않습니다."),
 
+    // 댓글
+    COMMENT_NOT_EXISTS(HttpStatus.NOT_FOUND, "COMMENT-001", "해당 댓글 IDX 가 존재하지 않는 경우"),
 
     // 태그
     TAG_NOT_EXISTS(HttpStatus.NOT_FOUND, "TAG-001", "해당 태그 IDX가 존재하지 않는 경우"),
