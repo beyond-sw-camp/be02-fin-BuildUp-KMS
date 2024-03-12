@@ -37,7 +37,7 @@ public class ReviewScrapService {
     private final ReviewRepository reviewRepository;
 
     @Transactional
-    public BaseRes createReviewScrap(User user, PostCreateReviewScrapReq req) throws Exception {
+    public BaseRes createReviewScrap(User user, PostCreateReviewScrapReq req) {
         Review review = reviewRepository.findByIdx(req.getReviewIdx())
                 .orElseThrow(() -> new ReviewException(ErrorCode.REVIEW_NOT_EXISTS, String.format("Review  [ %s ] is not exists.", req.getReviewIdx())));
 
@@ -68,7 +68,7 @@ public class ReviewScrapService {
     }
 
     @Transactional(readOnly = true)
-    public BaseRes findReviewScrapList(User user, Pageable pageable) throws Exception {
+    public BaseRes findReviewScrapList(User user, Pageable pageable) {
         Page<ReviewScrap> reviewScrapList = reviewScrapRepository.findByUser(user, pageable);
         if (reviewScrapList.isEmpty())
             throw new ReviewScrapException(ErrorCode.REVIEW_SCRAP_IS_EMPTY, "");
@@ -96,7 +96,7 @@ public class ReviewScrapService {
     }
 
     @Transactional
-    public BaseRes deleteReviewScrap(User user, Integer reviewScrapIdx) throws Exception {
+    public BaseRes deleteReviewScrap(User user, Integer reviewScrapIdx) {
         Optional<ReviewScrap> result = reviewScrapRepository.findByIdx(reviewScrapIdx);
         if (result.isPresent()) {
             ReviewScrap reviewScrap = result.get();
