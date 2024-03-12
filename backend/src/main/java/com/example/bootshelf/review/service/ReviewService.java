@@ -1,7 +1,8 @@
 package com.example.bootshelf.review.service;
 
 import com.example.bootshelf.common.BaseRes;
-import com.example.bootshelf.review.exception.ReviewTitleDuplicateException;
+import com.example.bootshelf.common.error.ErrorCode;
+import com.example.bootshelf.review.exception.ReviewException;
 import com.example.bootshelf.review.model.entity.Review;
 import com.example.bootshelf.review.model.request.PostCreateReviewReq;
 import com.example.bootshelf.review.model.response.GetListReviewRes;
@@ -41,7 +42,7 @@ public class ReviewService {
 
         // 후기글 제목 중복에 대한 예외 처리
         if (result.isPresent()) {
-            throw new ReviewTitleDuplicateException(postCreateReviewReq.getReviewTitle());
+            throw new ReviewException(ErrorCode.DUPLICATE_REVIEW_TITLE, String.format("Review Title [ %s ] is duplicated.", postCreateReviewReq.getReviewTitle()));
         }
 
         Review review = Review.builder()
