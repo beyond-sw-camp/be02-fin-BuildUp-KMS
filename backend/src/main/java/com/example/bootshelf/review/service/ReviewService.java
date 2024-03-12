@@ -255,7 +255,7 @@ public class ReviewService {
 
         // 수정하고자 하는 후기글을 못찾을 때 예외 처리
         if (!result.isPresent()) {
-            throw new ReviewException(ErrorCode.REVIEW_NOT_EXISTS, String.format("Review Idx [ %s ] is duplicated.", patchUpdateReviewReq.getReviewIdx()));
+            throw new ReviewException(ErrorCode.REVIEW_NOT_EXISTS, String.format("Review Idx [ %s ] is not exists.", patchUpdateReviewReq.getReviewIdx()));
         }
 
         Optional<Review> resultTitle = reviewRepository.findByReviewTitle(patchUpdateReviewReq.getReviewTitle());
@@ -273,6 +273,31 @@ public class ReviewService {
         BaseRes baseRes = BaseRes.builder()
                 .isSuccess(true)
                 .message("후기글 수정 성공")
+                .result("요청 성공")
+                .build();
+
+        return baseRes;
+    }
+
+    // 후기글 삭제
+    @Transactional(readOnly = false)
+    public BaseRes deleteReview(User user, Integer reviewIdx) {
+
+        Optional<Review> result = reviewRepository.findByIdxAndUserIdx(reviewIdx, user.getIdx());
+
+        // 삭제하고자 하는 후기글을 못찾을 때 예외 처리
+        if (!result.isPresent()) {
+            throw new ReviewException(ErrorCode.REVIEW_NOT_EXISTS, String.format("Review Idx [ %s ] is not exists.", reviewIdx));
+        }
+
+        Review review = result.get();
+        review.setStatus(false);
+        review.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+        reviewRepository.save(review);
+
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("후기글 삭제 성공")
                 .result("요청 성공")
                 .build();
 
