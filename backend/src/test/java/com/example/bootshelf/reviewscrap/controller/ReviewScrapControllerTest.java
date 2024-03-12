@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(ReviewScrapController.class)
@@ -28,6 +29,7 @@ class ReviewScrapControllerTest {
 
     @Test
     void reviewScrapController_create_success() throws Exception {
-
+        Map<String, Long> result = new HashMap<>();
+        result.put("idx", 1L);
     }
 }

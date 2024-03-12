@@ -10,11 +10,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name="ReviewScrap", description = "ReviewScrap CRUD")
+@Tag(name = "ReviewScrap", description = "ReviewScrap CRUD")
 @Api(tags = "ReviewScrap")
 @RestController
 @Slf4j
@@ -37,5 +39,33 @@ public class ReviewScrapController {
             @RequestBody PostCreateReviewScrapReq postCreateReviewScrapReq
     ) {
         return ResponseEntity.ok().body(reviewScrapService.createReviewScrap(user, postCreateReviewScrapReq));
+    }
+
+    @Operation(summary = "ReviewScrap 목록 조회",
+            description = "스크랩한 리뷰 게시물 목록을 조회하는 API입니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "404", description = "해당 Review가 존재하지 않음."),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+    })
+    @GetMapping("/list")
+    public ResponseEntity findReviewScrapList(
+            @AuthenticationPrincipal User user
+    ) {
+        return ResponseEntity.ok().body(reviewScrapService.findReviewScrapList(user));
+    }
+
+    @Operation(summary = "ReviewScrap 스크랩 삭제",
+            description = "스크랩한 리뷰 게시물을 삭제하는 API입니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+    })
+    @PatchMapping("/delete/{reviewScrapIdx}")
+    public ResponseEntity deleteReviewScrap(
+            @AuthenticationPrincipal User user,
+            @PathVariable Integer reviewScrapIdx
+    ) throws Exception {
+        return ResponseEntity.ok().body(reviewScrapService.deleteReviewScrap(user, reviewScrapIdx));
     }
 }
