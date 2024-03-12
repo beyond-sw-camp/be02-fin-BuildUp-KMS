@@ -11,6 +11,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -47,13 +49,12 @@ public class ReviewController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class))})})
 
-    @RequestMapping(method = RequestMethod.GET, value = "/myList/{page}/{size}")
+    @RequestMapping(method = RequestMethod.GET, value = "/myList")
     public ResponseEntity list(
-            @PathVariable @NotNull @Positive Integer page,
-            @PathVariable @NotNull @Positive Integer size
+        @PageableDefault(size = 10) Pageable pageable
     ) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        BaseRes baseRes = reviewService.myList(user, page, size);
+        BaseRes baseRes = reviewService.myList(user, pageable);
 
         return ResponseEntity.ok().body(baseRes);
     }
@@ -61,14 +62,13 @@ public class ReviewController {
     @ApiOperation(value = "카테고리 별, 조건( 조회수, 추천수, 스크랩수, 댓글수) 별 후기글 목록 조회", response = BaseRes.class, notes = "모든 사용자가 카테고리 별, 조건 별 후기글 목록을 조회할 수 있다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class))})})
-    @RequestMapping(method = RequestMethod.GET, value = "/{reviewCategoryIdx}/{sortType}/{page}/{size}")
+    @RequestMapping(method = RequestMethod.GET, value = "/{reviewCategoryIdx}/{sortType}")
     public ResponseEntity listReview(
             @PathVariable @NotNull(message = "후기 카테고리 IDX는 필수 입력 항목입니다.") @Positive(message = "후기 카테고리 IDX는 1이상의 양수입니다.") Integer reviewCategoryIdx,
             @PathVariable @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") Integer sortType,
-            @PathVariable @NotNull @Positive Integer page,
-            @PathVariable @NotNull @Positive Integer size
+            @PageableDefault(size = 10) Pageable pageable
     ) {
-        BaseRes baseRes = reviewService.listReview(reviewCategoryIdx, sortType, page, size);
+        BaseRes baseRes = reviewService.listReview(reviewCategoryIdx, sortType, pageable);
 
         return ResponseEntity.ok().body(baseRes);
     }

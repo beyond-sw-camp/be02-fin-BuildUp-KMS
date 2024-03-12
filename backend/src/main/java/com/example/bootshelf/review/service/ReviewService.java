@@ -85,9 +85,8 @@ public class ReviewService {
 
     // 인증회원 본인이 작성한 후기글 목록 조회
     @Transactional(readOnly = true)
-    public BaseRes myList(User user, Integer page, Integer size) {
+    public BaseRes myList(User user, Pageable pageable) {
 
-        Pageable pageable = PageRequest.of(page-1, size);
         Page<Review> reviewList = reviewRepository.findMyReviewList(user.getIdx(), pageable);
 
         List<GetMyListReviewRes> getListReviewResMyList = new ArrayList<>();
@@ -127,9 +126,7 @@ public class ReviewService {
 
     // 정렬 조건 별 후기글 목록 조회
     @Transactional(readOnly = true)
-    public BaseRes listReview(Integer reviewCategoryIdx, Integer sortType, Integer page, Integer size) {
-
-        Pageable pageable = PageRequest.of(page - 1, size);
+    public BaseRes listReview(Integer reviewCategoryIdx, Integer sortType, Pageable pageable) {
 
         Page<Review> reviewList = reviewRepository.findReviewList(reviewCategoryIdx, sortType, pageable);
 
