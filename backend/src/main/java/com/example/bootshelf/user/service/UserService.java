@@ -3,15 +3,17 @@ package com.example.bootshelf.user.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.example.bootshelf.certification.Certification;
+import com.example.bootshelf.certification.repository.CertificationRepository;
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.common.error.ErrorCode;
 import com.example.bootshelf.config.utils.JwtUtils;
+import com.example.bootshelf.course.Course;
+import com.example.bootshelf.course.exception.CourseException;
+import com.example.bootshelf.course.repository.CourseRepository;
 import com.example.bootshelf.user.exception.UserException;
 import com.example.bootshelf.user.model.entity.User;
-import com.example.bootshelf.user.model.entity.request.PatchUpdateUserReq;
-import com.example.bootshelf.user.model.entity.request.PostCheckPasswordReq;
-import com.example.bootshelf.user.model.entity.request.PostSignUpUserReq;
-import com.example.bootshelf.user.model.entity.request.PostLoginUserReq;
+import com.example.bootshelf.user.model.entity.request.*;
 import com.example.bootshelf.user.model.entity.response.*;
 import com.example.bootshelf.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +40,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.example.bootshelf.course.QCourse.course;
+import static com.example.bootshelf.user.model.entity.QUser.user;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -53,6 +58,8 @@ public class UserService {
     private EntityManager entityManager;
     private final AmazonS3 s3;
     private final UserRepository userRepository;
+    private final CertificationRepository certificationRepository;
+    private final CourseRepository courseRepository;
     private final PasswordEncoder passwordEncoder;
     private final JavaMailSender emailSender;
     private final EmailVerifyService emailVerifyService;
@@ -89,20 +96,8 @@ public class UserService {
         }
     }
 
-    // 회원가입
     @Transactional(readOnly = false)
-    public BaseRes signup(PostSignUpUserReq postSignUpUserReq, MultipartFile profileImage) {
-        Optional<User> resultEmail = userRepository.findByEmail(postSignUpUserReq.getEmail());
-        Optional<User> resultUserNickName = userRepository.findByNickName(postSignUpUserReq.getNickName());
-
-        // 중복된 이메일에 대한 예외처리
-        if (resultEmail.isPresent()) {
-            throw new UserException(ErrorCode.DUPLICATE_SIGNUP_EMAIL, String.format("SignUp Email [ %s ] is duplicated.", postSignUpUserReq.getEmail()));
-        }
-        // 중복된 닉네임에 대한 예외처리
-        if (resultUserNickName.isPresent()) {
-            throw new UserException(ErrorCode.DUPLICATE_SIGNUP_NICKNAME, String.format("SignUp NickName [ %s ] is duplicated.", postSignUpUserReq.getNickName()));
-        }
+    public User saveUser(PostSignUpUserReq postSignUpUserReq, MultipartFile profileImage) {
 
         String profilePhoto = saveFile(profileImage);
 
@@ -120,16 +115,70 @@ public class UserService {
 
         userRepository.save(user);
 
-        BaseRes baseRes = BaseRes.builder()
-                .isSuccess(true)
-                .message("회원가입에 성공하였습니다.")
-                .result(PostSignUpUserRes.builder()
-                        .userEmail(user.getEmail())
-                        .userName(user.getName())
-                        .build())
-                .build();
+        return user;
+    }
 
-        return baseRes;
+    // 회원가입
+    @Transactional(readOnly = false)
+    public BaseRes signup(PostSignUpUserReq postSignUpUserReq, MultipartFile profileImage) {
+        Optional<User> resultEmail = userRepository.findByEmail(postSignUpUserReq.getEmail());
+        Optional<User> resultUserNickName = userRepository.findByNickName(postSignUpUserReq.getNickName());
+
+        // 중복된 이메일에 대한 예외처리
+        if (resultEmail.isPresent()) {
+            throw new UserException(ErrorCode.DUPLICATE_SIGNUP_EMAIL, String.format("SignUp Email [ %s ] is duplicated.", postSignUpUserReq.getEmail()));
+        }
+        // 중복된 닉네임에 대한 예외처리
+        if (resultUserNickName.isPresent()) {
+            throw new UserException(ErrorCode.DUPLICATE_SIGNUP_NICKNAME, String.format("SignUp NickName [ %s ] is duplicated.", postSignUpUserReq.getNickName()));
+        }
+
+        if (postSignUpUserReq.getProgramName() == null) {
+            User user = saveUser(postSignUpUserReq, profileImage);
+
+            BaseRes baseRes = BaseRes.builder()
+                    .isSuccess(true)
+                    .message("회원가입에 성공하였습니다.")
+                    .result(PostSignUpUserRes.builder()
+                            .userEmail(user.getEmail())
+                            .userName(user.getName())
+                            .build())
+                    .build();
+
+            return baseRes;
+        }
+        else {
+            Optional<Course> resultCourse = courseRepository.findByProgramName(postSignUpUserReq.getProgramName());
+            // 과정명이 존재하지 않을 때 예외처리
+            if (!resultCourse.isPresent()) {
+                throw new CourseException(ErrorCode.COURSE_NOT_EXISTS, String.format("Course [%s] is not exists.", postSignUpUserReq.getProgramName()));
+            }
+
+            User user = saveUser(postSignUpUserReq, profileImage);
+
+            Certification certification = Certification.builder()
+                    .user(user)
+                    .course(Course.builder().idx(resultCourse.get().getIdx()).build())
+                    .status(true)
+                    .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+                    .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+                    .build();
+
+            certificationRepository.save(certification);
+
+            user.setAuthority("ROLE_AUTHUSER");
+            userRepository.save(user);
+            BaseRes baseRes = BaseRes.builder()
+                    .isSuccess(true)
+                    .message("인증회원 가입에 성공하였습니다.")
+                    .result(PostSignUpUserRes.builder()
+                            .userEmail(user.getEmail())
+                            .userName(user.getName())
+                            .build())
+                    .build();
+
+            return baseRes;
+        }
     }
 
     @Transactional(readOnly = true)
@@ -229,6 +278,7 @@ public class UserService {
         emailSender.send(message);
         emailVerifyService.create(postSignUpUserReq.getEmail(), uuid);
     }
+
 
     // 메일 인증 완료 후 회원 상태 수정
     @Transactional(readOnly = false)

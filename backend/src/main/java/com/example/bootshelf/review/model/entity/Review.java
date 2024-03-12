@@ -1,5 +1,6 @@
 package com.example.bootshelf.review.model.entity;
 
+import com.example.bootshelf.review.model.request.PatchUpdateReviewReq;
 import com.example.bootshelf.reviewcategory.model.ReviewCategory;
 import com.example.bootshelf.reviewcomment.model.entity.ReviewComment;
 import com.example.bootshelf.reviewhistory.model.ReviewHistory;
@@ -80,4 +81,36 @@ public class Review {
 
     @Column(nullable = false)
     private String updatedAt;
+
+    public void increaseScrapCnt() {
+        this.scrapCnt += 1;
+    }
+
+    public void decreaseScrapCnt() {
+        this.scrapCnt -= 1;
+    }
+
+    public void increaseUpCnt() {
+        this.upCnt += 1;
+    }
+
+    public void decreaseUpCnt() {
+        this.upCnt -= 1;
+    }
+
+    public void increaseViewCount() {
+        this.viewCnt += 1;
+    }
+
+    public void update(PatchUpdateReviewReq patchUpdateReviewReq) {
+        if (patchUpdateReviewReq.getReviewTitle() != null) {
+            this.reviewTitle = patchUpdateReviewReq.getReviewTitle();
+        }
+        if (patchUpdateReviewReq.getReviewContent() != null) {
+            this.reviewContent = patchUpdateReviewReq.getReviewContent();
+        }
+        if (patchUpdateReviewReq.getCourseEvaluation() != null) {
+            this.courseEvaluation = patchUpdateReviewReq.getCourseEvaluation();
+        }
+    }
 }

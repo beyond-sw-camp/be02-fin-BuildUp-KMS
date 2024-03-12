@@ -4,6 +4,7 @@ import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.common.error.ErrorCode;
 import com.example.bootshelf.review.exception.ReviewException;
 import com.example.bootshelf.review.model.entity.Review;
+import com.example.bootshelf.review.model.request.PatchUpdateReviewReq;
 import com.example.bootshelf.review.model.request.PostCreateReviewReq;
 import com.example.bootshelf.review.model.response.*;
 import com.example.bootshelf.review.repository.ReviewRepository;
@@ -165,7 +166,7 @@ public class ReviewService {
     }
 
     // 후기글 상세 조회
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = false)
     public BaseRes readReview(Integer reviewIdx) {
 
         Optional<Review> result = reviewRepository.findByIdx(reviewIdx);
@@ -175,6 +176,8 @@ public class ReviewService {
         }
 
         Review review = result.get();
+        review.increaseViewCount();
+        reviewRepository.save(review);
 
         // 댓글 조회
         List<GetListCommentReviewRes> getListCommentResListReview = new ArrayList<>();
@@ -242,5 +245,37 @@ public class ReviewService {
                 .updatedAt(reviewComment.getUpdatedAt())
                 .children(childCommentsRes) // 대댓글 목록 추가
                 .build();
+    }
+
+    // 후기글 수정
+    @Transactional(readOnly = false)
+    public BaseRes updateReview(User user, PatchUpdateReviewReq patchUpdateReviewReq) {
+
+        Optional<Review> result = reviewRepository.findByIdxAndUserIdx(patchUpdateReviewReq.getReviewIdx(), user.getIdx());
+
+        // 수정하고자 하는 후기글을 못찾을 때 예외 처리
+        if (!result.isPresent()) {
+            throw new ReviewException(ErrorCode.REVIEW_NOT_EXISTS, String.format("Review Idx [ %s ] is duplicated.", patchUpdateReviewReq.getReviewIdx()));
+        }
+
+        Optional<Review> resultTitle = reviewRepository.findByReviewTitle(patchUpdateReviewReq.getReviewTitle());
+
+        // 수정 후기글 제목 중복에 대한 예외 처리
+        if (resultTitle.isPresent()) {
+            throw new ReviewException(ErrorCode.DUPLICATE_REVIEW_TITLE, String.format("Review Title [ %s ] is duplicated.", patchUpdateReviewReq.getReviewTitle()));
+        }
+
+        Review review = result.get();
+        review.update(patchUpdateReviewReq);
+        review.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+        reviewRepository.save(review);
+
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("후기글 수정 성공")
+                .result("요청 성공")
+                .build();
+
+        return baseRes;
     }
 }
