@@ -3,10 +3,12 @@ package com.example.bootshelf.board.service;
 import com.amazonaws.services.kms.model.NotFoundException;
 import com.example.bootshelf.board.model.entity.Board;
 import com.example.bootshelf.board.model.entity.req.PostCreateBoardReq;
+import com.example.bootshelf.board.model.entity.res.GetListBoardRes;
 import com.example.bootshelf.board.model.entity.res.PostCreateBoardRes;
 import com.example.bootshelf.board.repository.BoardRepository;
 import com.example.bootshelf.boardcategory.model.entity.BoardCategory;
 import com.example.bootshelf.boardcategory.repository.BoardCategoryRepository;
+import com.example.bootshelf.boardimage.model.entity.BoardImage;
 import com.example.bootshelf.boardimage.service.BoardImageService;
 import com.example.bootshelf.boardtag.model.entity.BoardTag;
 import com.example.bootshelf.boardtag.model.entity.PostCreateBoardTagRes;
@@ -77,5 +79,51 @@ public class BoardService {
                 .build();
 
         return  response;
+    }
+
+    public BaseRes listBoard(Integer boardIdx){
+        Optional<Board>result = boardRepository.findByIdx(boardIdx);
+
+        if(!result.isPresent()){
+            throw new NotFoundException("해당 게시글을 찾을 수 없습니다");
+        }
+        else {
+            if(!result.get().getStatus()==true){
+                throw new NotFoundException("해당 게시글을 찾을 수 없습니다");
+            }
+            else{
+                Board board = result.get();
+                List<BoardImage> boardImageList = board.getBoardImageList();
+                List<String> fileNames= new ArrayList<>();
+
+                for(BoardImage boardImage : boardImageList){
+                    String fileName = boardImage.getBoardImage();
+                    fileNames.add(fileName);
+                }
+
+                GetListBoardRes res = GetListBoardRes.builder()
+                        .idx(board.getIdx())
+                        .boardTitle(board.getBoardTitle())
+                        .boardContent(board.getBoardContent())
+                        .boardCategory(board.getBoardCategory())
+                        .boardTagList(board.getBoardTagList())
+                        .boardImageList(fileNames)
+                        .boardCommentList(board.getBoardCommentList())
+                        .viewCnt(board.getViewCnt())
+                        .upCnt(board.getUpCnt())
+                        .scrapCnt(board.getScrapCnt())
+                        .createdAt(board.getCreatedAt())
+                        .updatedAt(board.getUpdatedAt())
+                        .build();
+
+                BaseRes baseRes = BaseRes.builder()
+                        .message("게시글 조회 성공")
+                        .isSuccess(true)
+                        .result(res)
+                        .build();
+
+                return baseRes;
+            }
+        }
     }
 }
