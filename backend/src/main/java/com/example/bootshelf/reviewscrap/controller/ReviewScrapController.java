@@ -37,7 +37,7 @@ public class ReviewScrapController {
     public ResponseEntity createReviewScrap(
             @AuthenticationPrincipal User user,
             @RequestBody PostCreateReviewScrapReq postCreateReviewScrapReq
-    ) {
+    ) throws Exception {
         return ResponseEntity.ok().body(reviewScrapService.createReviewScrap(user, postCreateReviewScrapReq));
     }
 
@@ -50,9 +50,10 @@ public class ReviewScrapController {
     })
     @GetMapping("/list")
     public ResponseEntity findReviewScrapList(
-            @AuthenticationPrincipal User user
-    ) {
-        return ResponseEntity.ok().body(reviewScrapService.findReviewScrapList(user));
+            @AuthenticationPrincipal User user,
+            @PageableDefault(size = 10) Pageable pageable
+    ) throws Exception {
+        return ResponseEntity.ok().body(reviewScrapService.findReviewScrapList(user, pageable));
     }
 
     @Operation(summary = "ReviewScrap 스크랩 삭제",
