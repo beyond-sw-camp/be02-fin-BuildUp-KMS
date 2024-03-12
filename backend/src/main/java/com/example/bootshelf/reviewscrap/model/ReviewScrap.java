@@ -1,12 +1,15 @@
 package com.example.bootshelf.reviewscrap.model;
 
 import com.example.bootshelf.review.model.entity.Review;
+import com.example.bootshelf.reviewscrap.model.request.PostCreateReviewScrapReq;
 import com.example.bootshelf.user.model.entity.User;
 import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 @Entity
@@ -31,18 +34,17 @@ public class ReviewScrap {
     private Boolean status;
 
     @Column(updatable = false, nullable = false)
-    private Date createdAt;
+    private String createdAt;
 
-    private Date updatedAt;
+    private String updatedAt;
 
-    @PrePersist
-    void createdAt() {
-        this.createdAt = Timestamp.from(Instant.now());
-        this.updatedAt = Timestamp.from(Instant.now());
-    }
-
-    @PreUpdate
-    void updatedAt() {
-        this.updatedAt = Timestamp.from(Instant.now());
+    public static ReviewScrap toEntity(User user, PostCreateReviewScrapReq req) {
+        return ReviewScrap.builder()
+                .user(User.builder().idx(user.getIdx()).build())
+                .review(Review.builder().idx(req.getReviewIdx()).build())
+                .status(true)
+                .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+                .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+                .build();
     }
 }

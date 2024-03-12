@@ -23,6 +23,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class Review {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idx;
@@ -50,31 +51,36 @@ public class Review {
     @OneToMany(mappedBy = "review")
     private List<ReviewComment> reviewCommentList = new ArrayList<>();
 
+    @Column(nullable = false, length = 100)
     private String reviewTitle;
+
+    @Column(nullable = false, length = 400)
     private String reviewContent;
+
+    @Column(nullable = false, length = 200)
     private String courseName;
+
+    @Column(nullable = false)
     private Integer courseEvaluation;
 
-    private Boolean status;
-
-    @Column(updatable = false, nullable = false)
-    private Date createdAt;
-
-    private Date updatedAt;
-
+    @Column(nullable = false)
     private Integer viewCnt;
+
+    @Column(nullable = false)
     private Integer upCnt;
+
+    @Column(nullable = false)
     private Integer scrapCnt;
+
+    @Column(nullable = false)
     private Integer commentCnt;
 
-    @PrePersist
-    void createdAt() {
-        this.createdAt = Timestamp.from(Instant.now());
-        this.updatedAt = Timestamp.from(Instant.now());
-    }
+    @Column(nullable = false)
+    private Boolean status;
 
-    @PreUpdate
-    void updatedAt() {
-        this.updatedAt = Timestamp.from(Instant.now());
-    }
+    @Column(nullable = false)
+    private String createdAt;
+
+    @Column(nullable = false)
+    private String updatedAt;
 }
