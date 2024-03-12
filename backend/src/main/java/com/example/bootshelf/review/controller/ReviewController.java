@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 @RestController
 @RequiredArgsConstructor
@@ -40,4 +42,35 @@ public class ReviewController {
 
         return ResponseEntity.ok().body(baseRes);
     }
+
+    @ApiOperation(value = "본인이 작성한 후기글 목록 조회", response = BaseRes.class, notes = "인증회원은 본인이 작성한 후기글 목록을 조회할 수 있다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class))})})
+
+    @RequestMapping(method = RequestMethod.GET, value = "/myList/{page}/{size}")
+    public ResponseEntity list(
+            @PathVariable @NotNull @Positive Integer page,
+            @PathVariable @NotNull @Positive Integer size
+    ) {
+        User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        BaseRes baseRes = reviewService.myList(user, page, size);
+
+        return ResponseEntity.ok().body(baseRes);
+    }
+
+    @ApiOperation(value = "카테고리 별, 조건( 조회수, 추천수, 스크랩수, 댓글수) 별 후기글 목록 조회", response = BaseRes.class, notes = "모든 사용자가 카테고리 별, 조건 별 후기글 목록을 조회할 수 있다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class))})})
+    @RequestMapping(method = RequestMethod.GET, value = "/{reviewCategoryIdx}/{sortType}/{page}/{size}")
+    public ResponseEntity listReview(
+            @PathVariable @NotNull(message = "후기 카테고리 IDX는 필수 입력 항목입니다.") @Positive(message = "후기 카테고리 IDX는 1이상의 양수입니다.") Integer reviewCategoryIdx,
+            @PathVariable @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") Integer sortType,
+            @PathVariable @NotNull @Positive Integer page,
+            @PathVariable @NotNull @Positive Integer size
+    ) {
+        BaseRes baseRes = reviewService.listReview(reviewCategoryIdx, sortType, page, size);
+
+        return ResponseEntity.ok().body(baseRes);
+    }
+
 }
