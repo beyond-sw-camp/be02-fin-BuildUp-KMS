@@ -10,7 +10,8 @@ import lombok.*;
 public class GetListReviewRes {
 
     private Integer reviewIdx;
-    private Integer reviewCategoryIdx;
+    private Integer userIdx;
+    private String userNickName;
     private String reviewTitle;
     private String reviewContent;
     private String reviewImage;

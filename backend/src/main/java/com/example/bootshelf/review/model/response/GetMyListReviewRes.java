@@ -7,11 +7,10 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class GetCategoryListReviewRes {
+public class GetMyListReviewRes {
 
     private Integer reviewIdx;
-    private Integer userIdx;
-    private String userNickName;
+    private Integer reviewCategoryIdx;
     private String reviewTitle;
     private String reviewContent;
     private String reviewImage;
