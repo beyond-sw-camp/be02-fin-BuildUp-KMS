@@ -81,6 +81,9 @@ public class ReviewRepositoryCustomImpl extends QuerydslRepositorySupport implem
             case 4:
                 orderSpecifiers.add(review.scrapCnt.desc());
                 break;
+            case 5:
+                orderSpecifiers.add(review.commentCnt.desc());
+                break;
             default:
                 orderSpecifiers.add(review.updatedAt.desc());
         }
