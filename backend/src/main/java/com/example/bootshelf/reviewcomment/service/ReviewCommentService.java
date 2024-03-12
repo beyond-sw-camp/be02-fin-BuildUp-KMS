@@ -113,4 +113,23 @@ public class ReviewCommentService {
         }
         return null;
     }
+
+    @Transactional(readOnly = false)
+    public BaseRes deleteComment(Integer idx, User user) {
+        Optional<ReviewComment> result = reviewCommentRepository.findByIdx(idx);
+
+        if(!result.equals(0)) {
+           ReviewComment reviewComment = result.get();
+
+                reviewCommentRepository.delete(reviewComment);
+
+                return BaseRes.builder()
+                        .isSuccess(true)
+                        .message("댓글 삭제 성공")
+                        .result("후기글 댓글 삭제 성공")
+                        .build();
+
+        }
+        return null;
+    }
 }

@@ -44,7 +44,7 @@ public class ReviewCommentController {
     @ApiOperation(value = "댓글 목록 조회", response = BaseRes.class, notes = "회원/비회원은 게시글에 대한 전체 댓글을 조회할 수 있다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class)) }) })
-    @RequestMapping(method = RequestMethod.GET, value = "/{reviewIdx}")
+    @RequestMapping(method = RequestMethod.GET, value = "/{reviewIdx}/comment")
     public ResponseEntity listReviewComment(@PathVariable @NotNull @Positive Integer reviewIdx) {
         BaseRes baseRes = reviewCommentService.listComment(reviewIdx);
         return ResponseEntity.ok().body(baseRes);
@@ -57,6 +57,17 @@ public class ReviewCommentController {
     public ResponseEntity updateReviewComment(@PathVariable @NotNull @Positive Integer reviewIdx, @PathVariable @NotNull @Positive Integer idx, @Valid PatchUpdateReviewCommentReq patchUpdateReviewCommentReq) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         BaseRes baseRes = reviewCommentService.updateComment(user, reviewIdx, idx, patchUpdateReviewCommentReq);
+
+        return ResponseEntity.ok().body(baseRes);
+    }
+
+    @ApiOperation(value = "등록한 댓글 삭제", response = BaseRes.class, notes = "회원은 등록한 댓글을 삭제할 수 있다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class)) }) })
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{reviewIdx}/delete/{idx}")
+    public ResponseEntity deleteReview(@PathVariable @NotNull @Positive Integer idx) {
+        User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        BaseRes baseRes =  reviewCommentService.deleteComment(idx, user);
 
         return ResponseEntity.ok().body(baseRes);
     }
