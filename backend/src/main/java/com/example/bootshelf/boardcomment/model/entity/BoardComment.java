@@ -4,6 +4,7 @@ import com.example.bootshelf.board.model.entity.Board;
 import com.example.bootshelf.boardcommentup.model.entity.BoardCommentUp;
 import com.example.bootshelf.user.model.entity.User;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -48,7 +49,7 @@ public class BoardComment {
     private String commentContent;
 
     @Column(nullable = false)
-    private Integer unCnt;
+    private Integer upCnt;
 
     @Column(nullable = false)
     private Boolean status;

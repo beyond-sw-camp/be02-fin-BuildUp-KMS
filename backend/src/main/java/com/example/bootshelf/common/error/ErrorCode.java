@@ -47,7 +47,8 @@ public enum ErrorCode {
     BOARD_SCRAP_NOT_EXISTS(HttpStatus.NOT_FOUND, "BOARDSCRAP-004", "해당 후기 스크랩 데이터가 존재하지 않습니다."),
 
     // 댓글
-    COMMENT_NOT_EXISTS(HttpStatus.NOT_FOUND, "COMMENT-001", "해당 댓글 IDX 가 존재하지 않는 경우"),
+    REVIEW_COMMENT_NOT_EXISTS(HttpStatus.NOT_FOUND, "REVIEW-COMMENT-001", "해당 댓글 IDX 가 존재하지 않는 경우"),
+    BOARD_COMMENT_NOT_EXISTS(HttpStatus.NOT_FOUND, "REVIEW-COMMENT-001", "해당 댓글 IDX 가 존재하지 않는 경우"),
 
     // 태그
     TAG_NOT_EXISTS(HttpStatus.NOT_FOUND, "TAG-001", "해당 태그 IDX가 존재하지 않는 경우"),

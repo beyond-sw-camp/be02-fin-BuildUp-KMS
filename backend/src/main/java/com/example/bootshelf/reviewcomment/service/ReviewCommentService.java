@@ -118,7 +118,7 @@ public class ReviewCommentService {
 
         // 수정하고자 하는 댓글/대댓글을 찾지 못할 때
         if (!result.isPresent()) {
-            throw new ReviewException(ErrorCode.COMMENT_NOT_EXISTS, String.format("ReviewCommentIdx [ idx : %s ] is not exists.", idx));
+            throw new ReviewException(ErrorCode.REVIEW_COMMENT_NOT_EXISTS, String.format("ReviewCommentIdx [ idx : %s ] is not exists.", idx));
         }
 
         // 수정할 내용이 비어있을 때
@@ -160,7 +160,7 @@ public class ReviewCommentService {
 
         // 삭제하고자 하는 댓글을 찾지 못할 때
         if (result.equals(0)) {
-            throw new ReviewException(ErrorCode.COMMENT_NOT_EXISTS, String.format("ReviewCommentIdx [ idx : %s ] is not exists.", idx));
+            throw new ReviewException(ErrorCode.REVIEW_COMMENT_NOT_EXISTS, String.format("ReviewCommentIdx [ idx : %s ] is not exists.", idx));
         }
 
             ReviewComment reviewComment = result.get();
@@ -182,7 +182,7 @@ public class ReviewCommentService {
 
         // 상위댓글이 없을 때
         if (parentReviewComment.equals(0)) {
-            throw new ReviewException(ErrorCode.COMMENT_NOT_EXISTS, String.format("parentIdx [ idx : %s ] is not exists.", parentIdx));
+            throw new ReviewException(ErrorCode.REVIEW_COMMENT_NOT_EXISTS, String.format("parentIdx [ idx : %s ] is not exists.", parentIdx));
         }
 
         // 대댓글의 내용이 비어있을 때
