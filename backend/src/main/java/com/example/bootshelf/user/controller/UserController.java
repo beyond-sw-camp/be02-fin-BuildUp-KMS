@@ -48,6 +48,7 @@ public class UserController {
         return ResponseEntity.ok().body(baseRes);
     }
 
+
     @ApiOperation(value = "이메일 인증", response = BaseRes.class, notes = "회원이 이메일 인증을 진행한다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class)) }) })
@@ -55,13 +56,10 @@ public class UserController {
     public RedirectView verify(GetEmailVerifyReq getEmailVerifyReq) {
         if (emailVerifyService.verify(getEmailVerifyReq)) {
             BaseRes baseRes = userService.updateStatus(getEmailVerifyReq.getEmail()); // 이메일 인증이 완료되면 회원의 status를 바꿔줌
-//            return ResponseEntity.ok().body(true);
-//            return new RedirectView("https://www.lonuashop.kro.kr/UserLogIn");
+
             return new RedirectView("http://localhost:8081/email/verify");
         } else {
-//            return new RedirectView("http://localhost:8081/UserLogIn");
-//            return ResponseEntity.ok().body(false);
-//            return new RedirectView("https://www.lonuashop.kro.kr/UserSignUpSuccess");
+
             return new RedirectView("http://localhost:8081/");
         }
     }
@@ -129,7 +127,7 @@ public class UserController {
         return ResponseEntity.ok().body(baseRes);
     }
 
-        @ApiOperation(value = "회원 정보 수정 시 비밀번호 확인", response = BaseRes.class, notes = "회원이 회원 정보를 수정하기 위해서 비밀번호를 입력한다.")
+    @ApiOperation(value = "회원 정보 수정 시 비밀번호 확인", response = BaseRes.class, notes = "회원이 회원 정보를 수정하기 위해서 비밀번호를 입력한다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = { @Content(mediaType = "application/json") }) })
     @RequestMapping(method = RequestMethod.POST, value = "/checkPw")
