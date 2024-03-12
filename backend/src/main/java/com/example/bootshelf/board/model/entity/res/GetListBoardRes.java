@@ -5,6 +5,7 @@ import com.example.bootshelf.boardcomment.model.entity.BoardComment;
 import com.example.bootshelf.boardimage.model.entity.BoardImage;
 import com.example.bootshelf.boardtag.model.entity.BoardTag;
 import com.example.bootshelf.tag.model.entity.Tag;
+import com.example.bootshelf.user.model.entity.User;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -22,9 +23,9 @@ public class GetListBoardRes {
 
     private String boardContent;
 
-    private BoardCategory boardCategory;
+    private Integer boardCategoryIdx;
 
-    private List<BoardTag> boardTagList;
+    private List<Integer> boardTagListIdx;
 
     private Integer viewCnt;
 
@@ -40,5 +41,9 @@ public class GetListBoardRes {
 
     private List<String> boardImageList;
 
-    private List<BoardComment> boardCommentList;
+    private List<Integer> boardCommentList;
+
+    private String userProfile;
+
+    private String userName;
 }

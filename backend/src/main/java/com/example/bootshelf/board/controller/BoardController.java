@@ -50,10 +50,11 @@ public class BoardController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500",description = "서버 내부 오류")})
-    @PostMapping("/{boardidx}")
-    public ResponseEntity listBoard (Integer boardIdx){
-        BaseRes baseRes = boardService.listBoard(boardIdx);
-        return ResponseEntity.ok().body(baseRes);
+    @GetMapping ("/{boardIdx}")
+    public ResponseEntity<BaseRes> findBoard (
+            @PathVariable Integer boardIdx
+    ){
+        return ResponseEntity.ok().body(boardService.listBoard(boardIdx));
     }
 
 }

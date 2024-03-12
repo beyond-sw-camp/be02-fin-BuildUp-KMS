@@ -8,6 +8,7 @@ import com.example.bootshelf.board.model.entity.res.PostCreateBoardRes;
 import com.example.bootshelf.board.repository.BoardRepository;
 import com.example.bootshelf.boardcategory.model.entity.BoardCategory;
 import com.example.bootshelf.boardcategory.repository.BoardCategoryRepository;
+import com.example.bootshelf.boardcomment.model.entity.BoardComment;
 import com.example.bootshelf.boardimage.model.entity.BoardImage;
 import com.example.bootshelf.boardimage.service.BoardImageService;
 import com.example.bootshelf.boardtag.model.entity.BoardTag;
@@ -94,26 +95,42 @@ public class BoardService {
             else{
                 Board board = result.get();
                 List<BoardImage> boardImageList = board.getBoardImageList();
-                List<String> fileNames= new ArrayList<>();
+                List<String> fileNames = new ArrayList<>();
 
                 for(BoardImage boardImage : boardImageList){
                     String fileName = boardImage.getBoardImage();
                     fileNames.add(fileName);
+                }
+                List<BoardTag> boardTagList = board.getBoardTagList();
+                List<Integer> tagIdxs = new ArrayList<>();
+
+                for(BoardTag boardTag : boardTagList){
+                    Integer tagIdx = boardTag.getIdx();
+                    tagIdxs.add(tagIdx);
+                }
+                List<BoardComment> commentList = board.getBoardCommentList();
+                List<Integer> commentIdxs = new ArrayList<>();
+
+                for(BoardComment boardComment : commentList){
+                    Integer commentIdx = boardComment.getIdx();
+                    commentIdxs.add(commentIdx);
                 }
 
                 GetListBoardRes res = GetListBoardRes.builder()
                         .idx(board.getIdx())
                         .boardTitle(board.getBoardTitle())
                         .boardContent(board.getBoardContent())
-                        .boardCategory(board.getBoardCategory())
-                        .boardTagList(board.getBoardTagList())
+                        .boardCategoryIdx(board.getBoardCategory().getIdx())
+                        .boardTagListIdx(tagIdxs)
                         .boardImageList(fileNames)
-                        .boardCommentList(board.getBoardCommentList())
+                        .boardCommentList(commentIdxs)
                         .viewCnt(board.getViewCnt())
                         .upCnt(board.getUpCnt())
                         .scrapCnt(board.getScrapCnt())
                         .createdAt(board.getCreatedAt())
                         .updatedAt(board.getUpdatedAt())
+                        .userProfile(board.getUser().getProfileImage())
+                        .userName(board.getUser().getName())
                         .build();
 
                 BaseRes baseRes = BaseRes.builder()
