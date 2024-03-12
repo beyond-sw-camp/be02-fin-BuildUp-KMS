@@ -39,4 +39,8 @@ public class PostSignUpUserReq {
     @ApiModelProperty(value = "프로필 이미지", required = true)
     private String profileImage;
 
+    //    @NotNull(message = "프로그램명은 필수 입력 항목입니다.")
+    @Length(max=45, message = "프로그램명은 최대 45글자 이하여야 합니다.")
+    @ApiModelProperty(value = "프로그램명", example = "한화시스템 BEYOND SW 캠프", required = true)
+    private String programName;
 }

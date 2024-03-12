@@ -11,4 +11,8 @@ import java.util.Optional;
 public interface ReviewRepository extends JpaRepository<Review, Integer>, ReviewRepositoryCustom {
     Optional<Review> findByIdx(Integer idx);
     Optional<Review> findByReviewTitle(String ReviewTitle);
+
+    Optional<Review> findByIdxAndUserIdx(Integer reviewIdx, Integer userIdx);
+
+    public Integer deleteByIdxAndUserIdx(Integer reviewIdx, Integer userIdx);
 }

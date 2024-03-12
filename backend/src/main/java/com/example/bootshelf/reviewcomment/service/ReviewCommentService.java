@@ -2,11 +2,14 @@ package com.example.bootshelf.reviewcomment.service;
 
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.review.model.entity.Review;
+import com.example.bootshelf.review.model.response.GetListCommentReviewRes;
 import com.example.bootshelf.reviewcomment.model.entity.ReviewComment;
 import com.example.bootshelf.reviewcomment.model.request.PatchUpdateReviewCommentReq;
+import com.example.bootshelf.reviewcomment.model.request.PostCreateReviewReplyReq;
 import com.example.bootshelf.reviewcomment.model.response.GetListReviewCommentRes;
 import com.example.bootshelf.reviewcomment.model.response.PatchUpdateReviewCommentRes;
 import com.example.bootshelf.reviewcomment.model.response.PostCreateReviewCommentRes;
+import com.example.bootshelf.reviewcomment.model.response.PostCreateReviewReplyRes;
 import com.example.bootshelf.reviewcomment.repository.ReviewCommentRepository;
 import com.example.bootshelf.reviewcomment.model.request.PostCreateReviewCommentReq;
 import com.example.bootshelf.user.model.entity.User;
@@ -26,7 +29,7 @@ public class ReviewCommentService {
     private final ReviewCommentRepository reviewCommentRepository;
 
     @Transactional(readOnly = false)
-    public BaseRes createComment(User user, Integer reviewIdx, PostCreateReviewCommentReq postCreateReviewCommentReq) {
+    public BaseRes createReviewComment(User user, Integer reviewIdx, PostCreateReviewCommentReq postCreateReviewCommentReq) {
 
         reviewCommentRepository.save(ReviewComment.builder()
                 .review(Review.builder().idx(reviewIdx).build())
@@ -78,13 +81,12 @@ public class ReviewCommentService {
                 .build();
 
         return baseRes;
-
     }
+
 
     @Transactional(readOnly = false)
     public BaseRes updateComment(User user, Integer reviewIdx, Integer idx, PatchUpdateReviewCommentReq patchUpdateReviewCommentReq) {
         Optional<ReviewComment> result = reviewCommentRepository.findByIdx(idx);
-
 
         if (result.isPresent()) {
             ReviewComment reviewComment = result.get();
@@ -109,7 +111,6 @@ public class ReviewCommentService {
                     .build();
 
             return baseRes;
-
         }
         return null;
     }
@@ -128,8 +129,44 @@ public class ReviewCommentService {
                         .message("댓글 삭제 성공")
                         .result("후기글 댓글 삭제 성공")
                         .build();
-
         }
         return null;
+    }
+
+    @Transactional(readOnly = false)
+    public BaseRes createReviewReply(User user, Integer reviewIdx, Integer parentIdx, PostCreateReviewReplyReq postCreateReviewReplyReq) {
+
+        Optional<ReviewComment> parentReviewComment = reviewCommentRepository.findById(parentIdx);
+
+        if (parentReviewComment.equals(0)) {
+            // 부모 댓글이 없을 때 예외처리
+        }
+
+        ReviewComment childrenReviewComment = ReviewComment.builder()
+                .review(Review.builder().idx(reviewIdx).build())
+                .user(user)
+                .parent(parentReviewComment.get())  // 부모 댓글 설정
+                .reviewCommentContent(postCreateReviewReplyReq.getReviewReplyContent())
+                .status(true)
+                .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .build();
+
+        parentReviewComment.get().getChildren().add(childrenReviewComment);
+
+        reviewCommentRepository.save(childrenReviewComment);
+
+        PostCreateReviewReplyRes postCreateReviewReplyRes = PostCreateReviewReplyRes.builder()
+                .parentIdx(childrenReviewComment.getParent().getIdx())
+                .reviewCommentContent(postCreateReviewReplyReq.getReviewReplyContent())
+                .build();
+
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("댓글 등록 성공")
+                .result(postCreateReviewReplyRes)
+                .build();
+
+        return baseRes;
     }
 }
