@@ -32,10 +32,9 @@ import java.util.stream.Collectors;
 public class ReviewScrapService {
     private final ReviewScrapRepository reviewScrapRepository;
     private final ReviewRepository reviewRepository;
-    private final UserRepository userRepository;
 
     public BaseRes createReviewScrap(User user, PostCreateReviewScrapReq req) throws Exception {
-        Review review = reviewRepository.findByIdx(req.getReviewIdx())
+        reviewRepository.findByIdx(req.getReviewIdx())
                 .orElseThrow(() -> new Exception("해당 리뷰가 존재하지 않습니다." + req.getReviewIdx()));
 
         ReviewScrap reviewScrapResult = reviewScrapRepository.findByUserIdxAndReviewIdx(user.getIdx(), req.getReviewIdx());

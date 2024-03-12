@@ -16,8 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "ReviewScrap", description = "ReviewScrap CRUD")
-@Api(tags = "ReviewScrap")
+@Tag(name = "후기", description = "ReviewScrap CRUD")
+@Api(tags = "후기 스크랩")
 @RestController
 @Slf4j
 @RequiredArgsConstructor
