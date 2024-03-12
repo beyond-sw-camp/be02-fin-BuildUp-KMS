@@ -39,6 +39,14 @@ public enum ErrorCode {
     REVIEW_SCRAP_NOT_EXISTS(HttpStatus.NOT_FOUND, "REVIEWSCRAP-004", "해당 후기 스크랩 데이터가 존재하지 않습니다."),
 
 
+    // 후기 추천
+    DUPLICATED_REVIEW_UP(HttpStatus.CONFLICT, "REVIEWUP-001", "이미 추천한 후기입니다."),
+    REVIEW_UP_IS_EMPTY(HttpStatus.NOT_FOUND, "REVIEWUP-002", "추천한 후기가 존재하지 않습니다."),
+    UNAUTHORIZED_REVIEW_UP(HttpStatus.UNAUTHORIZED, "REVIEWUP-003", "후기를 추천한 회원과 현재 회원이 일치하지 않습니다."),
+
+    REVIEW_UP_NOT_EXISTS(HttpStatus.NOT_FOUND, "REVIEWUP-004", "해당 후기 추천 데이터가 존재하지 않습니다."),
+
+
     // 게시판
     BOARD_NOT_EXISTS(HttpStatus.NOT_FOUND, "BOARD-001", "해당 게시글 IDX 가 존재하지 않는 경우"),
 
@@ -48,6 +56,14 @@ public enum ErrorCode {
     BOARD_SCRAP_IS_EMPTY(HttpStatus.NOT_FOUND, "BOARDSCRAP-002", "스크랩한 게시글이 존재하지 않습니다."),
     UNAUTHORIZED_BOARD_SCRAP(HttpStatus.UNAUTHORIZED, "BOARDSCRAP-003", "게시글을 스크랩한 회원과 현재 회원이 일치하지 않습니다."),
     BOARD_SCRAP_NOT_EXISTS(HttpStatus.NOT_FOUND, "BOARDSCRAP-004", "해당 후기 스크랩 데이터가 존재하지 않습니다."),
+
+
+    // 게시판 추천
+    DUPLICATED_BOARD_UP(HttpStatus.CONFLICT, "BOARDUP-001", "이미 추천한 게시판입니다."),
+    BOARD_UP_IS_EMPTY(HttpStatus.NOT_FOUND, "BOARDUP-002", "추천한 게시글이 존재하지 않습니다."),
+    UNAUTHORIZED_BOARD_UP(HttpStatus.UNAUTHORIZED, "BOARDUP-003", "게시글을 추천한 회원과 현재 회원이 일치하지 않습니다."),
+
+    BOARD_UP_NOT_EXISTS(HttpStatus.NOT_FOUND, "BOARDUP-004", "해당 게시글 추천 데이터가 존재하지 않습니다."),
 
 
     ;

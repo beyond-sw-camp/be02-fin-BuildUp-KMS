@@ -6,10 +6,7 @@ import com.example.bootshelf.user.model.entity.User;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -25,7 +22,7 @@ public class BoardComment {
     private Integer idx;
 
     // 자기 참조를 위한 부모 댓글
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_idx") // 부모 댓글의 외래키
     private BoardComment parent;
 
