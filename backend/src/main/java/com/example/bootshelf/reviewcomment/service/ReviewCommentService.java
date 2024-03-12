@@ -141,7 +141,6 @@ public class ReviewCommentService {
         if (parentReviewComment.equals(0)) {
             // 부모 댓글이 없을 때 예외처리
         }
-
         ReviewComment childrenReviewComment = ReviewComment.builder()
                 .review(Review.builder().idx(reviewIdx).build())
                 .user(user)
