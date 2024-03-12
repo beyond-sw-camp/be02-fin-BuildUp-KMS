@@ -101,7 +101,8 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class)) }) })
     @RequestMapping(method = RequestMethod.PATCH, value = "/update")
-    public ResponseEntity update(@RequestBody @Valid PatchUpdateUserReq patchUpdateUserReq) {
+    public ResponseEntity update( @RequestPart(value = "user") @Valid PatchUpdateUserReq patchUpdateUserReq,
+                                  @RequestPart(value = "profileImage") MultipartFile profileImage) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         BaseRes baseRes = userService.update(user.getEmail(), patchUpdateUserReq);
 
