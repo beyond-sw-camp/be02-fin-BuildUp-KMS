@@ -80,4 +80,8 @@ public class Review {
 
     @Column(nullable = false)
     private String updatedAt;
+
+    public void increaseViewCount() {
+        this.viewCnt = this.viewCnt + 1;
+    }
 }

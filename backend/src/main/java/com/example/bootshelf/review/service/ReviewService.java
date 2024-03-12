@@ -165,7 +165,7 @@ public class ReviewService {
     }
 
     // 후기글 상세 조회
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = false)
     public BaseRes readReview(Integer reviewIdx) {
 
         Optional<Review> result = reviewRepository.findByIdx(reviewIdx);
@@ -175,6 +175,8 @@ public class ReviewService {
         }
 
         Review review = result.get();
+        review.increaseViewCount();
+        reviewRepository.save(review);
 
         // 댓글 조회
         List<GetListCommentReviewRes> getListCommentResListReview = new ArrayList<>();
