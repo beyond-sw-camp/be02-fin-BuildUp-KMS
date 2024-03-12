@@ -22,8 +22,32 @@ public enum ErrorCode {
     DIFFERENT_USER_PASSWORD(HttpStatus.BAD_REQUEST, "USER-004", "회원의 패스워드가 저장된 데이터와 다른 경우"),
 
     // 후기
-    REVIEW_NOT_EXISTS(HttpStatus.UNAUTHORIZED, "REVIEW-001", "해당 후기 IDX 가 존재하지 않는 경우"),
-    DUPLICATE_REVIEW_TITLE(HttpStatus.BAD_REQUEST, "REVIEW-002", "후기글의 제목이 중복된 경우");
+    REVIEW_NOT_EXISTS(HttpStatus.NOT_FOUND, "REVIEW-001", "해당 후기 IDX 가 존재하지 않는 경우"),
+    DUPLICATE_REVIEW_TITLE(HttpStatus.BAD_REQUEST, "REVIEW-002", "후기글의 제목이 중복된 경우"),
+
+
+    // 후기 스크랩
+    DUPLICATED_REVIEW_SCRAP(HttpStatus.CONFLICT, "REVIEWSCRAP-001", "이미 스크랩한 후기입니다."),
+
+    REVIEW_SCRAP_IS_EMPTY(HttpStatus.NOT_FOUND, "REVIEWSCRAP-002", "스크랩한 후기가 존재하지 않습니다."),
+
+    UNAUTHORIZED_REVIEW_SCRAP(HttpStatus.UNAUTHORIZED, "REVIEWSCRAP-003", "후기를 스크랩한 회원과 현재 회원이 일치하지 않습니다."),
+
+    REVIEW_SCRAP_NOT_EXISTS(HttpStatus.NOT_FOUND, "REVIEWSCRAP-004", "해당 후기 스크랩 데이터가 존재하지 않습니다."),
+
+
+    // 게시판
+    BOARD_NOT_EXISTS(HttpStatus.NOT_FOUND, "BOARD-001", "해당 게시글 IDX 가 존재하지 않는 경우"),
+
+
+    // 게시판 스크랩
+    DUPLICATED_BOARD_SCRAP(HttpStatus.CONFLICT, "BOARDSCRAP-001", "이미 스크랩한 게시판입니다."),
+    BOARD_SCRAP_IS_EMPTY(HttpStatus.NOT_FOUND, "BOARDSCRAP-002", "스크랩한 게시글이 존재하지 않습니다."),
+    UNAUTHORIZED_BOARD_SCRAP(HttpStatus.UNAUTHORIZED, "BOARDSCRAP-003", "게시글을 스크랩한 회원과 현재 회원이 일치하지 않습니다."),
+    BOARD_SCRAP_NOT_EXISTS(HttpStatus.NOT_FOUND, "BOARDSCRAP-004", "해당 후기 스크랩 데이터가 존재하지 않습니다."),
+
+
+    ;
 
     private final HttpStatus status;  // 헤더로 반환할 Http 상태 코드
     private final String code;    // 페이로드로 반환할 에러 코드

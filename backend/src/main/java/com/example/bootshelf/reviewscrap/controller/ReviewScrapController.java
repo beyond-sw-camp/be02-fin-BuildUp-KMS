@@ -38,7 +38,7 @@ public class ReviewScrapController {
     public ResponseEntity<BaseRes> createReviewScrap(
             @AuthenticationPrincipal User user,
             @RequestBody PostCreateReviewScrapReq postCreateReviewScrapReq
-    ) throws Exception {
+    ) {
         return ResponseEntity.ok().body(reviewScrapService.createReviewScrap(user, postCreateReviewScrapReq));
     }
 
@@ -52,7 +52,7 @@ public class ReviewScrapController {
     public ResponseEntity<BaseRes> findReviewScrapList(
             @AuthenticationPrincipal User user,
             @PageableDefault(size = 10) Pageable pageable
-    ) throws Exception {
+    ) {
         return ResponseEntity.ok().body(reviewScrapService.findReviewScrapList(user, pageable));
     }
 
@@ -66,7 +66,7 @@ public class ReviewScrapController {
     public ResponseEntity<BaseRes> deleteReviewScrap(
             @AuthenticationPrincipal User user,
             @PathVariable Integer reviewScrapIdx
-    ) throws Exception {
+    ) {
         return ResponseEntity.ok().body(reviewScrapService.deleteReviewScrap(user, reviewScrapIdx));
     }
 }
