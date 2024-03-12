@@ -96,6 +96,7 @@ public class Review {
 
     public void decreaseUpCnt() {
         this.upCnt -= 1;
+    }
 
     public void increaseViewCount() {
         this.viewCnt = this.viewCnt + 1;
