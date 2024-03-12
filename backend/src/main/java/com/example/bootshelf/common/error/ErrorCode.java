@@ -21,8 +21,9 @@ public enum ErrorCode {
     USER_NOT_EXISTS(HttpStatus.NOT_FOUND, "USER-003", "회원을 찾을 수 없는 경우"),
     DIFFERENT_USER_PASSWORD(HttpStatus.BAD_REQUEST, "USER-004", "회원의 패스워드가 저장된 데이터와 다른 경우"),
 
-    // 리뷰
-    REVIEW_NOT_EXISTS(HttpStatus.UNAUTHORIZED, "REVIEW-001", "해당 리뷰가 존재하지 않습니다.");
+    // 후기
+    REVIEW_NOT_EXISTS(HttpStatus.UNAUTHORIZED, "REVIEW-001", "해당 후기가 존재하지 않는 경우"),
+    DUPLICATE_REVIEW_TITLE(HttpStatus.BAD_REQUEST, "REVIEW-002", "후기글의 제목이 중복된 경우");
 
     private final HttpStatus status;  // 헤더로 반환할 Http 상태 코드
     private final String code;    // 페이로드로 반환할 에러 코드
