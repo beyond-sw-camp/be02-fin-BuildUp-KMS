@@ -3,6 +3,7 @@ package com.example.bootshelf.reviewcomment.controller;
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.reviewcomment.model.request.PatchUpdateReviewCommentReq;
 import com.example.bootshelf.reviewcomment.model.request.PostCreateReviewCommentReq;
+import com.example.bootshelf.reviewcomment.model.request.PostCreateReviewReplyReq;
 import com.example.bootshelf.reviewcomment.service.ReviewCommentService;
 
 import com.example.bootshelf.user.model.entity.User;
@@ -36,7 +37,7 @@ public class ReviewCommentController {
     @RequestMapping(method = RequestMethod.POST, value = "/{reviewIdx}/comment/create")
     public ResponseEntity createReviewComment(@PathVariable @NotNull @Positive Integer reviewIdx, PostCreateReviewCommentReq postCreateReviewCommentReq) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        BaseRes baseRes = reviewCommentService.createComment(user, reviewIdx, postCreateReviewCommentReq);
+        BaseRes baseRes = reviewCommentService.createReviewComment(user, reviewIdx, postCreateReviewCommentReq);
 
         return ResponseEntity.ok().body(baseRes);
     }
@@ -68,6 +69,17 @@ public class ReviewCommentController {
     public ResponseEntity deleteReview(@PathVariable @NotNull @Positive Integer idx) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         BaseRes baseRes =  reviewCommentService.deleteComment(idx, user);
+
+        return ResponseEntity.ok().body(baseRes);
+    }
+
+    @ApiOperation(value = "대댓글 등록", response = BaseRes.class, notes = "회원은 후기 게시판에 작성되어 있는 게시글에 대댓글을 작성할 수 있다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class)) }) })
+    @RequestMapping(method = RequestMethod.POST, value = "/{reviewIdx}/comment/create/{parentIdx}")
+    public ResponseEntity createReviewReply(@PathVariable @NotNull @Positive Integer reviewIdx, PostCreateReviewReplyReq postCreateReviewReplyReq, @PathVariable @NotNull @Positive Integer parentIdx) {
+        User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        BaseRes baseRes = reviewCommentService.createReviewReply(user, reviewIdx, parentIdx, postCreateReviewReplyReq);
 
         return ResponseEntity.ok().body(baseRes);
     }
