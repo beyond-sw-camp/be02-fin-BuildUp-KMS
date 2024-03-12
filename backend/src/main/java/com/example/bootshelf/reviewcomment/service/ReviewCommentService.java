@@ -3,7 +3,9 @@ package com.example.bootshelf.reviewcomment.service;
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.review.model.entity.Review;
 import com.example.bootshelf.reviewcomment.model.entity.ReviewComment;
+import com.example.bootshelf.reviewcomment.model.request.PatchUpdateReviewCommentReq;
 import com.example.bootshelf.reviewcomment.model.response.GetListReviewCommentRes;
+import com.example.bootshelf.reviewcomment.model.response.PatchUpdateReviewCommentRes;
 import com.example.bootshelf.reviewcomment.model.response.PostCreateReviewCommentRes;
 import com.example.bootshelf.reviewcomment.repository.ReviewCommentRepository;
 import com.example.bootshelf.reviewcomment.model.request.PostCreateReviewCommentReq;
@@ -16,6 +18,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -76,5 +79,38 @@ public class ReviewCommentService {
 
         return baseRes;
 
+    }
+
+    @Transactional(readOnly = false)
+    public BaseRes updateComment(User user, Integer reviewIdx, Integer idx, PatchUpdateReviewCommentReq patchUpdateReviewCommentReq) {
+        Optional<ReviewComment> result = reviewCommentRepository.findByIdx(idx);
+
+
+        if (result.isPresent()) {
+            ReviewComment reviewComment = result.get();
+             reviewComment.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+             reviewComment.setReviewCommentContent(patchUpdateReviewCommentReq.getReviewCommentContent());
+
+            reviewCommentRepository.save(reviewComment);
+
+            PatchUpdateReviewCommentRes patchUpdateReviewCommentRes = PatchUpdateReviewCommentRes.builder()
+                    .idx(reviewComment.getIdx())
+                    .userIdx(reviewComment.getUser().getIdx())
+                    .nickName(reviewComment.getUser().getNickName())
+                    .reviewCommentContent(reviewComment.getReviewCommentContent())
+                    .createAt(reviewComment.getCreatedAt())
+                    .updateAt(reviewComment.getUpdatedAt())
+                    .build();
+
+            BaseRes baseRes = BaseRes.builder()
+                    .isSuccess(true)
+                    .message("댓글 수정 성공")
+                    .result(patchUpdateReviewCommentRes)
+                    .build();
+
+            return baseRes;
+
+        }
+        return null;
     }
 }

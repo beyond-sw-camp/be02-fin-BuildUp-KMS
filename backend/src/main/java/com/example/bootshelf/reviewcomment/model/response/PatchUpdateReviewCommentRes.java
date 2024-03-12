@@ -7,6 +7,13 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PostCreateReviewCommentRes {
+public class PatchUpdateReviewCommentRes {
+
+    private Integer idx;
+    private Integer userIdx;
+    private String nickName;
     private String reviewCommentContent;
+    private String createAt;
+    private String updateAt;
+
 }

@@ -1,8 +1,10 @@
 package com.example.bootshelf.reviewcomment.controller;
 
 import com.example.bootshelf.common.BaseRes;
+import com.example.bootshelf.reviewcomment.model.request.PatchUpdateReviewCommentReq;
 import com.example.bootshelf.reviewcomment.model.request.PostCreateReviewCommentReq;
 import com.example.bootshelf.reviewcomment.service.ReviewCommentService;
+
 import com.example.bootshelf.user.model.entity.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
@@ -31,7 +34,7 @@ public class ReviewCommentController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class)) }) })
     @RequestMapping(method = RequestMethod.POST, value = "/{reviewIdx}/comment/create")
-    public ResponseEntity createComment(@PathVariable @NotNull @Positive Integer reviewIdx, PostCreateReviewCommentReq postCreateReviewCommentReq) {
+    public ResponseEntity createReviewComment(@PathVariable @NotNull @Positive Integer reviewIdx, PostCreateReviewCommentReq postCreateReviewCommentReq) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         BaseRes baseRes = reviewCommentService.createComment(user, reviewIdx, postCreateReviewCommentReq);
 
@@ -42,8 +45,19 @@ public class ReviewCommentController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class)) }) })
     @RequestMapping(method = RequestMethod.GET, value = "/{reviewIdx}")
-    public ResponseEntity listComment(@PathVariable @NotNull @Positive Integer reviewIdx) {
+    public ResponseEntity listReviewComment(@PathVariable @NotNull @Positive Integer reviewIdx) {
         BaseRes baseRes = reviewCommentService.listComment(reviewIdx);
+        return ResponseEntity.ok().body(baseRes);
+    }
+
+    @ApiOperation(value = "등록한 댓글 수정", response = BaseRes.class, notes = "회원은 등록한 댓글을 수정할 수 있다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class)) }) })
+    @RequestMapping(method = RequestMethod.PATCH, value = "/{reviewIdx}/update/{idx}")
+    public ResponseEntity updateReviewComment(@PathVariable @NotNull @Positive Integer reviewIdx, @PathVariable @NotNull @Positive Integer idx, @Valid PatchUpdateReviewCommentReq patchUpdateReviewCommentReq) {
+        User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        BaseRes baseRes = reviewCommentService.updateComment(user, reviewIdx, idx, patchUpdateReviewCommentReq);
+
         return ResponseEntity.ok().body(baseRes);
     }
 }
