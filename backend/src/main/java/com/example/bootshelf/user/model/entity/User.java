@@ -12,14 +12,12 @@ import com.example.bootshelf.reviewcommentup.model.ReviewCommentUp;
 import com.example.bootshelf.reviewhistory.model.ReviewHistory;
 import com.example.bootshelf.reviewscrap.model.ReviewScrap;
 import com.example.bootshelf.reviewup.model.ReviewUp;
-import com.example.bootshelf.user.model.entity.request.PatchUserUpdateReq;
+import com.example.bootshelf.user.model.entity.request.PatchUpdateUserReq;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.*;
 
 @Entity
@@ -70,7 +68,6 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<BoardCommentUp> boardCommentUpList = new ArrayList<>();
 
-
     @Column(nullable = false, length = 45, unique = true)
     private String email;
 
@@ -80,7 +77,7 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String authority;
 
-    @Column(nullable = false, length = 45)
+    @Column(nullable = false, length = 30)
     private String name;
 
     @Column(nullable = false, length = 30)
@@ -97,7 +94,6 @@ public class User implements UserDetails {
 
     @Column(nullable = false)
     private Boolean status;
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -132,15 +128,15 @@ public class User implements UserDetails {
         return password;
     }
 
-    public void update(PatchUserUpdateReq patchUserUpdateReq, String userPassword) {
+    public void update(PatchUpdateUserReq patchUpdateUserReq, String userPassword) {
         if (userPassword != null) {
             this.password = password;
         }
-        if (patchUserUpdateReq.getNickName() != null) {
-            this.nickName = patchUserUpdateReq.getNickName();
+        if (patchUpdateUserReq.getNickName() != null) {
+            this.nickName = patchUpdateUserReq.getNickName();
         }
-        if (patchUserUpdateReq.getProfileImage() != null) {
-            this.profileImage = patchUserUpdateReq.getProfileImage();
+        if (patchUpdateUserReq.getProfileImage() != null) {
+            this.profileImage = patchUpdateUserReq.getProfileImage();
         }
     }
 }

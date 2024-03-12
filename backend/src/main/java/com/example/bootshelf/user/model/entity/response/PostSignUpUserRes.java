@@ -7,6 +7,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PostUserLoginRes {
-    private String token;
+public class PostSignUpUserRes {
+
+    private String userEmail;
+    private String userName;
+
 }
