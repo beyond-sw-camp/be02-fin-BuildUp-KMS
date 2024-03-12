@@ -27,11 +27,10 @@ public class BoardTagService {
     // 입력받은 태그가 DB에 있는지 repo를 통해 확인
     // 입력받은 태그가 DB에 있다면 반환,
     // 입력받은 태그가 DB에 없다면 DB에 입력후 태그를 게시글에 저장
-    public BoardTag saveBoardTag(PostCreateBoardReq request, Integer idx){
-        List<String> tagList = request.getTagList();
+    public BoardTag saveBoardTag(List<String> reqTagList, Integer idx){
         List<Tag> tagList1 = new ArrayList<>();
         BoardTag bt = new BoardTag();
-        for (String str : tagList) {
+        for (String str : reqTagList) {
             Tag tag = tagService.createTag(str);
             tagList1.add(tag);
         }
