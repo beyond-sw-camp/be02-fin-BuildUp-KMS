@@ -50,6 +50,10 @@ public enum ErrorCode {
     BOARD_SCRAP_NOT_EXISTS(HttpStatus.NOT_FOUND, "BOARDSCRAP-004", "해당 후기 스크랩 데이터가 존재하지 않습니다."),
 
 
+    // 댓글
+    COMMENT_NOT_EXISTS(HttpStatus.NOT_FOUND, "COMMENT-001", "해당 댓글 IDX 가 존재하지 않는 경우"),
+
+
     ;
 
     private final HttpStatus status;  // 헤더로 반환할 Http 상태 코드
