@@ -45,7 +45,6 @@ public class ReviewScrapController {
             description = "스크랩한 리뷰 게시물 목록을 조회하는 API입니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
-            @ApiResponse(responseCode = "404", description = "해당 Review가 존재하지 않음."),
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
     @GetMapping("/list")
