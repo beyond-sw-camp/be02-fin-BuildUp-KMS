@@ -2,7 +2,6 @@ package com.example.bootshelf.reviewscrap.service;
 
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.common.error.ErrorCode;
-import com.example.bootshelf.common.error.exception.EntityNotFoundException;
 import com.example.bootshelf.review.model.entity.Review;
 import com.example.bootshelf.review.repository.ReviewRepository;
 import com.example.bootshelf.reviewscrap.model.ReviewScrap;
@@ -19,8 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,8 +32,8 @@ public class ReviewScrapService {
     private final UserRepository userRepository;
 
     public BaseRes createReviewScrap(User user, PostCreateReviewScrapReq req) {
-        Review review = reviewRepository.findByIdx(req.getReviewIdx())
-                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.REVIEW_NOT_EXISTS, "해당 리뷰가 존재하지 않습니다." + req.getReviewIdx()));
+//        Review review = reviewRepository.findByIdx(req.getReviewIdx())
+//                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.REVIEW_NOT_EXISTS, "해당 리뷰가 존재하지 않습니다." + req.getReviewIdx()));
 
         ReviewScrap reviewScrap = ReviewScrap.toEntity(user, req);
 

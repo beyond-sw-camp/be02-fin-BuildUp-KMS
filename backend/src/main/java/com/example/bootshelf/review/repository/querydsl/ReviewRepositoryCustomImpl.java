@@ -5,7 +5,6 @@ import com.example.bootshelf.review.model.entity.Review;
 import com.example.bootshelf.reviewcategory.model.QReviewCategory;
 import com.example.bootshelf.reviewimage.model.QReviewImage;
 import com.example.bootshelf.user.model.entity.QUser;
-import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

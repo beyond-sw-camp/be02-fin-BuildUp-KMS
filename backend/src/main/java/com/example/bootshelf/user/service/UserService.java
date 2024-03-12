@@ -4,10 +4,9 @@ package com.example.bootshelf.user.service;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.example.bootshelf.common.BaseRes;
+import com.example.bootshelf.common.error.ErrorCode;
 import com.example.bootshelf.config.utils.JwtUtils;
-import com.example.bootshelf.user.exception.UserAccountException;
-import com.example.bootshelf.user.exception.UserDuplicateException;
-import com.example.bootshelf.user.exception.UserNotFoundException;
+import com.example.bootshelf.user.exception.UserException;
 import com.example.bootshelf.user.model.entity.User;
 import com.example.bootshelf.user.model.entity.request.PatchUpdateUserReq;
 import com.example.bootshelf.user.model.entity.request.PostCheckPasswordReq;
@@ -98,11 +97,11 @@ public class UserService {
 
         // 중복된 이메일에 대한 예외처리
         if (resultEmail.isPresent()) {
-            throw UserDuplicateException.forSignupEmail(postSignUpUserReq.getEmail());
+            throw new UserException(ErrorCode.DUPLICATE_SIGNUP_EMAIL, String.format("SignUp Email [ %s ] is duplicated.", postSignUpUserReq.getEmail()));
         }
         // 중복된 닉네임에 대한 예외처리
         if (resultUserNickName.isPresent()) {
-            throw UserDuplicateException.forSignupUserNickName(postSignUpUserReq.getNickName());
+            throw new UserException(ErrorCode.DUPLICATE_SIGNUP_NICKNAME, String.format("SignUp NickName [ %s ] is duplicated.", postSignUpUserReq.getNickName()));
         }
 
         String profilePhoto = saveFile(profileImage);
@@ -178,7 +177,7 @@ public class UserService {
                     .result(getListUserRes)
                     .build();
         } else {
-            throw UserNotFoundException.forEmail(email);
+            throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("User email [ %s ] is not exists.", email));
         }
     }
 
@@ -188,7 +187,7 @@ public class UserService {
         Optional<User> result = userRepository.findByEmail(postLoginUserReq.getEmail());
 
         if (result.isEmpty()) {
-            throw UserNotFoundException.forEmail(postLoginUserReq.getEmail());
+            throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("User email [ %s ] is not exists.", postLoginUserReq.getEmail()));
         }
 
         User user = result.get();
@@ -203,7 +202,7 @@ public class UserService {
                     .result(postLogInUserRes)
                     .build();
         } else {
-            throw UserAccountException.forInvalidPassword(postLoginUserReq.getPassword());
+            throw new UserException(ErrorCode.DIFFERENT_USER_PASSWORD, String.format("User Password [ %s ] is different.", postLoginUserReq.getPassword()));
         }
     }
 
@@ -251,7 +250,7 @@ public class UserService {
                             .build())
                     .build();
         } else {
-            throw UserNotFoundException.forEmail(email);
+            throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("User email [ %s ] is not exists.", email));
         }
     }
 
@@ -314,7 +313,7 @@ public class UserService {
                     .result(patchUpdateUserRes)
                     .build();
         } else {
-            throw UserNotFoundException.forEmail(userEmail);
+            throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("User email [ %s ] is not exists.", userEmail));
         }
     }
 
@@ -333,8 +332,7 @@ public class UserService {
                     .result("회원의 상태가 탈퇴 상태로 변경되었습니다.")
                     .build();
         } else {
-
-            throw UserNotFoundException.forIdx(userIdx);
+            throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("UserIdx [ %s ] is not exists.", userIdx));
         }
     }
 
@@ -350,7 +348,7 @@ public class UserService {
                     .result("회원이 삭제되었습니다.")
                     .build();
         } else {
-            throw UserNotFoundException.forIdx(userIdx);
+            throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("UserIdx [ %s ] is not exists.", userIdx));
         }
     }
 }

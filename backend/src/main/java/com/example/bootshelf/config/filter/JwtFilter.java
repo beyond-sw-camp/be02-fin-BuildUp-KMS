@@ -4,7 +4,7 @@ package com.example.bootshelf.config.filter;
 import com.example.bootshelf.common.error.ErrorCode;
 import com.example.bootshelf.common.error.ErrorResponse;
 import com.example.bootshelf.config.utils.JwtUtils;
-import com.example.bootshelf.user.exception.UserAccountException;
+import com.example.bootshelf.user.exception.UserException;
 import com.example.bootshelf.user.model.entity.User;
 import com.example.bootshelf.user.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,7 +35,7 @@ public class JwtFilter extends OncePerRequestFilter {
     }
 
     // 필터에서 예외를 다루기 위한 처리
-    private void handleJwtException(HttpServletResponse response, UserAccountException exception) throws IOException {
+    private void handleJwtException(HttpServletResponse response, UserException exception) throws IOException {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 Unauthorized
         response.setContentType("application/json");
 
@@ -85,12 +85,12 @@ public class JwtFilter extends OncePerRequestFilter {
                     }
                 }
             }
-        } catch (UserAccountException e) {
+        } catch (UserException e) {
             // JwtUtils에서 던진 UserAccountException 처리
             handleJwtException(response, e);
         } catch (ServletException e) {
             // Spring Security 예외 처리
-            handleJwtException(response, new UserAccountException(ErrorCode.UNAUTHORIZED, e.getMessage()));
+            handleJwtException(response, new UserException(ErrorCode.UNAUTHORIZED, e.getMessage()));
         }
 
     }

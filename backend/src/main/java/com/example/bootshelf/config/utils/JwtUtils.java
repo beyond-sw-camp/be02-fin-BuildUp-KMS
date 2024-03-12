@@ -1,6 +1,7 @@
 package com.example.bootshelf.config.utils;
 
-import com.example.bootshelf.user.exception.UserAccountException;
+import com.example.bootshelf.common.error.ErrorCode;
+import com.example.bootshelf.user.exception.UserException;
 import com.example.bootshelf.user.model.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -84,9 +85,9 @@ public class JwtUtils {
                     .parseClaimsJws(token)
                     .getBody();
         } catch (SignatureException e) {
-            throw UserAccountException.forInvalidToken(token);
+            throw new UserException(ErrorCode.INVALID_VERIFICATION_TOKEN, String.format("Verification Token [ %s ] is invalid.", token));
         } catch (ExpiredJwtException e) {
-            throw UserAccountException.forExpiredToken(token);
+            throw new UserException(ErrorCode.EXPIRED_VERIFICATION_TOKEN, String.format("Verification Token [ %s ] is expired.", token));
         }
     }
 }
