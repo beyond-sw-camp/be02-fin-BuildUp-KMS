@@ -1,6 +1,7 @@
 package com.example.bootshelf.review.controller;
 
 import com.example.bootshelf.common.BaseRes;
+import com.example.bootshelf.review.model.request.PatchUpdateReviewReq;
 import com.example.bootshelf.review.model.request.PostCreateReviewReq;
 import com.example.bootshelf.review.service.ReviewService;
 import com.example.bootshelf.user.model.entity.User;
@@ -53,7 +54,7 @@ public class ReviewController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/myList")
     public ResponseEntity list(
-        @PageableDefault(size = 10) Pageable pageable
+            @PageableDefault(size = 10) Pageable pageable
     ) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         BaseRes baseRes = reviewService.myList(user, pageable);
@@ -75,7 +76,7 @@ public class ReviewController {
         return ResponseEntity.ok().body(baseRes);
     }
 
-        @ApiOperation(value = "후기글 상세 조회", response = BaseRes.class, notes = "모든 사용자가 후기글 상세내용을 조회할 수 있다.")
+    @ApiOperation(value = "후기글 상세 조회", response = BaseRes.class, notes = "모든 사용자가 후기글 상세내용을 조회할 수 있다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class))})})
     @RequestMapping(method = RequestMethod.GET, value = "/{reviewIdx}")
@@ -83,6 +84,18 @@ public class ReviewController {
             @PathVariable @NotNull(message = "후기 IDX는 필수 입력 항목입니다.") @Positive(message = "후기 IDX는 1이상의 양수입니다.") Integer reviewIdx
     ) {
         BaseRes baseRes = reviewService.readReview(reviewIdx);
+
+        return ResponseEntity.ok().body(baseRes);
+    }
+
+    @ApiOperation(value = "본인이 작성한 후기글 수정", response = BaseRes.class, notes = "인증회원은 본인이 작성한 후기글을 수정할 수 있다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class))})})
+
+    @RequestMapping(method = RequestMethod.PATCH, value = "/update")
+    public ResponseEntity updateReview(@RequestBody @Valid PatchUpdateReviewReq patchUpdateReviewReq) {
+        User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        BaseRes baseRes = reviewService.updateReview(user, patchUpdateReviewReq);
 
         return ResponseEntity.ok().body(baseRes);
     }
