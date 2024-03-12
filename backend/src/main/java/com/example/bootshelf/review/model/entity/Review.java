@@ -80,4 +80,20 @@ public class Review {
 
     @Column(nullable = false)
     private String updatedAt;
+
+    public void increaseScrapCnt() {
+        this.scrapCnt += 1;
+    }
+
+    public void decreaseScrapCnt() {
+        this.scrapCnt -= 1;
+    }
+
+    public void increaseUpCnt() {
+        this.upCnt += 1;
+    }
+
+    public void decreaseUpCnt() {
+        this.upCnt -= 1;
+    }
 }
