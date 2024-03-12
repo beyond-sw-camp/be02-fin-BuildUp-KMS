@@ -70,15 +70,12 @@ public class ReviewScrapService {
             GetFindReviewScrapRes res = GetFindReviewScrapRes.builder()
                     .reviewScrapIdx(reviewScrap.getIdx())
                     .reviewIdx(reviewScrap.getReview().getIdx())
+                    .reviewCategoryIdx(reviewScrap.getReview().getReviewCategory().getIdx())
+                    .categoryName(reviewScrap.getReview().getReviewCategory().getCategoryName())
                     .reviewTitle(reviewScrap.getReview().getReviewTitle())
                     .courseName(reviewScrap.getReview().getCourseName())
                     .createdAt(reviewScrap.getCreatedAt())
                     .build();
-
-            if (reviewScrap.getReview().getReviewCategory() != null) {
-                res.setReviewCategoryIdx(reviewScrap.getReview().getReviewCategory().getIdx());
-                res.setCategoryName(reviewScrap.getReview().getReviewCategory().getCategoryName());
-            }
 
             resultList.add(res);
         }
