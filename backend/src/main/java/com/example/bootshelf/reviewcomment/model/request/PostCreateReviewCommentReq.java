@@ -28,6 +28,4 @@ public class PostCreateReviewCommentReq {
     @ApiModelProperty(value = "후기글 댓글 내용(100자 이하)", example = "이 글이 너무 도움이 됐습니다!", required = true)
     private String reviewCommentContent;
 
-    private String createAt;
-
 }

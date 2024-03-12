@@ -28,9 +28,9 @@ public class ReviewCommentController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class)) }) })
     @RequestMapping(method = RequestMethod.POST, value = "/{reviewIdx}/comment/create")
-    public ResponseEntity createComment(@PathVariable @NotNull @Positive Integer reviewIdx, @RequestBody PostCreateReviewCommentReq postCreateReviewCommentReq) {
+    public ResponseEntity createComment(@PathVariable @NotNull @Positive Integer reviewIdx, PostCreateReviewCommentReq postCreateReviewCommentReq) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        BaseRes baseRes = reviewCommentService.createComment(user,reviewIdx, postCreateReviewCommentReq);
+        BaseRes baseRes = reviewCommentService.createComment(user, reviewIdx, postCreateReviewCommentReq);
 
         return ResponseEntity.ok().body(baseRes);
     }

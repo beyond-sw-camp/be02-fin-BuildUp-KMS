@@ -1,7 +1,6 @@
 package com.example.bootshelf.reviewcommentup.model;
 
-import com.example.bootshelf.review.model.entity.Review;
-import com.example.bootshelf.reviewcomment.model.ReviewComment;
+import com.example.bootshelf.reviewcomment.model.entity.ReviewComment;
 import com.example.bootshelf.user.model.entity.User;
 import lombok.*;
 

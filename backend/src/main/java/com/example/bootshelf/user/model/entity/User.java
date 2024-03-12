@@ -7,7 +7,7 @@ import com.example.bootshelf.boardhistory.model.entity.BoardHistory;
 import com.example.bootshelf.boardscrap.model.entity.BoardScrap;
 import com.example.bootshelf.boardup.model.entity.BoardUp;
 import com.example.bootshelf.review.model.entity.Review;
-import com.example.bootshelf.reviewcomment.model.ReviewComment;
+import com.example.bootshelf.reviewcomment.model.entity.ReviewComment;
 import com.example.bootshelf.reviewcommentup.model.ReviewCommentUp;
 import com.example.bootshelf.reviewhistory.model.ReviewHistory;
 import com.example.bootshelf.reviewscrap.model.ReviewScrap;
@@ -18,8 +18,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.*;
 
 @Entity
