@@ -5,17 +5,15 @@ import com.example.bootshelf.common.error.ErrorCode;
 import com.example.bootshelf.review.exception.ReviewException;
 import com.example.bootshelf.review.model.entity.Review;
 import com.example.bootshelf.review.model.request.PostCreateReviewReq;
-import com.example.bootshelf.review.model.response.GetListReviewRes;
-import com.example.bootshelf.review.model.response.GetMyListReviewRes;
-import com.example.bootshelf.review.model.response.PostCreateReviewRes;
+import com.example.bootshelf.review.model.response.*;
 import com.example.bootshelf.review.repository.ReviewRepository;
 import com.example.bootshelf.reviewcategory.model.ReviewCategory;
+import com.example.bootshelf.reviewcomment.model.ReviewComment;
 import com.example.bootshelf.reviewimage.model.ReviewImage;
 import com.example.bootshelf.reviewimage.service.ReviewImageService;
 import com.example.bootshelf.user.model.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -85,14 +83,13 @@ public class ReviewService {
 
     // 인증회원 본인이 작성한 후기글 목록 조회
     @Transactional(readOnly = true)
-    public BaseRes myList(User user, Integer page, Integer size) {
+    public BaseRes myList(User user, Pageable pageable) {
 
-        Pageable pageable = PageRequest.of(page-1, size);
         Page<Review> reviewList = reviewRepository.findMyReviewList(user.getIdx(), pageable);
 
         List<GetMyListReviewRes> getListReviewResMyList = new ArrayList<>();
 
-        for(Review review : reviewList) {
+        for (Review review : reviewList) {
 
             List<ReviewImage> reviewImageList = review.getReviewImageList();
 
@@ -127,9 +124,7 @@ public class ReviewService {
 
     // 정렬 조건 별 후기글 목록 조회
     @Transactional(readOnly = true)
-    public BaseRes listReview(Integer reviewCategoryIdx, Integer sortType, Integer page, Integer size) {
-
-        Pageable pageable = PageRequest.of(page - 1, size);
+    public BaseRes listReview(Integer reviewCategoryIdx, Integer sortType, Pageable pageable) {
 
         Page<Review> reviewList = reviewRepository.findReviewList(reviewCategoryIdx, sortType, pageable);
 
@@ -167,5 +162,85 @@ public class ReviewService {
                 .build();
 
         return baseRes;
+    }
+
+    // 후기글 상세 조회
+    @Transactional(readOnly = true)
+    public BaseRes readReview(Integer reviewIdx) {
+
+        Optional<Review> result = reviewRepository.findByIdx(reviewIdx);
+
+        if (!result.isPresent()) {
+            throw new ReviewException(ErrorCode.REVIEW_NOT_EXISTS, String.format("Review Idx [ %s ] is not exists.", reviewIdx));
+        }
+
+        Review review = result.get();
+
+        // 댓글 조회
+        List<GetListCommentReviewRes> getListCommentResListReview = new ArrayList<>();
+
+        for (ReviewComment reviewComment : review.getReviewCommentList()) {
+
+            // 댓글이 최상위 댓글일 때만 처리
+            if (reviewComment.getParent() == null) {
+                getListCommentResListReview.add(convertToCommentReviewRes(reviewComment));
+            }
+        }
+
+        // 이미지 조회
+        List<GetListImageReviewRes> getListImageReviewResList = new ArrayList<>();
+
+        for (ReviewImage reviewImage : review.getReviewImageList()) {
+            GetListImageReviewRes getListImageReviewRes = GetListImageReviewRes.builder()
+                    .reviewImageIdx(reviewImage.getIdx())
+                    .reviewImage(reviewImage.getReviewImage())
+                    .build();
+
+            getListImageReviewResList.add(getListImageReviewRes);
+        }
+
+        GetReadReviewRes getReadReviewRes = GetReadReviewRes.builder()
+                .reviewIdx(review.getIdx())
+                .userIdx(review.getUser().getIdx())
+                .userNickName(review.getUser().getNickName())
+                .reviewTitle(review.getReviewTitle())
+                .reviewContent(review.getReviewContent())
+                .courseName(review.getCourseName())
+                .courseEvaluation(review.getCourseEvaluation())
+                .viewCnt(review.getViewCnt())
+                .upCnt(review.getUpCnt())
+                .commentCnt(review.getCommentCnt())
+                .updatedAt(review.getUpdatedAt())
+                .reviewImageList(getListImageReviewResList)
+                .reviewCommentList(getListCommentResListReview)
+                .build();
+
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("후기글 목록 조회 요청 성공")
+                .result(getReadReviewRes)
+                .build();
+
+        return baseRes;
+    }
+
+    private GetListCommentReviewRes convertToCommentReviewRes(ReviewComment reviewComment) {
+
+        List<GetListCommentReviewRes> childCommentsRes = new ArrayList<>();
+
+        for (ReviewComment childComment : reviewComment.getChildren()) {
+            GetListCommentReviewRes childRes = convertToCommentReviewRes(childComment);
+            childCommentsRes.add(childRes);
+        }
+
+        return GetListCommentReviewRes.builder()
+                .commentIdx(reviewComment.getIdx())
+                .userIdx(reviewComment.getUser().getIdx())
+                .userNickName(reviewComment.getUser().getNickName())
+                .reviewCommentContent(reviewComment.getReviewCommentContent())
+                .upCnt(reviewComment.getUpCnt())
+                .updatedAt(reviewComment.getUpdatedAt())
+                .children(childCommentsRes) // 대댓글 목록 추가
+                .build();
     }
 }
