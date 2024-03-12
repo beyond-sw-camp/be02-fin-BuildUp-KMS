@@ -1,5 +1,6 @@
 package com.example.bootshelf.reviewscrap.controller;
 
+import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.reviewscrap.model.request.PostCreateReviewScrapReq;
 import com.example.bootshelf.reviewscrap.service.ReviewScrapService;
 import com.example.bootshelf.user.model.entity.User;
@@ -34,7 +35,7 @@ public class ReviewScrapController {
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
     @PostMapping("/create")
-    public ResponseEntity createReviewScrap(
+    public ResponseEntity<BaseRes> createReviewScrap(
             @AuthenticationPrincipal User user,
             @RequestBody PostCreateReviewScrapReq postCreateReviewScrapReq
     ) throws Exception {
@@ -48,7 +49,7 @@ public class ReviewScrapController {
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
     @GetMapping("/list")
-    public ResponseEntity findReviewScrapList(
+    public ResponseEntity<BaseRes> findReviewScrapList(
             @AuthenticationPrincipal User user,
             @PageableDefault(size = 10) Pageable pageable
     ) throws Exception {
@@ -62,7 +63,7 @@ public class ReviewScrapController {
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
     @PatchMapping("/delete/{reviewScrapIdx}")
-    public ResponseEntity deleteReviewScrap(
+    public ResponseEntity<BaseRes> deleteReviewScrap(
             @AuthenticationPrincipal User user,
             @PathVariable Integer reviewScrapIdx
     ) throws Exception {

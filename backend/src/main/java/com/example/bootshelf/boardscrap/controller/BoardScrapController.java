@@ -16,8 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "BoardScrap", description = "BoardScrap CRUD")
-@Api(tags = "BoardScrap")
+@Tag(name = "게시판", description = "게시판 CRUD")
+@Api(tags = "게시판 스크랩")
 @RestController
 @Slf4j
 @RequiredArgsConstructor
