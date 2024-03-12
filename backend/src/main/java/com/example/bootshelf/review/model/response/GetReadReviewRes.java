@@ -1,6 +1,5 @@
 package com.example.bootshelf.review.model.response;
 
-import com.example.bootshelf.reviewcomment.model.ReviewComment;
 import com.example.bootshelf.reviewimage.model.ReviewImage;
 import lombok.*;
 
@@ -28,4 +27,3 @@ public class GetReadReviewRes {
     private List<GetListCommentReviewRes> reviewCommentList;
 
 }
-                                                                          
