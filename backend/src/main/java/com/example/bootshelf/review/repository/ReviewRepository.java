@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface ReviewRepository extends JpaRepository<Review, Integer>, ReviewRepositoryCustom {
-
+public interface ReviewRepository extends JpaRepository<Review, Integer> {
+    Optional<Review> findByIdx(Integer idx);
     Optional<Review> findByReviewTitle(String ReviewTitle);
 }
