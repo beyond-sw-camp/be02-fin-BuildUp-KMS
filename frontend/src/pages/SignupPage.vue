@@ -3,7 +3,9 @@
     <div class="css-1k8rayr">
       <div class="css-111ukc0">
         <div class="css-1wlmsap">
-          <img src="@/assets/img/002.png" class="css-1k8svhy" />
+          <a href="/">
+            <img src="@/assets/img/002.png" class="css-1k8svhy" />
+          </a>
           <div class="line"></div>
           <div direction="vertical" size="20" class="css-1i0k62c"></div>
           <div

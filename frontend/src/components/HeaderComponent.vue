@@ -1,26 +1,36 @@
 <template>
   <header>
-    <div class="css-wkr2a">
+    <div
+      class="css-wkr2a"
+      :style="{
+        borderBottom: showBorder ? '1px solid rgb(228, 235, 240)' : 'none',
+      }"
+    >
       <div class="css-we70d5">
         <div class="css-un3w91">
-          <img
-            src="../assets/img/logo.png"
-            alt="BOOKSHELF 로고"
-            class="css-huvhzc"
-          />
+          <router-link to="/">
+            <img
+              src="../assets/img/logo.png"
+              v-if="showLogo"
+              alt="BOOKSHELF 로고"
+              class="css-huvhzc"
+            />
+          </router-link>
         </div>
-        <div class="css-1butcu2">
-          <div class="css-1llgdoe">지식공유</div>
-          <div class="css-1llgdoe">Q&A</div>
-          <div class="css-1llgdoe">후기</div>
-          <div class="css-1llgdoe">스터디</div>
+        <div class="css-1butcu2" v-if="showMenu">
+          <a href="/board"><div class="css-1llgdoe">지식공유</div></a>
+          <a href="/board"><div class="css-1llgdoe">Q&A</div></a>
+          <a href="/review"><div class="css-1llgdoe">후기</div></a>
+          <a href="/study"><div class="css-1llgdoe">스터디</div></a>
         </div>
         <div class="css-1butcu">
           <div>
             <button class="css-login-button" @click="openLoginModal()">
               로그인
             </button>
-            <button class="css-signup-button">회원가입</button>
+            <button class="css-signup-button" @click="selectSignUp()">
+              회원가입
+            </button>
           </div>
           <div class="css-26c0za">
             <svg
@@ -526,6 +536,7 @@
             color="#81898F"
             class="css-1cap2q"
             style="text-decoration: underline"
+            @click="selectSignUp()"
             >회원가입</span
           >
         </div>
@@ -613,6 +624,7 @@
               color="#81898F"
               class="css-1cap2q"
               style="text-decoration: none"
+              @click="selectSignUp()"
               >회원가입</span
             >
             <div class="css-1653a83"></div>
@@ -639,6 +651,20 @@
 <script>
 export default {
   name: "HeaderComponent",
+  props: {
+    showBorder: {
+      type: Boolean,
+      default: true, // 기본적으로 밑줄을 표시
+    },
+    showMenu: {
+      type: Boolean,
+      default: true,
+    },
+    showLogo: {
+      type: Boolean,
+      default: true,
+    },
+  },
   data() {
     return {
       isLogin: false,
@@ -662,6 +688,9 @@ export default {
     closeAllLoginModal() {
       this.isLogin = false;
       this.isEmailLogin = false;
+    },
+    selectSignUp() {
+      window.location.href = "/select/signup";
     },
   },
 };
@@ -950,9 +979,12 @@ export default {
 }
 
 .css-huvhzc {
-  height: auto; /* 이미지의 높이를 자동 조정하여 헤더와 잘 맞게 배치 */
-  max-height: 100%; /* 이미지가 너무 크게 확대되지 않도록 제한 */
-  max-width: 110px; /* 이미지의 최대 너비를 설정하여 헤더와 너무 커지지 않도록 제한 */
+  height: auto;
+  /* 이미지의 높이를 자동 조정하여 헤더와 잘 맞게 배치 */
+  max-height: 100%;
+  /* 이미지가 너무 크게 확대되지 않도록 제한 */
+  max-width: 100px;
+  /* 이미지의 최대 너비를 설정하여 헤더와 너무 커지지 않도록 제한 */
 }
 
 .css-13fd4ke {
@@ -982,16 +1014,16 @@ export default {
   z-index: 20;
   display: flex;
   align-items: center;
-  justify-content: center; /* 헤더 내의 요소들을 수평 중앙으로 정렬합니다. */
+  justify-content: center;
+  /* 헤더 내의 요소들을 수평 중앙으로 정렬합니다. */
   transition: all 0.4s ease 0s;
   background-color: white;
   height: 70px;
   width: 100%;
-  border-bottom: 1px solid rgb(228, 235, 240);
   position: fixed;
-  top: 0; /* 헤더를 화면 상단에 고정시킵니다. */
+  top: 0;
+  /* 헤더를 화면 상단에 고정시킵니다. */
 }
-
 
 .css-wkr2a * {
   word-break: normal;
@@ -1003,9 +1035,12 @@ export default {
   width: 100%;
   max-width: 1100px;
   display: flex;
-  justify-content: space-between; /* 요소들을 양쪽 끝에 배치 */
-  align-items: center; /* 세로 중앙 정렬 */
-  margin: 0 auto; /* 가운데 정렬을 위해 margin을 0으로 설정 */
+  justify-content: space-between;
+  /* 요소들을 양쪽 끝에 배치 */
+  align-items: center;
+  /* 세로 중앙 정렬 */
+  margin: 0 auto;
+  /* 가운데 정렬을 위해 margin을 0으로 설정 */
   padding-top: 10px;
 }
 
@@ -1184,7 +1219,6 @@ export default {
 .css-un3w91 {
   cursor: pointer;
 }
-
 
 .css-1jibmi3 {
   display: -webkit-box;
@@ -1593,6 +1627,7 @@ export default {
     height: 24px;
   }
 }
+
 /*------------------로그인 모달--------------------*/
 body,
 html {
@@ -1683,17 +1718,6 @@ body {
   flex-direction: column;
   justify-content: space-between;
   flex-grow: 1;
-}
-
-.css-kcgo1q {
-  display: flex;
-  flex-direction: column;
-  -webkit-box-align: center;
-  align-items: center;
-  text-align: center;
-  width: 100%;
-  padding-top: 30px;
-  box-sizing: border-box;
 }
 
 .css-gxukgu {
@@ -1918,7 +1942,7 @@ body {
   align-items: center;
   text-align: center;
   width: 100%;
-  padding-top: 100px;
+  padding-top: 60px;
   box-sizing: border-box;
 }
 
