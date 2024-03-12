@@ -40,9 +40,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.example.bootshelf.course.QCourse.course;
-import static com.example.bootshelf.user.model.entity.QUser.user;
-
 @Service
 @RequiredArgsConstructor
 public class UserService {

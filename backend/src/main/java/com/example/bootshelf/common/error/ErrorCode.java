@@ -50,6 +50,10 @@ public enum ErrorCode {
     BOARD_SCRAP_NOT_EXISTS(HttpStatus.NOT_FOUND, "BOARDSCRAP-004", "해당 후기 스크랩 데이터가 존재하지 않습니다."),
 
 
+    // 태그
+    TAG_NOT_EXISTS(HttpStatus.NOT_FOUND, "TAG-001", "해당 태그 IDX가 존재하지 않는 경우"),
+
+    DUPLICATED_TAG_NAME(HttpStatus.BAD_REQUEST, "TAG-002", "태그명이 중복되는 경우"),
     ;
 
     private final HttpStatus status;  // 헤더로 반환할 Http 상태 코드

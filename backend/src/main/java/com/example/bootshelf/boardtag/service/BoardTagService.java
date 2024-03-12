@@ -32,7 +32,7 @@ public class BoardTagService {
         List<Tag> tagList1 = new ArrayList<>();
         BoardTag bt = new BoardTag();
         for (String str : tagList) {
-            Tag tag = tagService.saveTag(str);
+            Tag tag = tagService.createTag(str);
             tagList1.add(tag);
         }
 
