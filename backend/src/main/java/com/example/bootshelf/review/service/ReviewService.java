@@ -171,7 +171,7 @@ public class ReviewService {
         Optional<Review> result = reviewRepository.findByIdx(reviewIdx);
 
         if (!result.isPresent()) {
-            //TODO : 리뷰 IDX 찾을 수 없을때 예외처리 추가
+            throw new ReviewException(ErrorCode.REVIEW_NOT_EXISTS, String.format("Review Idx [ %s ] is not exists.", reviewIdx));
         }
 
         Review review = result.get();

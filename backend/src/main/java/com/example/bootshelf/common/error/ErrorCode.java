@@ -22,7 +22,7 @@ public enum ErrorCode {
     DIFFERENT_USER_PASSWORD(HttpStatus.BAD_REQUEST, "USER-004", "회원의 패스워드가 저장된 데이터와 다른 경우"),
 
     // 후기
-    REVIEW_NOT_EXISTS(HttpStatus.UNAUTHORIZED, "REVIEW-001", "해당 후기가 존재하지 않는 경우"),
+    REVIEW_NOT_EXISTS(HttpStatus.UNAUTHORIZED, "REVIEW-001", "해당 후기 IDX 가 존재하지 않는 경우"),
     DUPLICATE_REVIEW_TITLE(HttpStatus.BAD_REQUEST, "REVIEW-002", "후기글의 제목이 중복된 경우");
 
     private final HttpStatus status;  // 헤더로 반환할 Http 상태 코드
