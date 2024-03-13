@@ -1,4 +1,4 @@
-package com.example.bootshelf.user.model.entity.request;
+package com.example.bootshelf.user.model.request;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;

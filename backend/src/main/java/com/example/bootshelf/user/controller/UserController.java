@@ -3,11 +3,12 @@ package com.example.bootshelf.user.controller;
 
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.user.model.entity.User;
-import com.example.bootshelf.user.model.entity.request.*;
+import com.example.bootshelf.user.model.request.*;
 import com.example.bootshelf.user.service.EmailVerifyService;
 import com.example.bootshelf.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -33,12 +34,14 @@ public class UserController {
     private final UserService userService;
     private final EmailVerifyService emailVerifyService;
 
-
-    @ApiOperation(value = "회원 가입", response = BaseRes.class, notes = "회원이 회원 정보를 입력하여 회원 가입을 진행한다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class)) }) })
+    @Operation(summary = "회원 가입",
+            description = "회원이 회원 정보를 입력하여 회원 가입을 진행한다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+    })
     @RequestMapping(method = RequestMethod.POST, value = "/signup")
-    public ResponseEntity signup(
+    public ResponseEntity<BaseRes> signup(
             @RequestPart(value = "user") @Valid PostSignUpUserReq postSignUpUserReq,
             @RequestPart(value = "profileImage") MultipartFile profileImage) {
         BaseRes baseRes = userService.signup(postSignUpUserReq, profileImage);
@@ -48,10 +51,12 @@ public class UserController {
         return ResponseEntity.ok().body(baseRes);
     }
 
-
-    @ApiOperation(value = "이메일 인증", response = BaseRes.class, notes = "회원이 이메일 인증을 진행한다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class)) }) })
+    @Operation(summary = "이메일 인증",
+            description = "회원이 이메일 인증을 진행한다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+    })
     @RequestMapping(method = RequestMethod.GET, value = "/verify")
     public RedirectView verify(GetEmailVerifyReq getEmailVerifyReq) {
         if (emailVerifyService.verify(getEmailVerifyReq)) {
@@ -64,42 +69,53 @@ public class UserController {
         }
     }
 
-    @ApiOperation(value = "로그인", response = BaseRes.class, notes = "회원이 로그인을 시도한다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class)) }) })
+    @Operation(summary = "로그인",
+            description = "회원이 로그인을 시도한다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+    })
     @RequestMapping(method = RequestMethod.POST, value = "/login")
-    public ResponseEntity login(@RequestBody @Valid PostLoginUserReq postLoginUserReq) {
+    public ResponseEntity<BaseRes> login(@RequestBody @Valid PostLoginUserReq postLoginUserReq) {
 
         BaseRes baseRes = userService.login(postLoginUserReq);
         return ResponseEntity.ok().body(baseRes);
     }
-
-    @ApiOperation(value = "회원 목록 조회", response = BaseRes.class, notes = "관리자가 전체 회원의 목록을 조회한다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class)) }) })
+    @Operation(summary = "회원 목록 조회",
+            description = "관리자가 전체 회원의 목록을 조회한다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+    })
     @RequestMapping(method = RequestMethod.GET, value = "/list/{page}/{size}")
-    public ResponseEntity list(@PathVariable @NotNull @Positive Integer page, @PathVariable @NotNull @Positive Integer size) {
+    public ResponseEntity<BaseRes> list(@PathVariable @NotNull @Positive Integer page, @PathVariable @NotNull @Positive Integer size) {
 
         BaseRes baseRes = userService.list(page, size);
         return ResponseEntity.ok().body(baseRes);
     }
 
-    @ApiOperation(value = "회원 정보 조회", response = BaseRes.class, notes = "회원이 본인의 회원 정보를 조회한다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class)) }) })
+    @Operation(summary = "회원 정보 조회",
+            description = "회원이 본인의 회원 정보를 조회한다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+    })
     @RequestMapping(method = RequestMethod.GET, value = "/read")
-    public ResponseEntity read() {
+    public ResponseEntity<BaseRes> read() {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         BaseRes baseRes = userService.read(user.getEmail());
 
         return ResponseEntity.ok().body(baseRes);
     }
 
-    @ApiOperation(value = "회원 정보 수정", response = BaseRes.class, notes = "회원이 본인의 회원 정보를 수정한다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class)) }) })
+    @Operation(summary = "회원 정보 수정",
+            description = "회원이 본인의 회원 정보를 수정한다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+    })
     @RequestMapping(method = RequestMethod.PATCH, value = "/update")
-    public ResponseEntity update( @RequestPart(value = "user") @Valid PatchUpdateUserReq patchUpdateUserReq,
+    public ResponseEntity<BaseRes> update( @RequestPart(value = "user") @Valid PatchUpdateUserReq patchUpdateUserReq,
                                   @RequestPart(value = "profileImage") MultipartFile profileImage) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         BaseRes baseRes = userService.update(user.getEmail(), patchUpdateUserReq);
@@ -107,29 +123,38 @@ public class UserController {
         return ResponseEntity.ok().body(baseRes);
     }
 
-    @ApiOperation(value = "회원 탈퇴", response = BaseRes.class, notes = "회원이 회원 탈퇴를 진행한다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class)) }) })
+    @Operation(summary = "회원 탈퇴",
+            description = "회원이 회원 탈퇴를 진행한다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+    })
     @RequestMapping(method = RequestMethod.GET, value = "/cancel")
-    public ResponseEntity cancel() {
+    public ResponseEntity<BaseRes> cancel() {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 
         return ResponseEntity.ok().body(userService.cancel(user.getIdx()));
     }
 
-    @ApiOperation(value = "회원 삭제", response = BaseRes.class, notes = "관리자가 탈퇴한 회원의 정보를 삭제한다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class)) }) })
+    @Operation(summary = "회원 삭제",
+            description = "관리자가 탈퇴한 회원의 정보를 삭제한다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+    })
     @RequestMapping(method = RequestMethod.DELETE, value = "/delete/{userIdx}")
-    public ResponseEntity delete(@PathVariable @NotNull @Positive Integer userIdx) {
+    public ResponseEntity<BaseRes> delete(@PathVariable @NotNull @Positive Integer userIdx) {
         BaseRes baseRes = userService.delete(userIdx);
 
         return ResponseEntity.ok().body(baseRes);
     }
 
-    @ApiOperation(value = "회원 정보 수정 시 비밀번호 확인", response = BaseRes.class, notes = "회원이 회원 정보를 수정하기 위해서 비밀번호를 입력한다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = { @Content(mediaType = "application/json") }) })
+    @Operation(summary = "회원 정보 수정 시 비밀번호 확인",
+            description = "회원이 회원 정보를 수정하기 위해서 비밀번호를 입력한다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+    })
     @RequestMapping(method = RequestMethod.POST, value = "/checkPw")
     public ResponseEntity checkPassword(@RequestBody @Valid PostCheckPasswordReq postCheckPasswordReq) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());

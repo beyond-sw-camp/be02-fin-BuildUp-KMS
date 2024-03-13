@@ -21,6 +21,11 @@ public enum ErrorCode {
     USER_NOT_EXISTS(HttpStatus.NOT_FOUND, "USER-003", "회원을 찾을 수 없는 경우"),
     DIFFERENT_USER_PASSWORD(HttpStatus.BAD_REQUEST, "USER-004", "회원의 패스워드가 저장된 데이터와 다른 경우"),
 
+    // 관리자
+    ADMIN_SIGNUP_EMAIL(HttpStatus.BAD_REQUEST, "ADMIN-001", "관리자 이메일이 중복된 경우"),
+    ADMIN_NOT_EXISTS(HttpStatus.NOT_FOUND, "ADMIN-002", "관리자 계정을 찾을 수 없는 경우"),
+    DIFFERENT_ADMIN_PASSWORD(HttpStatus.BAD_REQUEST, "ADMIN-003", "관리자의 패스워드가 저장된 데이터와 다른 경우"),
+
     // 교육과정
     COURSE_NOT_EXISTS(HttpStatus.NOT_FOUND, "COURSE-001", "과정명을 찾을 수 없는 경우"),
 

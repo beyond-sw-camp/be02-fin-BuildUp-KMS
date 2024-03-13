@@ -12,7 +12,7 @@ import com.example.bootshelf.reviewsvc.reviewcommentup.model.entity.ReviewCommen
 import com.example.bootshelf.reviewsvc.reviewhistory.model.ReviewHistory;
 import com.example.bootshelf.reviewsvc.reviewscrap.model.entity.ReviewScrap;
 import com.example.bootshelf.reviewsvc.reviewup.model.entity.ReviewUp;
-import com.example.bootshelf.user.model.entity.request.PatchUpdateUserReq;
+import com.example.bootshelf.user.model.request.PatchUpdateUserReq;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -80,7 +80,7 @@ public class User implements UserDetails {
     @Column(nullable = false, length = 30)
     private String name;
 
-    @Column(nullable = false, length = 30)
+    @Column(length = 30)
     private String nickName;
 
     //    @Column(nullable = false)
