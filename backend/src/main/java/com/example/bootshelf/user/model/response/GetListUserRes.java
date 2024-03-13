@@ -1,4 +1,4 @@
-package com.example.bootshelf.user.model.entity.response;
+package com.example.bootshelf.user.model.response;
 
 
 import lombok.*;

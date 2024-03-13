@@ -1,4 +1,4 @@
-package com.example.bootshelf.user.model.entity.response;
+package com.example.bootshelf.admin.model.response;
 
 import lombok.*;
 
@@ -7,6 +7,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PostLoginUserRes {
+public class PostLoginAdminRes {
     private String token;
 }
