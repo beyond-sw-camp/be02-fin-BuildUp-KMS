@@ -207,7 +207,7 @@ import { mapStores } from "pinia";
 import { useReviewStore } from "../stores/useReviewStore";
 
 export default {
-  name: "CategoryBoardComponent",
+  name: "ReviewBoardComponent",
   props: ["reviews"],
   computed: {
     ...mapStores(useReviewStore),
