@@ -12,6 +12,6 @@ public interface ReviewRepositoryCustom {
 
     Page<Review> findReviewList(Integer reviewCategoryIdx, Integer sortType, Pageable pageable);
 
-    Page<Review> findReviewsBySearchTerm(String searchTerm, Pageable pageable);
+    Page<Review> findReviewsBySearchTerm(Integer sortType, String searchTerm, Pageable pageable);
 
 }

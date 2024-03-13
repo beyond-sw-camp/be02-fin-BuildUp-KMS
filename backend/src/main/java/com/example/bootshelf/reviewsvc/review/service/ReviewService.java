@@ -142,6 +142,7 @@ public class ReviewService {
                     .reviewIdx(review.getIdx())
                     .userIdx(review.getUser().getIdx())
                     .userNickName(review.getUser().getNickName())
+                    .profileImage(review.getUser().getProfileImage())
                     .reviewTitle(review.getReviewTitle())
                     .reviewContent(review.getReviewContent())
                     .reviewImage(image)
@@ -206,6 +207,7 @@ public class ReviewService {
                 .reviewIdx(review.getIdx())
                 .userIdx(review.getUser().getIdx())
                 .userNickName(review.getUser().getNickName())
+                .profileImage(review.getUser().getProfileImage())
                 .reviewTitle(review.getReviewTitle())
                 .reviewContent(review.getReviewContent())
                 .courseName(review.getCourseName())
@@ -240,6 +242,7 @@ public class ReviewService {
                 .commentIdx(reviewComment.getIdx())
                 .userIdx(reviewComment.getUser().getIdx())
                 .userNickName(reviewComment.getUser().getNickName())
+                .profileImage(reviewComment.getUser().getProfileImage())
                 .reviewCommentContent(reviewComment.getReviewCommentContent())
                 .upCnt(reviewComment.getUpCnt())
                 .updatedAt(reviewComment.getUpdatedAt())
@@ -306,9 +309,9 @@ public class ReviewService {
 
     // 검색어 별 후기글 목록 조회
     @Transactional(readOnly = true)
-    public BaseRes searchReview(String searchTerm, Pageable pageable) {
+    public BaseRes searchReview(Integer sortType, String searchTerm, Pageable pageable) {
 
-        Page<Review> reviewList = reviewRepository.findReviewsBySearchTerm(searchTerm, pageable);
+        Page<Review> reviewList = reviewRepository.findReviewsBySearchTerm(sortType, searchTerm, pageable);
 
         List<GetSearchListReviewRes> getSearchListReviewResList = new ArrayList<>();
 
@@ -318,6 +321,7 @@ public class ReviewService {
                     .reviewIdx(review.getIdx())
                     .userIdx(review.getUser().getIdx())
                     .userNickName(review.getUser().getNickName())
+                    .profileImage(review.getUser().getProfileImage())
                     .reviewCategoryIdx(review.getReviewCategory().getIdx())
                     .reviewCategoryName(review.getReviewCategory().getCategoryName())
                     .reviewTitle(review.getReviewTitle())
