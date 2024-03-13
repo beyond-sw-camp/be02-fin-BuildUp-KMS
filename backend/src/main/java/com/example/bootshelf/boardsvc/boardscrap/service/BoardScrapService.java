@@ -45,6 +45,14 @@ public class BoardScrapService {
 
                 board.increaseScrapCnt();
                 boardRepository.save(board);
+
+                PostCreateBoardScrapRes res = PostCreateBoardScrapRes.toDto(boardScrapResult);
+
+                return BaseRes.builder()
+                        .isSuccess(true)
+                        .message("게시판 게시글 스크랩 등록 성공")
+                        .result(res)
+                        .build();
             }
         }
 

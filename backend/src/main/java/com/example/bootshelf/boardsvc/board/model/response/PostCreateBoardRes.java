@@ -16,7 +16,7 @@ public class PostCreateBoardRes {
 
     private String boardcontent;
 
-    private BoardCategory boardCategory;
+    private Integer boardCategoryIdx;
 
     private List<String> boardTagList;
 

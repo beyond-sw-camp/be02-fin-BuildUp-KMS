@@ -1,6 +1,7 @@
 package com.example.bootshelf.boardsvc.boardcommentup.model.entity;
 
 import com.example.bootshelf.boardsvc.boardcomment.model.entity.BoardComment;
+import com.example.bootshelf.boardsvc.boardcommentup.model.request.PostCreateBoardCommentUpReq;
 import com.example.bootshelf.user.model.entity.User;
 import lombok.*;
 
@@ -26,4 +27,13 @@ public class BoardCommentUp {
     @JoinColumn(name = "BoardComment_idx")
     private BoardComment boardComment;
 
+    private Boolean status;
+
+    public static BoardCommentUp toEntity(User user, PostCreateBoardCommentUpReq req) {
+        return BoardCommentUp.builder()
+                .user(User.builder().idx(user.getIdx()).build())
+                .boardComment(BoardComment.builder().idx(req.getBoardCommentIdx()).build())
+                .status(true)
+                .build();
+    }
 }

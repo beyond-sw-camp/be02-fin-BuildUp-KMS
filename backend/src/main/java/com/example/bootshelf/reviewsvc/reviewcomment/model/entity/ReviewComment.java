@@ -1,7 +1,7 @@
 package com.example.bootshelf.reviewsvc.reviewcomment.model.entity;
 
 import com.example.bootshelf.reviewsvc.review.model.entity.Review;
-import com.example.bootshelf.reviewsvc.reviewcommentup.model.ReviewCommentUp;
+import com.example.bootshelf.reviewsvc.reviewcommentup.model.entity.ReviewCommentUp;
 import com.example.bootshelf.user.model.entity.User;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -54,4 +54,12 @@ public class ReviewComment {
     private String createdAt;
 
     private String updatedAt;
+
+    public void increaseUpCnt() {
+        this.upCnt += 1;
+    }
+
+    public void decreaseUpCnt() {
+        this.upCnt -= 1;
+    }
 }
