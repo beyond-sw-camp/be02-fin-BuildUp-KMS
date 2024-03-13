@@ -48,6 +48,22 @@ public class BoardRepositoryCustomImpl extends QuerydslRepositorySupport impleme
 
         return new PageImpl<>(result, pageable, result.size());
     }
+    @Override
+    public Page<Board> findBoardListByCategory (Pageable pageable, Integer categoryIdx, Integer sortIdx) {
+        QBoard board = new QBoard("board");
+
+        OrderSpecifier[] orderSpecifiers = createOrderSpecifier(sortIdx, board);
+        List<Board> result = from(board)
+                .leftJoin(board.boardCategory)
+                .where(board.status.eq(true).and(board.boardCategory.idx.eq(categoryIdx)))
+                .orderBy(orderSpecifiers)
+                .distinct()
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch().stream().distinct().collect(Collectors.toList());
+
+        return new PageImpl<>(result, pageable, result.size());
+    }
 
     private OrderSpecifier[] createOrderSpecifier(Integer sortIdx, QBoard board)  {
         List<OrderSpecifier> orderSpecifiers = new ArrayList<>();
