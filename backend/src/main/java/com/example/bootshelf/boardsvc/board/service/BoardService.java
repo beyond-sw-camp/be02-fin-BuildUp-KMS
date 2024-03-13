@@ -72,7 +72,7 @@ public class BoardService {
                 .idx(board.getIdx())
                 .boardtitle(board.getBoardTitle())
                 .boardcontent(board.getBoardContent())
-                .boardCategory(board.getBoardCategory())
+                .boardCategoryIdx(board.getBoardCategory().getIdx())
                 .boardTagList(request.getTagList())
                 .build();
 

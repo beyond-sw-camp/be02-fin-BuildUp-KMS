@@ -56,4 +56,11 @@ public class BoardComment {
     @Column(nullable = false)
     private String updatedAt;
 
+    public void increaseUpCnt() {
+        this.upCnt += 1;
+    }
+
+    public void decreaseUpCnt() {
+        this.upCnt -= 1;
+    }
 }

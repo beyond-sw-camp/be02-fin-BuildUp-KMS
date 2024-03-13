@@ -45,6 +45,14 @@ public class ReviewUpService {
 
                 review.increaseUpCnt();
                 reviewRepository.save(review);
+
+                PostCreateReviewUpRes res = PostCreateReviewUpRes.toDto(reviewUpResult);
+
+                return BaseRes.builder()
+                        .isSuccess(true)
+                        .message("후기 추천 등록 성공")
+                        .result(res)
+                        .build();
             }
         }
 

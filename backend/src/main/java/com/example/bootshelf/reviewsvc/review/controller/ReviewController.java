@@ -7,6 +7,8 @@ import com.example.bootshelf.reviewsvc.review.service.ReviewService;
 import com.example.bootshelf.user.model.entity.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -24,7 +26,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
-@Tag(name = "후기", description = "후기 API")
+@Tag(name = "후기", description = "Review CRUD")
 @Api(tags = "후기 게시판")
 @RestController
 @RequiredArgsConstructor
@@ -34,11 +36,14 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
-    @ApiOperation(value = "후기 등록", response = BaseRes.class, notes = "인증회원은 수료한 과정 또는 강사에 대한 후기를 등록할 수 있다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class))})})
+    @Operation(summary = "후기글 생성",
+            description = "인증회원이 후기글을 생성할 수 있다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+    })
     @RequestMapping(method = RequestMethod.POST, value = "/create")
-    public ResponseEntity createReview(
+    public ResponseEntity<BaseRes> createReview(
             @RequestPart(value = "review") @Valid PostCreateReviewReq postCreateReviewReq,
             @RequestPart(value = "reviewImage") MultipartFile[] reviewImages
     ) {
@@ -48,12 +53,14 @@ public class ReviewController {
         return ResponseEntity.ok().body(baseRes);
     }
 
-    @ApiOperation(value = "본인이 작성한 후기글 목록 조회", response = BaseRes.class, notes = "인증회원은 본인이 작성한 후기글 목록을 조회할 수 있다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class))})})
-
+    @Operation(summary = "본인이 작성한 후기글 목록 조회",
+            description = "인증회원은 본인이 작성한 후기글 목록을 조회할 수 있다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+    })
     @RequestMapping(method = RequestMethod.GET, value = "/myList")
-    public ResponseEntity list(
+    public ResponseEntity<BaseRes> list(
             @PageableDefault(size = 10) Pageable pageable
     ) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
@@ -62,13 +69,16 @@ public class ReviewController {
         return ResponseEntity.ok().body(baseRes);
     }
 
-    @ApiOperation(value = "카테고리 별, 조건( 조회수, 추천수, 스크랩수, 댓글수) 별 후기글 목록 조회", response = BaseRes.class, notes = "모든 사용자가 카테고리 별, 조건 별 후기글 목록을 조회할 수 있다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class))})})
-    @RequestMapping(method = RequestMethod.GET, value = "/{reviewCategoryIdx}/{sortType}")
-    public ResponseEntity listReview(
+    @Operation(summary = "카테고리 별, 조건( 조회수, 추천수, 스크랩수, 댓글수) 별 후기글 목록 조회",
+            description = "모든 사용자가 카테고리 별, 조건 별 후기글 목록을 조회할 수 있다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+    })
+    @RequestMapping(method = RequestMethod.GET, value = "/list/{reviewCategoryIdx}/{sortType}")
+    public ResponseEntity<BaseRes> listReview(
             @PathVariable @NotNull(message = "후기 카테고리 IDX는 필수 입력 항목입니다.") @Positive(message = "후기 카테고리 IDX는 1이상의 양수입니다.") Integer reviewCategoryIdx,
-            @PathVariable @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") Integer sortType,
+            @PathVariable @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") @ApiParam(value = "정렬유형 : 1 (최신순), 2 (추천수 순), 3 (조회수 순), 4 (스크랩수 순), 5 (댓글수 순)") Integer sortType,
             @PageableDefault(size = 10) Pageable pageable
     ) {
         BaseRes baseRes = reviewService.listReview(reviewCategoryIdx, sortType, pageable);
@@ -76,11 +86,14 @@ public class ReviewController {
         return ResponseEntity.ok().body(baseRes);
     }
 
-    @ApiOperation(value = "후기글 상세 조회", response = BaseRes.class, notes = "모든 사용자가 후기글 상세내용을 조회할 수 있다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class))})})
+    @Operation(summary = "후기글 상세 조회",
+            description = "모든 사용자가 후기글 상세내용을 조회할 수 있다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+    })
     @RequestMapping(method = RequestMethod.GET, value = "/{reviewIdx}")
-    public ResponseEntity readReview(
+    public ResponseEntity<BaseRes> readReview(
             @PathVariable @NotNull(message = "후기 IDX는 필수 입력 항목입니다.") @Positive(message = "후기 IDX는 1이상의 양수입니다.") Integer reviewIdx
     ) {
         BaseRes baseRes = reviewService.readReview(reviewIdx);
@@ -88,24 +101,28 @@ public class ReviewController {
         return ResponseEntity.ok().body(baseRes);
     }
 
-    @ApiOperation(value = "본인이 작성한 후기글 수정", response = BaseRes.class, notes = "인증회원은 본인이 작성한 후기글을 수정할 수 있다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class))})})
-
+    @Operation(summary = "본인이 작성한 후기글 수정",
+            description = "인증회원은 본인이 작성한 후기글을 수정할 수 있다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+    })
     @RequestMapping(method = RequestMethod.PATCH, value = "/update")
-    public ResponseEntity updateReview(@RequestBody @Valid PatchUpdateReviewReq patchUpdateReviewReq) {
+    public ResponseEntity<BaseRes> updateReview(@RequestBody @Valid PatchUpdateReviewReq patchUpdateReviewReq) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         BaseRes baseRes = reviewService.updateReview(user, patchUpdateReviewReq);
 
         return ResponseEntity.ok().body(baseRes);
     }
 
-    @ApiOperation(value = "본인이 작성한 후기글 삭제", response = BaseRes.class, notes = "인증회원은 본인이 작성한 후기글을 삭제할 수 있다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class))})})
-
+    @Operation(summary = "본인이 작성한 후기글 삭제",
+            description = "인증회원은 본인이 작성한 후기글을 삭제할 수 있다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+    })
     @RequestMapping(method = RequestMethod.DELETE, value = "/delete/{reviewIdx}")
-    public ResponseEntity deleteReview(
+    public ResponseEntity<BaseRes> deleteReview(
             @PathVariable @NotNull(message = "후기 IDX는 필수 입력 항목입니다.") @Positive(message = "후기 IDX는 1이상의 양수입니다.") Integer reviewIdx
     ) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());

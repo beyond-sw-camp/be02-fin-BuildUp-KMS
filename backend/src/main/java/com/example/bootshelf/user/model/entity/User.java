@@ -8,7 +8,7 @@ import com.example.bootshelf.boardsvc.boardscrap.model.entity.BoardScrap;
 import com.example.bootshelf.boardsvc.boardup.model.entity.BoardUp;
 import com.example.bootshelf.reviewsvc.review.model.entity.Review;
 import com.example.bootshelf.reviewsvc.reviewcomment.model.entity.ReviewComment;
-import com.example.bootshelf.reviewsvc.reviewcommentup.model.ReviewCommentUp;
+import com.example.bootshelf.reviewsvc.reviewcommentup.model.entity.ReviewCommentUp;
 import com.example.bootshelf.reviewsvc.reviewhistory.model.ReviewHistory;
 import com.example.bootshelf.reviewsvc.reviewscrap.model.entity.ReviewScrap;
 import com.example.bootshelf.reviewsvc.reviewup.model.entity.ReviewUp;

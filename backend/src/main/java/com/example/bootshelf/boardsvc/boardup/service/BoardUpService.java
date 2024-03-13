@@ -2,6 +2,7 @@ package com.example.bootshelf.boardsvc.boardup.service;
 
 import com.example.bootshelf.boardsvc.board.model.entity.Board;
 import com.example.bootshelf.boardsvc.board.repository.BoardRepository;
+import com.example.bootshelf.boardsvc.boardcommentup.model.response.PostCreateBoardCommentUpRes;
 import com.example.bootshelf.boardsvc.boardup.model.entity.BoardUp;
 import com.example.bootshelf.boardsvc.boardup.model.request.PostCreateBoardUpReq;
 import com.example.bootshelf.boardsvc.boardup.model.response.GetFindBoardUpRes;
@@ -45,6 +46,14 @@ public class BoardUpService {
 
                 board.increaseUpCnt();
                 boardRepository.save(board);
+
+                PostCreateBoardUpRes res = PostCreateBoardUpRes.toDto(boardUpResult);
+
+                return BaseRes.builder()
+                        .isSuccess(true)
+                        .message("게시판 게시글 추천 등록 성공")
+                        .result(res)
+                        .build();
             }
         }
 

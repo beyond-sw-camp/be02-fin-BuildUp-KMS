@@ -10,5 +10,4 @@ import java.util.Optional;
 @Repository
 public interface BoardUpRepository extends JpaRepository<BoardUp, Integer>, BoardUpRepositoryCustom {
     Optional<BoardUp> findByIdx(Integer idx);
-
 }
