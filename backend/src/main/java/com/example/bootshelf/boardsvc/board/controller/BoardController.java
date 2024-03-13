@@ -1,5 +1,6 @@
 package com.example.bootshelf.boardsvc.board.controller;
 
+import com.example.bootshelf.boardsvc.board.model.request.PatchUpdateBoardReq;
 import com.example.bootshelf.boardsvc.board.model.request.PostCreateBoardReq;
 import com.example.bootshelf.boardsvc.board.model.response.PostCreateBoardRes;
 import com.example.bootshelf.boardsvc.board.service.BoardService;
@@ -14,8 +15,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.Valid;
 
 @Tag(name="Board", description = "Board 숙소 CRUD")
 @Api(tags = "Board")
@@ -53,4 +57,18 @@ public class BoardController {
         return ResponseEntity.ok().body(boardService.listBoard(boardIdx));
     }
 
+    @Operation(summary = "Board 게시글 수정 기능",
+            description = "게시판의 게시글을 수정하는 API 입니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
+    @RequestMapping(method = RequestMethod.PATCH, value = "/update/{boardIdx}")
+    public ResponseEntity<BaseRes> updateBoard(
+            @Valid @RequestBody PatchUpdateBoardReq patchUpdateBoardReq,
+            @PathVariable(value = "boardIdx") Integer boardIdx
+    ){
+        User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        BaseRes baseRes = boardService.updateBoard(user, patchUpdateBoardReq, boardIdx);
+        return ResponseEntity.ok().body(baseRes);
+    }
 }
