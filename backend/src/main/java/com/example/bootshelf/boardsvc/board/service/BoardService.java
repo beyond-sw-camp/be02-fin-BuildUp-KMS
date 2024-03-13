@@ -5,6 +5,7 @@ import com.example.bootshelf.boardsvc.board.model.entity.Board;
 import com.example.bootshelf.boardsvc.board.model.request.PatchUpdateBoardReq;
 import com.example.bootshelf.boardsvc.board.model.request.PostCreateBoardReq;
 import com.example.bootshelf.boardsvc.board.model.response.GetListBoardRes;
+import com.example.bootshelf.boardsvc.board.model.response.GetMyListBoardRes;
 import com.example.bootshelf.boardsvc.board.model.response.PostCreateBoardRes;
 import com.example.bootshelf.boardsvc.board.repository.BoardRepository;
 import com.example.bootshelf.boardsvc.boardcategory.model.entity.BoardCategory;
@@ -22,6 +23,8 @@ import com.example.bootshelf.user.model.entity.User;
 import com.sun.jdi.request.DuplicateRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -143,6 +146,84 @@ public class BoardService {
                 return baseRes;
             }
         }
+    }
+
+    @Transactional(readOnly = true)
+    public BaseRes findMyBoardList(User user, Pageable pageable,Integer sortIdx){
+        Page<Board> boardList = boardRepository.findMyBoardList(user.getIdx(), pageable, sortIdx);
+        List<GetMyListBoardRes> getMyListBoardResList = new ArrayList<>();
+
+        for (Board board : boardList){
+
+            List<BoardTag> boardTagList = board.getBoardTagList();
+            List<Integer> tagIdxs = new ArrayList<>();
+
+            for(BoardTag boardTag : boardTagList){
+                Integer tagIdx = boardTag.getIdx();
+                tagIdxs.add(tagIdx);
+            }
+
+            GetMyListBoardRes getMyListBoardRes = GetMyListBoardRes.builder()
+                    .boardIdx(board.getIdx())
+                    .boardTitle(board.getBoardTitle())
+                    .boardContent(board.getBoardContent())
+                    .boardCategoryIdx(board.getBoardCategory().getIdx())
+                    .tagList(tagIdxs)
+                    .viewCnt(board.getViewCnt())
+                    .upCnt(board.getUpCnt())
+                    .scrapCnt(board.getScrapCnt())
+                    .commentCnt(board.getCommentCnt())
+                    .updatedAt(board.getUpdatedAt())
+                    .build();
+
+            getMyListBoardResList.add(getMyListBoardRes);
+        }
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("인증회원 본인 후기글 목록 조회 요청 성공")
+                .result(getMyListBoardResList)
+                .build();
+
+        return baseRes;
+    }
+
+    @Transactional(readOnly = true)
+    public BaseRes findMyBoardListByCategory(User user, Pageable pageable, Integer boardCategoryIdx, Integer sortIdx){
+        Page<Board> boardList = boardRepository.findMyBoardListByCategory(user.getIdx(), pageable, boardCategoryIdx, sortIdx);
+        List<GetMyListBoardRes> getMyListBoardResList = new ArrayList<>();
+
+        for (Board board : boardList){
+
+            List<BoardTag> boardTagList = board.getBoardTagList();
+            List<Integer> tagIdxs = new ArrayList<>();
+
+            for(BoardTag boardTag : boardTagList){
+                Integer tagIdx = boardTag.getIdx();
+                tagIdxs.add(tagIdx);
+            }
+
+            GetMyListBoardRes getMyListBoardRes = GetMyListBoardRes.builder()
+                    .boardIdx(board.getIdx())
+                    .boardTitle(board.getBoardTitle())
+                    .boardContent(board.getBoardContent())
+                    .boardCategoryIdx(board.getBoardCategory().getIdx())
+                    .tagList(tagIdxs)
+                    .viewCnt(board.getViewCnt())
+                    .upCnt(board.getUpCnt())
+                    .scrapCnt(board.getScrapCnt())
+                    .commentCnt(board.getCommentCnt())
+                    .updatedAt(board.getUpdatedAt())
+                    .build();
+
+            getMyListBoardResList.add(getMyListBoardRes);
+        }
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("인증회원 본인 후기글 목록 조회 요청 성공")
+                .result(getMyListBoardResList)
+                .build();
+
+        return baseRes;
     }
 
     public BaseRes updateBoard (User user, PatchUpdateBoardReq patchUpdateBoardReq, Integer boardIdx){
