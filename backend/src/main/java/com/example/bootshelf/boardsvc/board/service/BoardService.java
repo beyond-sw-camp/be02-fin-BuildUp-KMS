@@ -40,10 +40,8 @@ import java.util.Optional;
 @Slf4j
 public class BoardService {
     private final BoardRepository boardRepository;
-    private final BoardCategoryRepository boardCategoryRepository;
     private final BoardTagService boardTagService;
     private final BoardImageService boardImageService;
-    private final TagService tagService;
 
     public PostCreateBoardRes createBoard(User user, PostCreateBoardReq request, MultipartFile[] uploadFiles) {
 
