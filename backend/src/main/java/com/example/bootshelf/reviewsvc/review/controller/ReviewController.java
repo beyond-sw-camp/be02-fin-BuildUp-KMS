@@ -35,8 +35,8 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
-    @Operation(summary = "Review 생성",
-            description = "후기 게시글을 생성하는 API입니다.")
+    @Operation(summary = "후기글 생성",
+            description = "인증회원이 후기글을 생성할 수 있다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
