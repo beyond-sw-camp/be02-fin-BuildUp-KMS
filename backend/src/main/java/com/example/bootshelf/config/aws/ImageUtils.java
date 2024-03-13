@@ -1,4 +1,4 @@
-package com.example.bootshelf.utils;
+package com.example.bootshelf.config.aws;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -9,9 +9,8 @@ public class ImageUtils {
         String str = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
 
         String folderPath = str;
-        String type = "board";
         String uuid = UUID.randomUUID().toString();
 
-        return type + "/" + folderPath + "/" + uuid + "_" + originalName;
+        return folderPath + "/" + uuid + "_" + originalName;
     }
 }
