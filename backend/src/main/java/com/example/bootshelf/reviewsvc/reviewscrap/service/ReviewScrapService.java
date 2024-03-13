@@ -45,6 +45,14 @@ public class ReviewScrapService {
 
                 review.increaseScrapCnt();
                 reviewRepository.save(review);
+
+                PostCreateReviewScrapRes res = PostCreateReviewScrapRes.toDto(reviewScrapResult);
+
+                return BaseRes.builder()
+                        .isSuccess(true)
+                        .message("후기글 스크랩 등록 성공")
+                        .result(res)
+                        .build();
             }
         }
 
