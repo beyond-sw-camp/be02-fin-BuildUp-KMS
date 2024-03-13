@@ -1,20 +1,16 @@
 package com.example.bootshelf.admin.controller;
 
 
-import com.example.bootshelf.admin.model.request.PostLoginAdminReq;
+import com.example.bootshelf.admin.model.request.PatchUpdateAdminReq;
 import com.example.bootshelf.admin.model.request.PostSignUpAdminReq;
 import com.example.bootshelf.common.BaseRes;
 
 import com.example.bootshelf.user.model.entity.User;
 import com.example.bootshelf.user.model.request.PatchUpdateUserReq;
-import com.example.bootshelf.user.model.request.PostCheckPasswordReq;
 import com.example.bootshelf.user.model.request.PostLoginUserReq;
 import com.example.bootshelf.user.service.UserService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
