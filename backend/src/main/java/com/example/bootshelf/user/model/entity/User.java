@@ -1,18 +1,18 @@
 package com.example.bootshelf.user.model.entity;
 
-import com.example.bootshelf.board.model.entity.Board;
-import com.example.bootshelf.boardcomment.model.entity.BoardComment;
-import com.example.bootshelf.boardcommentup.model.entity.BoardCommentUp;
-import com.example.bootshelf.boardhistory.model.entity.BoardHistory;
-import com.example.bootshelf.boardscrap.model.entity.BoardScrap;
-import com.example.bootshelf.boardup.model.entity.BoardUp;
-import com.example.bootshelf.review.model.entity.Review;
-import com.example.bootshelf.reviewcomment.model.entity.ReviewComment;
-import com.example.bootshelf.reviewcommentup.model.ReviewCommentUp;
-import com.example.bootshelf.reviewhistory.model.ReviewHistory;
-import com.example.bootshelf.reviewscrap.model.entity.ReviewScrap;
-import com.example.bootshelf.reviewup.model.entity.ReviewUp;
-import com.example.bootshelf.user.model.entity.request.PatchUpdateUserReq;
+import com.example.bootshelf.boardsvc.board.model.entity.Board;
+import com.example.bootshelf.boardsvc.boardcomment.model.entity.BoardComment;
+import com.example.bootshelf.boardsvc.boardcommentup.model.entity.BoardCommentUp;
+import com.example.bootshelf.boardsvc.boardhistory.model.entity.BoardHistory;
+import com.example.bootshelf.boardsvc.boardscrap.model.entity.BoardScrap;
+import com.example.bootshelf.boardsvc.boardup.model.entity.BoardUp;
+import com.example.bootshelf.reviewsvc.review.model.entity.Review;
+import com.example.bootshelf.reviewsvc.reviewcomment.model.entity.ReviewComment;
+import com.example.bootshelf.reviewsvc.reviewcommentup.model.entity.ReviewCommentUp;
+import com.example.bootshelf.reviewsvc.reviewhistory.model.ReviewHistory;
+import com.example.bootshelf.reviewsvc.reviewscrap.model.entity.ReviewScrap;
+import com.example.bootshelf.reviewsvc.reviewup.model.entity.ReviewUp;
+import com.example.bootshelf.user.model.request.PatchUpdateUserReq;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -80,7 +80,7 @@ public class User implements UserDetails {
     @Column(nullable = false, length = 30)
     private String name;
 
-    @Column(nullable = false, length = 30)
+    @Column(length = 30)
     private String nickName;
 
     //    @Column(nullable = false)

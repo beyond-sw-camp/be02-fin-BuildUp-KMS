@@ -1,28 +1,32 @@
 package com.example.bootshelf.user.service;
 
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.example.bootshelf.admin.model.request.PostSignUpAdminReq;
+import com.example.bootshelf.admin.model.response.PostSignUpAdminRes;
 import com.example.bootshelf.certification.Certification;
 import com.example.bootshelf.certification.repository.CertificationRepository;
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.common.error.ErrorCode;
+import com.example.bootshelf.common.error.entityexception.AdminException;
+import com.example.bootshelf.config.aws.ImageUtils;
+import com.example.bootshelf.config.aws.S3Service;
 import com.example.bootshelf.config.utils.JwtUtils;
 import com.example.bootshelf.course.Course;
-import com.example.bootshelf.course.exception.CourseException;
+import com.example.bootshelf.common.error.entityexception.CourseException;
 import com.example.bootshelf.course.repository.CourseRepository;
-import com.example.bootshelf.user.exception.UserException;
+import com.example.bootshelf.common.error.entityexception.UserException;
 import com.example.bootshelf.user.model.entity.User;
-import com.example.bootshelf.user.model.entity.request.*;
-import com.example.bootshelf.user.model.entity.response.*;
+import com.example.bootshelf.user.model.request.PatchUpdateUserReq;
+import com.example.bootshelf.user.model.request.PostCheckPasswordReq;
+import com.example.bootshelf.user.model.request.PostLoginUserReq;
+import com.example.bootshelf.user.model.request.PostSignUpUserReq;
+import com.example.bootshelf.user.model.response.*;
 import com.example.bootshelf.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,13 +36,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import javax.persistence.EntityManager;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -54,9 +51,7 @@ public class UserService {
     @Value("${cloud.aws.s3.profile-bucket}")
     private String profileBucket;
 
-    @Autowired
-    private EntityManager entityManager;
-    private final AmazonS3 s3;
+    private final S3Service s3Service;
     private final UserRepository userRepository;
     private final CertificationRepository certificationRepository;
     private final CourseRepository courseRepository;
@@ -64,49 +59,18 @@ public class UserService {
     private final JavaMailSender emailSender;
     private final EmailVerifyService emailVerifyService;
 
-    public String makeFolder() {
-        String str = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-        String folderPath = str.replace("/", File.separator);
-        return folderPath;
-    }
-
-    public String saveFile(MultipartFile profileImage) {
-        String originalName = profileImage.getOriginalFilename();
-
-        String folderPath = makeFolder();
-        String uuid = UUID.randomUUID().toString();
-        String saveFileName = folderPath + File.separator + uuid + "_" + originalName;
-
-        try {
-            ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentLength(profileImage.getSize());
-            metadata.setContentType(profileImage.getContentType());
-
-            s3.putObject(profileBucket, saveFileName.replace(File.separator, "/"), profileImage.getInputStream(), metadata);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } finally {
-            // 로컬 파일 시스템에서 파일 삭제
-            File localFile = new File(saveFileName);
-            if (localFile.exists()) {
-                localFile.delete();
-            }
-            return s3.getUrl(profileBucket, saveFileName.replace(File.separator, "/")).toString();
-
-        }
-    }
-
     @Transactional(readOnly = false)
     public User saveUser(PostSignUpUserReq postSignUpUserReq, MultipartFile profileImage) {
 
-        String profilePhoto = saveFile(profileImage);
+        String savePath = ImageUtils.makeBoardImagePath(profileImage.getOriginalFilename());
+        savePath = s3Service.uploadBoardFile(profileBucket, profileImage, savePath);
 
         User user = User.builder()
                 .password(passwordEncoder.encode(postSignUpUserReq.getPassword()))
                 .name(postSignUpUserReq.getName())
                 .email(postSignUpUserReq.getEmail())
                 .nickName(postSignUpUserReq.getNickName())
-                .profileImage(profilePhoto.replace(File.separator, "/"))
+                .profileImage(savePath)
                 .authority("ROLE_USER")
                 .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
                 .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
@@ -146,8 +110,7 @@ public class UserService {
                     .build();
 
             return baseRes;
-        }
-        else {
+        } else {
             Optional<Course> resultCourse = courseRepository.findByProgramName(postSignUpUserReq.getProgramName());
             // 과정명이 존재하지 않을 때 예외처리
             if (!resultCourse.isPresent()) {
@@ -311,8 +274,6 @@ public class UserService {
             User user = result.get();
             user.setStatus(true);
             userRepository.save(user);
-            // 추가한 것
-            entityManager.flush();
 
             return BaseRes.builder()
                     .isSuccess(true)
@@ -423,5 +384,39 @@ public class UserService {
         } else {
             throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("UserIdx [ %s ] is not exists.", userIdx));
         }
+    }
+
+    // 관리자 회원가입
+    @Transactional(readOnly = false)
+    public BaseRes adminSignup(PostSignUpAdminReq postSignUpAdminReq) {
+        Optional<User> resultEmail = userRepository.findByEmail(postSignUpAdminReq.getEmail());
+
+        // 중복된 이메일에 대한 예외처리
+        if (resultEmail.isPresent()) {
+            throw new AdminException(ErrorCode.DUPLICATE_SIGNUP_EMAIL, String.format("SignUp Email [ %s ] is duplicated.", postSignUpAdminReq.getEmail()));
+        }
+
+        User user = User.builder()
+                .password(passwordEncoder.encode(postSignUpAdminReq.getPassword()))
+                .name(postSignUpAdminReq.getName())
+                .email(postSignUpAdminReq.getEmail())
+                .authority("ROLE_ADMIN")
+                .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+                .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+                .status(true)
+                .build();
+
+        userRepository.save(user);
+
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("관리자 가입에 성공하였습니다.")
+                .result(PostSignUpAdminRes.builder()
+                        .email(user.getEmail())
+                        .name(user.getName())
+                        .build())
+                .build();
+
+        return baseRes;
     }
 }

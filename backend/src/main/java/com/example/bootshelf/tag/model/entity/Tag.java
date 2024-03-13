@@ -1,12 +1,10 @@
 package com.example.bootshelf.tag.model.entity;
 
-import com.example.bootshelf.board.model.entity.Board;
-import com.example.bootshelf.boardtag.model.entity.BoardTag;
+import com.example.bootshelf.boardsvc.boardtag.model.entity.BoardTag;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
