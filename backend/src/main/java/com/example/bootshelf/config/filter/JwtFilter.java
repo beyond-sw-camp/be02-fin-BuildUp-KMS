@@ -4,7 +4,7 @@ package com.example.bootshelf.config.filter;
 import com.example.bootshelf.common.error.ErrorCode;
 import com.example.bootshelf.common.error.ErrorResponse;
 import com.example.bootshelf.config.utils.JwtUtils;
-import com.example.bootshelf.user.exception.UserException;
+import com.example.bootshelf.common.error.entityexception.UserException;
 import com.example.bootshelf.user.model.entity.User;
 import com.example.bootshelf.user.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;

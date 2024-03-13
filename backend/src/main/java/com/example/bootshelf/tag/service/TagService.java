@@ -3,7 +3,7 @@ package com.example.bootshelf.tag.service;
 
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.common.error.ErrorCode;
-import com.example.bootshelf.tag.exception.TagException;
+import com.example.bootshelf.common.error.entityexception.TagException;
 import com.example.bootshelf.tag.model.entity.Tag;
 import com.example.bootshelf.tag.model.request.PatchUpdateTagReq;
 import com.example.bootshelf.tag.model.response.PostCreateTagRes;
