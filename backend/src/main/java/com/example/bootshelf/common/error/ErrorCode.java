@@ -27,6 +27,7 @@ public enum ErrorCode {
     // 후기
     REVIEW_NOT_EXISTS(HttpStatus.NOT_FOUND, "REVIEW-001", "해당 후기 IDX 가 존재하지 않는 경우"),
     DUPLICATE_REVIEW_TITLE(HttpStatus.BAD_REQUEST, "REVIEW-002", "후기글의 제목이 중복된 경우"),
+    NO_SEARCH_TERMS(HttpStatus.BAD_REQUEST, "REVIEW-003", "후기글 검색 시 검색어를 입력하지 않은 경우"),
 
     // 후기 스크랩
     DUPLICATED_REVIEW_SCRAP(HttpStatus.CONFLICT, "REVIEWSCRAP-001", "이미 스크랩한 후기입니다."),
