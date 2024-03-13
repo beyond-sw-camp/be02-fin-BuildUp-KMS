@@ -20,6 +20,8 @@ public class ReviewCategory {
 
     private String categoryName;
     private Boolean status;
+    private String createdAt;
+    private String updatedAt;
 
     @OneToMany(mappedBy = "reviewCategory")
     private List<Review> reviewList = new ArrayList<>();
