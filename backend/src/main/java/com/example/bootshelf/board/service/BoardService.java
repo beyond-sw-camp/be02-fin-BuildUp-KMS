@@ -69,7 +69,7 @@ public class BoardService {
         boardImageService.createBoardImage(board.getIdx(),uploadFiles);
 
         if(request.getTagList()!=null){
-            boardTagService.saveBoardTag(request, board.getIdx());
+            boardTagService.saveBoardTag(request.getTagList(), board.getIdx());
         }
 
         PostCreateBoardRes response = PostCreateBoardRes.builder()

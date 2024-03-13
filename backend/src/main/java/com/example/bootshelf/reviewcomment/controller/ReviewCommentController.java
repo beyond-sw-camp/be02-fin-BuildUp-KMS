@@ -35,7 +35,7 @@ public class ReviewCommentController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class)) }) })
     @RequestMapping(method = RequestMethod.POST, value = "/{reviewIdx}/comment/create")
-    public ResponseEntity createReviewComment(@PathVariable @NotNull @Positive Integer reviewIdx, PostCreateReviewCommentReq postCreateReviewCommentReq) {
+    public ResponseEntity createReviewComment(@PathVariable @NotNull @Positive Integer reviewIdx, @RequestBody @Valid PostCreateReviewCommentReq postCreateReviewCommentReq) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         BaseRes baseRes = reviewCommentService.createReviewComment(user, reviewIdx, postCreateReviewCommentReq);
 
@@ -55,7 +55,7 @@ public class ReviewCommentController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK ( 요청 성공 )", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = BaseRes.class)) }) })
     @RequestMapping(method = RequestMethod.PATCH, value = "/{reviewIdx}/update/{idx}")
-    public ResponseEntity updateReviewComment(@PathVariable @NotNull @Positive Integer reviewIdx, @PathVariable @NotNull @Positive Integer idx, @Valid PatchUpdateReviewCommentReq patchUpdateReviewCommentReq) {
+    public ResponseEntity updateReviewComment(@PathVariable @NotNull @Positive Integer reviewIdx, @PathVariable @NotNull @Positive Integer idx, @RequestBody @Valid PatchUpdateReviewCommentReq patchUpdateReviewCommentReq) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         BaseRes baseRes = reviewCommentService.updateComment(user, reviewIdx, idx, patchUpdateReviewCommentReq);
 

@@ -1,14 +1,8 @@
 package com.example.bootshelf.reviewscrap.model.response;
 
-import com.example.bootshelf.reviewscrap.model.ReviewScrap;
+import com.example.bootshelf.reviewscrap.model.entity.ReviewScrap;
 import lombok.Builder;
 import lombok.Data;
-
-import javax.persistence.Column;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 @Data
 @Builder

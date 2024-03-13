@@ -20,11 +20,11 @@ public class ReviewHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idx;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "User_idx")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Review_idx")
     private Review review;
 

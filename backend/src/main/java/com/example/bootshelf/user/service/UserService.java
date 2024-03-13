@@ -24,24 +24,24 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.persistence.EntityManager;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
-import static com.example.bootshelf.course.QCourse.course;
-import static com.example.bootshelf.user.model.entity.QUser.user;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -268,17 +268,40 @@ public class UserService {
     // 인증메일 발송
     @Transactional(readOnly = false)
     public void sendEmail(PostSignUpUserReq postSignUpUserReq) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(postSignUpUserReq.getEmail());
-        message.setSubject("[BootShelf] 회원가입을 완료하기 위해서 이메일 인증을 진행해 주세요"); // 메일 제목
+        MimeMessage message = emailSender.createMimeMessage();
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(message, true); // true는 멀티파트 메시지를 사용함을 의미합니다.
+            helper.setTo(postSignUpUserReq.getEmail());
+            helper.setSubject("[BootShelf] 회원가입을 완료하기 위해서 이메일 인증을 진행해 주세요");
+            String uuid = UUID.randomUUID().toString();
+            String url = "http://localhost:8080/user/verify?email=" + postSignUpUserReq.getEmail() + "&uuid=" + uuid;
 
-        String uuid = UUID.randomUUID().toString();
-        message.setText("http://localhost:8080/user/verify?email=" + postSignUpUserReq.getEmail() + "&uuid=" + uuid);    // 메일 내용
+            // 이미지 파일 경로
+            String imagePath = "https://github.com/hyungdoyou/devops/assets/148875644/f9dc322f-9d41-455d-b35c-e3cfcd7c008d";
 
-        emailSender.send(message);
-        emailVerifyService.create(postSignUpUserReq.getEmail(), uuid);
+            // HTML 문자열에 이미지 포함
+            String content = "<html><body style= 'font-family: Arial, sans-serif;'>" +
+                    "<img src='" + imagePath + "' style='width: auto; height: auto;'/>" +
+                    "<p style='color: rgb(84, 29, 122); margin-bottom: 15px; height: 100%; margin: 0; text-align: center; font-size: 30px; line-height: 3;'>" +
+                    "<strong>BOOTSHELF</strong> 에 가입해주셔서 감사합니다" +
+                    "</p>" +
+                    "<p style='color: #333; margin-bottom: 15px; height: 100%; margin: 0; text-align: center; font-size: 20px; line-height: 3;'>" +
+                    "이메일 인증 완료 후 회원들과 지식을 공유해보세요" +
+                    "</p>" +
+                    "<div style='text-align: center;'>\n" +
+                    "    <a href='" + url + "' style='color: #fff; text-decoration: none; background-color: rgb(84, 29, 122); padding: 10px 20px; border-radius: 5px; border: 2px solid rgb(84, 29, 122); display: inline-block; font-size: 15px; line-height: 2;'>\n" +
+                    "        이메일 인증하기\n" +
+                    "    </a>\n" +
+                    "</div>" +
+                    "</body></html>";
+            helper.setText(content, true); // true는 HTML 메일임을 의미합니다.
+            emailSender.send(message);
+            emailVerifyService.create(postSignUpUserReq.getEmail(), uuid);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            // 예외 처리 로직
+        }
     }
-
 
     // 메일 인증 완료 후 회원 상태 수정
     @Transactional(readOnly = false)

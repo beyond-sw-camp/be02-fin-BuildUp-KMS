@@ -7,27 +7,22 @@ import com.example.bootshelf.review.exception.ReviewException;
 import com.example.bootshelf.review.model.entity.Review;
 import com.example.bootshelf.review.repository.ReviewRepository;
 import com.example.bootshelf.reviewscrap.exception.ReviewScrapException;
-import com.example.bootshelf.reviewscrap.model.ReviewScrap;
+import com.example.bootshelf.reviewscrap.model.entity.ReviewScrap;
 import com.example.bootshelf.reviewscrap.model.request.PostCreateReviewScrapReq;
 import com.example.bootshelf.reviewscrap.model.response.GetFindReviewScrapRes;
 import com.example.bootshelf.reviewscrap.model.response.PostCreateReviewScrapRes;
 import com.example.bootshelf.reviewscrap.repository.ReviewScrapRepository;
 import com.example.bootshelf.user.model.entity.User;
-import com.example.bootshelf.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -71,7 +66,7 @@ public class ReviewScrapService {
     public BaseRes findReviewScrapList(User user, Pageable pageable) {
         Page<ReviewScrap> reviewScrapList = reviewScrapRepository.findByUser(user, pageable);
         if (reviewScrapList.isEmpty())
-            throw new ReviewScrapException(ErrorCode.REVIEW_SCRAP_IS_EMPTY, "");
+            throw new ReviewScrapException(ErrorCode.REVIEW_SCRAP_IS_EMPTY, "스크랩한 후기가 존재하지 않습니다.");
 
         List<GetFindReviewScrapRes> resultList = new ArrayList<>();
         for (ReviewScrap reviewScrap : reviewScrapList.getContent()) {
@@ -95,6 +90,23 @@ public class ReviewScrapService {
                 .build();
     }
 
+    public BaseRes checkReviewScrap(User user, Integer reviewIdx) {
+        ReviewScrap reviewScrapResult = reviewScrapRepository.findByUserIdxAndReviewIdx(user.getIdx(), reviewIdx);
+        if (reviewScrapResult != null) {
+            return BaseRes.builder()
+                    .isSuccess(true)
+                    .message("리뷰 스크랩 여부 확인 성공")
+                    .result(true)
+                    .build();
+        } else {
+            return BaseRes.builder()
+                    .isSuccess(true)
+                    .message("리뷰 스크랩 여부 확인 성공")
+                    .result(false)
+                    .build();
+        }
+    }
+
     @Transactional
     public BaseRes deleteReviewScrap(User user, Integer reviewScrapIdx) {
         Optional<ReviewScrap> result = reviewScrapRepository.findByIdx(reviewScrapIdx);
@@ -115,8 +127,8 @@ public class ReviewScrapService {
                         .build();
             }
             throw new ReviewScrapException(ErrorCode.UNAUTHORIZED_REVIEW_SCRAP,
-                    String.format("User [ %s ] is already scrapped.\n " +
-                            "User who scrapped review is [ %s ].", user.getIdx(), reviewScrap.getUser().getIdx()));
+                    String.format("Current user is  [ %s ] .\n " +
+                            "But User who scrapped review is [ %s ].", user.getIdx(), reviewScrap.getUser().getIdx()));
         }
         throw new ReviewScrapException(ErrorCode.REVIEW_SCRAP_NOT_EXISTS, String.format("Review scrap idx [ %s ] is not exists.", reviewScrapIdx));
     }
