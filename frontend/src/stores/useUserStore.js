@@ -8,6 +8,9 @@ export const useUserStore = defineStore("user", {
   state: () => ({
     isAuthenticated: false,
     decodedToken: null,
+    user: {},
+    isSuccess: false,
+    isLoading: false,
   }),
   actions: {
     async login(email, password) {
@@ -41,5 +44,36 @@ export const useUserStore = defineStore("user", {
       this.isAuthenticated = false;
       this.decodedToken = null;
     },
-  },
+    
+    // 회원 회원가입
+    async sendSignUpData(user, profileImage) {
+  
+      try {
+
+        this.isLoading = true;
+
+        let formData = new FormData();
+        let json = JSON.stringify(user);
+        formData.append("user", new Blob([json], { type: "application/json" }));
+        formData.append("profileImage", profileImage);
+        
+        let response = await axios.post(backend + "/user/signup", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        if (response.data.isSuccess === true) {
+            this.isSuccess = true;
+          } else {
+            this.isSuccess = false;
+          }
+        } catch (e) {
+          console.log(e);
+          this.isSuccess = false; 
+          alert("잘못된 요청입니다.");
+        } finally {
+          this.isLoading = false;
+        }
+    },
+  }
 });
