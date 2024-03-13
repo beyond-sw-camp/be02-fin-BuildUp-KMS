@@ -12,6 +12,7 @@ public class GetSearchListReviewRes {
     private Integer reviewIdx;
     private Integer userIdx;
     private String userNickName;
+    private String profileImage;
     private Integer reviewCategoryIdx;
     private String reviewCategoryName;
     private String reviewTitle;

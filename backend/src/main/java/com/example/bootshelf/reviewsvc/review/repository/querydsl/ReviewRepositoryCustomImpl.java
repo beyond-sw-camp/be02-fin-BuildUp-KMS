@@ -93,11 +93,13 @@ public class ReviewRepositoryCustomImpl extends QuerydslRepositorySupport implem
     }
 
     // 검색어를 포함하는 리뷰 목록 조회 (BooleanExpression 사용)
-    public Page<Review> findReviewsBySearchTerm(String searchTerm, Pageable pageable) {
+    public Page<Review> findReviewsBySearchTerm(Integer sortType, String searchTerm, Pageable pageable) {
 
         QReview review = new QReview("review");
         QReviewCategory reviewCategory = new QReviewCategory("reviewCategory");
         QUser user = new QUser("user");
+
+        OrderSpecifier[] orderSpecifiers = createOrderSpecifier(sortType, review);
 
         // 검색 조건을 BooleanExpression으로 구성
         BooleanExpression searchCondition = searchTermContains(searchTerm);
@@ -106,6 +108,7 @@ public class ReviewRepositoryCustomImpl extends QuerydslRepositorySupport implem
                 .leftJoin(review.reviewCategory, reviewCategory).fetchJoin()
                 .leftJoin(review.user, user).fetchJoin()
                 .where(searchCondition)
+                .orderBy(orderSpecifiers)
                 .distinct()
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
