@@ -2,8 +2,10 @@ package com.example.bootshelf.boardsvc.board.service;
 
 import com.amazonaws.services.kms.model.NotFoundException;
 import com.example.bootshelf.boardsvc.board.model.entity.Board;
+import com.example.bootshelf.boardsvc.board.model.request.PatchUpdateBoardReq;
 import com.example.bootshelf.boardsvc.board.model.request.PostCreateBoardReq;
 import com.example.bootshelf.boardsvc.board.model.response.GetListBoardRes;
+import com.example.bootshelf.boardsvc.board.model.response.GetMyListBoardRes;
 import com.example.bootshelf.boardsvc.board.model.response.PostCreateBoardRes;
 import com.example.bootshelf.boardsvc.board.repository.BoardRepository;
 import com.example.bootshelf.boardsvc.boardcategory.model.entity.BoardCategory;
@@ -14,12 +16,17 @@ import com.example.bootshelf.boardsvc.boardimage.service.BoardImageService;
 import com.example.bootshelf.boardsvc.boardtag.model.entity.BoardTag;
 import com.example.bootshelf.boardsvc.boardtag.service.BoardTagService;
 import com.example.bootshelf.common.BaseRes;
+import com.example.bootshelf.common.error.ErrorCode;
+import com.example.bootshelf.common.error.entityexception.BoardException;
 import com.example.bootshelf.tag.service.TagService;
 import com.example.bootshelf.user.model.entity.User;
 import com.sun.jdi.request.DuplicateRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
@@ -33,10 +40,8 @@ import java.util.Optional;
 @Slf4j
 public class BoardService {
     private final BoardRepository boardRepository;
-    private final BoardCategoryRepository boardCategoryRepository;
     private final BoardTagService boardTagService;
     private final BoardImageService boardImageService;
-    private final TagService tagService;
 
     public PostCreateBoardRes createBoard(User user, PostCreateBoardReq request, MultipartFile[] uploadFiles) {
 
@@ -139,5 +144,169 @@ public class BoardService {
                 return baseRes;
             }
         }
+    }
+
+    @Transactional(readOnly = true)
+    public BaseRes findMyBoardList(User user, Pageable pageable,Integer sortIdx){
+        Page<Board> boardList = boardRepository.findMyBoardList(user.getIdx(), pageable, sortIdx);
+        List<GetMyListBoardRes> getMyListBoardResList = new ArrayList<>();
+
+        for (Board board : boardList){
+
+            List<BoardTag> boardTagList = board.getBoardTagList();
+            List<Integer> tagIdxs = new ArrayList<>();
+
+            for(BoardTag boardTag : boardTagList){
+                Integer tagIdx = boardTag.getIdx();
+                tagIdxs.add(tagIdx);
+            }
+
+            GetMyListBoardRes getMyListBoardRes = GetMyListBoardRes.builder()
+                    .boardIdx(board.getIdx())
+                    .boardTitle(board.getBoardTitle())
+                    .boardContent(board.getBoardContent())
+                    .boardCategoryIdx(board.getBoardCategory().getIdx())
+                    .tagList(tagIdxs)
+                    .viewCnt(board.getViewCnt())
+                    .upCnt(board.getUpCnt())
+                    .scrapCnt(board.getScrapCnt())
+                    .commentCnt(board.getCommentCnt())
+                    .updatedAt(board.getUpdatedAt())
+                    .build();
+
+            getMyListBoardResList.add(getMyListBoardRes);
+        }
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("인증회원 본인 후기글 목록 조회 요청 성공")
+                .result(getMyListBoardResList)
+                .build();
+
+        return baseRes;
+    }
+
+    @Transactional(readOnly = true)
+    public BaseRes findMyBoardListByCategory(User user, Pageable pageable, Integer boardCategoryIdx, Integer sortIdx){
+        Page<Board> boardList = boardRepository.findMyBoardListByCategory(user.getIdx(), pageable, boardCategoryIdx, sortIdx);
+        List<GetMyListBoardRes> getMyListBoardResList = new ArrayList<>();
+
+        for (Board board : boardList){
+
+            List<BoardTag> boardTagList = board.getBoardTagList();
+            List<Integer> tagIdxs = new ArrayList<>();
+
+            for(BoardTag boardTag : boardTagList){
+                Integer tagIdx = boardTag.getIdx();
+                tagIdxs.add(tagIdx);
+            }
+
+            GetMyListBoardRes getMyListBoardRes = GetMyListBoardRes.builder()
+                    .boardIdx(board.getIdx())
+                    .boardTitle(board.getBoardTitle())
+                    .boardContent(board.getBoardContent())
+                    .boardCategoryIdx(board.getBoardCategory().getIdx())
+                    .tagList(tagIdxs)
+                    .viewCnt(board.getViewCnt())
+                    .upCnt(board.getUpCnt())
+                    .scrapCnt(board.getScrapCnt())
+                    .commentCnt(board.getCommentCnt())
+                    .updatedAt(board.getUpdatedAt())
+                    .build();
+
+            getMyListBoardResList.add(getMyListBoardRes);
+        }
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("인증회원 본인 후기글 목록 조회 요청 성공")
+                .result(getMyListBoardResList)
+                .build();
+
+        return baseRes;
+    }
+
+    public BaseRes findListByCategory(Pageable pageable, Integer boardCategoryIdx, Integer sortIdx){
+        Page<Board> boardList = boardRepository.findBoardListByCategory(pageable, boardCategoryIdx, sortIdx);
+        List<GetMyListBoardRes> getMyListBoardResList = new ArrayList<>();
+
+        for (Board board : boardList){
+
+            List<BoardTag> boardTagList = board.getBoardTagList();
+            List<Integer> tagIdxs = new ArrayList<>();
+
+            for(BoardTag boardTag : boardTagList){
+                Integer tagIdx = boardTag.getIdx();
+                tagIdxs.add(tagIdx);
+            }
+
+            GetMyListBoardRes getMyListBoardRes = GetMyListBoardRes.builder()
+                    .boardIdx(board.getIdx())
+                    .boardTitle(board.getBoardTitle())
+                    .boardContent(board.getBoardContent())
+                    .boardCategoryIdx(board.getBoardCategory().getIdx())
+                    .tagList(tagIdxs)
+                    .viewCnt(board.getViewCnt())
+                    .upCnt(board.getUpCnt())
+                    .scrapCnt(board.getScrapCnt())
+                    .commentCnt(board.getCommentCnt())
+                    .updatedAt(board.getUpdatedAt())
+                    .build();
+
+            getMyListBoardResList.add(getMyListBoardRes);
+        }
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("게시글 카테고리별 목록 조회 요청 성공")
+                .result(getMyListBoardResList)
+                .build();
+
+        return baseRes;
+    }
+
+    public BaseRes updateBoard (User user, PatchUpdateBoardReq patchUpdateBoardReq, Integer boardIdx){
+        Optional<Board> result = boardRepository.findByIdxAndUserIdx(boardIdx, user.getIdx());
+
+        if(!result.isPresent()){
+            throw new NotFoundException("게시글을 찾을 수 없습니다.");
+        }
+        Optional<Board> resultTitle = boardRepository.findByBoardTitle(patchUpdateBoardReq.getBoardTitle());
+
+        if(resultTitle.isPresent()){
+            throw new DuplicateRequestException("이미 존재하는 게시글 제목입니다.");
+        }
+        boardTagService.updateBoardTag(patchUpdateBoardReq.getTagList(), boardIdx);
+        Board board = result.get();
+
+        board.setBoardTitle(patchUpdateBoardReq.getBoardTitle());
+        board.setBoardContent(patchUpdateBoardReq.getBoardContent());
+        board.setBoardCategory(BoardCategory.builder().idx(patchUpdateBoardReq.getBoardCategoryIdx()).build());
+        board.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+        boardRepository.save(board);
+
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("게시글 수정 성공")
+                .result("요청 성공")
+                .build();
+
+        return baseRes;
+    }
+    @Transactional(readOnly = false)
+    public BaseRes deleteBoard(User user, Integer boardIdx){
+        Optional<Board> result = boardRepository.findByIdx(boardIdx);
+        if(!result.isPresent()){
+            throw new BoardException(ErrorCode.BOARD_NOT_EXISTS, String.format("Board Idx [ %s ] is not exists.", boardIdx));
+        }
+
+        Board board = result.get();
+        board.setStatus(false);
+        boardRepository.save(board);
+
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("게시글 삭제 성공")
+                .result("요청 성공")
+                .build();
+
+        return baseRes;
     }
 }
