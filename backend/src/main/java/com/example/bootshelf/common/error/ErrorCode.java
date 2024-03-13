@@ -74,6 +74,9 @@ public enum ErrorCode {
 
     BOARD_UP_NOT_EXISTS(HttpStatus.NOT_FOUND, "BOARDUP-004", "해당 게시글 추천 데이터가 존재하지 않습니다."),
 
+    // 관리자 게시판 태그 등록
+    BOARD_CATEGORY_NOT_EXISTS(HttpStatus.NOT_FOUND, "BOARD-CATEGORY-001", "해당 게시판 카테고리 IDX가 존재하지 않는 경우"),
+
     ;
 
     private final HttpStatus status;  // 헤더로 반환할 Http 상태 코드
