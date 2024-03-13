@@ -1,7 +1,7 @@
 package com.example.bootshelf.config.utils;
 
 import com.example.bootshelf.common.error.ErrorCode;
-import com.example.bootshelf.user.exception.UserException;
+import com.example.bootshelf.common.error.entityexception.UserException;
 import com.example.bootshelf.user.model.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
