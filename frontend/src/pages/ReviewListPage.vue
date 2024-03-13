@@ -20,7 +20,7 @@
               </div>
               <!--부제-->
               <div class="css-1qzbd5x">
-                스터디 모집 등 자유롭게 이야기해보세요!
+                부트캠프에 대한 후기를 자유롭게 이야기해보세요!
               </div>
             </div>
           </div>
@@ -50,12 +50,15 @@
                             class="css-search-002"
                             type="text"
                             placeholder="검색어를 입력하세요."
+                            v-model="searchTerm"
+                            @keyup.enter="sendSearchData()"
                           />
                         </div>
                         <img
                           class="css-search-img"
                           src="https://img.icons8.com/ios-glyphs/30/search--v1.png"
                           alt="search--v1"
+                          @click="sendSearchData()"
                         />
                       </div>
                     </div>
@@ -63,11 +66,16 @@
                 </div>
                 <!-- 정렬 순서 셀렉터 -->
                 <div>
-                  <select class="css-select001">
+                  <select
+                    class="css-select001"
+                    v-model="selectedSortType"
+                    @change="updateSortType"
+                  >
                     <option value="최신순">최신순</option>
-                    <option value="조회순">추천순</option>
+                    <option value="추천순">추천순</option>
                     <option value="조회순">조회순</option>
                     <option value="스크랩순">스크랩순</option>
+                    <option value="댓글순">댓글순</option>
                   </select>
                 </div>
               </div>
@@ -75,11 +83,13 @@
             <!--여기서 본격 글 리스트-->
             <div class="css-1csvk83">
               <ul class="css-10c0kk0 e15eiqsa1">
-                <!-- 스터디 글 목록 컴포넌트-->
-                <CategoryBoardComponent />
-                <CategoryBoardComponent />
-                <CategoryBoardComponent />
-                <CategoryBoardComponent />
+                <div
+                  class="css-k59gj9"
+                  v-for="reviews in reviewStore.reviewList"
+                  :key="reviews.reviewIdx"
+                >
+                  <ReviewBoardComponent :reviews="reviews" />
+                </div>
               </ul>
             </div>
             <!-- /본격 글 리스트 -->
@@ -92,15 +102,67 @@
 </template>
 
 <script>
-import CategoryBoardComponent from "@/components/CategoryBoardComponent.vue";
+import { mapStores } from "pinia";
+import { useReviewStore } from "../stores/useReviewStore";
+import ReviewBoardComponent from "@/components/ReviewBoardComponent.vue";
 import HotTagComponent from "@/components/HotTagComponent.vue";
 import PaginationComponent from "@/components/PaginationComponent.vue";
 export default {
   name: "ReviewListPage",
+  data() {
+    return {
+      selectedSortType: "최신순",
+      sortType: 1,
+      reviewCategoryIdx: "",
+      searchTerm: "",
+    };
+  },
+  computed: {
+    ...mapStores(useReviewStore),
+  },
   components: {
-    CategoryBoardComponent,
+    ReviewBoardComponent,
     HotTagComponent,
     PaginationComponent,
+  },
+  mounted() {
+    this.loadReviewList();
+  },
+  methods: {
+    updateSortType() {
+      switch (this.selectedSortType) {
+        case "최신순":
+          this.sortType = 1;
+          break;
+        case "추천순":
+          this.sortType = 2;
+          break;
+        case "조회순":
+          this.sortType = 3;
+          break;
+        case "스크랩순":
+          this.sortType = 4;
+          break;
+        case "댓글순":
+          this.sortType = 5;
+          break;
+        default:
+          this.sortType = 1; // 기본값 또는 예외 처리
+      }
+      this.loadReviewList();
+    },
+    loadReviewList() {
+      // 검색어가 있는 경우
+      if (this.searchTerm) {
+        this.reviewStore.getSearchReviewList(this.searchTerm, this.sortType);
+      } else {
+        // 검색어가 없는 경우
+        this.reviewStore.getReviewList(this.sortType);
+      }
+    },
+    sendSearchData() {
+      this.loadReviewList();
+    },
   },
 };
 </script>
