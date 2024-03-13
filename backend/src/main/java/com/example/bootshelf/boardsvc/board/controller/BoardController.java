@@ -71,4 +71,19 @@ public class BoardController {
         BaseRes baseRes = boardService.updateBoard(user, patchUpdateBoardReq, boardIdx);
         return ResponseEntity.ok().body(baseRes);
     }
+
+    @Operation(summary = "Board 게시글 삭제 기능",
+        description = "게시판의 게시글을 삭제하는 API 입니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
+    @RequestMapping(method = RequestMethod.DELETE, value = "/delete/{boardIdx}")
+    public ResponseEntity<BaseRes> deleteBoard(
+            @PathVariable(value = "boardIdx") Integer boardIdx
+    ){
+        User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        BaseRes baseRes = boardService.deleteBoard(user, boardIdx);
+
+        return ResponseEntity.ok().body(baseRes);
+    }
 }

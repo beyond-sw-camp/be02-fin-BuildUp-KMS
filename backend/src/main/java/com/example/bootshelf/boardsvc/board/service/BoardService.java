@@ -15,12 +15,15 @@ import com.example.bootshelf.boardsvc.boardimage.service.BoardImageService;
 import com.example.bootshelf.boardsvc.boardtag.model.entity.BoardTag;
 import com.example.bootshelf.boardsvc.boardtag.service.BoardTagService;
 import com.example.bootshelf.common.BaseRes;
+import com.example.bootshelf.common.error.ErrorCode;
+import com.example.bootshelf.common.error.entityexception.BoardException;
 import com.example.bootshelf.tag.service.TagService;
 import com.example.bootshelf.user.model.entity.User;
 import com.sun.jdi.request.DuplicateRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
@@ -165,6 +168,25 @@ public class BoardService {
         BaseRes baseRes = BaseRes.builder()
                 .isSuccess(true)
                 .message("게시글 수정 성공")
+                .result("요청 성공")
+                .build();
+
+        return baseRes;
+    }
+    @Transactional(readOnly = false)
+    public BaseRes deleteBoard(User user, Integer boardIdx){
+        Optional<Board> result = boardRepository.findByIdx(boardIdx);
+        if(!result.isPresent()){
+            throw new BoardException(ErrorCode.BOARD_NOT_EXISTS, String.format("Board Idx [ %s ] is not exists.", boardIdx));
+        }
+
+        Board board = result.get();
+        board.setStatus(false);
+        boardRepository.save(board);
+
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("게시글 삭제 성공")
                 .result("요청 성공")
                 .build();
 
