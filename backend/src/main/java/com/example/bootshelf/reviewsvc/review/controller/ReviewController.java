@@ -86,6 +86,22 @@ public class ReviewController {
         return ResponseEntity.ok().body(baseRes);
     }
 
+    @Operation(summary = "검색어 별 후기글 목록 조회",
+            description = "모든 사용자가 검색어를 입력하여 검색어에 해당하는 후기글 목록을 조회할 수 있다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+    })
+    @RequestMapping(method = RequestMethod.GET, value = "/search")
+    public ResponseEntity<BaseRes> listReview(
+            @RequestParam String searchTerm,
+            @PageableDefault(size = 10) Pageable pageable
+    ) {
+        BaseRes baseRes = reviewService.searchReview(searchTerm, pageable);
+
+        return ResponseEntity.ok().body(baseRes);
+    }
+
     @Operation(summary = "후기글 상세 조회",
             description = "모든 사용자가 후기글 상세내용을 조회할 수 있다.")
     @ApiResponses({

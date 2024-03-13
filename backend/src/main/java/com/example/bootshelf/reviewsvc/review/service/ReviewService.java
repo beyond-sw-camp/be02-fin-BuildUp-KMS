@@ -303,4 +303,40 @@ public class ReviewService {
 
         return baseRes;
     }
+
+    // 검색어 별 후기글 목록 조회
+    @Transactional(readOnly = true)
+    public BaseRes searchReview(String searchTerm, Pageable pageable) {
+
+        Page<Review> reviewList = reviewRepository.findReviewsBySearchTerm(searchTerm, pageable);
+
+        List<GetSearchListReviewRes> getSearchListReviewResList = new ArrayList<>();
+
+        for (Review review : reviewList) {
+
+            GetSearchListReviewRes getSearchListReviewRes = GetSearchListReviewRes.builder()
+                    .reviewIdx(review.getIdx())
+                    .userIdx(review.getUser().getIdx())
+                    .userNickName(review.getUser().getNickName())
+                    .reviewCategoryIdx(review.getReviewCategory().getIdx())
+                    .reviewCategoryName(review.getReviewCategory().getCategoryName())
+                    .reviewTitle(review.getReviewTitle())
+                    .courseName(review.getCourseName())
+                    .viewCnt(review.getViewCnt())
+                    .upCnt(review.getUpCnt())
+                    .scrapCnt(review.getScrapCnt())
+                    .commentCnt(review.getCommentCnt())
+                    .updatedAt(review.getUpdatedAt())
+                    .build();
+
+            getSearchListReviewResList.add(getSearchListReviewRes);
+        }
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("후기글 제목으로 검색결과 조회 요청 성공")
+                .result(getSearchListReviewResList)
+                .build();
+
+        return baseRes;
+    }
 }

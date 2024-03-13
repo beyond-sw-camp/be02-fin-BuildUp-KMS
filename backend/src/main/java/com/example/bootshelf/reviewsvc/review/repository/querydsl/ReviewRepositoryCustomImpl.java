@@ -1,11 +1,14 @@
 package com.example.bootshelf.reviewsvc.review.repository.querydsl;
 
+import com.example.bootshelf.common.error.ErrorCode;
+import com.example.bootshelf.common.error.entityexception.ReviewException;
 import com.example.bootshelf.reviewsvc.review.model.entity.QReview;
 import com.example.bootshelf.reviewsvc.review.model.entity.Review;
 import com.example.bootshelf.reviewsvc.reviewcategory.model.QReviewCategory;
 import com.example.bootshelf.reviewsvc.reviewimage.model.QReviewImage;
 import com.example.bootshelf.user.model.entity.QUser;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -87,5 +90,41 @@ public class ReviewRepositoryCustomImpl extends QuerydslRepositorySupport implem
                 orderSpecifiers.add(review.updatedAt.desc());
         }
         return orderSpecifiers.toArray(new OrderSpecifier[0]);
+    }
+
+    // 검색어를 포함하는 리뷰 목록 조회 (BooleanExpression 사용)
+    public Page<Review> findReviewsBySearchTerm(String searchTerm, Pageable pageable) {
+
+        QReview review = new QReview("review");
+        QReviewCategory reviewCategory = new QReviewCategory("reviewCategory");
+        QUser user = new QUser("user");
+
+        // 검색 조건을 BooleanExpression으로 구성
+        BooleanExpression searchCondition = searchTermContains(searchTerm);
+
+        List<Review> result = from(review)
+                .leftJoin(review.reviewCategory, reviewCategory).fetchJoin()
+                .leftJoin(review.user, user).fetchJoin()
+                .where(searchCondition)
+                .distinct()
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        return new PageImpl<>(result, pageable, result.size());
+    }
+
+    // 검색어에 따른 조건을 리턴하는 메서드
+    private BooleanExpression searchTermContains(String searchTerm) {
+        if (searchTerm == null || searchTerm.isEmpty()) {
+            throw new ReviewException(ErrorCode.NO_SEARCH_TERMS, String.format("Please enter a search term"));
+        }
+
+        QReview review = new QReview("review");
+
+        BooleanExpression titleContains = review.reviewTitle.containsIgnoreCase(searchTerm);
+        BooleanExpression contentContains = review.reviewContent.containsIgnoreCase(searchTerm);
+
+        return titleContains.or(contentContains);
     }
 }
