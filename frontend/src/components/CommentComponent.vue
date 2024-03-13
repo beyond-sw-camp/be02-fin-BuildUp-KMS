@@ -1,13 +1,10 @@
 <template>
-  <div class="css-f7no94">
+  <div class="css-f7no94" v-for="boardCommentContent in commentList" :key="boardCommentContent.id">
+  <!-- <div class="css-f7no94"> -->
     <div class="css-3o2y5e">
       <div width="36px" height="36px" class="css-jg5tbe">
-        <img
-          alt="나의얼굴"
-          width="34px"
-          height="34px"
-          src="https://blog.kakaocdn.net/dn/5UYz8/btq4diRXkGE/HkHufR4G8X4bIX3h3lNjck/img.jpg"
-        />
+        <img alt="나의얼굴" width="34px" height="34px"
+          src="https://blog.kakaocdn.net/dn/5UYz8/btq4diRXkGE/HkHufR4G8X4bIX3h3lNjck/img.jpg" />
       </div>
     </div>
     <div class="css-14f8kx2">
@@ -17,18 +14,13 @@
           <div class="css-emxp16"></div>
           <div class="css-emxp16">2023-10-22 12:18</div>
         </div>
-
         <div class="css-dyzp2y-001">
           <div class="css-emxp17">수정</div>
           <div class="css-emxp17">삭제</div>
         </div>
         <div class="css-emxp17">
-          <img
-            width="18px"
-            height="17px"
-            src="https://img.icons8.com/pastel-glyph/64/facebook-like--v1.png"
-            alt="facebook-like--v1"
-          />
+          <img width="18px" height="17px" src="https://img.icons8.com/pastel-glyph/64/facebook-like--v1.png"
+            alt="facebook-like--v1" />
         </div>
       </div>
       <div class="editedCommentContent">
@@ -40,8 +32,38 @@
 </template>
 
 <script>
+import axios from "axios";
+
+const backend = "http://localhost:8080"
+
 export default {
   name: "CommentComponent",
+
+  data() {
+    return {
+      commentList: [],
+
+    }
+  },
+
+  methods: {
+    async getBoardComment() {
+      try {
+        let idx = 1;
+        let response = await axios.get(backend + `/board/${idx}/comment`);
+
+        console.log(response.data);
+        this.commentList = response.data.result;
+
+      } catch (error) {
+        console.error(error);
+      }
+    },
+  },
+
+  mounted() {
+    this.getBoardComment();
+  }
 };
 </script>
 

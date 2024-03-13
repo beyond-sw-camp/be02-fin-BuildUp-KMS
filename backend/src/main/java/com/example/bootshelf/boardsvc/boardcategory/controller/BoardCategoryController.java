@@ -43,6 +43,7 @@ public class BoardCategoryController {
     })
     @RequestMapping(method = RequestMethod.POST, value = "/create")
     public ResponseEntity<BaseRes> createBoardCategory(
+            @AuthenticationPrincipal User user,
             @RequestBody PostCreateBoardCategoryReq postCreateBoardCategoryReq
     ) {
         BaseRes baseRes = boardCategoryService.createBoardCategory(postCreateBoardCategoryReq);
