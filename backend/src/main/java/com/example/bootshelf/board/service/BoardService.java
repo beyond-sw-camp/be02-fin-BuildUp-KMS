@@ -145,23 +145,23 @@ public class BoardService {
         }
     }
     public BaseRes updateBoard (User user, PatchUpdateBoardReq patchUpdateBoardReq, Integer boardIdx){
-        Optional<Board> result = boardRepository.findByIdxAndUserIdx(user.getIdx(), boardIdx);
+        Optional<Board> result = boardRepository.findByIdxAndUserIdx(boardIdx, user.getIdx());
 
         if(!result.isPresent()){
             throw new NotFoundException("게시글을 찾을 수 없습니다.");
         }
         Optional<Board> resultTitle = boardRepository.findByBoardTitle(patchUpdateBoardReq.getBoardTitle());
 
-        if(result.isPresent()){
+        if(resultTitle.isPresent()){
             throw new DuplicateRequestException("이미 존재하는 게시글 제목입니다.");
         }
-
-
+        boardTagService.updateBoardTag(patchUpdateBoardReq.getTagList(), boardIdx);
         Board board = result.get();
 
         board.setBoardTitle(patchUpdateBoardReq.getBoardTitle());
         board.setBoardContent(patchUpdateBoardReq.getBoardContent());
         board.setBoardCategory(BoardCategory.builder().idx(patchUpdateBoardReq.getBoardCategoryIdx()).build());
+        boardRepository.save(board);
 
         BaseRes baseRes = BaseRes.builder()
                 .isSuccess(true)

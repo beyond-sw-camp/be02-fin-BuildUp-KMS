@@ -11,10 +11,9 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class PatchUpdateBoardReq {
-    @Column(nullable = false, length = 100)
+
     private String boardTitle;
 
-    @Column(nullable = false, length = 400)
     private String boardContent;
 
     private Integer boardCategoryIdx;

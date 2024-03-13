@@ -28,11 +28,6 @@ public class TagService {
     // [관리자] 태그 생성 또는 [사용자] 태그 생성
     @Transactional(readOnly = false)
     public Tag createTag(String tagName) {
-        Optional<Tag> result = tagRepository.findByTagName(tagName);
-
-        if (result.isPresent()) {
-            throw new TagException(ErrorCode.DUPLICATED_TAG_NAME, String.format("Tag Name [ %s ] is duplicated.", tagName));
-        }
 
         Tag tag = Tag.builder()
                 .tagName(tagName)

@@ -66,10 +66,10 @@ public class BoardController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
-    @PatchMapping("/update/{boardIdx}")
+    @RequestMapping(method = RequestMethod.PATCH, value = "/update/{boardIdx}")
     public ResponseEntity<BaseRes> updateBoard(
             @Valid @RequestBody PatchUpdateBoardReq patchUpdateBoardReq,
-            @PathVariable Integer boardIdx
+            @PathVariable(value = "boardIdx") Integer boardIdx
     ){
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         BaseRes baseRes = boardService.updateBoard(user, patchUpdateBoardReq, boardIdx);
