@@ -7,6 +7,7 @@ import com.example.bootshelf.reviewsvc.review.service.ReviewService;
 import com.example.bootshelf.user.model.entity.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -74,10 +75,10 @@ public class ReviewController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
-    @RequestMapping(method = RequestMethod.GET, value = "/{reviewCategoryIdx}/{sortType}")
+    @RequestMapping(method = RequestMethod.GET, value = "/list/{reviewCategoryIdx}/{sortType}")
     public ResponseEntity<BaseRes> listReview(
             @PathVariable @NotNull(message = "후기 카테고리 IDX는 필수 입력 항목입니다.") @Positive(message = "후기 카테고리 IDX는 1이상의 양수입니다.") Integer reviewCategoryIdx,
-            @PathVariable @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") Integer sortType,
+            @PathVariable @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") @ApiParam(value = "정렬유형 : 1 (최신순), 2 (추천수 순), 3 (조회수 순), 4 (스크랩수 순), 5 (댓글수 순)") Integer sortType,
             @PageableDefault(size = 10) Pageable pageable
     ) {
         BaseRes baseRes = reviewService.listReview(reviewCategoryIdx, sortType, pageable);
