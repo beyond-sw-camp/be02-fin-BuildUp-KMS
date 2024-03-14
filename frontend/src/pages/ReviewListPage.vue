@@ -47,7 +47,7 @@
                           <input
                             class="css-search-002"
                             type="text"
-                            placeholder="검색어를 입력하세요."
+                            placeholder="제목과 내용으로 검색할 단어를 입력하세요."
                             v-model="searchTerm"
                             @keyup.enter="sendSearchData()"
                           />

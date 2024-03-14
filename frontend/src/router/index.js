@@ -11,19 +11,28 @@ import ReviewWritePage from "@/pages/ReviewWritePage.vue";
 import StudyBoardPage from "@/pages/StudyBoardPage.vue";
 import SelectSignupPage from "@/pages/SelectSignupPage.vue";
 import BoardDetailsPage from "@/pages/BoardDetailsPage.vue";
+import ReviewDetailsPage from "@/pages/ReviewDetailsPage.vue";
 import BoardListPage from "@/pages/BoardListPage.vue";
 import ReviewListPage from "@/pages/ReviewListPage.vue";
 import EmailValidationPage from "@/pages/EmailValidationPage.vue";
 import NoticeBoardPage from "@/pages/NoticeBoardPage.vue";
-import AdminMainPage from "@/pages/AdminMainPage.vue";
+import KakaoLogIn from "@/pages/KakaoLogIn.vue";
 
+import AdminMainPage from "@/pages/AdminMainPage.vue";
 import AdminWithdrawPage from "@/pages/AdminWithdrawPage.vue";
 import AdminCategoryRegisterPage from "@/pages/AdminCategoryRegisterPage.vue";
 import AdminTagRegisterPage from "@/pages/AdminTagRegisterPage.vue";
 
 const routes = [
   { path: "/", component: MainPage },
+  {
+    path: "/KakaoLogIn/:token",
+    name: "KakaoLogIn",
+    component: () => import("@/pages/KakaoLogIn.vue"),
+    props: true,
+  },
   { path: "/auth/signup", component: AuthSignupPage },
+  { path: "/KakaoLogIn", component: KakaoLogIn },
   { path: "/signup", component: SignupPage },
   { path: "/profile", component: MyProfilePage },
   { path: "/mypage", component: MyActivePage },
@@ -32,6 +41,7 @@ const routes = [
   { path: "/review/new", component: ReviewWritePage },
   { path: "/study", component: StudyBoardPage },
   { path: "/board/detail", component: BoardDetailsPage },
+  { path: "/review/detail/:idx", component: ReviewDetailsPage },
   { path: "/board", component: BoardListPage },
   { path: "/review", component: ReviewListPage },
   { path: "/select/signup", component: SelectSignupPage },
