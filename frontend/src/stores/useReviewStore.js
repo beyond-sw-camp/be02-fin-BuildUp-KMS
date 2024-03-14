@@ -16,7 +16,7 @@ export const useReviewStore = defineStore("review", {
           },
         });
 
-        this.reviewList = response.data.result;
+        this.reviewList = response.data.result.list;
         if (response.data.result.length !== 0) {
           this.isReviewExist = false;
         }
@@ -39,7 +39,7 @@ export const useReviewStore = defineStore("review", {
           }
         );
 
-        this.reviewList = response.data.result;
+        this.reviewList = response.data.result.list;
         if (response.data.result.length !== 0) {
           this.isReviewExist = false;
         }
