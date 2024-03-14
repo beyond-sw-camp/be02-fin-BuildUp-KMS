@@ -53,7 +53,7 @@
                 <div class="d-flex justify-content-between mt-4 align-items-center">
                   <h5 class="mb-0">
                     <div class="_2kqp41 _2d5D_m" style="--box-gap: 0.5rem;"><span><span>검색
-                          결과</span></span><span class="text-blue-500 ">265</span></div>
+                          결과</span></span><span class="text-blue-500 ">{{ boardStore.totalCnt }}</span></div>
                   </h5>
                   <div class="dropdown">
                     <button @click="toggleDropdown" type="button" aria-haspopup="true"
@@ -77,18 +77,19 @@
                 </div>
                 <ul class="_1PTI0R p-0 mb-4">
                   <span>
-                    <div>
+                    <div v-for="board in boardStore.boardList" :key="board.idx">
                       <li class="_3lQ639 _32Ay9Q" role="presentation">
                         <div class="_2kqp41 flex-grow-1" style="--box-gap: 0.75rem;">
                           <div class="_2kqp41 tttQ1F" style="--box-gap: 0.375rem;">
-                            <p class="_3yzn7O mb-0 _2Sv3IV">정답 코드입니다 참고하세요</p>
+                            <p class="_3yzn7O mb-0 _2Sv3IV">{{ board.boardTitle }}</p>
                             <div>
                               <span class="d-none d-md-block">
                                 <span class="d-flex Dhz06G align-items-center text-gray-600">
-                                  <span class="text-gray-900 font-weight-normal flex-shrink-0">jun
-                                    Choi</span>
+                                  <span class="text-gray-900 font-weight-normal flex-shrink-0">{{ board.nickName
+                                    }}</span>
                                   <span class="paragraph-sm">·</span>
-                                  <span class="text-gray-600 flex-shrink-0" title="2024. 2. 17. 오후 7:25:30">24.02.17
+                                  <span class="text-gray-600 flex-shrink-0" title="2024. 2. 17. 오후 7:25:30">{{
+                            board.createdAt }}
                                   </span>
                                 </span>
                               </span>
@@ -99,39 +100,30 @@
                               <ol class="breadcrumb _3cKvl flex-nowrap">
                                 <li
                                   class="d-inline-flex align-items-center iFcHCl _1OTYG _2amVj _285DO active breadcrumb-item"
-                                  aria-current="page"><span class="_1t2_hP">[2차][한줄] 문제10)
-                                    상품권 총 지급액구하기 -
-                                    Python3</span></li>
+                                  aria-current="page"><span class="_1t2_hP">{{ board.boardContent }}</span></li>
                               </ol>
                             </nav>
                           </div>
                           <div class="d-flex justify-content-between">
-                            <div class="d-block d-md-none"><span
-                                class="d-flex Dhz06G align-items-center text-gray-600 _2V47lu"><span
-                                  class="text-gray-900 font-weight-normal flex-shrink-0">jun
-                                  Choi</span><span class="paragraph-sm">·</span><span
-                                  class="text-gray-600 flex-shrink-0"
-                                  title="2024. 2. 17. 오후 7:25:30">24.02.17</span></span>
-                            </div>
                             <div class="d-flex align-items-center _1VWGjy"><span
                                 class="text-gray-600 d-inline-flex align-items-center _22s-QT"><svg fill="currentColor"
                                   width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
                                   <path fill-rule="evenodd" clip-rule="evenodd"
                                     d="M1 8.07129C3.24 4.73829 5.24 3.07129 8 3.07129C10.761 3.07129 12.761 4.73829 15 8.07129C12.761 11.4043 10.761 13.0713 8 13.0713C5.24 13.0713 3.24 11.4043 1 8.07129ZM8 12.0713C10.209 12.0713 12 10.2803 12 8.07129C12 5.86229 10.209 4.07129 8 4.07129C5.791 4.07129 4 5.86229 4 8.07129C4 10.2803 5.791 12.0713 8 12.0713ZM8 10.0713C6.896 10.0713 6 9.17629 6 8.07129C6 6.96729 6.896 6.07129 8 6.07129C9.104 6.07129 10 6.96729 10 8.07129C10 9.17629 9.104 10.0713 8 10.0713Z">
                                   </path>
-                                </svg><span class="paragraph-sm">17</span></span><span
+                                </svg><span class="paragraph-sm">{{ board.viewCnt }}</span></span><span
                                 class="text-gray-600 d-inline-flex align-items-center _22s-QT"><svg fill="currentColor"
                                   width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
                                   <path fill-rule="evenodd" clip-rule="evenodd"
                                     d="M4 6.059H12V4.759H4V6.059ZM4 8.741H9.5V7.441H4V8.741ZM1.5 1.75V10.25V11.75V14.25L4 11.75H14.5V1.75H1.5Z">
                                   </path>
-                                </svg><span class="paragraph-sm">0</span></span><span
+                                </svg><span class="paragraph-sm">{{ board.commentCnt }}</span></span><span
                                 class="text-gray-600 d-inline-flex align-items-center _22s-QT"><svg fill="currentColor"
                                   width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
                                   <path fill-rule="evenodd" clip-rule="evenodd"
                                     d="M9.95312 5.75011L10.4471 4.20511C10.7831 3.15311 10.4811 2.00111 9.67112 1.25011L5.30012 5.75011V13.7501H13.0001L15.0001 8.78811V5.75011H9.95312ZM1.50012 13.7501H4.00012V6.25011H1.50012V13.7501Z">
                                   </path>
-                                </svg><span class="paragraph-sm">0</span></span></div>
+                                </svg><span class="paragraph-sm">{{ board.upCnt }}</span></span></div>
                           </div>
                         </div>
                       </li>
@@ -142,37 +134,27 @@
                 <div class="d-flex justify-content-center py-0 py-md-4">
                   <nav class="" aria-label="pagination">
                     <ul class="_1VYQb4 pagination">
-                      <li class="page-item">
-                        <div role="button" tabindex="-1"><button aria-label="pagination-prev"
+                      <li class="page-item" v-if="boardStore.currentPage > 1">
+                        <div role="button" tabindex="-1">
+                          <button @click.prevent="changePage(boardStore.currentPage - 1)" aria-label="pagination-prev"
                             class="_2Hgkt3 btn d-flex p-0 page-link"><svg fill="currentColor" width="16" height="16"
                               viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
                               <path fill-rule="evenodd" clip-rule="evenodd"
                                 d="M9.33838 12.7021L4.63538 8.0001L9.33838 3.2981L10.2574 4.2171L6.47438 8.0001L10.2574 11.7821L9.33838 12.7021Z">
                               </path>
-                            </svg></button></div>
+                            </svg>
+                          </button>
+                        </div>
                       </li>
-                      <li class="page-item active">
-                        <div role="button" tabindex="-1"><button aria-label="pagination-1"
-                            class="_2Hgkt3 btn d-flex p-0 page-link">1</button></div>
-                      </li>
-                      <li class="page-item">
-                        <div role="button" tabindex="-1"><button aria-label="pagination-2"
-                            class="_2Hgkt3 btn d-flex p-0 page-link">2</button></div>
-                      </li>
-                      <li class="page-item">
-                        <div role="button" tabindex="-1"><button aria-label="pagination-3"
-                            class="_2Hgkt3 btn d-flex p-0 page-link">3</button></div>
+                      <!-- 페이지 번호들 -->
+                      <li v-for="page in visiblePages" :key="page" class="page-item"
+                        :class="{ 'active': page === boardStore.currentPage }">
+                        <button @click.prevent="changePage(page)" class="_2Hgkt3 btn d-flex p-0 page-link">{{ page
+                          }}</button>
                       </li>
                       <li class="page-item">
-                        <div role="button" tabindex="-1"><button aria-label="pagination-4"
-                            class="_2Hgkt3 btn d-flex p-0 page-link">4</button></div>
-                      </li>
-                      <li class="page-item">
-                        <div role="button" tabindex="-1"><button aria-label="pagination-5"
-                            class="_2Hgkt3 btn d-flex p-0 page-link">5</button></div>
-                      </li>
-                      <li class="page-item">
-                        <div role="button" tabindex="-1"><button aria-label="pagination-6"
+                        <div role="button" tabindex="-1">
+                          <button aria-label="pagination-6" @click.prevent="jumpForward"
                             class="_2Hgkt3 btn d-flex p-0 page-link"><svg fill="currentColor"
                               preserveAspectRatio="xMidYMid meet" height="12" width="12" class=""
                               id="abae7265-d86f-4afc-bc36-ad71c61cb971" data-name="레이어 1"
@@ -181,16 +163,24 @@
                               <path
                                 d="M9,4.25a2,2,0,1,1,2-2A2,2,0,0,1,9,4.25ZM11,9a2,2,0,1,0-2,2A2,2,0,0,0,11,9Zm0,6.75a2,2,0,1,0-2,2A2,2,0,0,0,11,15.75Z"
                                 fill="#90929e"></path>
-                            </svg></button></div>
+                            </svg>
+                          </button>
+                        </div>
                       </li>
                       <li class="page-item">
-                        <div role="button" tabindex="-1"><button aria-label="pagination-next"
+                        <button @click.prevent="changePage(boardStore.totalPages)"
+                          class="_2Hgkt3 btn d-flex p-0 page-link">{{ boardStore.totalPages }}</button>
+                      </li>
+                      <li class="page-item" v-if="boardStore.currentPage < boardStore.totalPages">
+                        <div role="button" tabindex="-1">
+                          <button aria-label="pagination-next" @click.prevent="changePage(boardStore.currentPage + 1)"
                             class="_2Hgkt3 btn d-flex p-0 page-link"><svg fill="currentColor" width="16" height="16"
                               viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
                               <path fill-rule="evenodd" clip-rule="evenodd"
                                 d="M6.65228 12.7021L5.73328 11.7821L9.51628 8.0001L5.73328 4.2171L6.65228 3.2981L11.3553 8.0001L6.65228 12.7021Z">
                               </path>
-                            </svg></button>
+                            </svg>
+                          </button>
                         </div>
                       </li>
                     </ul>
@@ -212,25 +202,49 @@ import { useBoardStore } from "/src/stores/useBoardStore";
 
 export default {
   name: "SearchResultPage",
-  mounted() {
+  data() {
+    return {
+      dropdownOpen: false,
+      query: "",
+      searchType: ""
+    };
+  },
+  async mounted() {
     const link = document.createElement("link");
     link.rel = "stylesheet";
     link.href =
       "https://statics.goorm.io/gds/goormstrap/v1.29.0/goormstrap.v4.min.css";
     document.head.appendChild(link);
-  },
-  data() {
-    return {
-      dropdownOpen: false,
-    };
+
+    // URL에서 쿼리 매개변수 읽음.
+    const query = this.$route.query.query;
+    const searchType = this.$route.query.option;
+
+    await this.boardStore.getBoardListByQuery(query, searchType);
   },
   computed: {
     ...mapStores(useBoardStore),
+    visiblePages() {
+      // 최대 5개의 페이지 번호만 보이도록 계산
+      let pages = [];
+      for (let i = 1; i <= Math.min(5, this.boardStore.totalPages); i++) {
+        pages.push(i);
+      }
+      return pages;
+    },
   },
   methods: {
     toggleDropdown() {
       this.dropdownOpen = !this.dropdownOpen;
     },
+    changePage(page) {
+      this.boardStore.getBoardListByQuery(this.query, this.searchType, page);
+    },
+    jumpForward() {
+      // 현재 페이지에서 3페이지 앞으로 점프
+      let nextPage = Math.min(this.boardStore.currentPage + 3, this.boardStore.totalPages);
+      this.changePage(nextPage);
+    }
   },
 };
 </script>
@@ -377,6 +391,7 @@ element.style {
 
 ._2-sdMj {
   margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
 }
 
 ._1isiv,
