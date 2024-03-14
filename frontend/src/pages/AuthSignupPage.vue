@@ -227,7 +227,7 @@
             </div>
           </div>
           <div direction="vertical" size="40" class="css-ygt1wz"></div>
-          <button color="#FFFFFF" class="css-j27xag" @click="sendSignUpData">가입하기</button>
+          <button color="#FFFFFF" class="css-j27xag" @click="signUpData">가입하기</button>
         </div>
       </div>
     </div>
@@ -332,8 +332,8 @@ export default {
     this.$root.hideHeaderAndFooter = true;
   },
   methods: {
-    async sendSignUpData() {
-      await this.userStore.sendSignUpData(this.user, this.selectedProfileImage);
+    async signUpData() {
+      await this.userStore.signUpData(this.user, this.selectedProfileImage);
       if (this.userStore.isSuccess) {
         this.$router.push({ path: "/email/verify" });
       }
