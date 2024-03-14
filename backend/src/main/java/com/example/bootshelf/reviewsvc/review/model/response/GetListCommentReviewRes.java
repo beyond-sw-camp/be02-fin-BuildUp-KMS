@@ -14,6 +14,7 @@ public class GetListCommentReviewRes {
     private Integer commentIdx;
     private Integer userIdx;
     private String userNickName;
+    private String profileImage;
     private String reviewCommentContent;
     private Integer upCnt;
     private String updatedAt;

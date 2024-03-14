@@ -2,34 +2,18 @@ package com.example.bootshelf.boardsvc.board.model.response;
 
 import lombok.*;
 
-import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class GetListBoardRes {
-
+public class GetBoardListByQueryRes {
     private Integer boardIdx;
-
     private String boardTitle;
-
     private String boardContent;
-
-    private Integer boardCategoryIdx;
-
-    private String boardImg;
-
-    private List<Integer> tagList;
-
+    private String nickName;
+    private String createdAt;
     private Integer viewCnt;
-
-    private Integer upCnt;
-
-    private Integer scrapCnt;
-
     private Integer commentCnt;
-
-    private String updatedAt;
+    private Integer upCnt;
 }
