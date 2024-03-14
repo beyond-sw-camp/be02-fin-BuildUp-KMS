@@ -12,6 +12,7 @@ public class GetListReviewRes {
     private Integer reviewIdx;
     private Integer userIdx;
     private String userNickName;
+    private String profileImage;
     private String reviewTitle;
     private String reviewContent;
     private String reviewImage;

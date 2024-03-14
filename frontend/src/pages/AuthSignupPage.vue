@@ -227,7 +227,7 @@
             </div>
           </div>
           <div direction="vertical" size="40" class="css-ygt1wz"></div>
-          <button color="#FFFFFF" class="css-j27xag" @click="sendSignUpData">가입하기</button>
+          <button color="#FFFFFF" class="css-j27xag" @click="signUpData">가입하기</button>
         </div>
       </div>
     </div>
@@ -332,10 +332,16 @@ export default {
     this.$root.hideHeaderAndFooter = true;
   },
   methods: {
-    async sendSignUpData() {
-      await this.userStore.sendSignUpData(this.user, this.selectedProfileImage);
-      if (this.userStore.isSuccess) {
-        this.$router.push({ path: "/email/verify" });
+    async signUpData() {
+      const isCheckAgreed = this.allAgreed || this.agreements.slice(0, 3).every(agreement => agreement.checked);
+
+      if (!isCheckAgreed) {
+        alert('필수 동의 항목에 동의하지 않았습니다.');
+      } else {
+        await this.userStore.signUpData(this.user, this.selectedProfileImage);
+        if (this.userStore.isSuccess) {
+          this.$router.push({ path: "/email/verify" });
+        }
       }
     },
     handleProfileImageChange(event) {
@@ -543,14 +549,6 @@ input {
 input[type="password" i] {
   padding-block: 1px;
   padding-inline: 2px;
-}
-
-input:not(
-    [type="file" i],
-    [type="image" i],
-    [type="checkbox" i],
-    [type="radio" i]
-  ) {
 }
 
 .css-1f4y3nx {
