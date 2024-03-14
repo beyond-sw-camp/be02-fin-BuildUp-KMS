@@ -13,6 +13,8 @@ public class GetListBoardRes {
 
     private Integer boardIdx;
 
+    private String userNickName;
+
     private String boardTitle;
 
     private String boardContent;

@@ -122,6 +122,7 @@ public class BoardService {
 
                 GetBoardRes res = GetBoardRes.builder()
                         .idx(board.getIdx())
+                        .userNickName(board.getUser().getNickName())
                         .boardTitle(board.getBoardTitle())
                         .boardContent(board.getBoardContent())
                         .boardCategoryIdx(board.getBoardCategory().getIdx())
@@ -166,6 +167,7 @@ public class BoardService {
 
             GetListBoardRes getListBoardRes = GetListBoardRes.builder()
                     .boardIdx(board.getIdx())
+                    .userNickName(board.getUser().getNickName())
                     .boardTitle(board.getBoardTitle())
                     .boardContent(board.getBoardContent())
                     .boardCategoryIdx(board.getBoardCategory().getIdx())
@@ -215,6 +217,7 @@ public class BoardService {
 
             GetListBoardRes getListBoardRes = GetListBoardRes.builder()
                     .boardIdx(board.getIdx())
+                    .userNickName(board.getUser().getNickName())
                     .boardTitle(board.getBoardTitle())
                     .boardContent(board.getBoardContent())
                     .boardCategoryIdx(board.getBoardCategory().getIdx())
@@ -263,6 +266,7 @@ public class BoardService {
 
             GetListBoardRes getListBoardRes = GetListBoardRes.builder()
                     .boardIdx(board.getIdx())
+                    .userNickName(board.getUser().getNickName())
                     .boardTitle(board.getBoardTitle())
                     .boardContent(board.getBoardContent())
                     .boardCategoryIdx(board.getBoardCategory().getIdx())
@@ -312,6 +316,7 @@ public class BoardService {
 
             GetListBoardRes getListBoardRes = GetListBoardRes.builder()
                     .boardIdx(board.getIdx())
+                    .userNickName(board.getUser().getNickName())
                     .boardTitle(board.getBoardTitle())
                     .boardContent(board.getBoardContent())
                     .boardCategoryIdx(board.getBoardCategory().getIdx())
