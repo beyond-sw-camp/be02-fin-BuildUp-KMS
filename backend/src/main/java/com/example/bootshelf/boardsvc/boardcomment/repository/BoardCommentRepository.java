@@ -11,6 +11,8 @@ import java.util.Optional;
 public interface BoardCommentRepository extends JpaRepository<BoardComment, Integer> {
 
     Optional<BoardComment> findByIdx(Integer idx);
+    Optional<BoardComment> findByIdxAndUserIdx(Integer commentidx, Integer userIdx);
+
 
     List<BoardComment> findByBoardIdxAndParentIsNull(Integer boardIdx);
 
