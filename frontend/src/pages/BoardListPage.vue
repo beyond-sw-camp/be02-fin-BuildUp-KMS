@@ -150,7 +150,7 @@ export default {
     },
     loadBoardList(){
       this.boardStore.findListByCategory(1, this.sortType);
-    },
+    }
   }
 };
 </script>

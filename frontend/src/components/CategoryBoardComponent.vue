@@ -76,7 +76,7 @@
             </span>
           </div>
           <div class="css-5zcuov">
-            <div class="css-1sika4i">길민석</div>
+            <div class="css-1sika4i">{{ boards.userNickName }}</div>
             <div class="css-1tify6w">
               <!--조그만 점 찍기-->
               <svg
@@ -96,22 +96,22 @@
         <div class="css-o01lup">
           <div class="css-ts29it">
             <div class="css-1ry6usa">댓글</div>
-            <div class="css-1ry6usa">0</div>
+            <div class="css-1ry6usa">{{ boards.commentCnt }}</div>
           </div>
           <div clss="css-dbc8ke">・</div>
           <div class="css-ts29it">
             <div class="css-1ry6usa">추천</div>
-            <div class="css-1ry6usa">100</div>
+            <div class="css-1ry6usa">{{ boards.upCnt }}</div>
           </div>
           <div clss="css-dbc8ke">・</div>
           <div class="css-ts29it">
             <div class="css-1ry6usa">조회</div>
-            <div class="css-1ry6usa">1000</div>
+            <div class="css-1ry6usa">{{ boards.viewCnt }}</div>
           </div>
         </div>
         <div class="css-1vkj2s1">
           <div class="css-1ry6usa">조회</div>
-          <div class="css-1ry6usa">1000</div>
+          <div class="css-1ry6usa">{{ boards.viewCnt }}</div>
         </div>
       </div>
     </div>
@@ -157,7 +157,7 @@
               ></rect>
             </svg>
           </div>
-          <div class="css-i21m7n">0</div>
+          <div class="css-i21m7n">{{ boards.commentCnt }}</div>
         </div>
       </div>
       <div class="css-192oc4s">
@@ -185,7 +185,7 @@
               ></path>
             </svg>
           </div>
-          <div class="css-i21m7n">100</div>
+          <div class="css-i21m7n">{{ boards.upCnt }}</div>
         </div>
       </div>
       <div class="css-192oc4s">
@@ -204,7 +204,7 @@
               ></path>
             </svg>
           </div>
-          <div class="css-i21m7n">1000</div>
+          <div class="css-i21m7n">{{ boards.scrapCnt }}</div>
         </div>
       </div>
     </div>
