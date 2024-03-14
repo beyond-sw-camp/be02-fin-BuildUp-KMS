@@ -45,7 +45,7 @@ public class ReviewController {
     @RequestMapping(method = RequestMethod.POST, value = "/create")
     public ResponseEntity<BaseRes> createReview(
             @RequestPart(value = "review") @Valid PostCreateReviewReq postCreateReviewReq,
-            @RequestPart(value = "reviewImage") MultipartFile[] reviewImages
+            @RequestPart(value = "reviewImage", required = false) MultipartFile[] reviewImages
     ) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         BaseRes baseRes = reviewService.createReview(user, postCreateReviewReq, reviewImages);

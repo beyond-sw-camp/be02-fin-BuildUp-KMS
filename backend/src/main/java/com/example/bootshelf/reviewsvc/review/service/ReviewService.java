@@ -1,5 +1,6 @@
 package com.example.bootshelf.reviewsvc.review.service;
 
+import com.example.bootshelf.boardsvc.board.model.response.GetBoardListByQueryResResult;
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.common.error.ErrorCode;
 import com.example.bootshelf.common.error.entityexception.ReviewException;
@@ -162,10 +163,19 @@ public class ReviewService {
             getListReviewResList.add(getListReviewRes);
         }
 
+        Long totalCnt = reviewList.getTotalElements();
+        Integer totalPages = reviewList.getTotalPages();
+
+        GetListReviewResResult result = GetListReviewResResult.builder()
+                .totalCnt(totalCnt)
+                .totalPages(totalPages)
+                .list(getListReviewResList)
+                .build();
+
         BaseRes baseRes = BaseRes.builder()
                 .isSuccess(true)
                 .message("후기글 목록 조회 요청 성공")
-                .result(getListReviewResList)
+                .result(result)
                 .build();
 
         return baseRes;
@@ -253,7 +263,7 @@ public class ReviewService {
                 .reviewCommentContent(reviewComment.getReviewCommentContent())
                 .upCnt(reviewComment.getUpCnt())
                 .updatedAt(reviewComment.getUpdatedAt())
-                .children(childCommentsRes) // 대댓글 목록 추가
+                .children(childCommentsRes)
                 .build();
     }
 
@@ -350,10 +360,20 @@ public class ReviewService {
 
             getSearchListReviewResList.add(getSearchListReviewRes);
         }
+
+        Long totalCnt = reviewList.getTotalElements();
+        Integer totalPages = reviewList.getTotalPages();
+
+        GetSearchListReviewResResult result = GetSearchListReviewResResult.builder()
+                .totalCnt(totalCnt)
+                .totalPages(totalPages)
+                .list(getSearchListReviewResList)
+                .build();
+
         BaseRes baseRes = BaseRes.builder()
                 .isSuccess(true)
                 .message("후기글 제목으로 검색결과 조회 요청 성공")
-                .result(getSearchListReviewResList)
+                .result(result)
                 .build();
 
         return baseRes;
