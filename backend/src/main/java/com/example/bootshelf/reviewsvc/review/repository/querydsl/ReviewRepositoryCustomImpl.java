@@ -50,6 +50,7 @@ public class ReviewRepositoryCustomImpl extends QuerydslRepositorySupport implem
         QReview review = new QReview("review");
         QReviewImage reviewImage = new QReviewImage("reviewImage");
         QUser user = new QUser("user");
+        QReviewCategory reviewCategory = new QReviewCategory("reviewCategory");
 
         OrderSpecifier[] orderSpecifiers = createOrderSpecifier(sortType, review);
 
@@ -63,7 +64,14 @@ public class ReviewRepositoryCustomImpl extends QuerydslRepositorySupport implem
                 .limit(pageable.getPageSize())
                 .fetch().stream().distinct().collect(Collectors.toList());
 
-        return new PageImpl<>(result, pageable, result.size());
+        // 전체 데이터 개수 조회
+        long total = from(review)
+                .leftJoin(review.reviewCategory, reviewCategory)
+                .leftJoin(review.user, user)
+                .where(review.reviewCategory.idx.eq(reviewCategoryIdx))
+                .fetchCount();
+
+        return new PageImpl<>(result, pageable, total);
     }
 
     private OrderSpecifier[] createOrderSpecifier(Integer sortType, QReview review) {
@@ -114,7 +122,14 @@ public class ReviewRepositoryCustomImpl extends QuerydslRepositorySupport implem
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        return new PageImpl<>(result, pageable, result.size());
+        // 전체 데이터 개수 조회
+        long total = from(review)
+                .leftJoin(review.reviewCategory, reviewCategory)
+                .leftJoin(review.user, user)
+                .where(searchCondition)
+                .fetchCount();
+
+        return new PageImpl<>(result, pageable, total);
     }
 
     // 검색어에 따른 조건을 리턴하는 메서드
