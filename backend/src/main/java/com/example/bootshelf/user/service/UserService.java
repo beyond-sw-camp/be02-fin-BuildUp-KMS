@@ -304,7 +304,7 @@ public class UserService {
     public void kakaoSignup(String nickName, String profileImage) {
 
         User user = User.builder()
-                .email(nickName)
+                .email(nickName + "@kakao.com")
                 .password(passwordEncoder.encode("kakao"))
                 .nickName(nickName)
                 .name(nickName)
