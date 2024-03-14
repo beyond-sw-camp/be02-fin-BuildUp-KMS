@@ -122,7 +122,6 @@ public class BoardService {
 
                 GetBoardRes res = GetBoardRes.builder()
                         .idx(board.getIdx())
-                        .userNickName(board.getUser().getNickName())
                         .boardTitle(board.getBoardTitle())
                         .boardContent(board.getBoardContent())
                         .boardCategoryIdx(board.getBoardCategory().getIdx())
@@ -166,7 +165,8 @@ public class BoardService {
 
             GetListBoardRes getListBoardRes = GetListBoardRes.builder()
                     .boardIdx(board.getIdx())
-                    .userNickName(board.getUser().getNickName())
+                    .userNickName(user.getNickName())
+                    .userProfileImage(user.getProfileImage())
                     .boardTitle(board.getBoardTitle())
                     .boardContent(board.getBoardContent())
                     .boardCategoryIdx(board.getBoardCategory().getIdx())
@@ -216,7 +216,8 @@ public class BoardService {
 
             GetListBoardRes getListBoardRes = GetListBoardRes.builder()
                     .boardIdx(board.getIdx())
-                    .userNickName(board.getUser().getNickName())
+                    .userNickName(user.getNickName())
+                    .userProfileImage(user.getProfileImage())
                     .boardTitle(board.getBoardTitle())
                     .boardContent(board.getBoardContent())
                     .boardCategoryIdx(board.getBoardCategory().getIdx())
@@ -266,6 +267,7 @@ public class BoardService {
             GetListBoardRes getListBoardRes = GetListBoardRes.builder()
                     .boardIdx(board.getIdx())
                     .userNickName(board.getUser().getNickName())
+                    .userProfileImage(board.getUser().getProfileImage())
                     .boardTitle(board.getBoardTitle())
                     .boardContent(board.getBoardContent())
                     .boardCategoryIdx(board.getBoardCategory().getIdx())
@@ -316,6 +318,7 @@ public class BoardService {
             GetListBoardRes getListBoardRes = GetListBoardRes.builder()
                     .boardIdx(board.getIdx())
                     .userNickName(board.getUser().getNickName())
+                    .userProfileImage(board.getUser().getProfileImage())
                     .boardTitle(board.getBoardTitle())
                     .boardContent(board.getBoardContent())
                     .boardCategoryIdx(board.getBoardCategory().getIdx())
