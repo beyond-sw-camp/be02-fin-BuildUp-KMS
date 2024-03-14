@@ -333,9 +333,15 @@ export default {
   },
   methods: {
     async signUpData() {
-      await this.userStore.signUpData(this.user, this.selectedProfileImage);
-      if (this.userStore.isSuccess) {
-        this.$router.push({ path: "/email/verify" });
+      const isCheckAgreed = this.allAgreed || this.agreements.slice(0, 3).every(agreement => agreement.checked);
+
+      if (!isCheckAgreed) {
+        alert('필수 동의 항목에 동의하지 않았습니다.');
+      } else {
+        await this.userStore.signUpData(this.user, this.selectedProfileImage);
+        if (this.userStore.isSuccess) {
+          this.$router.push({ path: "/email/verify" });
+        }
       }
     },
     handleProfileImageChange(event) {
@@ -543,14 +549,6 @@ input {
 input[type="password" i] {
   padding-block: 1px;
   padding-inline: 2px;
-}
-
-input:not(
-    [type="file" i],
-    [type="image" i],
-    [type="checkbox" i],
-    [type="radio" i]
-  ) {
 }
 
 .css-1f4y3nx {
