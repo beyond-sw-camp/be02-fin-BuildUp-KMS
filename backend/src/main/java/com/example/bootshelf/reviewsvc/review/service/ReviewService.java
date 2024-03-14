@@ -62,7 +62,9 @@ public class ReviewService {
 
         review = reviewRepository.save(review);
 
-        reviewImageService.createReviewImage(review, reviewImages);
+        if (reviewImages == null || reviewImages.length == 0) {
+            reviewImageService.createReviewImage(review, reviewImages);
+        }
 
         PostCreateReviewRes postCreateReviewRes = PostCreateReviewRes.builder()
                 .reviewIdx(review.getIdx())
@@ -92,17 +94,11 @@ public class ReviewService {
 
         for (Review review : reviewList) {
 
-            List<ReviewImage> reviewImageList = review.getReviewImageList();
-
-            ReviewImage reviewImage = reviewImageList.get(0);
-            String image = reviewImage.getReviewImage();
-
             GetMyListReviewRes getMyListReviewRes = GetMyListReviewRes.builder()
                     .reviewIdx(review.getIdx())
                     .reviewCategoryIdx(review.getReviewCategory().getIdx())
                     .reviewTitle(review.getReviewTitle())
                     .reviewContent(review.getReviewContent())
-                    .reviewImage(image)
                     .courseName(review.getCourseName())
                     .courseEvaluation(review.getCourseEvaluation())
                     .viewCnt(review.getViewCnt())
@@ -112,8 +108,15 @@ public class ReviewService {
                     .updatedAt(review.getUpdatedAt())
                     .build();
 
+            List<ReviewImage> reviewImageList = review.getReviewImageList();
+            if (!reviewImageList.isEmpty()) {
+                ReviewImage reviewImage = reviewImageList.get(0);
+                String image = reviewImage.getReviewImage();
+                getMyListReviewRes.setReviewImage(image);
+            }
             getListReviewResMyList.add(getMyListReviewRes);
         }
+
         BaseRes baseRes = BaseRes.builder()
                 .isSuccess(true)
                 .message("인증회원 본인 후기글 목록 조회 요청 성공")
@@ -196,13 +199,15 @@ public class ReviewService {
         // 이미지 조회
         List<GetListImageReviewRes> getListImageReviewResList = new ArrayList<>();
 
-        for (ReviewImage reviewImage : review.getReviewImageList()) {
-            GetListImageReviewRes getListImageReviewRes = GetListImageReviewRes.builder()
-                    .reviewImageIdx(reviewImage.getIdx())
-                    .reviewImage(reviewImage.getReviewImage())
-                    .build();
+        if (!review.getReviewImageList().isEmpty()) {
+            for (ReviewImage reviewImage : review.getReviewImageList()) {
+                GetListImageReviewRes getListImageReviewRes = GetListImageReviewRes.builder()
+                        .reviewImageIdx(reviewImage.getIdx())
+                        .reviewImage(reviewImage.getReviewImage())
+                        .build();
 
-            getListImageReviewResList.add(getListImageReviewRes);
+                getListImageReviewResList.add(getListImageReviewRes);
+            }
         }
 
         GetReadReviewRes getReadReviewRes = GetReadReviewRes.builder()
@@ -327,6 +332,7 @@ public class ReviewService {
                     .reviewCategoryIdx(review.getReviewCategory().getIdx())
                     .reviewCategoryName(review.getReviewCategory().getCategoryName())
                     .reviewTitle(review.getReviewTitle())
+                    .reviewContent(review.getReviewContent())
                     .courseName(review.getCourseName())
                     .viewCnt(review.getViewCnt())
                     .upCnt(review.getUpCnt())
@@ -334,6 +340,13 @@ public class ReviewService {
                     .commentCnt(review.getCommentCnt())
                     .updatedAt(review.getUpdatedAt())
                     .build();
+
+            List<ReviewImage> reviewImageList = review.getReviewImageList();
+            if (!reviewImageList.isEmpty()) {
+                ReviewImage reviewImage = reviewImageList.get(0);
+                String image = reviewImage.getReviewImage();
+                getSearchListReviewRes.setReviewImage(image);
+            }
 
             getSearchListReviewResList.add(getSearchListReviewRes);
         }

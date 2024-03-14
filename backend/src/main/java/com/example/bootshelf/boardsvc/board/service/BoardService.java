@@ -5,6 +5,9 @@ import com.example.bootshelf.boardsvc.board.model.entity.Board;
 import com.example.bootshelf.boardsvc.board.model.request.PatchUpdateBoardReq;
 import com.example.bootshelf.boardsvc.board.model.request.PostCreateBoardReq;
 import com.example.bootshelf.boardsvc.board.model.response.*;
+import com.example.bootshelf.boardsvc.board.model.response.GetBoardRes;
+import com.example.bootshelf.boardsvc.board.model.response.GetListBoardRes;
+import com.example.bootshelf.boardsvc.board.model.response.PostCreateBoardRes;
 import com.example.bootshelf.boardsvc.board.repository.BoardRepository;
 import com.example.bootshelf.boardsvc.boardcategory.model.entity.BoardCategory;
 import com.example.bootshelf.boardsvc.boardcomment.model.entity.BoardComment;
@@ -80,7 +83,7 @@ public class BoardService {
         return  response;
     }
 
-    public BaseRes listBoard(Integer boardIdx){
+    public BaseRes findBoardByIdx(Integer boardIdx){
         Optional<Board>result = boardRepository.findByIdx(boardIdx);
 
         if(!result.isPresent()){
@@ -92,13 +95,7 @@ public class BoardService {
             }
             else{
                 Board board = result.get();
-                List<BoardImage> boardImageList = board.getBoardImageList();
-                List<String> fileNames = new ArrayList<>();
 
-                for(BoardImage boardImage : boardImageList){
-                    String fileName = boardImage.getBoardImage();
-                    fileNames.add(fileName);
-                }
                 List<BoardTag> boardTagList = board.getBoardTagList();
                 List<Integer> tagIdxs = new ArrayList<>();
 
@@ -106,6 +103,7 @@ public class BoardService {
                     Integer tagIdx = boardTag.getIdx();
                     tagIdxs.add(tagIdx);
                 }
+
                 List<BoardComment> commentList = board.getBoardCommentList();
                 List<Integer> commentIdxs = new ArrayList<>();
 
@@ -114,13 +112,21 @@ public class BoardService {
                     commentIdxs.add(commentIdx);
                 }
 
-                GetListBoardRes res = GetListBoardRes.builder()
+                List<BoardImage> boardImageList = board.getBoardImageList();
+                List<String> fileNames = new ArrayList<>();
+
+                for(BoardImage boardImage : boardImageList){
+                    String fileName = boardImage.getBoardImage();
+                    fileNames.add(fileName);
+                }
+
+                GetBoardRes res = GetBoardRes.builder()
                         .idx(board.getIdx())
                         .boardTitle(board.getBoardTitle())
                         .boardContent(board.getBoardContent())
                         .boardCategoryIdx(board.getBoardCategory().getIdx())
-                        .boardTagListIdx(tagIdxs)
                         .boardImageList(fileNames)
+                        .boardTagListIdx(tagIdxs)
                         .boardCommentList(commentIdxs)
                         .viewCnt(board.getViewCnt())
                         .upCnt(board.getUpCnt())
@@ -130,6 +136,7 @@ public class BoardService {
                         .userProfile(board.getUser().getProfileImage())
                         .userName(board.getUser().getName())
                         .build();
+
 
                 BaseRes baseRes = BaseRes.builder()
                         .message("게시글 조회 성공")
@@ -145,7 +152,7 @@ public class BoardService {
     @Transactional(readOnly = true)
     public BaseRes findMyBoardList(User user, Pageable pageable,Integer sortIdx){
         Page<Board> boardList = boardRepository.findMyBoardList(user.getIdx(), pageable, sortIdx);
-        List<GetMyListBoardRes> getMyListBoardResList = new ArrayList<>();
+        List<GetListBoardRes> getListBoardResList = new ArrayList<>();
 
         for (Board board : boardList){
 
@@ -157,11 +164,19 @@ public class BoardService {
                 tagIdxs.add(tagIdx);
             }
 
-            GetMyListBoardRes getMyListBoardRes = GetMyListBoardRes.builder()
+            List<BoardImage> boardImageList = board.getBoardImageList();
+            List<String> fileNames = new ArrayList<>();
+            for(BoardImage boardImage : boardImageList){
+                String fileName = boardImage.getBoardImage();
+                fileNames.add(fileName);
+            }
+
+            GetListBoardRes getListBoardRes = GetListBoardRes.builder()
                     .boardIdx(board.getIdx())
                     .boardTitle(board.getBoardTitle())
                     .boardContent(board.getBoardContent())
                     .boardCategoryIdx(board.getBoardCategory().getIdx())
+                    .boardImg(fileNames.get(0))
                     .tagList(tagIdxs)
                     .viewCnt(board.getViewCnt())
                     .upCnt(board.getUpCnt())
@@ -170,12 +185,12 @@ public class BoardService {
                     .updatedAt(board.getUpdatedAt())
                     .build();
 
-            getMyListBoardResList.add(getMyListBoardRes);
+            getListBoardResList.add(getListBoardRes);
         }
         BaseRes baseRes = BaseRes.builder()
                 .isSuccess(true)
                 .message("인증회원 본인 후기글 목록 조회 요청 성공")
-                .result(getMyListBoardResList)
+                .result(getListBoardResList)
                 .build();
 
         return baseRes;
@@ -184,7 +199,7 @@ public class BoardService {
     @Transactional(readOnly = true)
     public BaseRes findMyBoardListByCategory(User user, Pageable pageable, Integer boardCategoryIdx, Integer sortIdx){
         Page<Board> boardList = boardRepository.findMyBoardListByCategory(user.getIdx(), pageable, boardCategoryIdx, sortIdx);
-        List<GetMyListBoardRes> getMyListBoardResList = new ArrayList<>();
+        List<GetListBoardRes> getListBoardResList = new ArrayList<>();
 
         for (Board board : boardList){
 
@@ -196,11 +211,19 @@ public class BoardService {
                 tagIdxs.add(tagIdx);
             }
 
-            GetMyListBoardRes getMyListBoardRes = GetMyListBoardRes.builder()
+            List<BoardImage> boardImageList = board.getBoardImageList();
+            List<String> fileNames = new ArrayList<>();
+            for(BoardImage boardImage : boardImageList){
+                String fileName = boardImage.getBoardImage();
+                fileNames.add(fileName);
+            }
+
+            GetListBoardRes getListBoardRes = GetListBoardRes.builder()
                     .boardIdx(board.getIdx())
                     .boardTitle(board.getBoardTitle())
                     .boardContent(board.getBoardContent())
                     .boardCategoryIdx(board.getBoardCategory().getIdx())
+                    .boardImg(fileNames.get(0))
                     .tagList(tagIdxs)
                     .viewCnt(board.getViewCnt())
                     .upCnt(board.getUpCnt())
@@ -209,12 +232,12 @@ public class BoardService {
                     .updatedAt(board.getUpdatedAt())
                     .build();
 
-            getMyListBoardResList.add(getMyListBoardRes);
+            getListBoardResList.add(getListBoardRes);
         }
         BaseRes baseRes = BaseRes.builder()
                 .isSuccess(true)
                 .message("인증회원 본인 후기글 목록 조회 요청 성공")
-                .result(getMyListBoardResList)
+                .result(getListBoardResList)
                 .build();
 
         return baseRes;
@@ -222,7 +245,7 @@ public class BoardService {
 
     public BaseRes findListByCategory(Pageable pageable, Integer boardCategoryIdx, Integer sortIdx){
         Page<Board> boardList = boardRepository.findBoardListByCategory(pageable, boardCategoryIdx, sortIdx);
-        List<GetMyListBoardRes> getMyListBoardResList = new ArrayList<>();
+        List<GetListBoardRes> getListBoardResList = new ArrayList<>();
 
         for (Board board : boardList){
 
@@ -234,11 +257,19 @@ public class BoardService {
                 tagIdxs.add(tagIdx);
             }
 
-            GetMyListBoardRes getMyListBoardRes = GetMyListBoardRes.builder()
+            List<BoardImage> boardImageList = board.getBoardImageList();
+            List<String> fileNames = new ArrayList<>();
+            for(BoardImage boardImage : boardImageList){
+                String fileName = boardImage.getBoardImage();
+                fileNames.add(fileName);
+            }
+
+            GetListBoardRes getListBoardRes = GetListBoardRes.builder()
                     .boardIdx(board.getIdx())
                     .boardTitle(board.getBoardTitle())
                     .boardContent(board.getBoardContent())
                     .boardCategoryIdx(board.getBoardCategory().getIdx())
+                    .boardImg(fileNames.get(0))
                     .tagList(tagIdxs)
                     .viewCnt(board.getViewCnt())
                     .upCnt(board.getUpCnt())
@@ -247,12 +278,58 @@ public class BoardService {
                     .updatedAt(board.getUpdatedAt())
                     .build();
 
-            getMyListBoardResList.add(getMyListBoardRes);
+            getListBoardResList.add(getListBoardRes);
         }
         BaseRes baseRes = BaseRes.builder()
                 .isSuccess(true)
                 .message("게시글 카테고리별 목록 조회 요청 성공")
-                .result(getMyListBoardResList)
+                .result(getListBoardResList)
+                .build();
+
+        return baseRes;
+    }
+
+    public BaseRes findListByTag(Pageable pageable, Integer TagIdx, Integer sortIdx){
+        Page<Board> boardList = boardRepository.findBoardListByTag(pageable, TagIdx, sortIdx);
+        List<GetListBoardRes> getListBoardResList = new ArrayList<>();
+
+        for (Board board : boardList){
+
+            List<BoardTag> boardTagList = board.getBoardTagList();
+            List<Integer> tagIdxs = new ArrayList<>();
+
+            for(BoardTag boardTag : boardTagList){
+                Integer tagIdx = boardTag.getIdx();
+                tagIdxs.add(tagIdx);
+            }
+
+            List<BoardImage> boardImageList = board.getBoardImageList();
+            List<String> fileNames = new ArrayList<>();
+            for(BoardImage boardImage : boardImageList){
+                String fileName = boardImage.getBoardImage();
+                fileNames.add(fileName);
+            }
+
+            GetListBoardRes getListBoardRes = GetListBoardRes.builder()
+                    .boardIdx(board.getIdx())
+                    .boardTitle(board.getBoardTitle())
+                    .boardContent(board.getBoardContent())
+                    .boardCategoryIdx(board.getBoardCategory().getIdx())
+                    .boardImg(fileNames.get(0))
+                    .tagList(tagIdxs)
+                    .viewCnt(board.getViewCnt())
+                    .upCnt(board.getUpCnt())
+                    .scrapCnt(board.getScrapCnt())
+                    .commentCnt(board.getCommentCnt())
+                    .updatedAt(board.getUpdatedAt())
+                    .build();
+
+            getListBoardResList.add(getListBoardRes);
+        }
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("게시글 태그별 목록 조회 요청 성공")
+                .result(getListBoardResList)
                 .build();
 
         return baseRes;

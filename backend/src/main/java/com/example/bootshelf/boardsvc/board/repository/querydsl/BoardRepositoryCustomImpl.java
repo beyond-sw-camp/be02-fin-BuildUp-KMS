@@ -2,6 +2,8 @@ package com.example.bootshelf.boardsvc.board.repository.querydsl;
 
 import com.example.bootshelf.boardsvc.board.model.entity.Board;
 import com.example.bootshelf.boardsvc.board.model.entity.QBoard;
+import com.example.bootshelf.boardsvc.boardtag.model.entity.QBoardTag;
+import com.example.bootshelf.tag.model.entity.QTag;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLQuery;
@@ -59,6 +61,25 @@ public class BoardRepositoryCustomImpl extends QuerydslRepositorySupport impleme
         List<Board> result = from(board)
                 .leftJoin(board.boardCategory)
                 .where(board.status.eq(true).and(board.boardCategory.idx.eq(categoryIdx)))
+                .orderBy(orderSpecifiers)
+                .distinct()
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch().stream().distinct().collect(Collectors.toList());
+
+        return new PageImpl<>(result, pageable, result.size());
+    }
+
+    @Override
+    public Page<Board> findBoardListByTag (Pageable pageable, Integer tagIdx, Integer sortIdx) {
+        QBoard board = new QBoard("board");
+        QBoardTag boardTag = new QBoardTag("boardTag");
+
+        OrderSpecifier[] orderSpecifiers = createOrderSpecifier(sortIdx, board);
+        List<Board> result = from(board)
+                .leftJoin(boardTag)
+                .on(boardTag.board.idx.eq(board.idx))
+                .where(board.status.eq(true).and(boardTag.tag.idx.eq(tagIdx)))
                 .orderBy(orderSpecifiers)
                 .distinct()
                 .offset(pageable.getOffset())

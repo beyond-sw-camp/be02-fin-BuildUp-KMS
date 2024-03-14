@@ -88,7 +88,7 @@ public class BoardController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
-    @RequestMapping(method = RequestMethod.GET, value = "/list/{boardCategoryIdx}/{sortType}")
+    @RequestMapping(method = RequestMethod.GET, value = "/category/{boardCategoryIdx}/{sortType}")
     public ResponseEntity<BaseRes> boardListbyCategory(
             @PageableDefault(size = 5) Pageable pageable,
             @PathVariable(value = "boardCategoryIdx") Integer boardCategoryIdx,
@@ -99,16 +99,32 @@ public class BoardController {
         return ResponseEntity.ok().body(baseRes);
     }
 
+    @Operation(summary = "Board 게시글 태그별 조회",
+            description = "게시판의 게시글을 태그별로 조회하는 API입니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
+    @RequestMapping(method = RequestMethod.GET, value = "/tag/{tagIdx}/{sortType}")
+    public ResponseEntity<BaseRes> boardListbyTag(
+            @PageableDefault(size = 5) Pageable pageable,
+            @PathVariable(value = "tagIdx") Integer tagIdx,
+            @PathVariable @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") @ApiParam(value = "정렬유형 : 1 (최신순), 2 (추천수 순), 3 (조회수 순), 4 (스크랩수 순), 5 (댓글수 순)") Integer sortType
+    ){
+        BaseRes baseRes = boardService.findListByTag(pageable, tagIdx, sortType);
+
+        return ResponseEntity.ok().body(baseRes);
+    }
+
     @Operation(summary = "Board 게시글 상세 조회",
             description = "게시판의 게시글을 게시글의 idx로 조회하는 API입니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500",description = "서버 내부 오류")})
     @GetMapping ("/{boardIdx}")
-    public ResponseEntity<BaseRes> findBoard (
+    public ResponseEntity<BaseRes> findBoardByIdx (
             @PathVariable Integer boardIdx
     ){
-        return ResponseEntity.ok().body(boardService.listBoard(boardIdx));
+        return ResponseEntity.ok().body(boardService.findBoardByIdx(boardIdx));
     }
 
 
