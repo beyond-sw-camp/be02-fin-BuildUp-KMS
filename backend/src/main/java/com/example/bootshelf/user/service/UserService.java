@@ -58,6 +58,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JavaMailSender emailSender;
     private final EmailVerifyService emailVerifyService;
+    private final JwtUtils jwtUtils;
 
     @Transactional(readOnly = false)
     public User saveUser(PostSignUpUserReq postSignUpUserReq, MultipartFile profileImage) {
@@ -164,7 +165,7 @@ public class UserService {
 
             GetListUserRes getListUserRes = GetListUserRes.builder()
                     .userIdx(user.getIdx())
-                    .userEmail(user.getEmail())
+                    .email(user.getEmail())
                     .name(user.getName())
                     .build();
 
@@ -187,8 +188,10 @@ public class UserService {
 
             GetListUserRes getListUserRes = GetListUserRes.builder()
                     .userIdx(user.getIdx())
-                    .userEmail(user.getEmail())
+                    .email(user.getEmail())
                     .name(user.getName())
+                    .nickName(user.getNickName())
+                    .profileImage(user.getProfileImage())
                     .build();
 
             return BaseRes.builder()
@@ -213,7 +216,7 @@ public class UserService {
         User user = result.get();
         if (passwordEncoder.matches(postLoginUserReq.getPassword(), user.getPassword()) && user.getStatus().equals(true)) {
             PostLoginUserRes postLogInUserRes = PostLoginUserRes.builder()
-                    .token(JwtUtils.generateAccessToken(user, secretKey, expiredTimeMs))
+                    .token(jwtUtils.generateAccessToken(user, secretKey, expiredTimeMs))
                     .build();
 
             return BaseRes.builder()

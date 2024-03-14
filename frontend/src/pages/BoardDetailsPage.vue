@@ -29,12 +29,8 @@
                   <div class="css-bt1qy">
                     <div class="css-1hqtm5a">
                       <div>
-                        <img
-                          width="23px"
-                          height="23px"
-                          src="https://img.icons8.com/pastel-glyph/64/facebook-like--v1.png"
-                          alt="facebook-like--v1"
-                        />
+                        <img width="23px" height="23px"
+                          src="https://img.icons8.com/pastel-glyph/64/facebook-like--v1.png" alt="facebook-like--v1" />
                         <p style="font-size: 10px; text-align: center">20</p>
                       </div>
                     </div>
@@ -60,8 +56,7 @@
                 <div class="css-99cwur">
                   <div class="css-1fhge30">
                     <div class="css-aw18wm">
-                      <span
-                        style="
+                      <span style="
                           box-sizing: border-box;
                           display: block;
                           overflow: hidden;
@@ -74,13 +69,9 @@
                           padding: 0px;
                           position: absolute;
                           inset: 0px;
-                        "
-                        ><img
-                          sizes="100vw"
+                        "><img sizes="100vw"
                           src="https://blog.kakaocdn.net/dn/5UYz8/btq4diRXkGE/HkHufR4G8X4bIX3h3lNjck/img.jpg"
-                          decoding="async"
-                          data-nimg="fill"
-                          style="
+                          decoding="async" data-nimg="fill" style="
                             position: absolute;
                             inset: 0px;
                             box-sizing: border-box;
@@ -94,19 +85,12 @@
                             max-width: 100%;
                             min-height: 100%;
                             max-height: 100%;
-                          "
-                      /></span>
+                          " /></span>
                     </div>
                     <div class="css-5zcuov">
                       <div class="css-1sika4i">닉네임입니당</div>
                       <div class="css-1tify6w">
-                        <svg
-                          width="2"
-                          height="2"
-                          viewBox="0 0 2 2"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
+                        <svg width="2" height="2" viewBox="0 0 2 2" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <circle cx="1" cy="1" r="1" fill="#9DA7AE"></circle>
                         </svg>
                       </div>
@@ -140,20 +124,14 @@
             <div class="css-1k90lkz">
               <div class="css-lua631">
                 <div class="css-13ku1qm">
-                  <div
-                    style="
+                  <div style="
                       display: inline-block;
                       width: 24px;
                       height: 24px;
                       text-align: center;
-                    "
-                  >
-                    <img
-                      width="16px"
-                      height="16px"
-                      src="https://img.icons8.com/tiny-glyph/32/000000/comments.png"
-                      alt="comments"
-                    />
+                    ">
+                    <img width="16px" height="16px" src="https://img.icons8.com/tiny-glyph/32/000000/comments.png"
+                      alt="comments" />
                   </div>
                   댓글 3
                 </div>
@@ -164,24 +142,16 @@
                 <div class="css-jpe6jj">
                   <div class="css-3o2y5e">
                     <div width="36px" height="36px" class="css-jg5tbe">
-                      <img
-                        alt="나의얼굴"
-                        width="34px"
-                        height="34px"
-                        src="https://www.fitpetmall.com/wp-content/uploads/2023/10/image-14.png"
-                      />
+                      <img alt="나의얼굴" width="34px" height="34px"
+                        src="https://www.fitpetmall.com/wp-content/uploads/2023/10/image-14.png" />
                     </div>
                   </div>
                   <div class="css-13ljjbe">
                     <div class="commentEditor">
-                      <input
-                        class="css-001"
-                        type="text"
-                        placeholder="댓글을 남겨주세요"
-                      />
+                      <input class="css-001" type="text" placeholder="댓글을 남겨주세요" v-model="boardCommentContent" />
                     </div>
                     <div class="css-btn-div">
-                      <button class="css-btn">저장</button>
+                      <button class="css-btn" @click="submitComment()">저장</button>
                     </div>
                   </div>
                 </div>
@@ -200,8 +170,12 @@
 </template>
 
 <script>
+// import axios  from "axios";
+
 import CommentComponent from "../components/CommentComponent.vue";
 import TagComponent from "../components/TagComponent.vue";
+import { useBoardCommentStore } from "../stores/useBoardCommentStore";
+
 
 export default {
   name: "BoardDetailsPage",
@@ -209,7 +183,24 @@ export default {
     CommentComponent,
     TagComponent,
   },
-};
+  data() {
+    return {
+      boardCommentContent: ""
+    };
+  },
+  methods: {
+    async submitComment() {
+      try {
+        await useBoardCommentStore().createBoardComment(this.boardCommentContent);
+        // 댓글 생성 후 필요한 작업 작성
+      } catch (error) {
+        console.error('댓글 작성 실패:', error);
+      }
+    },
+  }
+}
+
+
 </script>
 
 <style scoped>
@@ -285,6 +276,7 @@ a {
     padding: 150px 0 120px;
   }
 }
+
 .css-1g39gls {
   background-color: #fff;
 }

@@ -53,7 +53,7 @@ public class BoardCommentController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
-    @RequestMapping(method = RequestMethod.POST, value = "/{boardIdx}/comment")
+    @RequestMapping(method = RequestMethod.GET, value = "/{boardIdx}/comment")
     public ResponseEntity listBoardComment(@PathVariable @NotNull @Positive Integer boardIdx) {
         BaseRes baseRes = boardCommentService.listBoardComment(boardIdx);
         return ResponseEntity.ok().body(baseRes);
@@ -64,7 +64,7 @@ public class BoardCommentController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
-    @RequestMapping(method = RequestMethod.POST, value = "/{boardIdx}/update/{idx}")
+    @RequestMapping(method = RequestMethod.PATCH, value = "/{boardIdx}/update/{idx}")
     public ResponseEntity updateBoardComment(
             @AuthenticationPrincipal User user,
             @PathVariable @NotNull @Positive Integer boardIdx,

@@ -1,8 +1,12 @@
 package com.example.bootshelf.config.utils;
 
 
+import com.example.bootshelf.certification.Certification;
+import com.example.bootshelf.certification.repository.CertificationRepository;
 import com.example.bootshelf.common.error.ErrorCode;
+import com.example.bootshelf.common.error.entityexception.CourseException;
 import com.example.bootshelf.common.error.entityexception.UserException;
+import com.example.bootshelf.course.Course;
 import com.example.bootshelf.user.model.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -10,21 +14,39 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.Optional;
 
+@RequiredArgsConstructor
+@Component
 public class JwtUtils {
 
-    // 일반 로그인 사용자 토큰 생성
-    public static String generateAccessToken(User user, String secretKey, Long expiredTimeMs) {
+    private final CertificationRepository certificationRepository;
+
+
+    // 로그인 사용자 토큰 생성
+    public String generateAccessToken(User user, String secretKey, Long expiredTimeMs) {
 
         Claims claims = Jwts.claims();
         claims.put("idx", user.getIdx());
         claims.put("email", user.getEmail());
         claims.put("name", user.getName());
         claims.put("ROLE", user.getAuthority());
+
+        if (user.getAuthority().equals("ROLE_AUTHUSER")) {
+            Optional<Certification> result = certificationRepository.findById(user.getIdx());
+            if (result.isEmpty()) {
+                throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("User [%s] is not exists.", certificationRepository.findById(user.getIdx())));
+            }
+            Certification certification = result.get();
+            claims.put("courseName", certification.getCourse().getProgramName());
+        }
 
         byte[] secretBytes = secretKey.getBytes();
 
@@ -37,6 +59,7 @@ public class JwtUtils {
 
         return token;
     }
+
 
     // 카카오 로그인 사용자 토큰 생성
     @Transactional
@@ -59,7 +82,6 @@ public class JwtUtils {
 
         return token;
     }
-
 
 
     // 키 변환 메서드

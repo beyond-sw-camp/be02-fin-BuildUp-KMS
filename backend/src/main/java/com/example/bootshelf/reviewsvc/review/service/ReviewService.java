@@ -63,7 +63,7 @@ public class ReviewService {
 
         review = reviewRepository.save(review);
 
-        if (reviewImages == null || reviewImages.length == 0) {
+        if (reviewImages != null || reviewImages.length > 0) {
             reviewImageService.createReviewImage(review, reviewImages);
         }
 
@@ -222,6 +222,7 @@ public class ReviewService {
 
         GetReadReviewRes getReadReviewRes = GetReadReviewRes.builder()
                 .reviewIdx(review.getIdx())
+                .reviewCategoryName(review.getReviewCategory().getCategoryName())
                 .userIdx(review.getUser().getIdx())
                 .userNickName(review.getUser().getNickName())
                 .profileImage(review.getUser().getProfileImage())
@@ -229,8 +230,8 @@ public class ReviewService {
                 .reviewContent(review.getReviewContent())
                 .courseName(review.getCourseName())
                 .courseEvaluation(review.getCourseEvaluation())
-                .viewCnt(review.getViewCnt())
                 .upCnt(review.getUpCnt())
+                .scrapCnt(review.getScrapCnt())
                 .commentCnt(review.getCommentCnt())
                 .updatedAt(review.getUpdatedAt())
                 .reviewImageList(getListImageReviewResList)
