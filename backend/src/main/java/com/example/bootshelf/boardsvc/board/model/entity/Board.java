@@ -51,10 +51,10 @@ public class Board {
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
     private List<BoardTag> boardTagList = new ArrayList<>();
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 500)
     private String boardTitle;
 
-    @Column(nullable = false, length = 400)
+    @Column(nullable = false, length = 1000)
     private String boardContent;
 
     @Column(nullable = false)

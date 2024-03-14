@@ -3,6 +3,8 @@ package com.example.bootshelf.boardsvc.board.repository.querydsl;
 import com.example.bootshelf.boardsvc.board.model.entity.Board;
 import com.example.bootshelf.boardsvc.board.model.entity.QBoard;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPQLQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -48,6 +50,7 @@ public class BoardRepositoryCustomImpl extends QuerydslRepositorySupport impleme
 
         return new PageImpl<>(result, pageable, result.size());
     }
+
     @Override
     public Page<Board> findBoardListByCategory (Pageable pageable, Integer categoryIdx, Integer sortIdx) {
         QBoard board = new QBoard("board");
@@ -88,5 +91,37 @@ public class BoardRepositoryCustomImpl extends QuerydslRepositorySupport impleme
                 orderSpecifiers.add(board.updatedAt.desc());
         }
         return orderSpecifiers.toArray(new OrderSpecifier[0]);
+    }
+
+
+    @Override
+    public Page<Board> searchBoardListByQuery(Pageable pageable, String query, Integer searchType) {
+        QBoard qBoard = QBoard.board;
+
+        // 검색 조건
+        BooleanExpression searchCondition = searchType == 1 ? titleContains(query)
+                : titleContains(query).or(contentContains(query));
+
+        // 조회 쿼리 생성 및 페이징 처리
+        JPQLQuery<Board> querySQL = from(qBoard)
+                .leftJoin(qBoard.user).fetchJoin()
+                .where(searchCondition)
+                .orderBy(qBoard.createdAt.desc());
+
+        // pagination 적용
+        JPQLQuery<Board> pageableQuery = getQuerydsl().applyPagination(pageable, querySQL);
+        List<Board> boardList = pageableQuery.fetch();
+
+        return new PageImpl<>(boardList, pageable, pageableQuery.fetchCount());
+    }
+
+    private BooleanExpression titleContains(String query) {
+        if (query == null || query.trim().isEmpty()) return null;
+        return QBoard.board.boardTitle.containsIgnoreCase(query);
+    }
+
+    private BooleanExpression contentContains(String query) {
+        if (query == null || query.trim().isEmpty()) return null;
+        return QBoard.board.boardContent.containsIgnoreCase(query);
     }
 }
