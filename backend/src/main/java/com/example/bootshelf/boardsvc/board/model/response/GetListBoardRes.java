@@ -15,6 +15,8 @@ public class GetListBoardRes {
 
     private String userNickName;
 
+    private String userProfileImage;
+
     private String boardTitle;
 
     private String boardContent;
