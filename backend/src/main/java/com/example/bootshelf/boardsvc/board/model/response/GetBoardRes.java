@@ -12,6 +12,8 @@ import java.util.List;
 public class GetBoardRes {
     private Integer idx;
 
+    private String userNickName;
+
     private String boardTitle;
 
     private String boardContent;
