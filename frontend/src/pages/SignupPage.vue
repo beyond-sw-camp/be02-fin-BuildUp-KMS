@@ -1,5 +1,5 @@
 <template>
-      <div class="loadingio-spinner-spinner" v-if="userStore.isLoading">
+  <div class="loadingio-spinner-spinner" v-if="userStore.isLoading">
     <div class="ldio-f4nnk2ltl0v">
       <div></div>
       <div></div>
@@ -24,17 +24,39 @@
           </a>
           <div class="line"></div>
           <div direction="vertical" size="20" class="css-1i0k62c"></div>
-          <div class="pic-holder" @mouseover="showUploadText = true" @mouseleave="showUploadText = false">
-            <img v-if="!selectedProfileImage" class="pic" :src="defaultProfileImage" />
+          <div
+            class="pic-holder"
+            @mouseover="showUploadText = true"
+            @mouseleave="showUploadText = false"
+          >
+            <img
+              v-if="!selectedProfileImage"
+              class="pic"
+              :src="defaultProfileImage"
+            />
             <img v-else class="pic" :src="selectedProfileImageURL" />
-            <input class="uploadProfileInput" type="file" name="profile_pic" id="newProfilePhoto" accept="image/*"
-              style="opacity: 0" @change="handleProfileImageChange" />
-            <label v-if="!selectedProfileImage || showUploadText" for="newProfilePhoto" class="upload-file-block">
+            <input
+              class="uploadProfileInput"
+              type="file"
+              name="profile_pic"
+              id="newProfilePhoto"
+              accept="image/*"
+              style="opacity: 0"
+              @change="handleProfileImageChange"
+            />
+            <label
+              v-if="!selectedProfileImage || showUploadText"
+              for="newProfilePhoto"
+              class="upload-file-block"
+            >
               <div class="text-center">
                 <div class="mb-2">
                   <i class="fa fa-camera fa-2x"></i>
                 </div>
-                <div class="text-uppercase" v-if="!selectedProfileImage || showUploadText">
+                <div
+                  class="text-uppercase"
+                  v-if="!selectedProfileImage || showUploadText"
+                >
                   프로필 이미지 <br />
                   업로드
                 </div>
@@ -45,50 +67,115 @@
           <div direction="vertical" size="60" class="css-1bisjhm"></div>
           <div class="css-1b8vwo3">이메일</div>
           <div class="css-666rgn">
-            <input placeholder="이메일을 입력해 주세요." type="string" autocapitalize="off" class="login-custom-input css-ownijh"
-            v-model="user.email" />
+            <input
+              placeholder="이메일을 입력해 주세요."
+              type="string"
+              autocapitalize="off"
+              class="login-custom-input css-ownijh"
+              v-model="user.email"
+              @blur="validateEmail"
+            />
+          </div>
+          <div v-if="!emailValid" class="validation-message">
+            {{ emailValidationMessage }}
           </div>
           <div direction="vertical" size="20" class="css-1i0k62c"></div>
 
           <div class="css-1b8vwo3-1">비밀번호</div>
           <div class="css-666rgn">
-            <input placeholder="비밀번호를 입력해주세요." type="password" autocapitalize="off"
-              class="login-custom-input css-1f4y3nx" v-model="user.password" />
+            <input
+              placeholder="비밀번호를 입력해주세요."
+              type="password"
+              autocapitalize="off"
+              class="login-custom-input css-1f4y3nx"
+              v-model="user.password"
+            />
           </div>
           <div direction="vertical" size="20" class="css-1i0k62c"></div>
           <div class="css-1b8vwo3-2">이름</div>
           <div class="css-666rgn">
-            <input placeholder="이름을 입력해주세요." type="string" autocapitalize="off" class="login-custom-input css-ownijh"
-            v-model="user.name" />
+            <input
+              placeholder="이름을 입력해주세요."
+              type="string"
+              autocapitalize="off"
+              class="login-custom-input css-ownijh"
+              v-model="user.name"
+            />
           </div>
           <div direction="vertical" size="20" class="css-1i0k62c"></div>
 
           <div class="css-1b8vwo3-3">닉네임</div>
           <div class="css-666rgn">
-            <input placeholder="닉네임을 입력해주세요." type="string" autocapitalize="off" class="login-custom-input css-ownijh"
-            v-model="user.nickName" />
+            <input
+              placeholder="닉네임을 입력해주세요."
+              type="string"
+              autocapitalize="off"
+              class="login-custom-input css-ownijh"
+              v-model="user.nickName"
+            />
           </div>
           <div direction="vertical" size="32" class="css-h23ofx"></div>
           <div class="css-17w7nyr"></div>
           <div class="css-8luw5u">
             <button class="css-27eumk" @click="toggleAllAgreements">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="3.33331" y="3.33331" width="13.3333" height="13.3333" rx="2"
-                  :fill="allAgreements ? '#141617' : 'none'" :stroke="allAgreements ? '#141617' : '#9DA7AE'"
-                  stroke-width="1.75"></rect>
-                <path v-if="allAgreements" d="M6.8327 10.2727L8.91604 12.1667L13.4994 8" stroke="#FFFFFF"
-                  stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path>
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect
+                  x="3.33331"
+                  y="3.33331"
+                  width="13.3333"
+                  height="13.3333"
+                  rx="2"
+                  :fill="allAgreements ? '#141617' : 'none'"
+                  :stroke="allAgreements ? '#141617' : '#9DA7AE'"
+                  stroke-width="1.75"
+                ></rect>
+                <path
+                  v-if="allAgreements"
+                  d="M6.8327 10.2727L8.91604 12.1667L13.4994 8"
+                  stroke="#FFFFFF"
+                  stroke-width="1.25"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
               </svg>
               전체 약관 동의
             </button>
             <div class="css-1jf7ho2">
-              <div v-for="(agreement, index) in agreements" :key="index" class="css-d650kt">
+              <div
+                v-for="(agreement, index) in agreements"
+                :key="index"
+                class="css-d650kt"
+              >
                 <button class="css-7hwvbl" @click="toggleAgreement(index)">
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path v-if="!agreement.checked" d="M3.33301 10L7.49967 14.1667L16.6663 5" stroke="#B4BFC6"
-                      stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"></path>
-                    <path v-if="agreement.checked" d="M3.33301 10L7.49967 14.1667L16.6663 5" stroke="#141617"
-                      stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"></path>
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      v-if="!agreement.checked"
+                      d="M3.33301 10L7.49967 14.1667L16.6663 5"
+                      stroke="#B4BFC6"
+                      stroke-width="1.75"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></path>
+                    <path
+                      v-if="agreement.checked"
+                      d="M3.33301 10L7.49967 14.1667L16.6663 5"
+                      stroke="#141617"
+                      stroke-width="1.75"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></path>
                   </svg>
                   <div class="css-w2z16z">{{ agreement.label }}</div>
                 </button>
@@ -97,7 +184,10 @@
             </div>
           </div>
           <div direction="vertical" size="40" class="css-ygt1wz"></div>
-          <button :class="{ 'css-j27xag': true, 'button-disabled': !isSubmitEnabled }" @click="signUpData">
+          <button
+            :class="{ 'css-j27xag': true, 'button-disabled': !isSubmitEnabled }"
+            @click="signUpData"
+          >
             가입하기
           </button>
         </div>
@@ -114,7 +204,7 @@ export default {
   name: "AuthSignupPage",
   computed: {
     ...mapStores(useUserStore),
-  }, 
+  },
   data() {
     return {
       user: {
@@ -137,6 +227,9 @@ export default {
       isOpenGuide: false,
       allAgreements: false,
 
+      emailValid: true, // 이메일 유효성 상태
+      emailValidationMessage: "", // 이메일 유효성 검사 메시지
+
       agreements: [
         { label: "[필수] 만 14세 이상", checked: false },
         { label: "[필수] 서비스 약관 동의", checked: false },
@@ -150,10 +243,12 @@ export default {
   },
   methods: {
     async signUpData() {
-      const isCheckAgreed = this.allAgreed || this.agreements.slice(0, 3).every(agreement => agreement.checked);
+      const isCheckAgreed =
+        this.allAgreed ||
+        this.agreements.slice(0, 3).every((agreement) => agreement.checked);
 
       if (!isCheckAgreed) {
-        alert('필수 동의 항목에 동의하지 않았습니다.');
+        alert("필수 동의 항목에 동의하지 않았습니다.");
       } else {
         await this.userStore.signUpData(this.user, this.selectedProfileImage);
         if (this.userStore.isSuccess) {
@@ -222,6 +317,15 @@ export default {
       this.allAgreements = this.agreements.every(
         (agreement) => agreement.checked
       );
+    },
+
+    validateEmail() {
+      const regex =
+        /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/;
+      this.emailValid = regex.test(this.user.email);
+      this.emailValidationMessage = this.emailValid
+        ? ""
+        : "! 올바른 이메일 형식( test@example.com )으로 입력해주세요.";
     },
   },
 };
@@ -394,6 +498,13 @@ input[type="password" i] {
   height: 20px;
 }
 
+.validation-message {
+  font-size: 10px;
+  color: red;
+  margin-top: 10px;
+  margin-right: 150px;
+  font-weight: bold;
+}
 .css-ygt1wz {
   width: 100%;
   height: 40px;
