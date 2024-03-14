@@ -1,11 +1,13 @@
 <template>
     <div class="message-container">
+      <router-link to="/">
           <img src="@/assets/img/002.png" class="css-1k8svhy">
-          <h1>이메일 인증이 완료되었습니다</h1>
+        </router-link>
+          <h1>이메일 인증을 완료해주세요</h1>
           <p class="content">
-            <strong>BOOTSHELF</strong> 에 가입해주셔서 감사합니다
+            <strong>BOOTSHELF</strong> 에 가입해주셔서 감사합니다.
           </p>
-          <p>회원들과 지식을 공유해보세요!</p>
+          <p>이메일 인증 완료 후 BOOTSHELF에 참여해보세요!</p>
         </div>
     </template>
     <script>

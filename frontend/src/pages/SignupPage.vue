@@ -1,4 +1,20 @@
 <template>
+  <div class="loadingio-spinner-spinner" v-if="userStore.isLoading">
+    <div class="ldio-f4nnk2ltl0v">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
   <div class="css-12gtq4k">
     <div class="css-1k8rayr">
       <div class="css-111ukc0">
@@ -56,8 +72,12 @@
               type="string"
               autocapitalize="off"
               class="login-custom-input css-ownijh"
-              value=""
+              v-model="user.email"
+              @blur="validateEmail"
             />
+          </div>
+          <div v-if="!emailValid" class="validation-message">
+            {{ emailValidationMessage }}
           </div>
           <div direction="vertical" size="20" class="css-1i0k62c"></div>
 
@@ -68,8 +88,12 @@
               type="password"
               autocapitalize="off"
               class="login-custom-input css-1f4y3nx"
-              value=""
+              v-model="user.password"
+              @blur="validatePassword"
             />
+          </div>       
+          <div v-if="!passwordValid" class="passwordValidation-message">
+            {{ passwordValidationMessage }}
           </div>
           <div direction="vertical" size="20" class="css-1i0k62c"></div>
           <div class="css-1b8vwo3-2">이름</div>
@@ -79,7 +103,7 @@
               type="string"
               autocapitalize="off"
               class="login-custom-input css-ownijh"
-              value=""
+              v-model="user.name"
             />
           </div>
           <div direction="vertical" size="20" class="css-1i0k62c"></div>
@@ -91,7 +115,7 @@
               type="string"
               autocapitalize="off"
               class="login-custom-input css-ownijh"
-              value=""
+              v-model="user.nickName"
             />
           </div>
           <div direction="vertical" size="32" class="css-h23ofx"></div>
@@ -164,7 +188,13 @@
             </div>
           </div>
           <div direction="vertical" size="40" class="css-ygt1wz"></div>
-          <button color="#FFFFFF" class="css-j27xag">가입하기</button>
+          <button
+            :class="['css-j27xag', { 'button-disabled': !isSubmitEnabled }]"
+            :disabled="!isSubmitEnabled"
+            @click="signUpData"
+          >
+            가입하기
+          </button>
         </div>
       </div>
     </div>
@@ -172,10 +202,37 @@
 </template>
 
 <script>
+import { mapStores } from "pinia";
+import { useUserStore } from "../stores/useUserStore";
+
 export default {
-  name: "SignupPage",
+  name: "AuthSignupPage",
+  computed: {
+    ...mapStores(useUserStore),
+    isSubmitEnabled() {
+      const isUserInfoFilled =
+        this.user.email &&
+        this.user.password &&
+        this.user.name &&
+        this.user.nickName;
+
+      const isAllRequiredAgreed = this.agreements
+        .slice(0, 3)
+        .every((agreement) => agreement.checked);
+
+      const isEmailValid = this.emailValid;
+
+      return isUserInfoFilled && isAllRequiredAgreed && isEmailValid;
+    },
+  },
   data() {
     return {
+      user: {
+        email: "",
+        password: "",
+        name: "",
+        nickName: "",
+      },
       defaultProfileImage: require("@/assets/img/profile.jpg"),
       selectedProfileImage: null,
       selectedProfileImageURL: "",
@@ -188,8 +245,14 @@ export default {
       errorMessage: "",
 
       isOpenGuide: false,
-
       allAgreements: false,
+
+      emailValid: true, // 이메일 유효성 상태
+      emailValidationMessage: "", // 이메일 유효성 검사 메시지
+
+      passwordValid: true, // 비밀번호 유효성 상태
+      passwordValidationMessage: "", // 비밀번호 유효성 검사 메시지
+
       agreements: [
         { label: "[필수] 만 14세 이상", checked: false },
         { label: "[필수] 서비스 약관 동의", checked: false },
@@ -202,6 +265,20 @@ export default {
     this.$root.hideHeaderAndFooter = true;
   },
   methods: {
+    async signUpData() {
+      const isCheckAgreed =
+        this.allAgreed ||
+        this.agreements.slice(0, 3).every((agreement) => agreement.checked);
+
+      if (!isCheckAgreed) {
+        alert("필수 동의 항목에 동의하지 않았습니다.");
+      } else {
+        await this.userStore.signUpData(this.user, this.selectedProfileImage);
+        if (this.userStore.isSuccess) {
+          this.$router.push({ path: "/email/verify" });
+        }
+      }
+    },
     handleProfileImageChange(event) {
       const file = event.target.files[0];
       if (file) {
@@ -263,6 +340,23 @@ export default {
       this.allAgreements = this.agreements.every(
         (agreement) => agreement.checked
       );
+    },
+
+    validateEmail() {
+      const regex =
+        /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/;
+      this.emailValid = regex.test(this.user.email);
+      this.emailValidationMessage = this.emailValid
+        ? ""
+        : "! 올바른 이메일 형식( test@example.com )으로 입력해주세요.";
+    },
+
+    validatePassword() {
+      const regex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,45}$/;
+      this.passwordValid = regex.test(this.user.password);
+      this.passwordValidationMessage = this.passwordValid
+        ? ""
+        : "! 패스워드는 대/소문자, 특수문자, 숫자를 반드시 포함한 8글자 이상이어야 합니다.";
     },
   },
 };
@@ -409,14 +503,6 @@ input[type="password" i] {
   padding-inline: 2px;
 }
 
-input:not(
-    [type="file" i],
-    [type="image" i],
-    [type="checkbox" i],
-    [type="radio" i]
-  ) {
-}
-
 .css-1f4y3nx {
   display: flex;
   flex-direction: row;
@@ -443,6 +529,22 @@ input:not(
   height: 20px;
 }
 
+.validation-message {
+  font-size: 10px;
+  color: red;
+  margin-top: 10px;
+  margin-right: 150px;
+  font-weight: bold;
+}
+
+.passwordValidation-message {
+  font-size: 10px;
+  color: red;
+  margin-top: 10px;
+  margin-right: 54px;
+  font-weight: bold;
+  width: max-content;
+}
 .css-ygt1wz {
   width: 100%;
   height: 40px;
@@ -598,6 +700,10 @@ svg {
   -webkit-box-align: center;
   align-items: center;
   gap: 8px;
+}
+
+.button-disabled {
+  opacity: 0.3;
 }
 
 .css-1wlmsap {
@@ -861,4 +967,96 @@ svg {
   }
 }
 /*-------------프로필 이미지 업로드---------------*/
+/*--------로딩창-------------*/
+@keyframes ldio-f4nnk2ltl0v {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.ldio-f4nnk2ltl0v div {
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999; /* 다른 요소 위에 표시하기 위한 z-index 값 */
+  animation: ldio-f4nnk2ltl0v linear 1s infinite;
+  background: #fe718d;
+  width: 18.240000000000002px;
+  height: 36.480000000000004px;
+  border-radius: 9.120000000000001px / 18.240000000000002px;
+  transform-origin: 9.120000000000001px 79.04px;
+}
+.ldio-f4nnk2ltl0v div:nth-child(1) {
+  transform: rotate(0deg);
+  animation-delay: -0.9166666666666666s;
+  background: #fe718d;
+}
+.ldio-f4nnk2ltl0v div:nth-child(2) {
+  transform: rotate(30deg);
+  animation-delay: -0.8333333333333334s;
+  background: #f47e60;
+}
+.ldio-f4nnk2ltl0v div:nth-child(3) {
+  transform: rotate(60deg);
+  animation-delay: -0.75s;
+  background: #f8b26a;
+}
+.ldio-f4nnk2ltl0v div:nth-child(4) {
+  transform: rotate(90deg);
+  animation-delay: -0.6666666666666666s;
+  background: #abbd81;
+}
+.ldio-f4nnk2ltl0v div:nth-child(5) {
+  transform: rotate(120deg);
+  animation-delay: -0.5833333333333334s;
+  background: #849b87;
+}
+.ldio-f4nnk2ltl0v div:nth-child(6) {
+  transform: rotate(150deg);
+  animation-delay: -0.5s;
+  background: #6492ac;
+}
+.ldio-f4nnk2ltl0v div:nth-child(7) {
+  transform: rotate(180deg);
+  animation-delay: -0.4166666666666667s;
+  background: #637cb5;
+}
+.ldio-f4nnk2ltl0v div:nth-child(8) {
+  transform: rotate(210deg);
+  animation-delay: -0.3333333333333333s;
+  background: #6a63b6;
+}
+.ldio-f4nnk2ltl0v div:nth-child(9) {
+  transform: rotate(240deg);
+  animation-delay: -0.25s;
+  background: #fe718d;
+}
+.ldio-f4nnk2ltl0v div:nth-child(10) {
+  transform: rotate(270deg);
+  animation-delay: -0.16666666666666666s;
+  background: #f47e60;
+}
+.ldio-f4nnk2ltl0v div:nth-child(11) {
+  transform: rotate(300deg);
+  animation-delay: -0.08333333333333333s;
+  background: #f8b26a;
+}
+.ldio-f4nnk2ltl0v div:nth-child(12) {
+  transform: rotate(330deg);
+  animation-delay: 0s;
+  background: #abbd81;
+}
+.loadingio-spinner-spinner-pz89b3jiaad {
+  width: 304px;
+  height: 304px;
+  display: inline-block;
+  overflow: hidden;
+  background: #ffffff;
+}
+.ldio-f4nnk2ltl0v div {
+  box-sizing: content-box;
+}
 </style>

@@ -45,7 +45,7 @@ public class ReviewController {
     @RequestMapping(method = RequestMethod.POST, value = "/create")
     public ResponseEntity<BaseRes> createReview(
             @RequestPart(value = "review") @Valid PostCreateReviewReq postCreateReviewReq,
-            @RequestPart(value = "reviewImage") MultipartFile[] reviewImages
+            @RequestPart(value = "reviewImage", required = false) MultipartFile[] reviewImages
     ) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         BaseRes baseRes = reviewService.createReview(user, postCreateReviewReq, reviewImages);
@@ -92,12 +92,13 @@ public class ReviewController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
-    @RequestMapping(method = RequestMethod.GET, value = "/search")
-    public ResponseEntity<BaseRes> listReview(
+    @RequestMapping(method = RequestMethod.GET, value = "/{sortType}/search")
+    public ResponseEntity<BaseRes> searchReview(
+            @PathVariable @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") @ApiParam(value = "정렬유형 : 1 (최신순), 2 (추천수 순), 3 (조회수 순), 4 (스크랩수 순), 5 (댓글수 순)") Integer sortType,
             @RequestParam String searchTerm,
             @PageableDefault(size = 10) Pageable pageable
     ) {
-        BaseRes baseRes = reviewService.searchReview(searchTerm, pageable);
+        BaseRes baseRes = reviewService.searchReview(sortType, searchTerm, pageable);
 
         return ResponseEntity.ok().body(baseRes);
     }

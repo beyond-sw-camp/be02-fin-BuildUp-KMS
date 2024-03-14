@@ -43,7 +43,7 @@ public class UserController {
     @RequestMapping(method = RequestMethod.POST, value = "/signup")
     public ResponseEntity<BaseRes> signup(
             @RequestPart(value = "user") @Valid PostSignUpUserReq postSignUpUserReq,
-            @RequestPart(value = "profileImage") MultipartFile profileImage) {
+            @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
         BaseRes baseRes = userService.signup(postSignUpUserReq, profileImage);
         // 인증메일 발송
         userService.sendEmail(postSignUpUserReq);

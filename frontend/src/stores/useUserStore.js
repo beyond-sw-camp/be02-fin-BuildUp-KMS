@@ -46,7 +46,7 @@ export const useUserStore = defineStore("user", {
     },
     
     // 회원 회원가입
-    async sendSignUpData(user, profileImage) {
+    async signUpData(user, profileImage) {
   
       try {
 

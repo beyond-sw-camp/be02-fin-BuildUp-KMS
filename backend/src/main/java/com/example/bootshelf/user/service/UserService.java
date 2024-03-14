@@ -62,8 +62,16 @@ public class UserService {
     @Transactional(readOnly = false)
     public User saveUser(PostSignUpUserReq postSignUpUserReq, MultipartFile profileImage) {
 
-        String savePath = ImageUtils.makeBoardImagePath(profileImage.getOriginalFilename());
-        savePath = s3Service.uploadBoardFile(profileBucket, profileImage, savePath);
+        String savePath;
+
+        if (profileImage == null || profileImage.isEmpty()) {
+            // 프로필 이미지가 없는 경우 기본 이미지 경로를 설정
+            savePath = "https://bootshelf-profile.s3.ap-northeast-2.amazonaws.com/2024/03/14/6a0ac29b-55c8-4fd0-808a-fcd1b9deda76_default.png";
+        } else {
+            // 프로필 이미지가 있는 경우 S3에 업로드
+            savePath = ImageUtils.makeBoardImagePath(profileImage.getOriginalFilename());
+            savePath = s3Service.uploadBoardFile(profileBucket, profileImage, savePath);
+        }
 
         User user = User.builder()
                 .password(passwordEncoder.encode(postSignUpUserReq.getPassword()))
@@ -290,15 +298,15 @@ public class UserService {
 
     // 카카오 회원가입
     @Transactional
-    public void kakaoSignup(String nickName) {
+    public void kakaoSignup(String nickName, String profileImage) {
 
         User user = User.builder()
                 .email(nickName)
                 .password(passwordEncoder.encode("kakao"))
                 .nickName(nickName)
                 .name(nickName)
-                .profileImage("")
-                .authority("ROLE_USER")
+                .profileImage(profileImage)
+                .authority("ROLE_KAKAO")
                 .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
                 .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
                 .status(true)
