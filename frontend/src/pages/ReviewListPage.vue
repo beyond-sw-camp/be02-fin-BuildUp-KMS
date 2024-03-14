@@ -27,16 +27,14 @@
           <!--여기서부터 우리거 적용-->
           <div class="css-1rw3qt4">
             <!--게시글 작성 버튼-->
-            <div class="css-6cwwok">
-              <div class="css-1hbxc4s">
-                <div class="css-ogh6wd">
-                  <div class="css-1tttep5">
-                    <div class="css-1pbcmmt-001">
-                      <div class="css-5ala5m-001">
-                        <router-link to="/review/new">
-                          <div class="css-nmdn6a-001">작성하기</div>
-                        </router-link>
-                      </div>
+            <div class="css-1hbxc4s">
+              <div class="css-ogh6wd">
+                <div class="css-1tttep5">
+                  <div class="css-1pbcmmt-001">
+                    <div class="css-5ala5m-001">
+                      <router-link to="/review/new">
+                        <div class="css-nmdn6a-001">작성하기</div>
+                      </router-link>
                     </div>
                   </div>
                 </div>
@@ -80,6 +78,54 @@
                 </div>
               </div>
             </div>
+            <div class="css-6ylcwl">
+              <div class="css-1o94c7r">
+                <div class="css-1kb98ja">
+                  <svg
+                    width="4"
+                    height="4"
+                    viewBox="0 0 4 4"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle cx="2" cy="2" r="2" :fill="selectedReviewType === 'course' ? '#e8344e' : '#B4BFC6'"></circle>
+                  </svg>
+                  <!-- <div class="css-1619ajl">과정 후기</div> -->
+                  <div
+                    :class="
+                      selectedReviewType === 'course'
+                        ? 'css-1619ajl'
+                        : 'css-1j5hzn7'
+                    "
+                    @click="selectReviewType('course')"
+                  >
+                    과정 후기
+                  </div>
+                </div>
+                <div class="css-bewb21">
+                  <svg
+                    width="4"
+                    height="4"
+                    viewBox="0 0 4 4"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle cx="2" cy="2" r="2" :fill="selectedReviewType === 'course' ? '#B4BFC6' : '#e8344e'"></circle>
+                  </svg>
+                  <!-- <div class="css-1j5hzn7">강사 후기</div> -->
+                  <div
+                    :class="
+                      selectedReviewType === 'instructor'
+                        ? 'css-1619ajl'
+                        : 'css-1j5hzn7'
+                    "
+                    @click="selectReviewType('instructor')"
+                  >
+                    강사 후기
+                  </div>
+                </div>
+              </div>
+            </div>
             <!--여기서 본격 글 리스트-->
             <div class="css-1csvk83">
               <ul class="css-10c0kk0 e15eiqsa1">
@@ -113,7 +159,8 @@ export default {
     return {
       selectedSortType: "최신순",
       sortType: 1,
-      reviewCategoryIdx: "",
+      reviewCategoryIdx: "1",
+      selectedReviewType: "course",
       searchTerm: "",
     };
   },
@@ -151,13 +198,18 @@ export default {
       }
       this.loadReviewList();
     },
+    selectReviewType(type) {
+      this.selectedReviewType = type;
+      this.reviewCategoryIdx = type === 'course' ? '1' : '2';
+      this.loadReviewList();
+    },
     loadReviewList() {
       // 검색어가 있는 경우
       if (this.searchTerm) {
         this.reviewStore.getSearchReviewList(this.searchTerm, this.sortType);
       } else {
         // 검색어가 없는 경우
-        this.reviewStore.getReviewList(this.sortType);
+        this.reviewStore.getReviewList(this.reviewCategoryIdx, this.sortType);
       }
     },
     sendSearchData() {
@@ -1123,4 +1175,135 @@ a {
 }
 
 /* 정렬 순서 끝 */
+
+.css-6ylcwl {
+  max-width: 942px;
+  width: 100%;
+  display: flex;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  align-items: center;
+  padding: 12px 16px;
+  background-color: rgb(255, 255, 255);
+  margin: 0px auto;
+}
+
+@media (min-width: 1024px) {
+  .css-6ylcwl {
+    padding: 10px 17px 30px;
+  }
+}
+.css-f7kuwm {
+  display: flex;
+  flex-direction: row;
+  -webkit-box-pack: start;
+  justify-content: flex-start;
+  -webkit-box-align: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.css-1o94c7r {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  gap: 30px;
+  background-color: #ffffff;
+}
+
+@media (min-width: 820px) {
+  .css-1o94c7r {
+    width: 100%;
+  }
+}
+
+.css-1kb98ja {
+  cursor: pointer;
+  display: flex;
+  gap: 4px;
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  color: rgb(20, 22, 23);
+  line-height: 18px;
+  -webkit-box-align: center;
+  align-items: center;
+}
+
+.css-1619ajl {
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 18px;
+  color: rgb(20, 22, 23);
+  border-bottom: 1px solid black;
+}
+
+@media (min-width: 820px) {
+  .css-1619ajl {
+    font-family: Pretendard;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 19.5px;
+    color: rgb(20, 22, 23);
+    border-bottom: 1px solid black;
+  }
+}
+
+.css-bewb21 {
+  cursor: pointer;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 4px;
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #141617;
+  line-height: 18px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: #3a3e41;
+}
+
+.css-1j5hzn7 {
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 18px;
+  color: #141617;
+  line-height: 18px;
+  color: #81898f;
+}
+
+@media (min-width: 820px) {
+  .css-1j5hzn7 {
+    font-family: Pretendard;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    color: #141617;
+    line-height: 19.5px;
+    color: #81898f;
+  }
+}
 </style>

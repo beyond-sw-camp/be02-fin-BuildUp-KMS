@@ -16,6 +16,8 @@ public class GetSearchListReviewRes {
     private Integer reviewCategoryIdx;
     private String reviewCategoryName;
     private String reviewTitle;
+    private String reviewContent;
+    private String reviewImage;
     private String courseName;
     private Integer viewCnt;
     private Integer upCnt;
