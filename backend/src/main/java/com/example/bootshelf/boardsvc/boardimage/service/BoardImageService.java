@@ -26,15 +26,16 @@ public class BoardImageService {
     public void createBoardImage(Integer id, MultipartFile[] images) {
 
         for (MultipartFile image : images) {
+            if(!image.isEmpty()){
+                String savePath = ImageUtils.makeBoardImagePath(image.getOriginalFilename());
+                savePath = s3Service.uploadBoardFile(boradBucket, image, savePath);
 
-            String savePath = ImageUtils.makeBoardImagePath(image.getOriginalFilename());
-            savePath = s3Service.uploadBoardFile(boradBucket, image, savePath);
-
-            boardImageRepository.save(BoardImage.builder()
-                    .boardImage(savePath)
-                    .board(Board.builder().idx(id).build())
-                    .status(true)
-                    .build());
+                boardImageRepository.save(BoardImage.builder()
+                        .boardImage(savePath)
+                        .board(Board.builder().idx(id).build())
+                        .status(true)
+                        .build());
+            }
         }
     }
 }

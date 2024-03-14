@@ -121,10 +121,10 @@ public class BoardController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500",description = "서버 내부 오류")})
     @GetMapping ("/{boardIdx}")
-    public ResponseEntity<BaseRes> findBoard (
+    public ResponseEntity<BaseRes> findBoardByIdx (
             @PathVariable Integer boardIdx
     ){
-        return ResponseEntity.ok().body(boardService.listBoard(boardIdx));
+        return ResponseEntity.ok().body(boardService.findBoardByIdx(boardIdx));
     }
 
     @Operation(summary = "Board 게시글 수정 기능",

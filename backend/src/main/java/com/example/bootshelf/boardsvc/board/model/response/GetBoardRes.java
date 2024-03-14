@@ -6,12 +6,11 @@ import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class GetMyListBoardRes {
-
-    private Integer boardIdx;
+public class GetBoardRes {
+    private Integer idx;
 
     private String boardTitle;
 
@@ -19,7 +18,7 @@ public class GetMyListBoardRes {
 
     private Integer boardCategoryIdx;
 
-    private List<Integer> tagList;
+    private List<Integer> boardTagListIdx;
 
     private Integer viewCnt;
 
@@ -29,5 +28,15 @@ public class GetMyListBoardRes {
 
     private Integer commentCnt;
 
+    private String createdAt;
+
     private String updatedAt;
+
+    private List<String> boardImageList;
+
+    private List<Integer> boardCommentList;
+
+    private String userProfile;
+
+    private String userName;
 }
