@@ -138,7 +138,7 @@
                       <input class="css-001" type="text" placeholder="댓글을 남겨주세요" v-model="boardCommentContent" />
                     </div>
                     <div class="css-btn-div">
-                      <button class="css-btn" @click="createBoardComment()">저장</button>
+                      <button class="css-btn" @click="submitComment()">저장</button>
                     </div>
                   </div>
                 </div>
@@ -157,12 +157,11 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios  from "axios";
 
 import CommentComponent from "../components/CommentComponent.vue";
 import TagComponent from "../components/TagComponent.vue";
-import { useBoardCommentStore } from '@/stores/boardCommentStore';
-
+import { useBoardCommentStore } from "../stores/useBoardCommentStore";
 
 
 export default {
@@ -173,19 +172,18 @@ export default {
   },
   data() {
     return {
-      boardCommentContent: '',
+      boardCommentContent: ""
     };
   },
   methods: {
-
-    async createBoardComment(){
-      try{
+    async submitComment() {
+      try {
         await useBoardCommentStore().createBoardComment(this.boardCommentContent);
-      } catch{
+        // 댓글 생성 후 필요한 작업 작성
+      } catch (error) {
         console.error('댓글 작성 실패:', error);
       }
-    }
-
+    },
   }
 }
 

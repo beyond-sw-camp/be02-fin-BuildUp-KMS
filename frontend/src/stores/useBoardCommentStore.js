@@ -1,8 +1,20 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-import VueJwtDecode from "vue-jwt-decode";
+// import VueJwtDecode from "vue-jwt-decode";
 
-const backend = "http://localhost:8080"; 
+const backend = "http://localhost:8080";
+// boardStore를 사용하면 해당 idx 가져오기..
+// const boardIdx = useBoardStore().boardIdx;
+
+// 토큰값 가져오기
+// let token = VueJwtDecode.decode(localStorage.getItem("token")).id;
+
+let token = (localStorage.getItem("token"));
+
+
+const boardIdx = 1;
+
+
 
 
 export const useBoardCommentStore = defineStore({
@@ -12,16 +24,9 @@ export const useBoardCommentStore = defineStore({
     boardComments: [],
   }),
   actions: {
-    // createBoardComment 액션을 정의합니다.
+    /** -------------------댓글 작성--------------------- **/
     async createBoardComment(boardCommentContent) {
       try {
-
-        // const boardIdx = useBoardStore().boardIdx;
-        const boardIdx = 1;
-
-        // let token = VueJwtDecode.decode(sessionStorage.getItem("token")).id;
-        let token = "토큰넣기";
-
 
         if (!token) {
           throw new Error(
@@ -41,9 +46,71 @@ export const useBoardCommentStore = defineStore({
         );
         console.log(response);
         console.log("게시판 댓글 작성 성공");
+        // window.location.href = backend + `/${boardIdx}`;
+        window.location.href =`http://localhost:8081/board/detail`;
+
       } catch (error) {
         console.error("ERROR : ", error);
       }
     },
+
+        /** -------------------댓글 수정--------------------- **/
+
+    async updateBoardComment(boardCommentContent, commentIdx) {
+      try {
+        if (!token) {
+          throw new Error(
+            "토큰이 없습니다. 사용자가 로그인되었는지 확인하세요."
+          );
+        }
+
+        const response = await axios.patch(`${backend}/board/${boardIdx}/update/${commentIdx}`,
+          { boardCommentContent: boardCommentContent },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log(commentIdx);
+        console.log(boardCommentContent);
+        
+        console.log(response);
+        console.log("게시판 댓글 수정 성공");
+        window.location.href =`http://localhost:8081/board/detail`;
+
+      } catch (error) {
+        console.error("수정 실패 : ", error);
+      }
+    },
+
+            /** -------------------댓글 삭제--------------------- **/
+
+            async deleteBoardComment(commentIdx) {
+              try {
+                if (!token) {
+                  throw new Error(
+                    "토큰이 없습니다. 사용자가 로그인되었는지 확인하세요."
+                  );
+                }
+        
+                const response = await axios.delete(`${backend}/board/${boardIdx}/delete/${commentIdx}`,
+                  {
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                      "Content-Type": "application/json",
+                    },
+                  }
+                );
+                
+                console.log(response);
+                console.log("게시판 댓글 수정 성공");
+                window.location.href =`http://localhost:8081/board/detail`;
+        
+              } catch (error) {
+                console.error("수정 실패 : ", error);
+              }
+            },
   },
 });

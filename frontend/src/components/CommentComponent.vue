@@ -1,6 +1,6 @@
 <template>
-  <div class="css-f7no94" v-for="boardCommentContent in commentList" :key="boardCommentContent.id">
-  <!-- <div class="css-f7no94"> -->
+  <div class="css-f7no94" v-for="(comment, index) in commentList" :key="index">
+    <!-- <div class="css-f7no94"> -->
     <div class="css-3o2y5e">
       <div width="36px" height="36px" class="css-jg5tbe">
         <img alt="나의얼굴" width="34px" height="34px"
@@ -10,13 +10,13 @@
     <div class="css-14f8kx2">
       <div class="css-1psklmw">
         <div class="css-dyzp2y">
-          <div class="css-wqf8ry">닉네임입니당</div>
+          <div class="css-wqf8ry">{{ comment.nickName }}</div>
           <div class="css-emxp16"></div>
-          <div class="css-emxp16">2023-10-22 12:18</div>
+          <div class="css-emxp16">{{ comment.createAt }}</div>
         </div>
         <div class="css-dyzp2y-001">
           <div class="css-emxp17">수정</div>
-          <div class="css-emxp17">삭제</div>
+          <div class="css-emxp17" @click="deleteComment(comment.idx)">삭제</div>
         </div>
         <div class="css-emxp17">
           <img width="18px" height="17px" src="https://img.icons8.com/pastel-glyph/64/facebook-like--v1.png"
@@ -24,17 +24,27 @@
         </div>
       </div>
       <div class="editedCommentContent">
-        <p class="css-comment">너무 어렵네요ㅠㅠ</p>
+        <input type="text" class="css-comment" v-model="updateComment">
+        <p>{{ comment.boardCommnetContent }}</p>
       </div>
-      <p class="css-reply">대댓글쓰기</p>
+      <div clas="css-btn">
+        <p class="css-reply">대댓글쓰기</p>
+        <button class="css-update" @click="saveComment(comment.idx)">저장</button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from "axios";
+import { useBoardCommentStore } from '@/stores/useBoardCommentStore';
+// import VueJwtDecode from "vue-jwt-decode";
 
-const backend = "http://localhost:8080"
+
+
+
+import axios from "axios";
+const backend = "http://localhost:8080";
+let boardIdx = 1;
 
 export default {
   name: "CommentComponent",
@@ -42,32 +52,87 @@ export default {
   data() {
     return {
       commentList: [],
-
+      editable: false,
     }
   },
 
   methods: {
-    async getBoardComment() {
+    async getBoardCommentList() {
       try {
-        let idx = 1;
-        let response = await axios.get(backend + `/board/${idx}/comment`);
-
-        console.log(response.data);
+        let response = await axios.get(backend + `/board/${boardIdx}/comment`);
         this.commentList = response.data.result;
-
+        console.log(this.commentList);
       } catch (error) {
         console.error(error);
       }
     },
+    // async getBoardCommentList() {
+    //   try {
+    //     await useBoardCommentStore.getBoardCommentList();
+    //     this.commentList = useBoardCommentStore.boardComments;
+    //     console.log(this.commentList);
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+    // }
+
+    async saveComment(commentIdx) {
+      try {
+        await useBoardCommentStore().updateBoardComment(this.updateComment, commentIdx);
+        // 댓글 생성 후 필요한 작업 작성
+      } catch (error) {
+        console.error('댓글 작성 실패:', error);
+      }
+    },
+
+    async deleteComment(commentIdx) {
+      try {
+        await useBoardCommentStore().deleteBoardComment(commentIdx);
+        // 댓글 생성 후 필요한 작업 작성
+      } catch (error) {
+        console.error('댓글 삭제 실패:', error);
+      }
+
+    }
+
   },
 
   mounted() {
-    this.getBoardComment();
+    this.getBoardCommentList();
   }
 };
 </script>
 
+
 <style scoped>
+.css-update {
+  background-color: rgb(52, 152, 219, 0.2);
+  font-size: 12px;
+  font-weight: 700;
+  width: 70px;
+  height: 25px;
+  border-radius: 10px;
+  float: right;
+  margin-right: 10px;
+  cursor: pointer;
+  font-family: Pretendard;
+  border: none;
+}
+
+.css-btn {
+  display: flex;
+}
+
+textarea {
+  width: 100%;
+  height: 100px;
+  border: none;
+  resize: none;
+  outline: none;
+  font-family: Pretendard;
+
+}
+
 * {
   margin: 0;
   line-height: 1.5;
