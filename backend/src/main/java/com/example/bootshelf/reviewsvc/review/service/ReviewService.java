@@ -129,14 +129,9 @@ public class ReviewService {
 
         Page<Review> reviewList = reviewRepository.findReviewList(reviewCategoryIdx, sortType, pageable);
 
-        List<GetListReviewRes> getCategoryListResListReview = new ArrayList<>();
+        List<GetListReviewRes> getListReviewResList = new ArrayList<>();
 
         for (Review review : reviewList) {
-
-            List<ReviewImage> reviewImageList = review.getReviewImageList();
-
-            ReviewImage reviewImage = reviewImageList.get(0);
-            String image = reviewImage.getReviewImage();
 
             GetListReviewRes getListReviewRes = GetListReviewRes.builder()
                     .reviewIdx(review.getIdx())
@@ -145,7 +140,6 @@ public class ReviewService {
                     .profileImage(review.getUser().getProfileImage())
                     .reviewTitle(review.getReviewTitle())
                     .reviewContent(review.getReviewContent())
-                    .reviewImage(image)
                     .courseName(review.getCourseName())
                     .courseEvaluation(review.getCourseEvaluation())
                     .viewCnt(review.getViewCnt())
@@ -155,12 +149,20 @@ public class ReviewService {
                     .updatedAt(review.getUpdatedAt())
                     .build();
 
-            getCategoryListResListReview.add(getListReviewRes);
+            List<ReviewImage> reviewImageList = review.getReviewImageList();
+            if (!reviewImageList.isEmpty()) {
+                ReviewImage reviewImage = reviewImageList.get(0);
+                String image = reviewImage.getReviewImage();
+                getListReviewRes.setReviewImage(image);
+            }
+
+            getListReviewResList.add(getListReviewRes);
         }
+
         BaseRes baseRes = BaseRes.builder()
                 .isSuccess(true)
                 .message("후기글 목록 조회 요청 성공")
-                .result(getCategoryListResListReview)
+                .result(getListReviewResList)
                 .build();
 
         return baseRes;
