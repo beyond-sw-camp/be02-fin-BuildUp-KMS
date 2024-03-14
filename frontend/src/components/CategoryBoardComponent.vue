@@ -14,8 +14,14 @@
             <div class="css-14bssip">임xx 독불장군 고집불통 어떻게 하죠??</div>
           </div>
           <!--태그 컴포넌트 자리-->
+          <div class="css-fortagcomponentgms">
+            <TagComponent/> <TagComponent/> <TagComponent/>
+          </div>
         </div>
         <div class="css-bt1qy"></div>
+        <!--사진-->
+        <!-- <img v-if="reviews.reviewImage" :src="reviews.reviewImage" class="css-17s6wd5"/> -->
+        <img src="../assets/img/bbb.png" class="css-17s6wd5"/>
       </div>
       <!--여기서부터는 하단 아이디,추천수..등등-->
       <div class="css-99cwur">
@@ -41,7 +47,7 @@
             >
               <img
                 sizes="100vw"
-                src="/frontend/src/assets/img/bbb.png"
+                src="../assets/img/bbb.png"
                 decoding="async"
                 data-nimg="fill"
                 style="
@@ -199,8 +205,12 @@
 </template>
 
 <script>
+import TagComponent from "@/components/TagComponent.vue"
 export default {
   name: "CategoryBoardComponent",
+  components: {
+    TagComponent,
+  },
 };
 </script>
 
@@ -566,5 +576,18 @@ export default {
 .css-z2xt5y {
     display: flex;
 }
+}
+.css-fortagcomponentgms{
+  display: flex;
+  gap: 3px;
+}
+.css-17s6wd5 {
+  width: 92px;
+  height: 92px;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
 }
 </style>

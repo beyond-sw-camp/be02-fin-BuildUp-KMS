@@ -12,11 +12,11 @@ export default {
 .css-1kc14yj {
   font-family: Pretendard;
   cursor: pointer;
-  width: 100px;
-  padding: 7px 0;
-  border-radius: 40px;
-  background-color: #eaeaea;
-  font-size: 12px;
+  width: 45px;
+  padding: 2px 0;
+  border-radius: 5px;
+  background-color: rgba(84, 29, 112, 0.218);
+  font-size: 10px;
   font-weight: 600;
   display: flex;
   align-items: center;
