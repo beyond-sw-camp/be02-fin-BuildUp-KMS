@@ -4,6 +4,7 @@ import com.amazonaws.services.kms.model.NotFoundException;
 import com.example.bootshelf.boardsvc.board.model.entity.Board;
 import com.example.bootshelf.boardsvc.board.model.request.PatchUpdateBoardReq;
 import com.example.bootshelf.boardsvc.board.model.request.PostCreateBoardReq;
+import com.example.bootshelf.boardsvc.board.model.response.*;
 import com.example.bootshelf.boardsvc.board.model.response.GetBoardRes;
 import com.example.bootshelf.boardsvc.board.model.response.GetListBoardRes;
 import com.example.bootshelf.boardsvc.board.model.response.PostCreateBoardRes;
@@ -332,6 +333,43 @@ public class BoardService {
                 .build();
 
         return baseRes;
+    }
+
+    @Transactional(readOnly = true)
+    public BaseRes searchBoardListByQuery(String query, Integer searchType, Pageable pageable) {
+        Page<Board> boardList = boardRepository.searchBoardListByQuery(pageable, query, searchType);
+
+        List<GetBoardListByQueryRes> getBoardListByQueryResList = new ArrayList<>();
+
+        for (Board board : boardList) {
+            GetBoardListByQueryRes getBoardListByQueryRes = GetBoardListByQueryRes.builder()
+                    .boardIdx(board.getIdx())
+                    .boardTitle(board.getBoardTitle())
+                    .boardContent(board.getBoardContent())
+                    .nickName(board.getUser().getNickName())
+                    .createdAt(board.getCreatedAt())
+                    .viewCnt(board.getViewCnt())
+                    .commentCnt(board.getCommentCnt())
+                    .upCnt(board.getUpCnt())
+                    .build();
+
+            getBoardListByQueryResList.add(getBoardListByQueryRes);
+        }
+
+        Long totalCnt = boardList.getTotalElements();
+        Integer totalPages = boardList.getTotalPages();
+
+        GetBoardListByQueryResResult result = GetBoardListByQueryResResult.builder()
+                .totalCnt(totalCnt)
+                .totalPages(totalPages)
+                .list(getBoardListByQueryResList)
+                .build();
+
+        return BaseRes.builder()
+                .isSuccess(true)
+                .message("메인 페이지 검색 결과 조회 성공")
+                .result(result)
+                .build();
     }
 
     public BaseRes updateBoard (User user, PatchUpdateBoardReq patchUpdateBoardReq, Integer boardIdx){
