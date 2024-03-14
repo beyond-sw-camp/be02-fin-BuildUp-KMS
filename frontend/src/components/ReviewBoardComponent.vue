@@ -10,15 +10,21 @@
         <div class="css-1jibmi3">
           <!--게시글 타이틀-->
           <div class="css-cp47oo">
-            {{ reviews.courseName }}
-          </div>
-          <div class="css-14bssip">
             {{ reviews.reviewTitle }}
           </div>
+          <div class="css-14bssip">
+            {{ reviews.reviewContent }}
+          </div>
         </div>
+        <div class="css-sebsp7"></div>
         <!--태그 컴포넌트 자리-->
       </div>
       <div class="css-bt1qy"></div>
+      <img
+        v-if="reviews.reviewImage"
+        :src="reviews.reviewImage"
+        class="css-17s6wd5"
+      />
     </div>
     <!--여기서부터는 하단 아이디,추천수..등등-->
     <div class="css-99cwur">
@@ -83,6 +89,11 @@
           </div>
           <div class="css-1ry6usa">
             {{ reviews.updatedAt }}
+          </div>
+        </div>
+        <div class="css-5zcuovs">
+          <div class="css-1sika4is">
+            {{ reviews.courseName }}
           </div>
         </div>
       </div>
@@ -424,7 +435,35 @@ export default {
   -ms-flex-align: center;
   align-items: center;
 }
+.css-5zcuovs {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  gap: 4px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin-left: 20px;
+  font-family: Pretendard;
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: rgba(84, 29, 112, 0.218);
+  padding: 3px 10px;
+}
 .css-1sika4i {
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 18px;
+  color: rgb(58, 62, 65);
+}
+.css-1sika4is {
   font-family: Pretendard;
   font-style: normal;
   font-weight: bold;
@@ -564,5 +603,21 @@ export default {
   .css-z2xt5y {
     display: flex;
   }
+}
+.css-17s6wd5 {
+  width: 92px;
+  height: 92px;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+}
+
+img {
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  -ms-interpolation-mode: nearest-neighbor;
 }
 </style>
