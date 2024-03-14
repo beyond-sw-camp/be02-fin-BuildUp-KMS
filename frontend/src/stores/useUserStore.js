@@ -2,7 +2,8 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import VueJwtDecode from "vue-jwt-decode";
 
-const backend = "http://localhost:8080"; 
+const backend = "http://localhost:8080";
+const storedToken = localStorage.getItem("token");
 
 export const useUserStore = defineStore("user", {
   state: () => ({
@@ -24,7 +25,7 @@ export const useUserStore = defineStore("user", {
           let userClaims = VueJwtDecode.decode(token);
 
           window.localStorage.setItem("token", token);
-          this.setDecodedToken(userClaims); 
+          this.setDecodedToken(userClaims);
 
           this.isAuthenticated = true;
         } else {
@@ -44,36 +45,47 @@ export const useUserStore = defineStore("user", {
       this.isAuthenticated = false;
       this.decodedToken = null;
     },
-    
+
+    async getUserInfo() {
+      try {
+        let response = await axios.get(backend + `/user/read`, {
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+          },
+        });
+        this.user = response.data.result;
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
     // 회원 회원가입
     async signUpData(user, profileImage) {
-  
       try {
-
         this.isLoading = true;
 
         let formData = new FormData();
         let json = JSON.stringify(user);
         formData.append("user", new Blob([json], { type: "application/json" }));
         formData.append("profileImage", profileImage);
-        
+
         let response = await axios.post(backend + "/user/signup", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
         if (response.data.isSuccess === true) {
-            this.isSuccess = true;
-          } else {
-            this.isSuccess = false;
-          }
-        } catch (e) {
-          console.log(e);
-          this.isSuccess = false; 
-          alert("잘못된 요청입니다.");
-        } finally {
-          this.isLoading = false;
+          this.isSuccess = true;
+        } else {
+          this.isSuccess = false;
         }
+      } catch (e) {
+        console.log(e);
+        this.isSuccess = false;
+        alert("잘못된 요청입니다.");
+      } finally {
+        this.isLoading = false;
+      }
     },
-  }
+  },
 });
