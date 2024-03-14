@@ -149,7 +149,7 @@
             ></rect>
           </svg>
         </div>
-        <div class="css-i21m7n">0</div>
+        <div class="css-i21m7n">{{ reviews.commentCnt }}</div>
       </div>
     </div>
     <div class="css-192oc4s">
@@ -177,7 +177,7 @@
             ></path>
           </svg>
         </div>
-        <div class="css-i21m7n">{{ reviews.commentCnt }}</div>
+        <div class="css-i21m7n">{{ reviews.upCnt }}</div>
       </div>
     </div>
     <div class="css-192oc4s">
@@ -196,7 +196,7 @@
             ></path>
           </svg>
         </div>
-        <div class="css-i21m7n">{{ reviews.upcnt }}</div>
+        <div class="css-i21m7n">{{ reviews.scrapCnt }}</div>
       </div>
     </div>
   </div>
