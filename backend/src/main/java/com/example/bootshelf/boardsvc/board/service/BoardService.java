@@ -262,6 +262,44 @@ public class BoardService {
         return baseRes;
     }
 
+    public BaseRes findListByTag(Pageable pageable, Integer TagIdx, Integer sortIdx){
+        Page<Board> boardList = boardRepository.findBoardListByTag(pageable, TagIdx, sortIdx);
+        List<GetMyListBoardRes> getMyListBoardResList = new ArrayList<>();
+
+        for (Board board : boardList){
+
+            List<BoardTag> boardTagList = board.getBoardTagList();
+            List<Integer> tagIdxs = new ArrayList<>();
+
+            for(BoardTag boardTag : boardTagList){
+                Integer tagIdx = boardTag.getIdx();
+                tagIdxs.add(tagIdx);
+            }
+
+            GetMyListBoardRes getMyListBoardRes = GetMyListBoardRes.builder()
+                    .boardIdx(board.getIdx())
+                    .boardTitle(board.getBoardTitle())
+                    .boardContent(board.getBoardContent())
+                    .boardCategoryIdx(board.getBoardCategory().getIdx())
+                    .tagList(tagIdxs)
+                    .viewCnt(board.getViewCnt())
+                    .upCnt(board.getUpCnt())
+                    .scrapCnt(board.getScrapCnt())
+                    .commentCnt(board.getCommentCnt())
+                    .updatedAt(board.getUpdatedAt())
+                    .build();
+
+            getMyListBoardResList.add(getMyListBoardRes);
+        }
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("게시글 태그별 목록 조회 요청 성공")
+                .result(getMyListBoardResList)
+                .build();
+
+        return baseRes;
+    }
+
     public BaseRes updateBoard (User user, PatchUpdateBoardReq patchUpdateBoardReq, Integer boardIdx){
         Optional<Board> result = boardRepository.findByIdxAndUserIdx(boardIdx, user.getIdx());
 
