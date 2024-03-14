@@ -219,9 +219,11 @@ import TagComponent from "@/components/TagComponent.vue";
 export default {
   name: "CategoryBoardComponent",
   props: ["boards"],
+  computed: {
+    ...mapStores(useBoardStore),
+  },
   components: {
     TagComponent,
-    ...mapStores(useBoardStore),
   },
 };
 </script>
