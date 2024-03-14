@@ -8,9 +8,9 @@ const backend = "http://localhost:8080";
 export const useReviewStore = defineStore("review", {
   state: () => ({ reviewList: [], isOrderExist: true }),
   actions: {
-    async getReviewList(sortType) {
+    async getReviewList(reviewCategoryIdx, sortType) {
       try {
-        let response = await axios.get(backend + `/review/list/1/${sortType}`, {
+        let response = await axios.get(backend + `/review/list/${reviewCategoryIdx}/${sortType}`, {
           headers: {
             "Content-Type": "application/json",
           },
