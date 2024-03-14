@@ -4,12 +4,9 @@ import com.amazonaws.services.kms.model.NotFoundException;
 import com.example.bootshelf.boardsvc.board.model.entity.Board;
 import com.example.bootshelf.boardsvc.board.model.request.PatchUpdateBoardReq;
 import com.example.bootshelf.boardsvc.board.model.request.PostCreateBoardReq;
-import com.example.bootshelf.boardsvc.board.model.response.GetListBoardRes;
-import com.example.bootshelf.boardsvc.board.model.response.GetMyListBoardRes;
-import com.example.bootshelf.boardsvc.board.model.response.PostCreateBoardRes;
+import com.example.bootshelf.boardsvc.board.model.response.*;
 import com.example.bootshelf.boardsvc.board.repository.BoardRepository;
 import com.example.bootshelf.boardsvc.boardcategory.model.entity.BoardCategory;
-import com.example.bootshelf.boardsvc.boardcategory.repository.BoardCategoryRepository;
 import com.example.bootshelf.boardsvc.boardcomment.model.entity.BoardComment;
 import com.example.bootshelf.boardsvc.boardimage.model.entity.BoardImage;
 import com.example.bootshelf.boardsvc.boardimage.service.BoardImageService;
@@ -18,7 +15,6 @@ import com.example.bootshelf.boardsvc.boardtag.service.BoardTagService;
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.common.error.ErrorCode;
 import com.example.bootshelf.common.error.entityexception.BoardException;
-import com.example.bootshelf.tag.service.TagService;
 import com.example.bootshelf.user.model.entity.User;
 import com.sun.jdi.request.DuplicateRequestException;
 import lombok.RequiredArgsConstructor;
@@ -260,6 +256,43 @@ public class BoardService {
                 .build();
 
         return baseRes;
+    }
+
+    @Transactional(readOnly = true)
+    public BaseRes searchBoardListByQuery(String query, Integer searchType, Pageable pageable) {
+        Page<Board> boardList = boardRepository.searchBoardListByQuery(pageable, query, searchType);
+
+        List<GetBoardListByQueryRes> getBoardListByQueryResList = new ArrayList<>();
+
+        for (Board board : boardList) {
+            GetBoardListByQueryRes getBoardListByQueryRes = GetBoardListByQueryRes.builder()
+                    .boardIdx(board.getIdx())
+                    .boardTitle(board.getBoardTitle())
+                    .boardContent(board.getBoardContent())
+                    .nickName(board.getUser().getNickName())
+                    .createdAt(board.getCreatedAt())
+                    .viewCnt(board.getViewCnt())
+                    .commentCnt(board.getCommentCnt())
+                    .upCnt(board.getUpCnt())
+                    .build();
+
+            getBoardListByQueryResList.add(getBoardListByQueryRes);
+        }
+
+        Long totalCnt = boardList.getTotalElements();
+        Integer totalPages = boardList.getTotalPages();
+
+        GetBoardListByQueryResResult result = GetBoardListByQueryResResult.builder()
+                .totalCnt(totalCnt)
+                .totalPages(totalPages)
+                .list(getBoardListByQueryResList)
+                .build();
+
+        return BaseRes.builder()
+                .isSuccess(true)
+                .message("메인 페이지 검색 결과 조회 성공")
+                .result(result)
+                .build();
     }
 
     public BaseRes updateBoard (User user, PatchUpdateBoardReq patchUpdateBoardReq, Integer boardIdx){
