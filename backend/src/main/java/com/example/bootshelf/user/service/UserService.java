@@ -165,7 +165,7 @@ public class UserService {
 
             GetListUserRes getListUserRes = GetListUserRes.builder()
                     .userIdx(user.getIdx())
-                    .userEmail(user.getEmail())
+                    .email(user.getEmail())
                     .name(user.getName())
                     .build();
 
@@ -188,8 +188,10 @@ public class UserService {
 
             GetListUserRes getListUserRes = GetListUserRes.builder()
                     .userIdx(user.getIdx())
-                    .userEmail(user.getEmail())
+                    .email(user.getEmail())
                     .name(user.getName())
+                    .nickName(user.getNickName())
+                    .profileImage(user.getProfileImage())
                     .build();
 
             return BaseRes.builder()
