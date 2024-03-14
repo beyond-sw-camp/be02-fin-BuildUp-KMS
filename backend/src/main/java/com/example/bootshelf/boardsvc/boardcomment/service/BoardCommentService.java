@@ -1,6 +1,7 @@
 package com.example.bootshelf.boardsvc.boardcomment.service;
 
 import com.example.bootshelf.boardsvc.board.model.entity.Board;
+import com.example.bootshelf.boardsvc.board.repository.BoardRepository;
 import com.example.bootshelf.boardsvc.boardcomment.model.entity.BoardComment;
 import com.example.bootshelf.boardsvc.boardcomment.model.request.PatchUpdateBoardCommentReq;
 import com.example.bootshelf.boardsvc.boardcomment.model.request.PostCreateBoardCommentReq;
@@ -28,39 +29,50 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BoardCommentService {
     private final BoardCommentRepository boardCommentRepository;
+    private final BoardRepository boardRepository;
 
     // 댓글 작성
     @Transactional(readOnly = false)
     public BaseRes createBoardComment(User user, Integer boardIdx, PostCreateBoardCommentReq postCreateBoardCommentReq) {
+        Optional<Board> findBoard = boardRepository.findByIdx(boardIdx);
+
+        // 댓글을 작성하려는 게시글이 존재하지 않을 때
+        if (!findBoard.isPresent()) {
+            throw new BoardCommentException(ErrorCode.BOARD_COMMENT_NOT_EXISTS, String.format("Board with idx %d not found.", boardIdx));
+        }
 
         // 댓글의 내용이 비어있을 때
         if (postCreateBoardCommentReq.getBoardCommentContent() == null || postCreateBoardCommentReq.getBoardCommentContent().isEmpty()) {
-            throw new BoardCommentException(ErrorCode.INVALID_INPUT_VALUE, String.format("Board Comment Content is empty."));
+            throw new BoardCommentException(ErrorCode.INVALID_INPUT_VALUE, "Board Comment Content is empty.");
         }
 
-        boardCommentRepository.save(BoardComment.builder()
-                    .board(Board.builder().idx(boardIdx).build())
-                    .user(user)
-                    .commentContent(postCreateBoardCommentReq.getBoardCommentContent())
-                    .status(true)
-                    .upCnt(0)
-                    .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-                    .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-                    .build());
+        Board board = findBoard.get();
+        BoardComment boardComment = BoardComment.builder()
+                .board(board)
+                .user(user)
+                .commentContent(postCreateBoardCommentReq.getBoardCommentContent())
+                .status(true)
+                .upCnt(0)
+                .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .build();
 
-            PostCreateBoardCommentRes postCreateBoardCommentRes = PostCreateBoardCommentRes.builder()
-                    .boardCommentContent(postCreateBoardCommentReq.getBoardCommentContent())
-                    .build();
+        boardCommentRepository.save(boardComment);
+        board.increaseCommentUpCnt();
+        boardRepository.save(board);
 
-            BaseRes baseRes = BaseRes.builder()
-                    .isSuccess(true)
-                    .message("댓글 등록 성공")
-                    .result(postCreateBoardCommentRes)
-                    .build();
+        PostCreateBoardCommentRes postCreateBoardCommentRes = PostCreateBoardCommentRes.builder()
+                .idx(boardComment.getIdx())
+                .boardCommentContent(postCreateBoardCommentReq.getBoardCommentContent())
+                .build();
 
-            return baseRes;
-
+        return BaseRes.builder()
+                .isSuccess(true)
+                .message("댓글 등록 성공")
+                .result(postCreateBoardCommentRes)
+                .build();
     }
+
 
     // 댓글/대댓글 조회
     @Transactional(readOnly = true)
@@ -115,7 +127,7 @@ public class BoardCommentService {
     // 댓글/대댓글 수정
     @Transactional(readOnly = false)
     public BaseRes updateBoardComment(User user, Integer boardIdx, Integer idx, PatchUpdateBoardCommentReq patchUpdateBoardCommentReq) {
-        Optional<BoardComment> result = boardCommentRepository.findByIdx(idx);
+        Optional<BoardComment> result = boardCommentRepository.findByIdxAndUserIdx(idx, user.getIdx());
 
         // 수정하고자 하는 댓글/대댓글을 찾지 못할 때
         if (!result.isPresent()) {
@@ -157,7 +169,7 @@ public class BoardCommentService {
     // 댓글/대댓글 삭제
     @Transactional(readOnly = false)
     public BaseRes deleteBoardComment(Integer idx, User user) {
-        Optional<BoardComment> result = boardCommentRepository.findByIdx(idx);
+        Optional<BoardComment> result = boardCommentRepository.findByIdxAndUserIdx(idx, user.getIdx());
 
         // 삭제하고자 하는 댓글을 찾지 못할 때
         if (result.equals(0)) {
@@ -165,6 +177,7 @@ public class BoardCommentService {
         }
 
         BoardComment boardComment = result.get();
+        Board board = boardComment.getBoard();
 
         if (boardComment.getParent() == null) {
             // 하위 댓글들도 함께 삭제
@@ -172,6 +185,9 @@ public class BoardCommentService {
         }
 
         boardCommentRepository.delete(boardComment);
+
+        board.decreaseCommentUpCnt();
+        boardRepository.save(board);
 
         return BaseRes.builder()
                 .isSuccess(true)
@@ -189,6 +205,7 @@ public class BoardCommentService {
             }
         }
     }
+
     // 대댓글 작성
     @Transactional(readOnly = false)
     public BaseRes createBoardReply(User user, Integer boardIdx, Integer parentIdx, PostCreateBoardReplyReq postCreateBoardReplyReq) {

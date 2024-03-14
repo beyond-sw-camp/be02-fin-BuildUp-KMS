@@ -8,5 +8,6 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class PostCreateReviewCommentRes {
+    private Integer idx;
     private String reviewCommentContent;
 }
