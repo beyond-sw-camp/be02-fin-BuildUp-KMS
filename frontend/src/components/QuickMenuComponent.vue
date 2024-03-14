@@ -65,7 +65,7 @@
 
 <script>
 export default {
-  name: 'QuickMenuComponent',
+  name: "QuickMenuComponent",
   methods: {
     scrollToTop() {
       window.scrollTo({
@@ -80,7 +80,7 @@ export default {
       });
     },
   },
-}
+};
 </script>
 
 <style scoped>
@@ -118,7 +118,6 @@ export default {
 }
 
 .quickmenu .inner-quickmenu .btn.btn-top.active {
-  margin-bottom: 13px;
   opacity: 1;
   visibility: visible;
 }
@@ -126,6 +125,7 @@ export default {
 .up-icon {
   width: 42px;
   height: 42px;
+  cursor: pointer;
 }
 
 .quickmenu .inner-quickmenu .btn.btn-bottom.active {
@@ -137,5 +137,6 @@ export default {
 .down-icon {
   width: 42px;
   height: 42px;
+  cursor: pointer;
 }
 </style>

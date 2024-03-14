@@ -1,4 +1,5 @@
 <template>
+  <HeaderComponent :showBorder="showBorder" :showMenu="showMenu" :showLogo="showLogo" />
   <div class="css-1hnxdb7">
     <div class="css-16z0wya">
       <section class="css-zea7jz0">
@@ -6,7 +7,9 @@
           <div class="SectionTitle_container__PcXfF SectionTitle_center__bSviY SectionTitle_size-48__RYzIo">
             <p class="SectionTitle_label__cEYNl default SectionTitle_size-48__RYzIo"></p>
             <p class="SectionTitle_title__iqOHl default SectionTitle_size-48__RYzIo">
-              <img src="../assets/img/logo.png" alt="BOOKSHELF" width="500px" />
+              <router-link to="/">
+                <img src="../assets/img/logo.png" alt="BOOKSHELF" width="500px" />
+              </router-link>
             </p>
             <p class="SectionTitle_description__3Deqx default SectionTitle_size-48__RYzIo"></p>
             <div class="SectionTitle_button__vZ_Mf SectionTitle_size-48__RYzIo"></div>
@@ -32,69 +35,100 @@
     <div class="css-16z0wya">
       <section class="css-zea7jz">
         <div class="css-143hej">
-          <button class="css-bcb9a9">
-            <div class="css-197aby8">
-              <p class="css-1r2nemk">지식 공유 서비스</p>
-              <p class="css-12j2poz">
-                집단 지성이 참여하고 <br />토론할 수 있는 문화
-              </p>
-            </div>
-            <img src="../assets/img/knowledge.png" loading="lazy" class="css-1522xt9" />
-          </button><button class="css-bcb9a9">
-            <div class="css-197aby8">
-              <p class="css-1r2nemk">무엇이든 물어보세요</p>
-              <p class="css-12j2poz">
-                구성원이 서로 소통하며 <br />관심 분야에 대해<br />자연스럽게
-                공유하는 환경 제공
-              </p>
-            </div>
-            <img src="../assets/img/qna.png" loading="lazy" class="css-1522xt9" />
-          </button><button class="css-bcb9a9">
-            <div class="css-197aby8">
-              <p class="css-1r2nemk">프로그램 참여 후기</p>
-              <p class="css-12j2poz">
-                실제 부트캠프에 참여한 <br />구성원들의 생생한 후기를
-                <br />공유하는 문화 형성
-              </p>
-            </div>
-            <img src="../assets/img/ddabong.png" loading="lazy" class="css-1522xt9" />
-          </button>
+          <router-link to="/board">
+            <a>
+              <button class="css-bcb9a9">
+                <div class="css-197aby8">
+                  <p class="css-1r2nemk">지식 공유 서비스</p>
+                  <p class="css-12j2poz">
+                    집단 지성이 참여하고 <br />토론할 수 있는 문화
+                  </p>
+                </div>
+                <img src="../assets/img/knowledge.png" loading="lazy" class="css-1522xt9" />
+              </button></a>
+          </router-link>
+          <router-link to="/board">
+            <a>
+              <button class="css-bcb9a9">
+                <div class="css-197aby8">
+                  <p class="css-1r2nemk">무엇이든 물어보세요</p>
+                  <p class="css-12j2poz">
+                    구성원이 서로 소통하며 <br />관심 분야에 대해<br />자연스럽게
+                    공유하는 환경 제공
+                  </p>
+                </div>
+                <img src="../assets/img/qna.png" loading="lazy" class="css-1522xt9" />
+              </button></a>
+          </router-link>
+          <router-link to="/review">
+            <a>
+              <button class="css-bcb9a9">
+                <div class="css-197aby8">
+                  <p class="css-1r2nemk">프로그램 참여 후기</p>
+                  <p class="css-12j2poz">
+                    실제 부트캠프에 참여한 <br />구성원들의 생생한 후기를
+                    <br />공유하는 문화 형성
+                  </p>
+                </div>
+                <img src="../assets/img/ddabong.png" loading="lazy" class="css-1522xt9" />
+              </button></a>
+          </router-link>
         </div>
       </section>
       <section class="css-zea7jz2">
         <div class="css-143hej">
-          <button class="css-bcb9a9">
-            <div class="css-197aby8">
-              <p class="css-1r2nemk">인기 게시글</p>
-              <p class="css-12j2poz">회원들의 HOT ISSUE</p>
-            </div>
-            <img src="../assets/img/danger.png" loading="lazy" class="css-1522xt9" />
-          </button><button class="css-bcb9a9">
-            <div class="css-197aby8">
-              <p class="css-1r2nemk">스터디원 모집</p>
-              <p class="css-12j2poz">
-                함꼐 프로그래밍 공부를 할 <br />팀원을 모을 수 있는 환경
-              </p>
-            </div>
-            <img src="../assets/img/study.png" loading="lazy" class="css-1522xt9" />
-          </button><button class="css-bcb9a9">
-            <div class="css-197aby8">
-              <p class="css-1r2nemk">공지사항</p>
-              <p class="css-12j2poz">BOOTSHELF 공지사항</p>
-            </div>
-            <img src="../assets/img/notice.png" loading="lazy" class="css-1522xt9" />
-          </button>
+          <router-link to="/board">
+            <a>
+              <button class="css-bcb9a9">
+                <div class="css-197aby8">
+                  <p class="css-1r2nemk">인기 게시글</p>
+                  <p class="css-12j2poz">회원들의 HOT ISSUE</p>
+                </div>
+                <img src="../assets/img/danger.png" loading="lazy" class="css-1522xt9" />
+              </button></a>
+          </router-link>
+          <router-link to="/study">
+            <a>
+              <button class="css-bcb9a9">
+                <div class="css-197aby8">
+                  <p class="css-1r2nemk">스터디원 모집</p>
+                  <p class="css-12j2poz">
+                    함꼐 프로그래밍 공부를 할 <br />팀원을 모을 수 있는 환경
+                  </p>
+                </div>
+                <img src="../assets/img/study.png" loading="lazy" class="css-1522xt9" />
+              </button></a>
+          </router-link>
+          <router-link to="/notice">
+            <a>
+              <button class="css-bcb9a9">
+                <div class="css-197aby8">
+                  <p class="css-1r2nemk">공지사항</p>
+                  <p class="css-12j2poz">BOOTSHELF 공지사항</p>
+                </div>
+                <img src="../assets/img/notice.png" loading="lazy" class="css-1522xt9" />
+              </button></a>
+          </router-link>
         </div>
       </section>
     </div>
   </div>
-
 </template>
 
 <script>
+import HeaderComponent from "@/components/HeaderComponent.vue";
+
 export default {
-  mounted() {
-    this.$root.hideHeaderAndFooter = true;
+  name: "MainPage",
+  components: {
+    HeaderComponent,
+  },
+  data() {
+    return {
+      showBorder: false,
+      showMenu: false,
+      showLogo: false,
+    };
   },
 };
 </script>
@@ -111,6 +145,7 @@ body {
   overflow-x: hidden;
   font-size: 1.4rem;
   box-sizing: border-box;
+  background-color: #fff;
 }
 
 @media screen and (max-width: 320px) {
@@ -231,7 +266,6 @@ ul {
   display: flex;
   width: 100vw;
   height: 20vw;
-  padding-top: 20px;
   padding-bottom: 0px;
   flex-direction: column;
   gap: 30px;
@@ -249,7 +283,7 @@ ul {
   display: flex;
   width: 100vw;
   padding-top: 0px;
-  padding-bottom: 300px;
+  padding-bottom: 200px;
   flex-direction: column;
   gap: 30px;
   background: white;
@@ -260,7 +294,7 @@ ul {
     align-items: center;
     gap: 60px;
     padding-top: 0px;
-    padding-bottom: 300px;
+    padding-bottom: 200px;
   }
 }
 
@@ -473,13 +507,9 @@ ul {
 
 @media (min-width: 820px) {
   .css-zea7jz {
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     gap: 60px;
-    margin-top: 50px;
-    padding-top: 50px;
+    padding-top: 240px;
     padding-bottom: 30px;
   }
 }
@@ -492,6 +522,7 @@ ul {
 }
 
 .SectionTitle_container__PcXfF.SectionTitle_center__bSviY {
+  padding-top: 120px;
   align-items: center;
   text-align: center;
 }
@@ -870,7 +901,6 @@ textarea:lang(ko) {
 }
 
 .css-16z0wya {
-  padding-top: 100px;
   display: flex;
   flex-direction: column;
 }

@@ -101,7 +101,6 @@
           <div class="css-1ry6usa">1000</div>
         </div>
       </div>
-      <div class="css-z2xt5y"></div>
     </div>
     <!--모바일 추천수-->
     <div class="css-k9ergi">
@@ -207,122 +206,117 @@ export default {
 
 <style scoped>
 .css-k59gj9 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
 }
-@media (min-width: 820px)
-{
-.css-aw1sgr {
-    padding: 24px 0px;
+@media (min-width: 820px) {
+  .css-aw1sgr {
+    padding: 15px 0px;
     border-bottom: 1px solid rgb(228, 235, 240);
     gap: 14px;
     cursor: pointer;
-}
+  }
 }
 .css-aw1sgr {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    padding: 24px 16px;
-    background-color: rgb(255, 255, 255);
-    gap: 16px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 24px 16px;
+  background-color: rgb(255, 255, 255);
+  gap: 16px;
 }
 .css-amlmv6 {
-    width: 100%;
-    display: none;
-    flex-direction: row;
-    -webkit-box-pack: start;
-    justify-content: start;
-    -webkit-box-align: center;
-    align-items: center;
-    gap: 8px;
+  width: 100%;
+  display: none;
+  flex-direction: row;
+  -webkit-box-pack: start;
+  justify-content: start;
+  -webkit-box-align: center;
+  align-items: center;
+  gap: 8px;
 }
-@media (min-width: 820px)
-{
-.css-amlmv6 {
+@media (min-width: 820px) {
+  .css-amlmv6 {
     display: none;
-}
+  }
 }
 .css-1254q6y {
-    display: inline-flex;
-    -webkit-box-pack: start;
-    justify-content: start;
-    -webkit-box-align: center;
-    align-items: center;
-    gap: 4px;
-    padding: 2px 12px 0px;
-    border-radius: 40px;
-    height: 28px;
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 1;
-    color: rgb(58, 62, 65);
-    background-color: rgb(238, 243, 246);
+  display: inline-flex;
+  -webkit-box-pack: start;
+  justify-content: start;
+  -webkit-box-align: center;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 12px 0px;
+  border-radius: 40px;
+  height: 28px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  color: rgb(58, 62, 65);
+  background-color: rgb(238, 243, 246);
 }
 
-@media (min-width: 1024px)
-{
-.css-1254q6y {
+@media (min-width: 1024px) {
+  .css-1254q6y {
     margin-left: 8px;
-}
+  }
 }
 .css-kem115 {
-    display: flex;
-    flex-direction: row;
-    -webkit-box-pack: justify;
-    justify-content: space-between;
-    -webkit-box-align: center;
-    align-items: center;
-    gap: 16px;
+  display: flex;
+  flex-direction: row;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  align-items: center;
+  gap: 16px;
 }
 .css-12i5occ {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
 }
-@media (min-width: 820px)
-{
-.css-12i5occ {
+@media (min-width: 820px) {
+  .css-12i5occ {
     gap: 4px;
     width: 100%;
-}
+  }
 }
 .css-1jibmi3 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    gap: 4px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  gap: 4px;
 }
 .css-cp47oo {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow-wrap: break-word;
-    word-break: break-all;
-    font-family: Pretendard;
-    font-style: normal;
-    line-height: 21px;
-    color: rgb(20, 22, 23);
-    font-size: 14px;
-    font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow-wrap: break-word;
+  word-break: break-all;
+  font-family: Pretendard;
+  font-style: normal;
+  line-height: 21px;
+  color: rgb(20, 22, 23);
+  font-size: 14px;
+  font-weight: 600;
 }
 
-@media (min-width: 820px)
-{
-.css-cp47oo {
+@media (min-width: 820px) {
+  .css-cp47oo {
     font-family: Pretendard;
     font-style: normal;
     line-height: 24px;
@@ -330,204 +324,200 @@ export default {
     max-width: 83%;
     font-size: 16px;
     font-weight: 600;
+  }
 }
-}
-@media (min-width: 820px)
-{
-.css-14bssip {
+@media (min-width: 820px) {
+  .css-14bssip {
     font-family: Pretendard;
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
     line-height: 21px;
     color: rgb(95, 102, 107);
-}
+  }
 }
 
 .css-14bssip {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow-wrap: break-word;
-    font-family: Pretendard;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 21px;
-    color: rgb(95, 102, 107);
-    word-break: keep-all;
-    height: 42px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow-wrap: break-word;
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 21px;
+  color: rgb(95, 102, 107);
+  word-break: keep-all;
+  height: 42px;
 }
 .css-sebsp7 {
-    display: flex;
-    flex-direction: row;
-    gap: 4px;
-    height: 18px;
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  height: 18px;
 }
 
 .css-bt1qy {
-    display: flex;
-    flex-direction: row;
-    gap: 16px;
-    height: 46px;
-    -webkit-box-align: start;
-    align-items: start;
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  height: 46px;
+  -webkit-box-align: start;
+  align-items: start;
 }
 .css-1ry6usa {
-    font-family: Pretendard;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 18px;
-    color: rgb(157, 167, 174);
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: rgb(157, 167, 174);
 }
 .css-99cwur {
-    display: flex;
-    flex-direction: row;
-    -webkit-box-pack: justify;
-    justify-content: space-between;
-    -webkit-box-align: center;
-    align-items: center;
-    height: 24px;
+  display: flex;
+  flex-direction: row;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  align-items: center;
+  height: 24px;
 }
 .css-1fhge30 {
-    display: flex;
-    flex-direction: row;
-    -webkit-box-align: center;
-    align-items: center;
-    gap: 8px;
+  display: flex;
+  flex-direction: row;
+  -webkit-box-align: center;
+  align-items: center;
+  gap: 8px;
 }
 .css-aw18wm {
-    width: 24px;
-    height: 24px;
-    position: relative;
-    border-radius: 100%;
-    overflow: hidden;
+  width: 24px;
+  height: 24px;
+  position: relative;
+  border-radius: 100%;
+  overflow: hidden;
 }
 .css-5zcuov {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    gap: 4px;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  gap: 4px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 .css-1sika4i {
-    font-family: Pretendard;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 12px;
-    line-height: 18px;
-    color: rgb(58, 62, 65);
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 18px;
+  color: rgb(58, 62, 65);
 }
 .css-1tify6w {
-    width: 2px;
-    height: 2px;
-    display: flex;
+  width: 2px;
+  height: 2px;
+  display: flex;
 }
-@media (min-width: 820px)
-{
-.css-o01lup {
+@media (min-width: 820px) {
+  .css-o01lup {
     display: flex;
     flex-direction: row;
     -webkit-box-align: center;
     align-items: center;
     gap: 2px;
-}
+  }
 }
 .css-o01lup {
-    display: none;
+  display: none;
 }
 .css-ts29it {
-    display: flex;
-    flex-direction: row;
-    -webkit-box-align: center;
-    align-items: center;
-    gap: 4px;
+  display: flex;
+  flex-direction: row;
+  -webkit-box-align: center;
+  align-items: center;
+  gap: 4px;
 }
 .css-dbc8ke {
-    font-family: Pretendard;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 18px;
-    color: rgb(157, 167, 174);
-    margin: 0px 4px;
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: rgb(157, 167, 174);
+  margin: 0px 4px;
 }
 
-@media (min-width: 820px)
-{
-.css-1vkj2s1 {
+@media (min-width: 820px) {
+  .css-1vkj2s1 {
     display: none;
-}
+  }
 }
 .css-1vkj2s1 {
-    flex-direction: row;
-    -webkit-box-align: center;
-    align-items: center;
-    gap: 4px;
-    display: flex;
+  flex-direction: row;
+  -webkit-box-align: center;
+  align-items: center;
+  gap: 4px;
+  display: flex;
 }
 .css-z2xt5y {
-    width: 100%;
-    display: none;
-    flex-direction: row;
-    -webkit-box-pack: end;
-    justify-content: end;
-    -webkit-box-align: center;
-    align-items: center;
+  width: 100%;
+  display: none;
+  flex-direction: row;
+  -webkit-box-pack: end;
+  justify-content: end;
+  -webkit-box-align: center;
+  align-items: center;
 }
 
-@media (min-width: 820px)
-{
-.css-z2xt5y {
+@media (min-width: 820px) {
+  .css-z2xt5y {
     display: flex;
-}
+  }
 }
 .css-k9ergi {
-    width: 100%;
-    height: 42px;
-    background-color: rgb(255, 255, 255);
-    border-top: 1px solid rgb(228, 235, 240);
-    border-bottom: none;
-    display: flex;
-    flex-direction: row;
-    -webkit-box-pack: justify;
-    justify-content: space-between;
-    padding: 0px 24px;
+  width: 100%;
+  height: 42px;
+  background-color: rgb(255, 255, 255);
+  border-top: 1px solid rgb(228, 235, 240);
+  border-bottom: none;
+  display: flex;
+  flex-direction: row;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  padding: 0px 24px;
 }
 .css-192oc4s {
-    display: flex;
-    flex-direction: row;
-    -webkit-box-align: center;
-    align-items: center;
-    -webkit-box-pack: center;
-    justify-content: center;
-    width: 96px;
-    height: 42px;
+  display: flex;
+  flex-direction: row;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  width: 96px;
+  height: 42px;
 }
 .css-hr47l6 {
-    width: 16px;
-    height: 16px;
+  width: 16px;
+  height: 16px;
 }
 .css-i21m7n {
-    font-family: Pretendard;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 18px;
-    color: rgb(180, 191, 198);
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: rgb(180, 191, 198);
 }
-@media (min-width: 820px)
-{.css-17t7asl {
+@media (min-width: 820px) {
+  .css-17t7asl {
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
@@ -537,35 +527,31 @@ export default {
     flex-direction: column;
     margin-bottom: 24px;
     gap: 24px;
+  }
 }
-}
-@media (min-width: 820px)
-{
-.css-k9ergi {
+@media (min-width: 820px) {
+  .css-k9ergi {
     display: none;
+  }
 }
-}
-@media (min-width: 820px)
-{
-.css-o01lup {
+@media (min-width: 820px) {
+  .css-o01lup {
     display: flex;
     flex-direction: row;
     -webkit-box-align: center;
     align-items: center;
     gap: 2px;
-}
+  }
 }
 
-@media (min-width: 820px)
-{
-.css-1vkj2s1 {
+@media (min-width: 820px) {
+  .css-1vkj2s1 {
     display: none;
+  }
 }
-}
-@media (min-width: 820px)
-{
-.css-z2xt5y {
+@media (min-width: 820px) {
+  .css-z2xt5y {
     display: flex;
-}
+  }
 }
 </style>
