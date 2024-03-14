@@ -1,5 +1,7 @@
 package com.example.bootshelf.reviewsvc.review.repository.querydsl;
 
+import com.example.bootshelf.boardsvc.board.model.entity.Board;
+import com.example.bootshelf.boardsvc.board.model.entity.QBoard;
 import com.example.bootshelf.common.error.ErrorCode;
 import com.example.bootshelf.common.error.entityexception.ReviewException;
 import com.example.bootshelf.reviewsvc.review.model.entity.QReview;
@@ -9,6 +11,7 @@ import com.example.bootshelf.reviewsvc.reviewimage.model.QReviewImage;
 import com.example.bootshelf.user.model.entity.QUser;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPQLQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -115,6 +118,70 @@ public class ReviewRepositoryCustomImpl extends QuerydslRepositorySupport implem
                 .fetch();
 
         return new PageImpl<>(result, pageable, result.size());
+    }
+
+    @Override
+    public Page<Review> searchReviewListByQuery(Pageable pageable, String query, Integer searchType) {
+        QReview qReview = QReview.review;
+
+        BooleanExpression searchCondition = searchType == 1 ? titleContains(query)
+                : titleContains(query).or(contentContains(query));
+
+        // 조회 쿼리 생성 및 페이징 처리
+        JPQLQuery<Review> querySQL = from(qReview)
+                .leftJoin(qReview.user).fetchJoin()
+                .leftJoin(qReview.reviewCategory).fetchJoin()
+                .where(searchCondition)
+                .orderBy(qReview.createdAt.desc());
+
+        // pagination 적용
+        JPQLQuery<Review> pageableQuery = getQuerydsl().applyPagination(pageable, querySQL);
+        List<Review> reviewList = pageableQuery.fetch();
+
+        return new PageImpl<>(reviewList, pageable, pageableQuery.fetchCount());
+    }
+
+    private BooleanExpression titleContains(String query) {
+        if (query == null || query.trim().isEmpty()) return null;
+        return QReview.review.reviewTitle.containsIgnoreCase(query);
+    }
+
+    private BooleanExpression contentContains(String query) {
+        if (query == null || query.trim().isEmpty()) return null;
+        return QReview.review.reviewContent.containsIgnoreCase(query);
+    }
+
+    @Override
+    public Page<Review> searchReviewListByQueryV2(Pageable pageable, String query, Integer searchType) {
+        QReview qReview = QReview.review;
+
+        // 검색 조건
+        BooleanExpression searchCondition = searchType == 1 ? titleContainsV2(query)
+                : titleContainsV2(query).or(contentContainsV2(query)); // Ensure correct method names are used
+
+        // 조회 쿼리 생성 및 페이징 처리
+        JPQLQuery<Review> querySQL = from(qReview)
+                .leftJoin(qReview.user).fetchJoin()
+                .leftJoin(qReview.reviewCategory).fetchJoin()
+                .where(searchCondition)
+                .orderBy(qReview.createdAt.desc());
+
+        // pagination 적용
+        JPQLQuery<Review> pageableQuery = getQuerydsl().applyPagination(pageable, querySQL);
+        List<Review> reviewList = pageableQuery.fetch();
+        long count = pageableQuery.fetchCount(); // Fetch the count of all matching records
+
+        return new PageImpl<>(reviewList, pageable, count); // Return a Page<Board> instead of List<Board>
+    }
+
+    private BooleanExpression titleContainsV2(String query) {
+        if (query == null || query.trim().isEmpty()) return null;
+        return QReview.review.reviewTitle.containsIgnoreCase(query);
+    }
+
+    private BooleanExpression contentContainsV2(String query) {
+        if (query == null || query.trim().isEmpty()) return null;
+        return QReview.review.reviewContent.containsIgnoreCase(query);
     }
 
     // 검색어에 따른 조건을 리턴하는 메서드
