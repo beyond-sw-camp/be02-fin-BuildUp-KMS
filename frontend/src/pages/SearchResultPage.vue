@@ -216,10 +216,15 @@ export default {
       "https://statics.goorm.io/gds/goormstrap/v1.29.0/goormstrap.v4.min.css";
     document.head.appendChild(link);
 
-    // URL에서 쿼리 매개변수 읽음.
-    const query = this.$route.query.query;
-    const searchType = this.$route.query.option;
+    // URL에서 쿼리 매개변수 읽음
+    const query = this.$route.query.query || '';
+    const searchType = this.$route.query.option || '';
 
+    // 상태 업데이트
+    this.query = query;
+    this.searchType = searchType;
+
+    // 게시판 목록 불러오기
     await this.boardStore.getBoardListByQuery(query, searchType);
   },
   computed: {
@@ -227,7 +232,13 @@ export default {
     visiblePages() {
       // 최대 5개의 페이지 번호만 보이도록 계산
       let pages = [];
-      for (let i = 1; i <= Math.min(5, this.boardStore.totalPages); i++) {
+      const total = this.boardStore.totalPages;
+      let start = Math.max(1, this.boardStore.currentPage - 2);
+      let end = Math.min(total, start + 4);
+      if (end === total) { // 마지막 페이지가 범위에 포함되면 시작점 조정
+        start = Math.max(1, end - 4);
+      }
+      for (let i = start; i <= end; i++) {
         pages.push(i);
       }
       return pages;
@@ -244,6 +255,8 @@ export default {
       // 현재 페이지에서 3페이지 앞으로 점프
       let nextPage = Math.min(this.boardStore.currentPage + 3, this.boardStore.totalPages);
       this.changePage(nextPage);
+      // visiblePages를 업데이트하기 위해 currentPage를 설정
+      this.boardStore.currentPage = nextPage;
     }
   },
 };

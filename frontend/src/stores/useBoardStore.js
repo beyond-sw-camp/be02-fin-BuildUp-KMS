@@ -1,22 +1,19 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 
-const backend = "http://localhost:8080"; 
+const backend = "http://localhost:8080";
 
 export const useBoardStore = defineStore("board", {
   state: () => ({
     boardList: [],
-    currentPage: 1,
+    currentPage: 0,
     totalPages: 0,
     totalCnt: 0
   }),
   actions: {
     async getBoardListByQuery(query, option, page = 1) {
       try {
-        let response = await axios.get(
-          backend + "/board/search?query=" + query + "&searchType=" + option
-        );
-
+        let response = await axios.get(backend + "/board/search?query=" + query + "&searchType=" + option + "&page=" + (page - 1));
         this.boardList = response.data.result.list;
         this.totalPages = response.data.result.totalPages;
         this.currentPage = page;
