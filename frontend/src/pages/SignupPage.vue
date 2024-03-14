@@ -3,42 +3,22 @@
     <div class="css-1k8rayr">
       <div class="css-111ukc0">
         <div class="css-1wlmsap">
-          <img src="@/assets/img/002.png" class="css-1k8svhy" />
+          <a href="/">
+            <img src="@/assets/img/002.png" class="css-1k8svhy" />
+          </a>
           <div class="line"></div>
           <div direction="vertical" size="20" class="css-1i0k62c"></div>
-          <div
-            class="pic-holder"
-            @mouseover="showUploadText = true"
-            @mouseleave="showUploadText = false"
-          >
-            <img
-              v-if="!selectedProfileImage"
-              class="pic"
-              :src="defaultProfileImage"
-            />
+          <div class="pic-holder" @mouseover="showUploadText = true" @mouseleave="showUploadText = false">
+            <img v-if="!selectedProfileImage" class="pic" :src="defaultProfileImage" />
             <img v-else class="pic" :src="selectedProfileImageURL" />
-            <input
-              class="uploadProfileInput"
-              type="file"
-              name="profile_pic"
-              id="newProfilePhoto"
-              accept="image/*"
-              style="opacity: 0"
-              @change="handleProfileImageChange"
-            />
-            <label
-              v-if="!selectedProfileImage || showUploadText"
-              for="newProfilePhoto"
-              class="upload-file-block"
-            >
+            <input class="uploadProfileInput" type="file" name="profile_pic" id="newProfilePhoto" accept="image/*"
+              style="opacity: 0" @change="handleProfileImageChange" />
+            <label v-if="!selectedProfileImage || showUploadText" for="newProfilePhoto" class="upload-file-block">
               <div class="text-center">
                 <div class="mb-2">
                   <i class="fa fa-camera fa-2x"></i>
                 </div>
-                <div
-                  class="text-uppercase"
-                  v-if="!selectedProfileImage || showUploadText"
-                >
+                <div class="text-uppercase" v-if="!selectedProfileImage || showUploadText">
                   프로필 이미지 <br />
                   업로드
                 </div>
@@ -49,111 +29,50 @@
           <div direction="vertical" size="60" class="css-1bisjhm"></div>
           <div class="css-1b8vwo3">이메일</div>
           <div class="css-666rgn">
-            <input
-              placeholder="이메일을 입력해 주세요."
-              type="string"
-              autocapitalize="off"
-              class="login-custom-input css-ownijh"
-              value=""
-            />
+            <input placeholder="이메일을 입력해 주세요." type="string" autocapitalize="off" class="login-custom-input css-ownijh"
+              value="" />
           </div>
           <div direction="vertical" size="20" class="css-1i0k62c"></div>
 
           <div class="css-1b8vwo3-1">비밀번호</div>
           <div class="css-666rgn">
-            <input
-              placeholder="비밀번호를 입력해주세요."
-              type="password"
-              autocapitalize="off"
-              class="login-custom-input css-1f4y3nx"
-              value=""
-            />
+            <input placeholder="비밀번호를 입력해주세요." type="password" autocapitalize="off"
+              class="login-custom-input css-1f4y3nx" value="" />
           </div>
           <div direction="vertical" size="20" class="css-1i0k62c"></div>
           <div class="css-1b8vwo3-2">이름</div>
           <div class="css-666rgn">
-            <input
-              placeholder="이름을 입력해주세요."
-              type="string"
-              autocapitalize="off"
-              class="login-custom-input css-ownijh"
-              value=""
-            />
+            <input placeholder="이름을 입력해주세요." type="string" autocapitalize="off" class="login-custom-input css-ownijh"
+              value="" />
           </div>
           <div direction="vertical" size="20" class="css-1i0k62c"></div>
 
           <div class="css-1b8vwo3-3">닉네임</div>
           <div class="css-666rgn">
-            <input
-              placeholder="닉네임을 입력해주세요."
-              type="string"
-              autocapitalize="off"
-              class="login-custom-input css-ownijh"
-              value=""
-            />
+            <input placeholder="닉네임을 입력해주세요." type="string" autocapitalize="off" class="login-custom-input css-ownijh"
+              value="" />
           </div>
           <div direction="vertical" size="32" class="css-h23ofx"></div>
           <div class="css-17w7nyr"></div>
           <div class="css-8luw5u">
             <button class="css-27eumk" @click="toggleAllAgreements">
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 20 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <rect
-                  x="3.33331"
-                  y="3.33331"
-                  width="13.3333"
-                  height="13.3333"
-                  rx="2"
-                  :fill="allAgreements ? '#141617' : 'none'"
-                  :stroke="allAgreements ? '#141617' : '#9DA7AE'"
-                  stroke-width="1.75"
-                ></rect>
-                <path
-                  v-if="allAgreements"
-                  d="M6.8327 10.2727L8.91604 12.1667L13.4994 8"
-                  stroke="#FFFFFF"
-                  stroke-width="1.25"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                ></path>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3.33331" y="3.33331" width="13.3333" height="13.3333" rx="2"
+                  :fill="allAgreements ? '#141617' : 'none'" :stroke="allAgreements ? '#141617' : '#9DA7AE'"
+                  stroke-width="1.75"></rect>
+                <path v-if="allAgreements" d="M6.8327 10.2727L8.91604 12.1667L13.4994 8" stroke="#FFFFFF"
+                  stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path>
               </svg>
               전체 약관 동의
             </button>
             <div class="css-1jf7ho2">
-              <div
-                v-for="(agreement, index) in agreements"
-                :key="index"
-                class="css-d650kt"
-              >
+              <div v-for="(agreement, index) in agreements" :key="index" class="css-d650kt">
                 <button class="css-7hwvbl" @click="toggleAgreement(index)">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      v-if="!agreement.checked"
-                      d="M3.33301 10L7.49967 14.1667L16.6663 5"
-                      stroke="#B4BFC6"
-                      stroke-width="1.75"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    ></path>
-                    <path
-                      v-if="agreement.checked"
-                      d="M3.33301 10L7.49967 14.1667L16.6663 5"
-                      stroke="#141617"
-                      stroke-width="1.75"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    ></path>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path v-if="!agreement.checked" d="M3.33301 10L7.49967 14.1667L16.6663 5" stroke="#B4BFC6"
+                      stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path v-if="agreement.checked" d="M3.33301 10L7.49967 14.1667L16.6663 5" stroke="#141617"
+                      stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"></path>
                   </svg>
                   <div class="css-w2z16z">{{ agreement.label }}</div>
                 </button>
@@ -162,7 +81,9 @@
             </div>
           </div>
           <div direction="vertical" size="40" class="css-ygt1wz"></div>
-          <button color="#FFFFFF" class="css-j27xag">가입하기</button>
+          <button :class="{ 'css-j27xag': true, 'button-disabled': !isSubmitEnabled }" @click="signUpData">
+            가입하기
+          </button>
         </div>
       </div>
     </div>
@@ -170,10 +91,30 @@
 </template>
 
 <script>
+import { mapStores } from "pinia";
+import { useUserStore } from "../stores/useUserStore";
+
 export default {
   name: "SignupPage",
+  computed: {
+    ...mapStores(useUserStore),
+    isSubmitEnabled() {
+      return (
+        this.allAgreed ||
+        this.agreements.slice(0, 3).every((agreement) => agreement.checked)
+      );
+    },
+  }, 
+
   data() {
     return {
+      user: {
+        email: "",
+        password: "",
+        name: "",
+        nickName: "",
+        allAgreed: false,
+      },
       defaultProfileImage: require("@/assets/img/profile.jpg"),
       selectedProfileImage: null,
       selectedProfileImageURL: "",
@@ -199,7 +140,20 @@ export default {
   mounted() {
     this.$root.hideHeaderAndFooter = true;
   },
+   
   methods: {
+
+    async signUpData() {
+      if (!this.isSubmitEnabled) {
+        alert('필수 동의 항목에 동의하지 않았습니다.');
+        return;
+      }
+      await this.userStore.signUpData(this.user, this.selectedProfileImage);
+      if (this.userStore.isSuccess) {
+        this.$router.push({ path: "/email/verify" });
+      }
+    },
+
     handleProfileImageChange(event) {
       const file = event.target.files[0];
       if (file) {
@@ -261,6 +215,15 @@ export default {
       this.allAgreements = this.agreements.every(
         (agreement) => agreement.checked
       );
+    },
+    allAgree() {
+      this.allAgreed = !this.allAgreed;
+      this.agreements.forEach((agreement) => {
+        agreement.checked = this.allAgreed;
+      });
+    },
+    checkAgreement() {
+      this.allAgreed = this.agreements.every((agreement) => agreement.checked);
     },
   },
 };
@@ -806,7 +769,6 @@ svg {
   font-size: 14px;
   transform: translateX(-50%);
 }
-
 .snackbar.show {
   visibility: visible;
   -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
@@ -859,4 +821,4 @@ svg {
   }
 }
 /*-------------프로필 이미지 업로드---------------*/
-</style>
+</style>../stores/useUserStore.js
