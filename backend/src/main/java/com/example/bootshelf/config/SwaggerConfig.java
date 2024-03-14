@@ -61,7 +61,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName("게시판")
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.example.bootshelf.house"))
+                .apis(RequestHandlerSelectors.basePackage("com.example.bootshelf.boardsvc"))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiInfo());
@@ -72,7 +72,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName("후기")
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.example.campingontop.review"))
+                .apis(RequestHandlerSelectors.basePackage("com.example.bootshelf.reviewsvc"))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiInfo());

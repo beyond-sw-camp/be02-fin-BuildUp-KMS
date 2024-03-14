@@ -89,7 +89,11 @@
               autocapitalize="off"
               class="login-custom-input css-1f4y3nx"
               v-model="user.password"
+              @blur="validatePassword"
             />
+          </div>       
+          <div v-if="!passwordValid" class="passwordValidation-message">
+            {{ passwordValidationMessage }}
           </div>
           <div direction="vertical" size="20" class="css-1i0k62c"></div>
           <div class="css-1b8vwo3-2">이름</div>
@@ -185,7 +189,8 @@
           </div>
           <div direction="vertical" size="40" class="css-ygt1wz"></div>
           <button
-            :class="{ 'css-j27xag': true, 'button-disabled': !isSubmitEnabled }"
+            :class="['css-j27xag', { 'button-disabled': !isSubmitEnabled }]"
+            :disabled="!isSubmitEnabled"
             @click="signUpData"
           >
             가입하기
@@ -204,6 +209,21 @@ export default {
   name: "AuthSignupPage",
   computed: {
     ...mapStores(useUserStore),
+    isSubmitEnabled() {
+      const isUserInfoFilled =
+        this.user.email &&
+        this.user.password &&
+        this.user.name &&
+        this.user.nickName;
+
+      const isAllRequiredAgreed = this.agreements
+        .slice(0, 3)
+        .every((agreement) => agreement.checked);
+
+      const isEmailValid = this.emailValid;
+
+      return isUserInfoFilled && isAllRequiredAgreed && isEmailValid;
+    },
   },
   data() {
     return {
@@ -229,6 +249,9 @@ export default {
 
       emailValid: true, // 이메일 유효성 상태
       emailValidationMessage: "", // 이메일 유효성 검사 메시지
+
+      passwordValid: true, // 비밀번호 유효성 상태
+      passwordValidationMessage: "", // 비밀번호 유효성 검사 메시지
 
       agreements: [
         { label: "[필수] 만 14세 이상", checked: false },
@@ -326,6 +349,14 @@ export default {
       this.emailValidationMessage = this.emailValid
         ? ""
         : "! 올바른 이메일 형식( test@example.com )으로 입력해주세요.";
+    },
+
+    validatePassword() {
+      const regex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,45}$/;
+      this.passwordValid = regex.test(this.user.password);
+      this.passwordValidationMessage = this.passwordValid
+        ? ""
+        : "! 패스워드는 대/소문자, 특수문자, 숫자를 반드시 포함한 8글자 이상이어야 합니다.";
     },
   },
 };
@@ -505,6 +536,15 @@ input[type="password" i] {
   margin-right: 150px;
   font-weight: bold;
 }
+
+.passwordValidation-message {
+  font-size: 10px;
+  color: red;
+  margin-top: 10px;
+  margin-right: 54px;
+  font-weight: bold;
+  width: max-content;
+}
 .css-ygt1wz {
   width: 100%;
   height: 40px;
@@ -660,6 +700,10 @@ svg {
   -webkit-box-align: center;
   align-items: center;
   gap: 8px;
+}
+
+.button-disabled {
+  opacity: 0.3;
 }
 
 .css-1wlmsap {

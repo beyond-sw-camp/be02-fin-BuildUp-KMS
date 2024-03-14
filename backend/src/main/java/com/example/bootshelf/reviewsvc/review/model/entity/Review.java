@@ -49,10 +49,10 @@ public class Review {
     @OneToMany(mappedBy = "review")
     private List<ReviewComment> reviewCommentList = new ArrayList<>();
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 500)
     private String reviewTitle;
 
-    @Column(nullable = false, length = 400)
+    @Column(nullable = false, length = 1000)
     private String reviewContent;
 
     @Column(nullable = false, length = 200)
