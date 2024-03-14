@@ -164,19 +164,11 @@ public class BoardService {
                 tagIdxs.add(tagIdx);
             }
 
-            List<BoardImage> boardImageList = board.getBoardImageList();
-            List<String> fileNames = new ArrayList<>();
-            for(BoardImage boardImage : boardImageList){
-                String fileName = boardImage.getBoardImage();
-                fileNames.add(fileName);
-            }
-
             GetListBoardRes getListBoardRes = GetListBoardRes.builder()
                     .boardIdx(board.getIdx())
                     .boardTitle(board.getBoardTitle())
                     .boardContent(board.getBoardContent())
                     .boardCategoryIdx(board.getBoardCategory().getIdx())
-                    .boardImg(fileNames.get(0))
                     .tagList(tagIdxs)
                     .viewCnt(board.getViewCnt())
                     .upCnt(board.getUpCnt())
@@ -184,6 +176,16 @@ public class BoardService {
                     .commentCnt(board.getCommentCnt())
                     .updatedAt(board.getUpdatedAt())
                     .build();
+
+            List<BoardImage> boardImageList = board.getBoardImageList();
+            List<String> fileNames = new ArrayList<>();
+            if(!boardImageList.isEmpty()){
+                for(BoardImage boardImage : boardImageList){
+                    String fileName = boardImage.getBoardImage();
+                    fileNames.add(fileName);
+                }
+                getListBoardRes.setBoardImg(fileNames.get(0));
+            }
 
             getListBoardResList.add(getListBoardRes);
         }
@@ -211,19 +213,11 @@ public class BoardService {
                 tagIdxs.add(tagIdx);
             }
 
-            List<BoardImage> boardImageList = board.getBoardImageList();
-            List<String> fileNames = new ArrayList<>();
-            for(BoardImage boardImage : boardImageList){
-                String fileName = boardImage.getBoardImage();
-                fileNames.add(fileName);
-            }
-
             GetListBoardRes getListBoardRes = GetListBoardRes.builder()
                     .boardIdx(board.getIdx())
                     .boardTitle(board.getBoardTitle())
                     .boardContent(board.getBoardContent())
                     .boardCategoryIdx(board.getBoardCategory().getIdx())
-                    .boardImg(fileNames.get(0))
                     .tagList(tagIdxs)
                     .viewCnt(board.getViewCnt())
                     .upCnt(board.getUpCnt())
@@ -231,6 +225,16 @@ public class BoardService {
                     .commentCnt(board.getCommentCnt())
                     .updatedAt(board.getUpdatedAt())
                     .build();
+
+            List<BoardImage> boardImageList = board.getBoardImageList();
+            List<String> fileNames = new ArrayList<>();
+            if(!boardImageList.isEmpty()){
+                for(BoardImage boardImage : boardImageList){
+                    String fileName = boardImage.getBoardImage();
+                    fileNames.add(fileName);
+                }
+                getListBoardRes.setBoardImg(fileNames.get(0));
+            }
 
             getListBoardResList.add(getListBoardRes);
         }
@@ -257,19 +261,11 @@ public class BoardService {
                 tagIdxs.add(tagIdx);
             }
 
-            List<BoardImage> boardImageList = board.getBoardImageList();
-            List<String> fileNames = new ArrayList<>();
-            for(BoardImage boardImage : boardImageList){
-                String fileName = boardImage.getBoardImage();
-                fileNames.add(fileName);
-            }
-
             GetListBoardRes getListBoardRes = GetListBoardRes.builder()
                     .boardIdx(board.getIdx())
                     .boardTitle(board.getBoardTitle())
                     .boardContent(board.getBoardContent())
                     .boardCategoryIdx(board.getBoardCategory().getIdx())
-                    .boardImg(fileNames.get(0))
                     .tagList(tagIdxs)
                     .viewCnt(board.getViewCnt())
                     .upCnt(board.getUpCnt())
@@ -277,6 +273,16 @@ public class BoardService {
                     .commentCnt(board.getCommentCnt())
                     .updatedAt(board.getUpdatedAt())
                     .build();
+
+            List<BoardImage> boardImageList = board.getBoardImageList();
+            List<String> fileNames = new ArrayList<>();
+            if(!boardImageList.isEmpty()){
+                for(BoardImage boardImage : boardImageList){
+                    String fileName = boardImage.getBoardImage();
+                    fileNames.add(fileName);
+                }
+                getListBoardRes.setBoardImg(fileNames.get(0));
+            }
 
             getListBoardResList.add(getListBoardRes);
         }
@@ -303,19 +309,12 @@ public class BoardService {
                 tagIdxs.add(tagIdx);
             }
 
-            List<BoardImage> boardImageList = board.getBoardImageList();
-            List<String> fileNames = new ArrayList<>();
-            for(BoardImage boardImage : boardImageList){
-                String fileName = boardImage.getBoardImage();
-                fileNames.add(fileName);
-            }
 
             GetListBoardRes getListBoardRes = GetListBoardRes.builder()
                     .boardIdx(board.getIdx())
                     .boardTitle(board.getBoardTitle())
                     .boardContent(board.getBoardContent())
                     .boardCategoryIdx(board.getBoardCategory().getIdx())
-                    .boardImg(fileNames.get(0))
                     .tagList(tagIdxs)
                     .viewCnt(board.getViewCnt())
                     .upCnt(board.getUpCnt())
@@ -323,6 +322,16 @@ public class BoardService {
                     .commentCnt(board.getCommentCnt())
                     .updatedAt(board.getUpdatedAt())
                     .build();
+
+            List<BoardImage> boardImageList = board.getBoardImageList();
+            List<String> fileNames = new ArrayList<>();
+            if(!boardImageList.isEmpty()){
+                for(BoardImage boardImage : boardImageList){
+                    String fileName = boardImage.getBoardImage();
+                    fileNames.add(fileName);
+                }
+                getListBoardRes.setBoardImg(fileNames.get(0));
+            }
 
             getListBoardResList.add(getListBoardRes);
         }
