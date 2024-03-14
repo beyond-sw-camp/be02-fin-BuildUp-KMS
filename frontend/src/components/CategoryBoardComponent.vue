@@ -10,8 +10,12 @@
         <div class="css-12i5occ">
           <div class="css-1jibmi3">
             <!--게시글 타이틀-->
-            <div class="css-cp47oo">한화 sw2기 후기</div>
-            <div class="css-14bssip">임xx 독불장군 고집불통 어떻게 하죠??</div>
+            <div class="css-cp47oo">
+              {{ boards.boardTitle }}
+            </div>
+            <div class="css-14bssip">
+              {{ boards.boardContent }}
+            </div>
           </div>
           <!--태그 컴포넌트 자리-->
           <div class="css-fortagcomponentgms">
@@ -20,8 +24,11 @@
         </div>
         <div class="css-bt1qy"></div>
         <!--사진-->
-        <!-- <img v-if="reviews.reviewImage" :src="reviews.reviewImage" class="css-17s6wd5"/> -->
-        <img src="../assets/img/bbb.png" class="css-17s6wd5"/>
+        <img 
+          v-if="boards.boardImage" 
+          :src="boards.boardImage" 
+          class="css-17s6wd5"
+        />
       </div>
       <!--여기서부터는 하단 아이디,추천수..등등-->
       <div class="css-99cwur">
@@ -82,7 +89,7 @@
                 <circle cx="1" cy="1" r="1" fill="#9DA7AE"></circle>
               </svg>
             </div>
-            <div class="css-1ry6usa">몇시간 전</div>
+            <div class="css-1ry6usa"></div>
           </div>
         </div>
         <!-- 여기서부터 추천수 댓글수 등등 표시-->
@@ -205,11 +212,16 @@
 </template>
 
 <script>
-import TagComponent from "@/components/TagComponent.vue"
+import { mapStores } from "pinia";
+import { useBoardStore } from "@/stores/useBoardStore";
+import TagComponent from "@/components/TagComponent.vue";
+
 export default {
   name: "CategoryBoardComponent",
+  props: ["boards"],
   components: {
     TagComponent,
+    ...mapStores(useBoardStore),
   },
 };
 </script>

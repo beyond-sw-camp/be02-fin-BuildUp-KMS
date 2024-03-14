@@ -157,7 +157,6 @@ public class BoardService {
 
             List<BoardTag> boardTagList = board.getBoardTagList();
             List<Integer> tagIdxs = new ArrayList<>();
-
             for(BoardTag boardTag : boardTagList){
                 Integer tagIdx = boardTag.getIdx();
                 tagIdxs.add(tagIdx);

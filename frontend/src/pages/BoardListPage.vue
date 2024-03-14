@@ -75,11 +75,13 @@
             <!--여기서 본격 글 리스트-->
             <div class="css-1csvk83">
               <ul class="css-10c0kk0 e15eiqsa1">
-                <!-- 스터디 글 목록 컴포넌트-->
-                <CategoryBoardComponent />
-                <CategoryBoardComponent />
-                <CategoryBoardComponent />
-                <CategoryBoardComponent />
+                <div
+                  class="css-k59gj9"
+                  v-for="boards in boardStore.boardList"
+                  :key="boards.boardIdx"
+                >
+                  <CategoryBoardComponent :boards="boards" />
+                </div>
               </ul>
             </div>
             <!-- /본격 글 리스트 -->
@@ -92,16 +94,58 @@
 </template>
 
 <script>
+import { mapStores } from "pinia";
+import { useBoardStore } from "@/stores/useBoardStore";
 import CategoryBoardComponent from "@/components/CategoryBoardComponent.vue";
 import HotTagComponent from "@/components/HotTagComponent.vue";
 import PaginationComponent from "@/components/PaginationComponent.vue";
 export default {
   name: "BoardListPage",
+  data(){
+    return {
+      selectedSortType: "최신순",
+      sortType: 1,
+      boardCategoryIdx: "1",
+    };
+  },
+  computed:{
+    ...mapStores(useBoardStore),
+  },
   components: {
     CategoryBoardComponent,
     HotTagComponent,
     PaginationComponent,
   },
+  mounted(){
+    this.loadBoardList();
+  },
+  methods: {
+    updateSortType() {
+      switch (this.selectedSortType) {
+        case "최신순":
+          this.sortType = 1;
+          break;
+        case "추천순":
+          this.sortType = 2;
+          break;
+        case "조회순":
+          this.sortType = 3;
+          break;
+        case "스크랩순":
+          this.sortType = 4;
+          break;
+        case "댓글순":
+          this.sortType = 5;
+          break;
+        default:
+          this.sortType = 1; // 기본값 또는 예외 처리
+      }
+      this.loadBoardList();
+    },
+    loadBoardList(){
+      this.boardStore.findListByCategory(1, this.sortType);
+    },
+  }
 };
 </script>
 
@@ -133,8 +177,6 @@ div {
   line-height: 1.5;
 }
 
-.css-1hnxdb7 {
-}
 .css-mbwamd {
   width: 100%;
   background-color: rgb(255, 255, 255);
