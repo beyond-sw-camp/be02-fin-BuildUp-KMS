@@ -65,7 +65,7 @@ public class ReviewService {
 
         review = reviewRepository.save(review);
 
-        if (reviewImages != null || reviewImages.length > 0) {
+        if (reviewImages != null && reviewImages.length > 0) {
             reviewImageService.createReviewImage(review, reviewImages);
         }
 
