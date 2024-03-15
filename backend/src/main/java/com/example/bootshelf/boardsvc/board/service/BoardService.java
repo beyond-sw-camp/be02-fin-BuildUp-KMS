@@ -119,6 +119,7 @@ public class BoardService {
                         .boardCategoryIdx(board.getBoardCategory().getIdx())
                         .boardImageList(fileNames)
                         .boardTagListIdx(tagIdxs)
+                        .commentCnt(board.getCommentCnt())
                         .viewCnt(board.getViewCnt())
                         .upCnt(board.getUpCnt())
                         .scrapCnt(board.getScrapCnt())
