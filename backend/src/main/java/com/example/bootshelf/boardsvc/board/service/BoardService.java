@@ -388,6 +388,42 @@ public class BoardService {
                 .result(result)
                 .build();
     }
+    @Transactional(readOnly = true)
+    public BaseRes searchBoardListByQueryAndCategory(String query, Integer boardCategoryIdx, Integer sortIdx, Pageable pageable) {
+        Page<Board> boardList = boardRepository.searchBoardListByQueryAndCategory(pageable, query, boardCategoryIdx, sortIdx);
+
+        List<GetBoardListByQueryRes> getBoardListByQueryResList = new ArrayList<>();
+
+        for (Board board : boardList) {
+            GetBoardListByQueryRes getBoardListByQueryRes = GetBoardListByQueryRes.builder()
+                    .boardIdx(board.getIdx())
+                    .boardTitle(board.getBoardTitle())
+                    .boardContent(board.getBoardContent())
+                    .nickName(board.getUser().getNickName())
+                    .createdAt(board.getCreatedAt())
+                    .viewCnt(board.getViewCnt())
+                    .commentCnt(board.getCommentCnt())
+                    .upCnt(board.getUpCnt())
+                    .build();
+
+            getBoardListByQueryResList.add(getBoardListByQueryRes);
+        }
+
+        Long totalCnt = boardList.getTotalElements();
+        Integer totalPages = boardList.getTotalPages();
+
+        GetBoardListByQueryResResult result = GetBoardListByQueryResResult.builder()
+                .totalCnt(totalCnt)
+                .totalPages(totalPages)
+                .list(getBoardListByQueryResList)
+                .build();
+
+        return BaseRes.builder()
+                .isSuccess(true)
+                .message("메인 페이지 검색 결과 조회 성공 <게시판>")
+                .result(result)
+                .build();
+    }
 
     /**
      *  게시판 + 후기 검색 api

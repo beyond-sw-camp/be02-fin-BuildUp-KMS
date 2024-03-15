@@ -143,6 +143,24 @@ public class BoardController {
         return ResponseEntity.ok().body(boardService.searchBoardListByQuery(query, searchType, pageable));
     }
 
+
+    @Operation(summary = "Board 카테고리별 게시글 검색어로 조회",
+            description = "카테고리별 게시판의 게시글을 검색어(키워드)로 조회하는 API입니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500",description = "서버 내부 오류")})
+    @GetMapping ("/search")
+    public ResponseEntity<BaseRes> searchBoardListByQueryAndCategory (
+            @RequestParam String query,
+            @PathVariable(value = "boardCategoryIdx") Integer boardCategoryIdx,
+            @PageableDefault(size = 20) Pageable pageable,
+            @PathVariable @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") @ApiParam(value = "정렬유형 : 1 (최신순), 2 (추천수 순), 3 (조회수 순), 4 (스크랩수 순), 5 (댓글수 순)") Integer sortType
+
+    ){
+        return ResponseEntity.ok().body(boardService.searchBoardListByQueryAndCategory(query, boardCategoryIdx, sortType, pageable));
+    }
+
+  
     /**
      *  게시판 + 후기 검색 api (v2)
      *  -> 페이지네이션 잘 안됨
