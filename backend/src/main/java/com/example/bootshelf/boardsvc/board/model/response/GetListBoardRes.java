@@ -25,7 +25,7 @@ public class GetListBoardRes {
 
     private String boardImg;
 
-    private List<Integer> tagList;
+    private List<String> tagNameList;
 
     private Integer viewCnt;
 
