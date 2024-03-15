@@ -17,7 +17,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class BoardRepositoryCustomImpl extends QuerydslRepositorySupport implements BoardRepositoryCustom {
-    public BoardRepositoryCustomImpl() { super(Board.class); }
+    public BoardRepositoryCustomImpl() {
+        super(Board.class);
+    }
 
     @Override
     public Page<Board> findMyBoardList(Integer userIdx, Pageable pageable, Integer sortIdx) {
@@ -54,7 +56,7 @@ public class BoardRepositoryCustomImpl extends QuerydslRepositorySupport impleme
     }
 
     @Override
-    public Page<Board> findBoardListByCategory (Pageable pageable, Integer categoryIdx, Integer sortIdx) {
+    public Page<Board> findBoardListByCategory(Pageable pageable, Integer categoryIdx, Integer sortIdx) {
         QBoard board = new QBoard("board");
 
         OrderSpecifier[] orderSpecifiers = createOrderSpecifier(sortIdx, board);
@@ -71,7 +73,7 @@ public class BoardRepositoryCustomImpl extends QuerydslRepositorySupport impleme
     }
 
     @Override
-    public Page<Board> findBoardListByTag (Pageable pageable, Integer tagIdx, Integer sortIdx) {
+    public Page<Board> findBoardListByTag(Pageable pageable, Integer tagIdx, Integer sortIdx) {
         QBoard board = new QBoard("board");
         QBoardTag boardTag = new QBoardTag("boardTag");
 
@@ -89,7 +91,7 @@ public class BoardRepositoryCustomImpl extends QuerydslRepositorySupport impleme
         return new PageImpl<>(result, pageable, result.size());
     }
 
-    private OrderSpecifier[] createOrderSpecifier(Integer sortIdx, QBoard board)  {
+    private OrderSpecifier[] createOrderSpecifier(Integer sortIdx, QBoard board) {
         List<OrderSpecifier> orderSpecifiers = new ArrayList<>();
 
         switch (sortIdx) {
@@ -164,6 +166,44 @@ public class BoardRepositoryCustomImpl extends QuerydslRepositorySupport impleme
     }
 
     private BooleanExpression contentContains(String query) {
+        if (query == null || query.trim().isEmpty()) return null;
+        return QBoard.board.boardContent.containsIgnoreCase(query);
+    }
+
+
+    /**
+     *  게시판 (+ 후기) 검색 api (v2)
+     *  -> 페이지네이션 잘 안됨
+     */
+    @Override
+    public Page<Board> searchBoardListByQueryV2(Pageable pageable, String query, Integer searchType) {
+        QBoard qBoard = QBoard.board;
+
+        // 검색 조건
+        BooleanExpression searchCondition = searchType == 1 ? titleContainsV2(query)
+                : titleContainsV2(query).or(contentContainsV2(query)); // Ensure correct method names are used
+
+        // 조회 쿼리 생성 및 페이징 처리
+        JPQLQuery<Board> querySQL = from(qBoard)
+                .leftJoin(qBoard.user).fetchJoin()
+                .leftJoin(qBoard.boardCategory).fetchJoin()
+                .where(searchCondition)
+                .orderBy(qBoard.createdAt.desc());
+
+        // pagination 적용
+        JPQLQuery<Board> pageableQuery = getQuerydsl().applyPagination(pageable, querySQL);
+        List<Board> boardList = pageableQuery.fetch();
+        long count = pageableQuery.fetchCount(); // Fetch the count of all matching records
+
+        return new PageImpl<>(boardList, pageable, count); // Return a Page<Board> instead of List<Board>
+    }
+
+    private BooleanExpression titleContainsV2(String query) {
+        if (query == null || query.trim().isEmpty()) return null;
+        return QBoard.board.boardTitle.containsIgnoreCase(query);
+    }
+
+    private BooleanExpression contentContainsV2(String query) {
         if (query == null || query.trim().isEmpty()) return null;
         return QBoard.board.boardContent.containsIgnoreCase(query);
     }

@@ -166,6 +166,11 @@ public class ReviewRepositoryCustomImpl extends QuerydslRepositorySupport implem
         return QReview.review.reviewContent.containsIgnoreCase(query);
     }
 
+
+    /**
+     *  (게시판 +) 후기 검색 api (v2)
+     *  -> 페이지네이션 잘 안됨
+     */
     @Override
     public Page<Review> searchReviewListByQueryV2(Pageable pageable, String query, Integer searchType) {
         QReview qReview = QReview.review;

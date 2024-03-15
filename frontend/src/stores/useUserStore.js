@@ -42,6 +42,19 @@ export const useUserStore = defineStore("user", {
       this.decodedToken = decodedToken;
     },
 
+    decodeToken() {
+      const storedToken = localStorage.getItem("token");
+      if (storedToken) {
+        const decoded = VueJwtDecode.decode(storedToken);
+        if (decoded.exp < Date.now() / 1000) {
+          this.logout(); 
+        } else {
+          this.decodedToken = decoded;
+          this.isAuthenticated = true;
+        }
+      }
+    },
+
     logout() {
       window.localStorage.removeItem("token");
       this.isAuthenticated = false;
