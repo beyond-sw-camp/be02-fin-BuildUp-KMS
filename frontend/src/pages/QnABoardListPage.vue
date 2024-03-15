@@ -16,11 +16,11 @@
           <div class="css-17t7asl">
             <div class="css-1jibmi3">
               <div class="css-1mpmq0i">
-                <div class="css-18vdxik">카테고리별 게시판</div>
+                <div class="css-18vdxik">Q & A 게시판</div>
               </div>
               <!--부제-->
               <div class="css-1qzbd5x">
-                스터디 모집 등 자유롭게 이야기해보세요!
+                평소에 궁금했던 질문들을 자유롭게 이야기해보세요!
               </div>
             </div>
           </div>
@@ -72,7 +72,7 @@
                     @change="updateSortType"
                   >
                     <option value="최신순">최신순</option>
-                    <option value="조회순">추천순</option>
+                    <option value="추천순">추천순</option>
                     <option value="조회순">조회순</option>
                     <option value="스크랩순">스크랩순</option>
                     <option value="댓글순">댓글순</option>                  
@@ -109,12 +109,12 @@ import HotTagComponent from "@/components/HotTagComponent.vue";
 import PaginationComponent from "@/components/PaginationComponent.vue";
 
 export default {
-  name: "BoardListPage",
+  name: "QnABoardListPage",
   data(){
     return {
       selectedSortType: "최신순",
       sortType: 1,
-      boardCategoryIdx: "1",
+      boardCategoryIdx: "2",
       searchTerm: "",
     };
   },
@@ -349,16 +349,18 @@ div {
   gap: 4px;
   position: relative;
   padding-left: 16px;
+  margin-top: 5px;
 }
 .css-18vdxik {
   font-family: Pretendard;
   font-style: normal;
   font-weight: 600;
-  font-size: 24px;
+  font-size: 36px;
   line-height: 34px;
   color: #141617;
   line-height: 33px;
   color: #141617;
+  padding-bottom: 15px;
 }
 .css-1qzbd5x {
   font-family: Pretendard;
@@ -566,7 +568,7 @@ svg:not(:root) {
   .css-aw1sgr {
     padding: 24px 0px;
     border-bottom: 1px solid rgb(228, 235, 240);
-    gap: 14px;
+    gap: 5px;
     cursor: pointer;
   }
 }
@@ -576,7 +578,7 @@ svg:not(:root) {
   width: 100%;
   padding: 24px 16px;
   background-color: rgb(255, 255, 255);
-  gap: 16px;
+  gap: 6px;
 }
 .css-amlmv6 {
   width: 100%;

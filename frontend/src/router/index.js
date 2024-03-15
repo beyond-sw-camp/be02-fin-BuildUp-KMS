@@ -12,7 +12,6 @@ import StudyBoardPage from "@/pages/StudyBoardPage.vue";
 import SelectSignupPage from "@/pages/SelectSignupPage.vue";
 import BoardDetailsPage from "@/pages/BoardDetailsPage.vue";
 import ReviewDetailsPage from "@/pages/ReviewDetailsPage.vue";
-import BoardListPage from "@/pages/BoardListPage.vue";
 import ReviewListPage from "@/pages/ReviewListPage.vue";
 import EmailValidationPage from "@/pages/EmailValidationPage.vue";
 import NoticeBoardPage from "@/pages/NoticeBoardPage.vue";
@@ -22,6 +21,8 @@ import AdminMainPage from "@/pages/AdminMainPage.vue";
 import AdminWithdrawPage from "@/pages/AdminWithdrawPage.vue";
 import AdminCategoryRegisterPage from "@/pages/AdminCategoryRegisterPage.vue";
 import AdminTagRegisterPage from "@/pages/AdminTagRegisterPage.vue";
+import KnowledgeBoardListPage from "@/pages/KnowledgeBoardListPage.vue";
+import QnABoardListPage from "@/pages/QnABoardListPage.vue";
 
 const requireAuth = () => (from, to, next) => {
   const token = localStorage.getItem("token");
@@ -60,7 +61,8 @@ const routes = [
   { path: "/study", component: StudyBoardPage },
   { path: "/board/:boardIdx", component: BoardDetailsPage },
   { path: "/review/:idx", component: ReviewDetailsPage },
-  { path: "/board", component: BoardListPage },
+  { path: "/board/knowledge", component: KnowledgeBoardListPage },
+  { path: "/board/qna", component: QnABoardListPage },
   { path: "/review", component: ReviewListPage },
   { path: "/select/signup", component: SelectSignupPage },
   { path: "/email/verify", component: EmailValidationPage },
