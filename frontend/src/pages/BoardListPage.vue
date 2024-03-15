@@ -50,12 +50,15 @@
                             class="css-search-002"
                             type="text"
                             placeholder="검색어를 입력하세요."
+                            v-model="searchTerm"
+                            @keyup.enter="sendSearchData()"
                           />
                         </div>
                         <img
                           class="css-search-img"
                           src="https://img.icons8.com/ios-glyphs/30/search--v1.png"
                           alt="search--v1"
+                          @click="sendSearchData()"
                         />
                       </div>
                     </div>
@@ -112,6 +115,7 @@ export default {
       selectedSortType: "최신순",
       sortType: 1,
       boardCategoryIdx: "1",
+      searchTerm: "",
     };
   },
   computed:{
@@ -148,9 +152,18 @@ export default {
       }
       this.loadBoardList();
     },
-    loadBoardList(){
-      this.boardStore.findListByCategory(1, this.sortType);
-    }
+    loadBoardList() {
+      // 검색어가 있는 경우
+      if (this.searchTerm) {
+        this.boardStore.getBoardListByQuery(this.searchTerm, this.sortType);
+      } else {
+        // 검색어가 없는 경우
+        this.boardStore.findListByCategory(this.boardCategoryIdx, this.sortType);
+      }
+    },
+    sendSearchData() {
+      this.loadBoardList();
+    },
   }
 };
 </script>
