@@ -148,7 +148,7 @@ public class BoardController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500",description = "서버 내부 오류")})
-    @GetMapping ("/search")
+    @GetMapping ("/{boardCategoryIdx}/search")
     public ResponseEntity<BaseRes> searchBoardListByQueryAndCategory (
             @RequestParam String query,
             @PathVariable(value = "boardCategoryIdx") Integer boardCategoryIdx,
