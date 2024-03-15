@@ -65,7 +65,7 @@ public class ReviewService {
 
         review = reviewRepository.save(review);
 
-        if (reviewImages == null || reviewImages.length == 0) {
+        if (reviewImages != null || reviewImages.length > 0) {
             reviewImageService.createReviewImage(review, reviewImages);
         }
 
@@ -165,10 +165,19 @@ public class ReviewService {
             getListReviewResList.add(getListReviewRes);
         }
 
+        Long totalCnt = reviewList.getTotalElements();
+        Integer totalPages = reviewList.getTotalPages();
+
+        GetListReviewResResult result = GetListReviewResResult.builder()
+                .totalCnt(totalCnt)
+                .totalPages(totalPages)
+                .list(getListReviewResList)
+                .build();
+
         BaseRes baseRes = BaseRes.builder()
                 .isSuccess(true)
                 .message("후기글 목록 조회 요청 성공")
-                .result(getListReviewResList)
+                .result(result)
                 .build();
 
         return baseRes;
@@ -215,6 +224,7 @@ public class ReviewService {
 
         GetReadReviewRes getReadReviewRes = GetReadReviewRes.builder()
                 .reviewIdx(review.getIdx())
+                .reviewCategoryName(review.getReviewCategory().getCategoryName())
                 .userIdx(review.getUser().getIdx())
                 .userNickName(review.getUser().getNickName())
                 .profileImage(review.getUser().getProfileImage())
@@ -222,8 +232,8 @@ public class ReviewService {
                 .reviewContent(review.getReviewContent())
                 .courseName(review.getCourseName())
                 .courseEvaluation(review.getCourseEvaluation())
-                .viewCnt(review.getViewCnt())
                 .upCnt(review.getUpCnt())
+                .scrapCnt(review.getScrapCnt())
                 .commentCnt(review.getCommentCnt())
                 .updatedAt(review.getUpdatedAt())
                 .reviewImageList(getListImageReviewResList)
@@ -256,7 +266,7 @@ public class ReviewService {
                 .reviewCommentContent(reviewComment.getReviewCommentContent())
                 .upCnt(reviewComment.getUpCnt())
                 .updatedAt(reviewComment.getUpdatedAt())
-                .children(childCommentsRes) // 대댓글 목록 추가
+                .children(childCommentsRes)
                 .build();
     }
 
@@ -391,10 +401,20 @@ public class ReviewService {
 
             getSearchListReviewResList.add(getSearchListReviewRes);
         }
+
+        Long totalCnt = reviewList.getTotalElements();
+        Integer totalPages = reviewList.getTotalPages();
+
+        GetSearchListReviewResResult result = GetSearchListReviewResResult.builder()
+                .totalCnt(totalCnt)
+                .totalPages(totalPages)
+                .list(getSearchListReviewResList)
+                .build();
+
         BaseRes baseRes = BaseRes.builder()
                 .isSuccess(true)
                 .message("후기글 제목으로 검색결과 조회 요청 성공")
-                .result(getSearchListReviewResList)
+                .result(result)
                 .build();
 
         return baseRes;

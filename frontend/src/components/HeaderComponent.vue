@@ -132,7 +132,7 @@
           </div>
           <div class="css-1hal8c">BOOTSHELF 회원들과 함께 공유해보세요!</div>
           <div direction="vertical" size="40" class="css-ygt1wz"></div>
-          <button color="#141617" class="css-18wq8ro">
+          <button color="#141617" class="css-18wq8ro" @click="loginKakao()">
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M9.00043 2.16699C4.80722 2.16699 1.4082 4.7989 1.4082 8.04735C1.4082 10.161 2.84752 12.0135 5.00935 13.0499C4.85022 13.63 4.43449 15.1538 4.35134 15.4796C4.24812 15.8841 4.50187 15.8785 4.66959 15.7703C4.80005 15.6846 6.74972 14.3855 7.59123 13.8252C8.04854 13.8912 8.51875 13.9263 9.00043 13.9263C13.1937 13.9263 16.5927 11.2944 16.5927 8.04735C16.5927 4.8003 13.1937 2.16699 9.00043 2.16699Z"
@@ -244,6 +244,9 @@ export default {
     },
   },
   methods: {
+    loginKakao() {
+      window.location.href = "http://localhost:8080/oauth2/authorization/kakao";
+    },
     openLoginModal() {
       this.isLogin = true;
     },
@@ -1680,7 +1683,7 @@ input {
   font-size: 14px;
   width: 100%;
   height: 61px;
-  padding: 0px 24px;
+  padding: 0px 30px;
 }
 
 .css-uscuon {

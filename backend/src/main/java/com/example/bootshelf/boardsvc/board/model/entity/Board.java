@@ -11,6 +11,7 @@ import com.example.bootshelf.user.model.entity.User;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,5 +93,13 @@ public class Board {
 
     public void decreaseUpCnt() {
         this.upCnt -= 1;
+    }
+
+    public void increaseCommentUpCnt() {
+        this.commentCnt += 1;
+    }
+
+    public void decreaseCommentUpCnt() {
+        this.commentCnt -= 1;
     }
 }
