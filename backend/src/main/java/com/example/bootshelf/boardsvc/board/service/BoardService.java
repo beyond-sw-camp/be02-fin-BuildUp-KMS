@@ -157,10 +157,11 @@ public class BoardService {
         for (Board board : boardList){
 
             List<BoardTag> boardTagList = board.getBoardTagList();
-            List<Integer> tagIdxs = new ArrayList<>();
+            List<String> tagNames = new ArrayList<>();
+
             for(BoardTag boardTag : boardTagList){
-                Integer tagIdx = boardTag.getIdx();
-                tagIdxs.add(tagIdx);
+                String tagName = boardTag.getTag().getTagName();
+                tagNames.add(tagName);
             }
 
             GetListBoardRes getListBoardRes = GetListBoardRes.builder()
@@ -170,7 +171,7 @@ public class BoardService {
                     .boardTitle(board.getBoardTitle())
                     .boardContent(board.getBoardContent())
                     .boardCategoryIdx(board.getBoardCategory().getIdx())
-                    .tagList(tagIdxs)
+                    .tagNameList(tagNames)
                     .viewCnt(board.getViewCnt())
                     .upCnt(board.getUpCnt())
                     .scrapCnt(board.getScrapCnt())
@@ -207,11 +208,11 @@ public class BoardService {
         for (Board board : boardList){
 
             List<BoardTag> boardTagList = board.getBoardTagList();
-            List<Integer> tagIdxs = new ArrayList<>();
+            List<String> tagNames = new ArrayList<>();
 
             for(BoardTag boardTag : boardTagList){
-                Integer tagIdx = boardTag.getIdx();
-                tagIdxs.add(tagIdx);
+                String tagName = boardTag.getTag().getTagName();
+                tagNames.add(tagName);
             }
 
             GetListBoardRes getListBoardRes = GetListBoardRes.builder()
@@ -221,7 +222,7 @@ public class BoardService {
                     .boardTitle(board.getBoardTitle())
                     .boardContent(board.getBoardContent())
                     .boardCategoryIdx(board.getBoardCategory().getIdx())
-                    .tagList(tagIdxs)
+                    .tagNameList(tagNames)
                     .viewCnt(board.getViewCnt())
                     .upCnt(board.getUpCnt())
                     .scrapCnt(board.getScrapCnt())
@@ -257,11 +258,11 @@ public class BoardService {
         for (Board board : boardList){
 
             List<BoardTag> boardTagList = board.getBoardTagList();
-            List<Integer> tagIdxs = new ArrayList<>();
+            List<String> tagNames = new ArrayList<>();
 
             for(BoardTag boardTag : boardTagList){
-                Integer tagIdx = boardTag.getIdx();
-                tagIdxs.add(tagIdx);
+                String tagName = boardTag.getTag().getTagName();
+                tagNames.add(tagName);
             }
 
             GetListBoardRes getListBoardRes = GetListBoardRes.builder()
@@ -271,7 +272,7 @@ public class BoardService {
                     .boardTitle(board.getBoardTitle())
                     .boardContent(board.getBoardContent())
                     .boardCategoryIdx(board.getBoardCategory().getIdx())
-                    .tagList(tagIdxs)
+                    .tagNameList(tagNames)
                     .viewCnt(board.getViewCnt())
                     .upCnt(board.getUpCnt())
                     .scrapCnt(board.getScrapCnt())
@@ -307,11 +308,11 @@ public class BoardService {
         for (Board board : boardList){
 
             List<BoardTag> boardTagList = board.getBoardTagList();
-            List<Integer> tagIdxs = new ArrayList<>();
+            List<String> tagNames = new ArrayList<>();
 
             for(BoardTag boardTag : boardTagList){
-                Integer tagIdx = boardTag.getIdx();
-                tagIdxs.add(tagIdx);
+                String tagName = boardTag.getTag().getTagName();
+                tagNames.add(tagName);
             }
 
 
@@ -322,7 +323,7 @@ public class BoardService {
                     .boardTitle(board.getBoardTitle())
                     .boardContent(board.getBoardContent())
                     .boardCategoryIdx(board.getBoardCategory().getIdx())
-                    .tagList(tagIdxs)
+                    .tagNameList(tagNames)
                     .viewCnt(board.getViewCnt())
                     .upCnt(board.getUpCnt())
                     .scrapCnt(board.getScrapCnt())
