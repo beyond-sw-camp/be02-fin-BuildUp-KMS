@@ -81,7 +81,9 @@
                       <li class="_3lQ639 _32Ay9Q" role="presentation">
                         <div class="_2kqp41 flex-grow-1" style="--box-gap: 0.75rem;">
                           <div class="_2kqp41 tttQ1F" style="--box-gap: 0.375rem;">
-                            <p class="_3yzn7O mb-0 _2Sv3IV">{{ board.boardTitle }}</p>
+                            <router-link :to="`board/${board.boardIdx}`">
+                              <p class="_3yzn7O mb-0 _2Sv3IV">{{ board.boardTitle }}</p>
+                            </router-link>
                             <div>
                               <span class="d-none d-md-block">
                                 <span class="d-flex Dhz06G align-items-center text-gray-600">
@@ -132,7 +134,8 @@
                   </span>
                 </ul>
                 <div class="d-flex justify-content-center py-0 py-md-4">
-                  <PaginationComponent :current-page="boardStore.currentPage" :total-pages="boardStore.totalPages" @change-page="changePage" />
+                  <PaginationComponent :current-page="boardStore.currentPage" :total-pages="boardStore.totalPages"
+                    @change-page="changePage" />
                 </div>
               </div>
             </section>
