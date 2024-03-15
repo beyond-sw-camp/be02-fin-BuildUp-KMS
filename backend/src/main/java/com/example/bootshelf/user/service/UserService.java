@@ -304,11 +304,11 @@ public class UserService {
     public void kakaoSignup(String nickName, String profileImage) {
 
         User user = User.builder()
-                .email(nickName + "@kakao.com")
+                .email(nickName+"@kakao.com")
                 .password(passwordEncoder.encode("kakao"))
                 .nickName(nickName)
                 .name(nickName)
-                .profileImage(profileImage)
+                .profileImage("https://bootshelf-profile.s3.ap-northeast-2.amazonaws.com/2024/03/14/6a0ac29b-55c8-4fd0-808a-fcd1b9deda76_default.png")
                 .authority("ROLE_KAKAO")
                 .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
                 .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
