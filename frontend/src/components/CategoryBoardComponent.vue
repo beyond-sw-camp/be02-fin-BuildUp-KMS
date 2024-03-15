@@ -18,15 +18,13 @@
             </div>
           </div>
           <!--태그 컴포넌트 자리-->
-          <div class="css-fortagcomponentgms">
-            <TagComponent/> <TagComponent/> <TagComponent/>
-          </div>
+            <TagComponent :tagNameList="boards.tagNameList"/>
         </div>
         <div class="css-bt1qy"></div>
         <!--사진-->
         <img 
-          v-if="boards.boardImage" 
-          :src="boards.boardImage" 
+          v-if="boards.boardImg" 
+          :src="boards.boardImg" 
           class="css-17s6wd5"
         />
       </div>
@@ -54,10 +52,7 @@
             >
               <img
                 sizes="100vw"
-                v-if="boards.userProfileImage"
-                :src="boards.userProfileImage
-                ? boards.userProfileImage : 
-                'https://bootshelf-profile.s3.ap-northeast-2.amazonaws.com/2024/03/14/6a0ac29b-55c8-4fd0-808a-fcd1b9deda76_default.png'"
+                :src="boards.userProfileImage"
                 decoding="async"
                 data-nimg="fill"
                 style="
@@ -223,7 +218,7 @@ export default {
   name: "CategoryBoardComponent",
   props: ["boards"],
   computed: {
-    ...mapStores(useBoardStore),
+    ...mapStores(useBoardStore, ["tagNameList"]),
   },
   components: {
     TagComponent,

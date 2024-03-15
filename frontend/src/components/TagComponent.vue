@@ -1,26 +1,19 @@
 <template>
-  <div>
-    <div v-for="(tag, index) in boardtags" :key="index" class="css-1kc14yj">
-      {{ tag.name }}
+  <div class="css-fortagcomponentgms">
+    <div v-for="(tagName, index) in tagNameList" :key="index" class="css-1kc14yj">
+      {{ tagName }}
     </div>
   </div>
 </template>
 
 <script>
-import { mapStores } from "pinia";
-import { useBoardStore } from "@/stores/useBoardStore";
-
 export default {
   name: "TagComponent",
   props: {
-    // Board의 태그 목록을 전달받음
-    boardtags: {
+    tagNameList: {
       type: Array,
-      required: true
-    }
-  },
-  computed: {
-    ...mapStores(useBoardStore),
+      required: true,
+    },
   },
 };
 </script>
@@ -29,16 +22,21 @@ export default {
 .css-1kc14yj {
   font-family: Pretendard;
   cursor: pointer;
-  width: 45px;
-  padding: 2px 0;
+  width: auto;
+  padding: 3px 8px;
+  margin-top: 10px;
   border-radius: 5px;
-  background-color: rgba(84, 29, 112, 0.218);
-  font-size: 10px;
-  font-weight: 600;
+  background-color: rgba(84, 29, 112, 0.148);
+  font-size: 11px;
+  font-weight: bold;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  color: #000;
+  gap: 9px;
+  color: #000000cf;
+}
+.css-fortagcomponentgms{
+  display: flex;
+  gap: 3px;
 }
 </style>
