@@ -8,7 +8,8 @@ export const useBoardStore = defineStore("board", {
     boardList: [],
     currentPage: 0,
     totalPages: 0,
-    totalCnt: 0
+    totalCnt: 0,
+    boardDetail: []
   }),
   actions: {
     async getBoardListByQuery(query, option, page = 1) {
@@ -57,5 +58,15 @@ export const useBoardStore = defineStore("board", {
         console.log(e);
       }
     },
+    async findBoard(boardIdx) {
+      try {
+        let response = await axios.get(backend + "/board/" + boardIdx);
+        this.boardDetail = response.data.result;
+
+        console.log(response);
+      } catch (e) {
+        console.log(e);
+      }
+    }
   },
 });

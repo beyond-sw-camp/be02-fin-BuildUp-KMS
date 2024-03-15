@@ -10,18 +10,18 @@
       </div>
     </div>
     <div height="120px" class="css-jbj5u0"></div>
-    <div class="css-1g39gls">
+    <div class="css-1g39gls" v-if="boardDetail">
       <div class="css-1qjp6uf">
         <div class="css-axl4y">
           <div class="css-1yuvfju">
             <div class="css-k59gj9">
               <div class="css-hmpurq">
-                <div class="css-category">지식공유</div>
+                <div class="css-category">{{ boardDetail.boardCategoryName }}</div>
                 <div class="css-kem115">
                   <div class="css-12i5occ">
                     <div class="css-1jibmi3">
                       <div class="css-n7izk0">
-                        아파치 + 스프링 부트 내장 톰캣
+                        {{ boardDetail.boardTitle }}
                       </div>
                     </div>
                     <div class="css-sebsp7"></div>
@@ -31,23 +31,16 @@
                       <div>
                         <img width="23px" height="23px"
                           src="https://img.icons8.com/pastel-glyph/64/facebook-like--v1.png" alt="facebook-like--v1" />
-                        <p style="font-size: 10px; text-align: center">20</p>
+                        <p style="font-size: 10px; text-align: center">{{ boardDetail.upCnt }}</p>
                       </div>
                     </div>
 
                     <div class="css-1hqtm5a">
                       <div>
-                        <img
-                          width="23px"
-                          height="23px"
-                          src="https://img.icons8.com/windows/64/bookmark-ribbon--v1.png"
-                          alt="bookmark-ribbon--v1"
-                        />
-                        <p
-                          class="css-scrap"
-                          style="font-size: 10px; text-align: center"
-                        >
-                          20
+                        <img width="23px" height="23px" src="https://img.icons8.com/windows/64/bookmark-ribbon--v1.png"
+                          alt="bookmark-ribbon--v1" />
+                        <p class="css-scrap" style="font-size: 10px; text-align: center">
+                          {{ boardDetail.scrapCnt }}
                         </p>
                       </div>
                     </div>
@@ -69,9 +62,8 @@
                           padding: 0px;
                           position: absolute;
                           inset: 0px;
-                        "><img sizes="100vw"
-                          src="https://blog.kakaocdn.net/dn/5UYz8/btq4diRXkGE/HkHufR4G8X4bIX3h3lNjck/img.jpg"
-                          decoding="async" data-nimg="fill" style="
+                        "><img sizes="100vw" :src="boardDetail.userProfileImage" decoding="async" data-nimg="fill"
+                          style="
                             position: absolute;
                             inset: 0px;
                             box-sizing: border-box;
@@ -88,13 +80,13 @@
                           " /></span>
                     </div>
                     <div class="css-5zcuov">
-                      <div class="css-1sika4i">닉네임입니당</div>
+                      <div class="css-1sika4i">{{ boardDetail.userName }}</div>
                       <div class="css-1tify6w">
                         <svg width="2" height="2" viewBox="0 0 2 2" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <circle cx="1" cy="1" r="1" fill="#9DA7AE"></circle>
                         </svg>
                       </div>
-                      <div class="css-1ry6usa">2024년 03월 05일 오후 11:57</div>
+                      <div class="css-1ry6usa">{{ boardDetail.createdAt }}</div>
                     </div>
                   </div>
                 </div>
@@ -102,19 +94,11 @@
               </div>
             </div>
             <div class="css-luqgif">
-              <div class="editedQ_QContent">
+              <div class="editedQ_QContent" v-for="(image, index) in boardDetail.boardImageList" :key="index">
                 <p class="css-content">
-                  평소에는 사내 서버에 아파치 + 톰캣 연동 후 WAR 파일로 배포를
-                  했었는데 이번에 AWS에 서비스를 시작하면서 JAR 파일로
-                  배포하기로 하였습니다. 이 경우에도 JAR 파일에 있는 내장 톰캣과
-                  아파치를 별도로 연동해야 하나요? 연동해야 한다면, 기존
-                  아파치+톰캣 연동 설정과 어떤 점이 달라지나요? 구글링해도
-                  레퍼런스가 많이 없는 것 같아 질문드립니다. 감사합니다.
+                  {{ boardDetail.boardContent }}
                 </p>
-                <img
-                  alt="스파르타 즉문즉답"
-                  src="https://media-sparta.s3.ap-northeast-2.amazonaws.com/media/tempfiles/community/ed775e66-be80-44b9-a452-5d2e78cdad93NjQ2MTU3LjU2ODY5NzMzMTExNzA5OTk2NTI4OTg0.png"
-                />
+                <img alt="게시판 이미지" :data-src="image" />
               </div>
               <div class="css-iqys2n">
                 <!-- 태그 컴포넌트 자리-->
@@ -133,12 +117,12 @@
                     <img width="16px" height="16px" src="https://img.icons8.com/tiny-glyph/32/000000/comments.png"
                       alt="comments" />
                   </div>
-                  댓글 3
+                  댓글 {{ boardDetail.commentCnt }}
                 </div>
               </div>
               <div class="css-qzobjv">
                 <!-- 댓글 컴포넌트 -->
-                <CommentComponent></CommentComponent>
+                <CommentComponent :commentList="commentList" />
                 <div class="css-jpe6jj">
                   <div class="css-3o2y5e">
                     <div width="36px" height="36px" class="css-jg5tbe">
@@ -175,7 +159,9 @@
 import CommentComponent from "../components/CommentComponent.vue";
 import TagComponent from "../components/TagComponent.vue";
 import { useBoardCommentStore } from "../stores/useBoardCommentStore";
-
+import { useBoardStore } from "@/stores/useBoardStore";
+import { useUserStore } from "@/stores/useUserStore";
+import { mapStores } from "pinia";
 
 export default {
   name: "BoardDetailsPage",
@@ -185,13 +171,32 @@ export default {
   },
   data() {
     return {
-      boardCommentContent: ""
+      boardCommentContent: "",
+      boardDetail: null,
+      boardIdx: null,
+      commentList: null,
+      isAuthenticated: null
     };
+  },
+  computed: {
+    ...mapStores(useBoardStore, useBoardCommentStore, useUserStore),
+  },
+  async mounted() {
+    const boardIdx = this.$route.params.boardIdx;
+
+    this.boardIdx = boardIdx;
+
+    await this.boardStore.findBoard(boardIdx);
+    this.boardDetail = this.boardStore.boardDetail;
+
+    await this.boardCommentStore.getBoardCommentList(boardIdx);
+    this.commentList = this.boardCommentStore.commentList;
   },
   methods: {
     async submitComment() {
+      let isAuthenticated = this.userStore.isAuthenticated;
       try {
-        await useBoardCommentStore().createBoardComment(this.boardCommentContent);
+        await useBoardCommentStore().createBoardComment(this.boardCommentContent, this.boardIdx, isAuthenticated);
         // 댓글 생성 후 필요한 작업 작성
       } catch (error) {
         console.error('댓글 작성 실패:', error);
@@ -199,8 +204,6 @@ export default {
     },
   }
 }
-
-
 </script>
 
 <style scoped>
@@ -483,10 +486,12 @@ img {
   font-weight: 400;
   letter-spacing: normal;
 }
+
 .editedQ_QContent img {
   margin-top: 20px;
   max-width: 89vw;
 }
+
 @media (min-width: 1024px) {
   .editedQ_QContent img {
     margin-top: 20px;
