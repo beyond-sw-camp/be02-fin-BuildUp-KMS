@@ -10,12 +10,25 @@
         <div class="css-12i5occ">
           <div class="css-1jibmi3">
             <!--게시글 타이틀-->
-            <div class="css-cp47oo">한화 sw2기 후기</div>
-            <div class="css-14bssip">임xx 독불장군 고집불통 어떻게 하죠??</div>
+            <div class="css-cp47oo">
+              {{ boards.boardTitle }}
+            </div>
+            <div class="css-14bssip">
+              {{ boards.boardContent }}
+            </div>
           </div>
           <!--태그 컴포넌트 자리-->
+          <div class="css-fortagcomponentgms">
+            <TagComponent/> <TagComponent/> <TagComponent/>
+          </div>
         </div>
         <div class="css-bt1qy"></div>
+        <!--사진-->
+        <img 
+          v-if="boards.boardImage" 
+          :src="boards.boardImage" 
+          class="css-17s6wd5"
+        />
       </div>
       <!--여기서부터는 하단 아이디,추천수..등등-->
       <div class="css-99cwur">
@@ -41,7 +54,10 @@
             >
               <img
                 sizes="100vw"
-                src="/frontend/src/assets/img/bbb.png"
+                v-if="boards.userProfileImage"
+                :src="boards.userProfileImage
+                ? boards.userProfileImage : 
+                'https://bootshelf-profile.s3.ap-northeast-2.amazonaws.com/2024/03/14/6a0ac29b-55c8-4fd0-808a-fcd1b9deda76_default.png'"
                 decoding="async"
                 data-nimg="fill"
                 style="
@@ -63,7 +79,7 @@
             </span>
           </div>
           <div class="css-5zcuov">
-            <div class="css-1sika4i">길민석</div>
+            <div class="css-1sika4i">{{ boards.userNickName }}</div>
             <div class="css-1tify6w">
               <!--조그만 점 찍기-->
               <svg
@@ -76,29 +92,29 @@
                 <circle cx="1" cy="1" r="1" fill="#9DA7AE"></circle>
               </svg>
             </div>
-            <div class="css-1ry6usa">몇시간 전</div>
+            <div class="css-1ry6usa"></div>
           </div>
         </div>
         <!-- 여기서부터 추천수 댓글수 등등 표시-->
         <div class="css-o01lup">
           <div class="css-ts29it">
             <div class="css-1ry6usa">댓글</div>
-            <div class="css-1ry6usa">0</div>
+            <div class="css-1ry6usa">{{ boards.commentCnt }}</div>
           </div>
           <div clss="css-dbc8ke">・</div>
           <div class="css-ts29it">
             <div class="css-1ry6usa">추천</div>
-            <div class="css-1ry6usa">100</div>
+            <div class="css-1ry6usa">{{ boards.upCnt }}</div>
           </div>
           <div clss="css-dbc8ke">・</div>
           <div class="css-ts29it">
             <div class="css-1ry6usa">조회</div>
-            <div class="css-1ry6usa">1000</div>
+            <div class="css-1ry6usa">{{ boards.viewCnt }}</div>
           </div>
         </div>
         <div class="css-1vkj2s1">
           <div class="css-1ry6usa">조회</div>
-          <div class="css-1ry6usa">1000</div>
+          <div class="css-1ry6usa">{{ boards.viewCnt }}</div>
         </div>
       </div>
     </div>
@@ -144,7 +160,7 @@
               ></rect>
             </svg>
           </div>
-          <div class="css-i21m7n">0</div>
+          <div class="css-i21m7n">{{ boards.commentCnt }}</div>
         </div>
       </div>
       <div class="css-192oc4s">
@@ -172,7 +188,7 @@
               ></path>
             </svg>
           </div>
-          <div class="css-i21m7n">100</div>
+          <div class="css-i21m7n">{{ boards.upCnt }}</div>
         </div>
       </div>
       <div class="css-192oc4s">
@@ -191,7 +207,7 @@
               ></path>
             </svg>
           </div>
-          <div class="css-i21m7n">1000</div>
+          <div class="css-i21m7n">{{ boards.scrapCnt }}</div>
         </div>
       </div>
     </div>
@@ -199,8 +215,19 @@
 </template>
 
 <script>
+import { mapStores } from "pinia";
+import { useBoardStore } from "@/stores/useBoardStore";
+import TagComponent from "@/components/TagComponent.vue";
+
 export default {
   name: "CategoryBoardComponent",
+  props: ["boards"],
+  computed: {
+    ...mapStores(useBoardStore),
+  },
+  components: {
+    TagComponent,
+  },
 };
 </script>
 
@@ -553,5 +580,18 @@ export default {
   .css-z2xt5y {
     display: flex;
   }
+}
+.css-fortagcomponentgms{
+  display: flex;
+  gap: 3px;
+}
+.css-17s6wd5 {
+  width: 92px;
+  height: 92px;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
 }
 </style>

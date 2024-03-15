@@ -12,15 +12,13 @@ import java.util.List;
 public class GetBoardRes {
     private Integer idx;
 
-    private String userNickName;
-
     private String boardTitle;
 
     private String boardContent;
 
-    private Integer boardCategoryIdx;
+    private String boardCategoryName;
 
-    private List<Integer> boardTagListIdx;
+    private List<String> boardTagNameList;
 
     private Integer viewCnt;
 
