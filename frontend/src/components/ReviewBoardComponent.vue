@@ -1,5 +1,5 @@
 <template>
-  <a :href="'/review/detail/' + reviews.reviewIdx">
+  <a :href="'/review/' + reviews.reviewIdx">
     <div class="css-aw1sgr">
       <!--게시글 본문-->
       <div class="css-kem115">
@@ -73,7 +73,6 @@
               {{ reviews.userNickName }}
             </div>
             <div class="css-1tify6w">
-              <!--조그만 점 찍기-->
               <svg
                 width="2"
                 height="2"

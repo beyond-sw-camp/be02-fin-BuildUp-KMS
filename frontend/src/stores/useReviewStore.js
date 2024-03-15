@@ -6,8 +6,31 @@ const backend = "http://localhost:8080";
 // const storedToken = sessionStorage.getItem("token");
 
 export const useReviewStore = defineStore("review", {
-  state: () => ({ reviewList: [], isOrderExist: true, review:"" }),
+  state: () => ({ reviewList: [], isOrderExist: true, review: "" }),
   actions: {
+    async createReview(review, reviewImage) {
+      const formData = new FormData();
+
+      let json = JSON.stringify(review);
+      formData.append("review", new Blob([json], { type: "application/json" }));
+      formData.append("reviewImage", reviewImage);
+
+      try {
+        let response = await axios.post(backend + `/review/create`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        if (response.data.isSuccess === true) {
+          this.isSuccess = true;
+          alert("후기글이 등록되었습니다.");
+          window.location.href = "/review/" + response.data.result.reviewIdx;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
     async getReviewList(reviewCategoryIdx, sortType) {
       try {
         let response = await axios.get(

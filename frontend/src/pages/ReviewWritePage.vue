@@ -1,47 +1,19 @@
 <template>
   <div class="css-1hnxdb7">
     <div class="css-130kwtj">
-      <div class="css-1hwcs2h">
-        <!-- <div class="css-xbcdvo">자유게시판</div>
-          <div class="css-s5p19z">학습 질문</div>
-          <div class="css-s5p19z">개발일지</div>
-          <div class="css-s5p19z">나의 활동</div> -->
-      </div>
+      <div class="css-1hwcs2h"></div>
     </div>
     <div height="120px" class="css-jbj5u0"></div>
     <div class="css-1g39gls">
       <div class="css-1f9h8vh">
         <div class="css-110bgim">
-          <div class="css-28nsux">
-            <!-- <div class="css-19831hi">자유게시판</div>
-              <div class="css-nw8p9d">학습 질문</div>
-              <div class="css-nw8p9d">개발일지</div>
-              <div class="css-17ta9kq"></div>
-              <div class="css-nw8p9d">나의 활동</div> -->
-          </div>
+          <div class="css-28nsux"></div>
         </div>
       </div>
       <div class="css-1qjp6uf">
         <div class="css-axl4y">
           <div class="css-1yuvfju">
-            <div class="css-k59gj9">
-              <!-- <div class="css-o01lup">
-                      <div class="css-ts29it">
-                        <div class="css-1ry6usa">댓글</div>
-                        <div class="css-1ry6usa">3</div>
-                      </div>
-                      <div class="css-dbc8ke">・</div>
-                      <div class="css-ts29it">
-                        <div class="css-1ry6usa">추천</div>
-                        <div class="css-1ry6usa">1</div>
-                      </div>
-                      <div class="css-dbc8ke">・</div>
-                      <div class="css-ts29it">
-                        <div class="css-1ry6usa">조회수</div>
-                        <div class="css-1ry6usa">32</div>
-                      </div>
-                    </div> -->
-            </div>
+            <div class="css-k59gj9"></div>
             <div class="css-z2xt5y"></div>
           </div>
         </div>
@@ -91,55 +63,25 @@
                   </li>
                 </ul>
               </div>
+              <!-- 과정명 들어갈 곳 -->
+              <div class="css-1iqxhyo">
+                <textarea
+                  rows="1"
+                  :placeholder="this.review.courseName"
+                  class="css-16kqrm"
+                  style="overflow: hidden; resize: none"
+                  readonly
+                ></textarea>
+              </div>
               <div class="css-1iqxhyo">
                 <textarea
                   rows="1"
                   placeholder="제목을 입력해주세요"
                   class="css-16kqrm"
                   style="overflow: hidden; resize: none"
+                  v-model="review.reviewTitle"
                 ></textarea>
               </div>
-              <div class="css-1yfg4fi">
-                <div class="css-1vitttd"></div>
-                <input
-                  placeholder="# 태그를 입력해주세요. (최대 3개)"
-                  class="css-9y3tf9"
-                  value=""
-                />
-              </div>
-              <!-- <div class="css-1yfg4fi">
-            <div v-for="(tag, index) in tags" :key="index" class="css-170uj16">
-              <div class="css-dcsj63">{{ tag }}</div>
-              <svg
-                @click="removeTag(index)"
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M3.33435 3.33435L12.6677 12.6677"
-                  stroke="#9DA7AE"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                />
-                <path
-                  d="M12.6656 3.33435L3.33232 12.6677"
-                  stroke="#9DA7AE"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                />
-              </svg>
-            </div>
-            <input
-              placeholder="# 태그를 입력해주세요. (최대 3개)"
-              class="css-9y3tf9"
-              @focus="onFocus"
-              @keyup.enter="addTag"
-              v-model="inputValue"
-            />
-          </div> -->
               <div class="css-1t5srfes">
                 <button
                   :class="selectedEvaluation ? 'css-1w5123ms' : 'css-pfhqzms'"
@@ -204,6 +146,7 @@
 
  • 게시판 특성에 맞지 않는 내용(분란성 글 및 댓글) 작성 시 별도의
  &nbsp;&nbsp;통보 없이 활동 정지, 글 이동 및 삭제될 수 있습니다."
+                    v-model="review.reviewContent"
                   ></textarea>
                   <div
                     class="ql-clipboard"
@@ -228,31 +171,6 @@
               </div>
             </div>
             <div id="toolbar" class="ql-toolbar ql-snow">
-              <!-- <span class="ql-formats"
-                ><button
-                  content="코드 블록"
-                  class="ql-code-block css-1qhzcav"
-                  type="button"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                  >
-                    <path
-                      d="M4.381 13.95a.875.875 0 1 0 1.238-1.237L4.38 13.951zM1.667 10l-.62-.619a.875.875 0 0 0 .001 1.237L1.667 10zm3.952-2.715A.875.875 0 1 0 4.38 6.047L5.62 7.284zm0 5.43L2.285 9.38l-1.237 1.237 3.333 3.334 1.238-1.238zm-3.334-2.097L5.62 7.284 4.38 6.047 1.048 9.38l1.237 1.237zM15.619 6.05a.875.875 0 1 0-1.238 1.237l1.238-1.238zM18.333 10l.62.619a.875.875 0 0 0 0-1.237l-.62.618zm-3.952 2.715a.875.875 0 0 0 1.238 1.237l-1.238-1.237zm0-5.43 3.334 3.334 1.237-1.237-3.333-3.334-1.238 1.238zm3.334 2.097-3.334 3.333 1.238 1.237 3.333-3.333-1.237-1.237z"
-                      fill="#505254"
-                    ></path>
-                    <path
-                      d="m12.5 4.168-5 11.667"
-                      stroke="#505254"
-                      stroke-width="1.75"
-                      stroke-linecap="round"
-                    ></path>
-                  </svg></button></span
-              > -->
               <span class="ql-formats"
                 ><button
                   content="이미지 첨부"
@@ -305,7 +223,9 @@
           />
           <div class="css-lycl0a">
             <button class="css-9ns22y">취소</button>
-            <button class="css-1c8gn7d">등록하기</button>
+            <button class="css-1c8gn7d" @click="createReview()">
+              등록하기
+            </button>
           </div>
         </div>
       </div>
@@ -313,118 +233,125 @@
   </div>
 </template>
 <script>
-import { ref } from "vue";
+import { mapStores } from "pinia";
+import { useReviewStore } from "../stores/useReviewStore";
+import VueJwtDecode from "vue-jwt-decode";
 
 export default {
-  name: "BoardWritePage",
-  setup() {
-    /*-----------카테고리-----------------*/
-    const isClicked = ref(false);
-    const selectedCategory = ref("");
-    const categories = ref([
-      { name: "과정 후기", selected: false },
-      { name: "강사 후기", selected: false },
-    ]);
-
-    function showCategory() {
-      isClicked.value = !isClicked.value;
-    }
-
-    function selectCategory(category) {
-      categories.value.forEach((cat) => {
+  name: "ReviewWritePage",
+  data() {
+    return {
+      isClicked: false,
+      selectedCategory: "",
+      categories: [
+        { name: "과정 후기", selected: false },
+        { name: "강사 후기", selected: false },
+      ],
+      isEvaluationClicked: false,
+      selectedEvaluation: "",
+      Evaluations: [
+        { name: "1점", selected: false },
+        { name: "2점", selected: false },
+        { name: "3점", selected: false },
+        { name: "4점", selected: false },
+        { name: "5점", selected: false },
+      ],
+      tags: [],
+      inputValue: "",
+      imageUrl: null,
+      buttonOpacity: 1,
+      review: {
+        reviewCategoryIdx: null,
+        reviewTitle: "",
+        reviewContent: "",
+        courseName: "",
+        courseEvaluation: null,
+      },
+    };
+  },
+  computed: {
+    ...mapStores(useReviewStore),
+    reviewCategoryIdx() {
+      return this.getCategoryIndex(this.selectedCategory);
+    },
+    courseEvaluation() {
+      return this.getEvaluation(this.selectedEvaluation);
+    },
+  },
+  mounted() {
+    let token = localStorage.getItem("token");
+    let userClaims = VueJwtDecode.decode(token);
+    let courseNameFromToken = decodeURIComponent(escape(userClaims.courseName));
+    this.review.courseName = courseNameFromToken;
+  },
+  methods: {
+    showCategory() {
+      this.isClicked = !this.isClicked;
+    },
+    selectCategory(category) {
+      this.categories.forEach((cat) => {
         cat.selected = false;
       });
       category.selected = true;
-      selectedCategory.value = category.name;
-      isClicked.value = false;
-    }
-    /*-----------별점-----------------*/
-    const isEvaluationClicked = ref(false);
-    const selectedEvaluation = ref("");
-    const Evaluations = ref([
-      { name: "1점", selected: false },
-      { name: "2점", selected: false },
-      { name: "3점", selected: false },
-      { name: "4점", selected: false },
-      { name: "5점", selected: false },
-    ]);
+      this.selectedCategory = category.name;
+      this.isClicked = false;
 
-    function showEvaluation() {
-      isEvaluationClicked.value = !isEvaluationClicked.value;
-    }
-
-    function selectEvaluation(Evaluation) {
-      Evaluations.value.forEach((cat) => {
+      this.review.reviewCategoryIdx = this.getCategoryIndex(
+        this.selectedCategory
+      );
+    },
+    getCategoryIndex(selectedCategory) {
+      return selectedCategory === "과정 후기"
+        ? 1
+        : selectedCategory === "강사 후기"
+        ? 2
+        : null;
+    },
+    showEvaluation() {
+      this.isEvaluationClicked = !this.isEvaluationClicked;
+    },
+    selectEvaluation(Evaluation) {
+      this.Evaluations.forEach((cat) => {
         cat.selected = false;
       });
       Evaluation.selected = true;
-      selectedEvaluation.value = Evaluation.name;
-      isEvaluationClicked.value = false;
-    }
-    /*-----------태그-----------------*/
-    const tags = ref([]);
-    const inputValue = ref("");
+      this.selectedEvaluation = Evaluation.name;
+      this.isEvaluationClicked = false;
 
-    const addTag = () => {
-      if (
-        inputValue.value.startsWith("#") &&
-        inputValue.value.length > 1 &&
-        tags.value.length < 3
-      ) {
-        tags.value.push(inputValue.value);
-        inputValue.value = ""; // 태그를 추가한 후 입력 필드 초기화
-      }
-    };
-
-    const removeTag = (index) => {
-      tags.value.splice(index, 1);
-    };
-
-    const onFocus = () => {
-      if (!inputValue.value) {
-        inputValue.value = "#";
-      }
-    };
-    /*-----------이미지-----------------*/
-    const imageUrl = ref(null);
-
-    const uploadImage = () => {
+      this.review.courseEvaluation = this.getEvaluation(
+        this.selectedEvaluation
+      );
+    },
+    getEvaluation(selectedEvaluation) {
+      return selectedEvaluation === "1점"
+        ? 1
+        : selectedEvaluation === "2점"
+        ? 2
+        : selectedEvaluation === "3점"
+        ? 3
+        : selectedEvaluation === "4점"
+        ? 4
+        : selectedEvaluation === "5점"
+        ? 5
+        : null;
+    },
+    uploadImage() {
       const input = document.getElementById("input_file");
       input.click();
-    };
-    const handleImageUpload = (event) => {
+    },
+    handleImageUpload(event) {
       const file = event.target.files[0];
       if (!file) return;
 
       const reader = new FileReader();
       reader.onload = () => {
-        imageUrl.value = reader.result;
+        this.imageUrl = reader.result;
       };
       reader.readAsDataURL(file);
-    };
-    return {
-      isClicked,
-      categories,
-      selectedCategory,
-      showCategory,
-      selectCategory,
-
-      isEvaluationClicked,
-      Evaluations,
-      selectedEvaluation,
-      showEvaluation,
-      selectEvaluation,
-
-      tags,
-      inputValue,
-      addTag,
-      removeTag,
-      onFocus,
-
-      imageUrl,
-      uploadImage,
-      handleImageUpload,
-    };
+    },
+    async createReview() {
+      await this.reviewStore.createReview(this.review, this.imageUrl);
+    },
   },
 };
 </script>
