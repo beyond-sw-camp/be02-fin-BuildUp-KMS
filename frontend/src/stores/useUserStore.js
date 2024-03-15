@@ -12,6 +12,8 @@ export const useUserStore = defineStore("user", {
     user: {},
     isSuccess: false,
     isLoading: false,
+    checkPasswordError: false,
+    isPossibleUpdate: true,
   }),
   actions: {
     async login(email, password) {
@@ -85,6 +87,126 @@ export const useUserStore = defineStore("user", {
         alert("잘못된 요청입니다.");
       } finally {
         this.isLoading = false;
+      }
+    },
+
+    // 회원정보 수정-1(비밀번호 확인)
+    async checkPassword(currentPassword) {
+      try {
+        let response = await axios.post(
+          backend + "/user/checkPw",
+          currentPassword,
+          {
+            headers: {
+              Authorization: `Bearer ${storedToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (response.data === true) {
+          this.isSuccess = true;
+          this.isPossibleUpdate = false;
+          this.checkPasswordError = false;
+        } else {
+          this.checkPasswordError = true;
+        }
+      } catch (e) {
+        console.log(e);
+        this.isSuccess = false;
+        this.user.password = "";
+        this.checkPasswordError = true;
+        // alert("비밀번호가 일치하지 않습니다. 다시 입력해주세요.");
+      }
+    },
+
+    // 회원정보 수정-2(서버 요청)
+    async updateProfile(user) {
+      let data = {
+        nickName: user.nickName || null,
+        password: user.password || null,
+        checkPassword: user.checkPassword || null,
+      };
+      if (data.nickName !== null || data.password !== null) {
+        try {
+          let response = await axios.patch(backend + "/user/update", data, {
+            headers: {
+              Authorization: `Bearer ${storedToken}`,
+              "Content-Type": "application/json",
+            },
+          });
+          if (response.data.isSuccess === true) {
+            alert("회원정보를 수정하였습니다.");
+            window.location.href = "/profile";
+          }
+        } catch (e) {
+          if (e.response && e.response.data) {
+            console.log(e.response.data);
+            if (e.response.data.code === "USER-002") {
+              alert("이미 사용중인 닉네임입니다.");
+            } else if (e.response.data.code === "USER-003") {
+              alert("회원 정보를 찾을 수 없습니다.");
+            } else if (e.response.data.code === "USER-004") {
+              alert("입력한 패스워드가 서로 다릅니다.");
+            }
+          } else {
+            console.log(e);
+          }
+        }
+      } else {
+        alert("수정할 내용을 입력해주세요.");
+      }
+    },
+
+    // 회원정보 수정-3(프로필 이미지 수정)
+    async updateProfileImage(profileImage) {
+
+      let formData = new FormData();
+      formData.append("profileImage", profileImage);
+
+      try {
+        let response = await axios.patch(backend + "/user/update/image", formData, {
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        if (response.data.isSuccess === true) {
+          alert("회원 프로필 이미지를 수정하였습니다.");
+          window.location.href = "/profile";
+        }
+      } catch (e) {
+        if (e.response && e.response.data) {
+          console.log(e.response.data);
+          if (e.response.data.code === "USER-003") {
+            alert("회원 정보를 찾을 수 없습니다.");
+          }
+        } else {
+          console.log(e);
+        }
+      }
+    },
+
+    // 회원탈퇴
+    async submitCancel() {
+      try {
+        let response = await axios.delete(backend + "/user/cancel", {
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.data.isSuccess === true) {
+          alert(
+            '회원 탈퇴가 성공적으로 처리되었습니다. 그동안 "BOOTSHELF" 를 이용해주셔서 감사합니다.'
+          );
+          sessionStorage.removeItem("token");
+          window.location.href = "/";
+        }
+      } catch (e) {
+        console.log(e);
+        alert("회원정보를 찾을 수 없습니다.");
       }
     },
   },

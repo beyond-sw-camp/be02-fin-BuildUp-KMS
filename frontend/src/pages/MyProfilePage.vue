@@ -78,8 +78,10 @@
                 <button
                   class="Button_button___Dadr Button_primary__BxDoK"
                   type="submit"
+                  :disabled="isImageSelected"
+                  :style="{ opacity: isImageSelected ? '1' : '0.3' }"
                 >
-                  <div class="Button_contentWrapper__ek4Um">이미지 저장</div>
+                  <div class="Button_contentWrapper__ek4Um" @click="updateProfileImage()">이미지 저장</div>
                 </button>
               </div>
             </div>
@@ -94,8 +96,8 @@
                     type="text"
                     name="nickname"
                     class="inputField_input__004jm inputField_withLabel__z5_la"
-                    placeholder="닉네임"
-                    value=""
+                    :placeholder="userStore.user.nickName"
+                    v-model="user.nickName"
                   />
                 </label>
                 <p class="HelperText_helpText__qK_Jm">
@@ -106,7 +108,12 @@
                     class="Button_button___Dadr Button_primary__BxDoK"
                     type="submit"
                   >
-                    <div class="Button_contentWrapper__ek4Um">닉네임 변경</div>
+                    <div
+                      class="Button_contentWrapper__ek4Um"
+                      @click="updateNickName()"
+                    >
+                      닉네임 변경
+                    </div>
                   </button>
                 </div>
                 <div class="jollkutgi"></div>
@@ -123,10 +130,21 @@
                           name="currentPassword"
                           class="inputField_input__004jm inputField_password__li_TF"
                           placeholder="현재 비밀번호"
-                          value=""
+                          v-model="currentPassword.password"
+                          @input="verifyCurrentPassword"
                         />
                       </label>
-                      <p class="HelperText_helpText__qK_Jm">
+                      <p
+                        v-if="userStore.checkPasswordError"
+                        class="HelperText_helpText__qK_Jm"
+                        style="color: red"
+                      >
+                        ! 현재 비밀번호가 일치하지 않습니다.
+                      </p>
+                      <p
+                        v-if="!userStore.checkPasswordError"
+                        class="HelperText_helpText__qK_Jm"
+                      >
                         기존 비밀번호 그대로 입력해주세요.
                       </p>
                     </div>
@@ -142,7 +160,8 @@
                           name="currentPassword"
                           class="inputField_input__004jm inputField_password__li_TF"
                           placeholder="새 비밀번호"
-                          value=""
+                          v-model="update.password"
+                          :disabled="userStore.isPossibleUpdate"
                         />
                       </label>
                       <p class="HelperText_helpText__qK_Jm">
@@ -162,11 +181,12 @@
                           name="currentPassword"
                           class="inputField_input__004jm inputField_password__li_TF"
                           placeholder="새 비밀번호 확인"
-                          value=""
+                          v-model="update.checkPassword"
+                          :disabled="userStore.isPossibleUpdate"
                         />
                       </label>
                       <p class="HelperText_helpText__qK_Jm">
-                        비밀번호를 동일하게 다시 입력해주세요
+                        비밀번호를 동일하게 다시 입력해주세요.
                       </p>
                     </div>
                   </div>
@@ -174,6 +194,9 @@
                     <button
                       class="Button_button___Dadr Button_primary__BxDoK"
                       type="submit"
+                      :disabled="!isInput"
+                      :style="{ opacity: isInput ? '1' : '0.3' }"
+                      @click="updatePassword()"
                     >
                       <div class="Button_contentWrapper__ek4Um">
                         비밀번호 변경
@@ -227,6 +250,9 @@
                     <button
                       class="Button_button___Dadr Button_primary__BxDoKs"
                       type="submit"
+                      :disabled="!isClicked"
+                      :style="{ opacity: isClicked ? '1' : '0.3' }"
+                      @click="submitCancel()"
                     >
                       <div class="Button_contentWrapper__ek4Um">회원 탈퇴</div>
                     </button>
@@ -255,42 +281,90 @@
   </div>
 </template>
 
-<script setup>
-import { ref } from "vue";
-
-const previewImage = ref(
-  "https://github.com/hyungdoyou/devops/assets/148875644/68eff1e5-caef-40ec-83f4-e653ee1f9247"
-);
-const fileInput = ref(null);
-
-const triggerFileInput = () => {
-  fileInput.value.click();
-};
-
-const previewFile = (event) => {
-  const file = event.target.files[0];
-  if (file && file.type.startsWith("image/")) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      previewImage.value = e.target.result;
-    };
-    reader.readAsDataURL(file);
-  }
-};
-</script>
-
 <script>
+import { mapStores } from "pinia";
+import { useUserStore } from "../stores/useUserStore";
+
 export default {
   name: "MyProfilePage",
   data() {
     return {
+      isImageSelected: false,
       isClicked: false,
+      previewImage: "",
+      fileInput: null,
+      user: {
+        nickName: "",
+        password: "",
+      },
+      currentPassword: {
+        password: "",
+      },
+      update: {
+        password: "",
+        checkPassword: "",
+      },
     };
+  },
+  computed: {
+    ...mapStores(useUserStore),
+    isInput() {
+      return (
+        this.update.password !== "" &&
+        this.update.checkPassword !== "" &&
+        this.update.password === this.update.checkPassword
+      );
+    },
   },
   methods: {
     agreeDelete() {
       this.isClicked = !this.isClicked;
     },
+    triggerFileInput() {
+      this.fileInput.click();
+    },
+    previewFile(event) {
+      const file = event.target.files[0];
+      if (file && file.type.startsWith("image/")) {
+        this.isImageSelected = true;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.previewImage = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      } else {
+        this.isImageSelected = false;
+      }
+    },
+    async updateNickName() {
+      await this.userStore.updateProfile(this.user);
+    },
+    async updatePassword() {
+      await this.userStore.updateProfile(this.update);
+    },
+    verifyCurrentPassword() {
+      this.userStore.checkPassword(this.currentPassword);
+    },
+    async submitCancel() {
+      this.userStore.submitCancel();
+    },
+    async updateProfileImage() {
+      const fileInput = this.$refs.fileInput;
+      if (fileInput && fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        await this.userStore.updateProfileImage(file);
+      } else {
+        console.log("파일이 선택되지 않았습니다.");
+      }
+    },
+  },
+  mounted() {
+    const userStore = useUserStore();
+    userStore.getUserInfo().then(() => {
+      this.previewImage = this.userStore.user.profileImage;
+    });
+
+    this.fileInput = this.$refs.fileInput;
   },
 };
 </script>
