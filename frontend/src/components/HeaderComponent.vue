@@ -10,12 +10,12 @@
           </router-link>
         </div>
         <div class="css-1butcu2" v-if="showMenu">
-          <router-link to="/board">
+          <router-link to="/board/knowledge">
             <a>
               <div class="css-1llgdoe">지식공유</div>
             </a>
           </router-link>
-          <router-link to="/board">
+          <router-link to="/board/qua">
             <a>
               <div class="css-1llgdoe">Q&A</div>
             </a>
