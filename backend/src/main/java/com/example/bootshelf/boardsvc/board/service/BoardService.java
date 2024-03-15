@@ -18,11 +18,14 @@ import com.example.bootshelf.boardsvc.boardtag.service.BoardTagService;
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.common.error.ErrorCode;
 import com.example.bootshelf.common.error.entityexception.BoardException;
+import com.example.bootshelf.reviewsvc.review.model.entity.Review;
+import com.example.bootshelf.reviewsvc.review.repository.ReviewRepository;
 import com.example.bootshelf.user.model.entity.User;
 import com.sun.jdi.request.DuplicateRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,8 +34,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +47,7 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final BoardTagService boardTagService;
     private final BoardImageService boardImageService;
+    private final ReviewRepository reviewRepository;
 
     public PostCreateBoardRes createBoard(User user, PostCreateBoardReq request, MultipartFile[] uploadFiles) {
 
@@ -367,10 +374,11 @@ public class BoardService {
 
         return BaseRes.builder()
                 .isSuccess(true)
-                .message("메인 페이지 검색 결과 조회 성공")
+                .message("메인 페이지 검색 결과 조회 성공 <게시판>")
                 .result(result)
                 .build();
     }
+
 
     public BaseRes updateBoard (User user, PatchUpdateBoardReq patchUpdateBoardReq, Integer boardIdx){
         Optional<Board> result = boardRepository.findByIdxAndUserIdx(boardIdx, user.getIdx());

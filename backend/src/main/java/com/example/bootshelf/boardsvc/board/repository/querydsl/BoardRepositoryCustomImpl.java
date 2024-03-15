@@ -126,6 +126,7 @@ public class BoardRepositoryCustomImpl extends QuerydslRepositorySupport impleme
         // 조회 쿼리 생성 및 페이징 처리
         JPQLQuery<Board> querySQL = from(qBoard)
                 .leftJoin(qBoard.user).fetchJoin()
+                .leftJoin(qBoard.boardCategory).fetchJoin()
                 .where(searchCondition)
                 .orderBy(qBoard.createdAt.desc());
 
