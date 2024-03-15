@@ -115,10 +115,23 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
     @RequestMapping(method = RequestMethod.PATCH, value = "/update")
-    public ResponseEntity<BaseRes> update( @RequestPart(value = "user") @Valid PatchUpdateUserReq patchUpdateUserReq,
-                                  @RequestPart(value = "profileImage") MultipartFile profileImage) {
+    public ResponseEntity<BaseRes> update( @RequestBody @Valid PatchUpdateUserReq patchUpdateUserReq ) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         BaseRes baseRes = userService.update(user.getEmail(), patchUpdateUserReq);
+
+        return ResponseEntity.ok().body(baseRes);
+    }
+
+    @Operation(summary = "회원 프로필 이미지 수정",
+            description = "회원이 본인의 회원 프로필 이미지를 수정한다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+    })
+    @RequestMapping(method = RequestMethod.PATCH, value = "/update/image")
+    public ResponseEntity<BaseRes> update( @RequestPart(value = "profileImage") MultipartFile profileImage) {
+        User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        BaseRes baseRes = userService.updateImage(user.getEmail(), profileImage);
 
         return ResponseEntity.ok().body(baseRes);
     }
@@ -129,7 +142,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
-    @RequestMapping(method = RequestMethod.GET, value = "/cancel")
+    @RequestMapping(method = RequestMethod.DELETE, value = "/cancel")
     public ResponseEntity<BaseRes> cancel() {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 

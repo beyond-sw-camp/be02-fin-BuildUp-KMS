@@ -103,7 +103,7 @@ public class UserService {
         }
         // 중복된 닉네임에 대한 예외처리
         if (resultUserNickName.isPresent()) {
-            throw new UserException(ErrorCode.DUPLICATE_SIGNUP_NICKNAME, String.format("SignUp NickName [ %s ] is duplicated.", postSignUpUserReq.getNickName()));
+            throw new UserException(ErrorCode.DUPLICATE_USER_NICKNAME, String.format("SignUp NickName [ %s ] is duplicated.", postSignUpUserReq.getNickName()));
         }
 
         if (postSignUpUserReq.getProgramName() == null) {
@@ -304,7 +304,7 @@ public class UserService {
     public void kakaoSignup(String nickName, String profileImage) {
 
         User user = User.builder()
-                .email(nickName+"@kakao.com")
+                .email(nickName + "@kakao.com")
                 .password(passwordEncoder.encode("kakao"))
                 .nickName(nickName)
                 .name(nickName)
@@ -330,37 +330,73 @@ public class UserService {
         }
     }
 
-    // 회원정보 수정
+    // 회원 닉네임, 패스워드 수정
     @Transactional(readOnly = false)
     public BaseRes update(String userEmail, PatchUpdateUserReq patchUpdateUserReq) {
+
+        // 중복된 닉네임에 대한 예외처리
+        if (patchUpdateUserReq.getNickName() != null) {
+            Optional<User> resultUserNickName = userRepository.findByNickName(patchUpdateUserReq.getNickName());
+
+            if (resultUserNickName.isPresent()) {
+                throw new UserException(ErrorCode.DUPLICATE_USER_NICKNAME, String.format("Updated NickName [ %s ] is duplicated.", patchUpdateUserReq.getNickName()));
+            }
+        }
+
+        // 사용자를 못찾을 때 예외처리
         Optional<User> result = userRepository.findByEmail(userEmail);
 
-        if (result.isPresent()) {
-            User user = result.get();
-
-            if (patchUpdateUserReq.getPassword() != null) {
-                user.update(patchUpdateUserReq, passwordEncoder.encode(patchUpdateUserReq.getPassword()));
-            } else {
-                user.update(patchUpdateUserReq, null);
-            }
-            user.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
-            userRepository.save(user);
-
-            PatchUpdateUserRes patchUpdateUserRes = PatchUpdateUserRes.builder()
-                    .userPassWord(user.getPassword())
-                    .userNickName(user.getNickName())
-                    .profileImage(user.getProfileImage())
-                    .build();
-
-            return BaseRes.builder()
-                    .isSuccess(true)
-                    .message("회원정보 수정 성공")
-                    .result(patchUpdateUserRes)
-                    .build();
-        } else {
-            throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("User email [ %s ] is not exists.", userEmail));
+        if (!result.isPresent()) {
+            throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("UserEmail [ %s ] is not exists.", userEmail));
         }
+
+        User user = result.get();
+
+        if (patchUpdateUserReq.getPassword() != null) {
+            if (!patchUpdateUserReq.getPassword().equals(patchUpdateUserReq.getCheckPassword())) {
+                throw new UserException(ErrorCode.DIFFERENT_USER_PASSWORD, String.format("Password [ %s ] is different with [ %s ].", patchUpdateUserReq.getPassword(), patchUpdateUserReq.getCheckPassword()));
+            }
+            user.update(patchUpdateUserReq, passwordEncoder.encode(patchUpdateUserReq.getPassword()));
+        } else {
+            user.update(patchUpdateUserReq, null);
+        }
+
+        user.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+        userRepository.save(user);
+
+        return BaseRes.builder()
+                .isSuccess(true)
+                .message("회원정보 수정 성공")
+                .result("요청 성공")
+                .build();
     }
+
+    // 회원 프로필 이미지 수정
+    public BaseRes updateImage(String userEmail, MultipartFile profileImage) {
+        // 사용자를 못찾을 때 예외처리
+        Optional<User> result = userRepository.findByEmail(userEmail);
+
+        if (!result.isPresent()) {
+            throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("UserEmail [ %s ] is not exists.", userEmail));
+        }
+
+        User user = result.get();
+        // 프로필 이미지가 있는 경우 S3에 업로드
+        String savePath = ImageUtils.makeBoardImagePath(profileImage.getOriginalFilename());
+        savePath = s3Service.uploadBoardFile(profileBucket, profileImage, savePath);
+
+        user.setProfileImage(savePath);
+        user.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+        userRepository.save(user);
+
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("프로필 이미지 수정 성공")
+                .result("요청 성공")
+                .build();
+        return baseRes;
+    }
+
 
     @Transactional(readOnly = false)
     public BaseRes cancel(Integer userIdx) {
