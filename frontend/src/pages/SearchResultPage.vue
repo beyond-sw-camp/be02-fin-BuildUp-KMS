@@ -132,59 +132,7 @@
                   </span>
                 </ul>
                 <div class="d-flex justify-content-center py-0 py-md-4">
-                  <nav class="" aria-label="pagination">
-                    <ul class="_1VYQb4 pagination">
-                      <li class="page-item" v-if="boardStore.currentPage > 1">
-                        <div role="button" tabindex="-1">
-                          <button @click.prevent="changePage(boardStore.currentPage - 1)" aria-label="pagination-prev"
-                            class="_2Hgkt3 btn d-flex p-0 page-link"><svg fill="currentColor" width="16" height="16"
-                              viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                              <path fill-rule="evenodd" clip-rule="evenodd"
-                                d="M9.33838 12.7021L4.63538 8.0001L9.33838 3.2981L10.2574 4.2171L6.47438 8.0001L10.2574 11.7821L9.33838 12.7021Z">
-                              </path>
-                            </svg>
-                          </button>
-                        </div>
-                      </li>
-                      <!-- 페이지 번호들 -->
-                      <li v-for="page in visiblePages" :key="page" class="page-item"
-                        :class="{ 'active': page === boardStore.currentPage }">
-                        <button @click.prevent="changePage(page)" class="_2Hgkt3 btn d-flex p-0 page-link">{{ page
-                          }}</button>
-                      </li>
-                      <li class="page-item">
-                        <div role="button" tabindex="-1">
-                          <button aria-label="pagination-6" @click.prevent="jumpForward"
-                            class="_2Hgkt3 btn d-flex p-0 page-link"><svg fill="currentColor"
-                              preserveAspectRatio="xMidYMid meet" height="12" width="12" class=""
-                              id="abae7265-d86f-4afc-bc36-ad71c61cb971" data-name="레이어 1"
-                              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18"
-                              style="vertical-align: middle; color: currentcolor; transform: rotate(90deg);">
-                              <path
-                                d="M9,4.25a2,2,0,1,1,2-2A2,2,0,0,1,9,4.25ZM11,9a2,2,0,1,0-2,2A2,2,0,0,0,11,9Zm0,6.75a2,2,0,1,0-2,2A2,2,0,0,0,11,15.75Z"
-                                fill="#90929e"></path>
-                            </svg>
-                          </button>
-                        </div>
-                      </li>
-                      <li class="page-item">
-                        <button @click.prevent="changePage(boardStore.totalPages)"
-                          class="_2Hgkt3 btn d-flex p-0 page-link">{{ boardStore.totalPages }}</button>
-                      </li>
-                      <li class="page-item" v-if="boardStore.currentPage < boardStore.totalPages">
-                        <div role="button" tabindex="-1">
-                          <button aria-label="pagination-next" @click.prevent="changePage(boardStore.currentPage + 1)"
-                            class="_2Hgkt3 btn d-flex p-0 page-link"><svg fill="currentColor" width="16" height="16"
-                              viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                              <path fill-rule="evenodd" clip-rule="evenodd"
-                                d="M6.65228 12.7021L5.73328 11.7821L9.51628 8.0001L5.73328 4.2171L6.65228 3.2981L11.3553 8.0001L6.65228 12.7021Z">
-                              </path>
-                            </svg>
-                          </button>
-                        </div>
-                      </li>
-                    </ul>
-                  </nav>
+                  <PaginationComponent :current-page="boardStore.currentPage" :total-pages="boardStore.totalPages" @change-page="changePage" />
                 </div>
               </div>
             </section>
@@ -199,9 +147,13 @@
 <script>
 import { mapStores } from "pinia";
 import { useBoardStore } from "/src/stores/useBoardStore";
+import PaginationComponent from "@/components/PaginationComponent.vue";
 
 export default {
   name: "SearchResultPage",
+  components: {
+    PaginationComponent
+  },
   data() {
     return {
       dropdownOpen: false,
