@@ -389,6 +389,62 @@ public class BoardService {
                 .build();
     }
 
+    /**
+     *  게시판 + 후기 검색 api
+     *  -> 페이지네이션 잘 안됨
+     */
+    @Transactional(readOnly = true)
+    public BaseRes searchResultListByQueryV2(String query, Integer searchType, Pageable pageable) {
+        Page<Board> boardPage = boardRepository.searchBoardListByQueryV2(pageable, query, searchType);
+        Page<Review> reviewPage = reviewRepository.searchReviewListByQueryV2(pageable, query, searchType);
+
+        List<SearchResultRes> searchResultResList = Stream.concat(
+                        boardPage.stream().map(board -> SearchResultRes.builder()
+                                .idx(board.getIdx())
+                                .title(board.getBoardTitle())
+                                .content(board.getBoardContent())
+                                .categoryName(board.getBoardCategory().getCategoryName())
+                                .nickName(board.getUser().getNickName())
+                                .createdAt(board.getCreatedAt())
+                                .viewCnt(board.getViewCnt())
+                                .commentCnt(board.getCommentCnt())
+                                .upCnt(board.getUpCnt())
+                                .type("Board")
+                                .build()),
+                        reviewPage.stream().map(review -> SearchResultRes.builder()
+                                .idx(review.getIdx())
+                                .title(review.getReviewTitle())
+                                .content(review.getReviewContent())
+                                .categoryName(review.getReviewCategory().getCategoryName())
+                                .nickName(review.getUser().getNickName())
+                                .createdAt(review.getCreatedAt())
+                                .viewCnt(review.getViewCnt())
+                                .commentCnt(review.getCommentCnt())
+                                .upCnt(review.getUpCnt())
+                                .type("Review")
+                                .build())
+                ).sorted(Comparator.comparing(SearchResultRes::getCreatedAt).reversed())
+                .collect(Collectors.toList());
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), searchResultResList.size());
+        List<SearchResultRes> paginatedResults = searchResultResList.subList(start, end);
+
+        Page<SearchResultRes> page = new PageImpl<>(paginatedResults, pageable, searchResultResList.size());
+
+        GetResultListByQueryRes result = GetResultListByQueryRes.builder()
+                .totalCnt((long) searchResultResList.size())
+                .totalPages(page.getTotalPages())
+                .list(page.getContent())
+                .build();
+
+        return BaseRes.builder()
+                .isSuccess(true)
+                .message("검색 결과 조회 성공 <게시글 + 후기>")
+                .result(result)
+                .build();
+    }
+
     public BaseRes updateBoard (User user, PatchUpdateBoardReq patchUpdateBoardReq, Integer boardIdx){
         Optional<Board> result = boardRepository.findByIdxAndUserIdx(boardIdx, user.getIdx());
 

@@ -19,4 +19,6 @@ public interface BoardRepositoryCustom {
     Page<Board> findBoardListByTag(Pageable pageable, Integer TagIdx, Integer sortIdx);
 
     Page<Board> searchBoardListByQuery(Pageable pageable, String keyword, Integer searchType);
+
+    Page<Board> searchBoardListByQueryV2(Pageable pageable, String query, Integer searchType);
 }

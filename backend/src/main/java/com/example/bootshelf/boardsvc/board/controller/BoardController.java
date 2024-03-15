@@ -143,7 +143,10 @@ public class BoardController {
         return ResponseEntity.ok().body(boardService.searchBoardListByQuery(query, searchType, pageable));
     }
 
-    /*
+    /**
+     *  게시판 + 후기 검색 api (v2)
+     *  -> 페이지네이션 잘 안됨
+     */
     @Operation(summary = "Board+Review 게시글 검색어로 조회 v2",
             description = "게시판+후기 데이터를 검색어(키워드)로 조회하는 API입니다.")
     @ApiResponses({
@@ -157,7 +160,6 @@ public class BoardController {
     ){
         return ResponseEntity.ok().body(boardService.searchResultListByQueryV2(query, searchType, pageable));
     }
-    */
 
 
     @Operation(summary = "Board 게시글 수정 기능",
