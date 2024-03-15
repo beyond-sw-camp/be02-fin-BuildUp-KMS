@@ -1,123 +1,121 @@
 <template>
-  <div class="css-aw1sgr">
-    <div class="css-amlmv6">
-      <!--만약 답글 안달리면 css-1254q6y, 달리면 css-1xxe9l9-->
-      <div class="css-1254q6y">답변 대기중</div>
-    </div>
-    <!--게시글 본문-->
-    <div class="css-kem115">
-      <div class="css-12i5occ">
-        <div class="css-1jibmi3">
-          <!--게시글 타이틀-->
-          <div class="css-cp47oo">
-            {{ reviews.reviewTitle }}
+  <a :href="'/review/detail/' + reviews.reviewIdx">
+    <div class="css-aw1sgr">
+      <!--게시글 본문-->
+      <div class="css-kem115">
+        <div class="css-12i5occ">
+          <div class="css-1jibmi3">
+            <!--게시글 타이틀-->
+            <div class="css-cp47oo">
+              {{ reviews.reviewTitle }}
+            </div>
+            <div class="css-14bssip">
+              {{ reviews.reviewContent }}
+            </div>
           </div>
-          <div class="css-14bssip">
-            {{ reviews.reviewContent }}
-          </div>
+          <div class="css-sebsp7"></div>
+          <!--태그 컴포넌트 자리-->
         </div>
-        <div class="css-sebsp7"></div>
-        <!--태그 컴포넌트 자리-->
+        <div class="css-bt1qy"></div>
+        <img
+          v-if="reviews.reviewImage"
+          :src="reviews.reviewImage"
+          class="css-17s6wd5"
+        />
       </div>
-      <div class="css-bt1qy"></div>
-      <img
-        v-if="reviews.reviewImage"
-        :src="reviews.reviewImage"
-        class="css-17s6wd5"
-      />
-    </div>
-    <!--여기서부터는 하단 아이디,추천수..등등-->
-    <div class="css-99cwur">
-      <!--하단 프로필-->
-      <div class="css-1fhge30">
-        <div class="css-aw18wm">
-          <!-- 아이콘-->
-          <span
-            style="
-              box-sizing: border-box;
-              display: block;
-              overflow: hidden;
-              width: initial;
-              height: initial;
-              background: none;
-              opacity: 1;
-              border: 0px;
-              margin: 0px;
-              padding: 0px;
-              position: absolute;
-              inset: 0px;
-            "
-          >
-            <img
-              sizes="100vw"
-              :src="reviews.profileImage"
-              decoding="async"
-              data-nimg="fill"
+      <!--여기서부터는 하단 아이디,추천수..등등-->
+      <div class="css-99cwur">
+        <!--하단 프로필-->
+        <div class="css-1fhge30">
+          <div class="css-aw18wm">
+            <!-- 아이콘-->
+            <span
               style="
+                box-sizing: border-box;
+                display: block;
+                overflow: hidden;
+                width: initial;
+                height: initial;
+                background: none;
+                opacity: 1;
+                border: 0px;
+                margin: 0px;
+                padding: 0px;
                 position: absolute;
                 inset: 0px;
-                box-sizing: border-box;
-                padding: 0px;
-                border: none;
-                margin: auto;
-                display: block;
-                width: 0px;
-                height: 0px;
-                min-width: 100%;
-                max-width: 100%;
-                min-height: 100%;
-                max-height: 100%;
               "
-            />
-          </span>
-        </div>
-        <div class="css-5zcuov">
-          <div class="css-1sika4i">
-            {{ reviews.userNickName }}
-          </div>
-          <div class="css-1tify6w">
-            <!--조그만 점 찍기-->
-            <svg
-              width="2"
-              height="2"
-              viewBox="0 0 2 2"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
             >
-              <circle cx="1" cy="1" r="1" fill="#9DA7AE"></circle>
-            </svg>
+              <img
+                sizes="100vw"
+                :src="reviews.profileImage"
+                decoding="async"
+                data-nimg="fill"
+                style="
+                  position: absolute;
+                  inset: 0px;
+                  box-sizing: border-box;
+                  padding: 0px;
+                  border: none;
+                  margin: auto;
+                  display: block;
+                  width: 0px;
+                  height: 0px;
+                  min-width: 100%;
+                  max-width: 100%;
+                  min-height: 100%;
+                  max-height: 100%;
+                "
+              />
+            </span>
           </div>
-          <div class="css-1ry6usa">
-            {{ reviews.updatedAt }}
+          <div class="css-5zcuov">
+            <div class="css-1sika4i">
+              {{ reviews.userNickName }}
+            </div>
+            <div class="css-1tify6w">
+              <!--조그만 점 찍기-->
+              <svg
+                width="2"
+                height="2"
+                viewBox="0 0 2 2"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle cx="1" cy="1" r="1" fill="#9DA7AE"></circle>
+              </svg>
+            </div>
+            <div class="css-1ry6usa">
+              {{ reviews.updatedAt }}
+            </div>
+          </div>
+          <div class="css-5zcuovs">
+            <div class="css-1sika4is">
+              {{ reviews.courseName }}
+            </div>
           </div>
         </div>
-        <div class="css-5zcuovs">
-          <div class="css-1sika4is">
-            {{ reviews.courseName }}
+        <!-- 여기서부터 추천수 댓글수 등등 표시-->
+        <div class="css-o01lup">
+          <div class="css-ts29it">
+            <div class="css-1ry6usa">댓글</div>
+            <div class="css-1ry6usa">
+              {{ reviews.commentCnt }}
+            </div>
           </div>
-        </div>
-      </div>
-      <!-- 여기서부터 추천수 댓글수 등등 표시-->
-      <div class="css-o01lup">
-        <div class="css-ts29it">
-          <div class="css-1ry6usa">댓글</div>
-          <div class="css-1ry6usa">
-            {{ reviews.commentCnt }}
+          <div clss="css-dbc8ke">・</div>
+          <div class="css-ts29it">
+            <div class="css-1ry6usa">추천</div>
+            <div class="css-1ry6usa">{{ reviews.upCnt }}</div>
           </div>
-        </div>
-        <div clss="css-dbc8ke">・</div>
-        <div class="css-ts29it">
-          <div class="css-1ry6usa">추천</div>
-          <div class="css-1ry6usa">{{ reviews.upCnt }}</div>
-        </div>
-        <div clss="css-dbc8ke">・</div>
-        <div class="css-ts29it">
-          <div class="css-1ry6usa">조회</div>
-          <div class="css-1ry6usa">{{ reviews.viewCnt }}</div>
+          <div clss="css-dbc8ke">・</div>
+          <div class="css-ts29it">
+            <div class="css-1ry6usa">조회</div>
+            <div class="css-1ry6usa">{{ reviews.viewCnt }}</div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </a>
   <!--모바일 추천수-->
   <div class="css-k9ergi">
     <div class="css-192oc4s">
@@ -619,5 +617,8 @@ img {
   image-rendering: -o-crisp-edges;
   image-rendering: -webkit-optimize-contrast;
   -ms-interpolation-mode: nearest-neighbor;
+}
+a {
+    text-decoration: none;
 }
 </style>

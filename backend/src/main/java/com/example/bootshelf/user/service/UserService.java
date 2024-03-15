@@ -165,7 +165,7 @@ public class UserService {
 
             GetListUserRes getListUserRes = GetListUserRes.builder()
                     .userIdx(user.getIdx())
-                    .userEmail(user.getEmail())
+                    .email(user.getEmail())
                     .name(user.getName())
                     .build();
 
@@ -188,8 +188,10 @@ public class UserService {
 
             GetListUserRes getListUserRes = GetListUserRes.builder()
                     .userIdx(user.getIdx())
-                    .userEmail(user.getEmail())
+                    .email(user.getEmail())
                     .name(user.getName())
+                    .nickName(user.getNickName())
+                    .profileImage(user.getProfileImage())
                     .build();
 
             return BaseRes.builder()
@@ -302,7 +304,7 @@ public class UserService {
     public void kakaoSignup(String nickName, String profileImage) {
 
         User user = User.builder()
-                .email(nickName)
+                .email(nickName + "@kakao.com")
                 .password(passwordEncoder.encode("kakao"))
                 .nickName(nickName)
                 .name(nickName)

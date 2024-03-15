@@ -12,6 +12,7 @@ import java.util.List;
 public class GetReadReviewRes {
 
     private Integer reviewIdx;
+    private String reviewCategoryName;
     private Integer userIdx;
     private String userNickName;
     private String profileImage;
@@ -19,7 +20,7 @@ public class GetReadReviewRes {
     private String reviewContent;
     private String courseName;
     private Integer courseEvaluation;
-    private Integer viewCnt;
+    private Integer scrapCnt;
     private Integer upCnt;
     private Integer commentCnt;
     private String updatedAt;

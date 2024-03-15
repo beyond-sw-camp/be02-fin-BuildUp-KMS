@@ -1,10 +1,14 @@
 package com.example.bootshelf.reviewsvc.reviewcomment.service;
 
+import com.example.bootshelf.boardsvc.board.model.entity.Board;
+import com.example.bootshelf.boardsvc.boardcomment.model.entity.BoardComment;
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.common.error.ErrorCode;
+import com.example.bootshelf.common.error.entityexception.BoardCommentException;
 import com.example.bootshelf.common.error.entityexception.ReviewCommentException;
 import com.example.bootshelf.common.error.entityexception.ReviewException;
 import com.example.bootshelf.reviewsvc.review.model.entity.Review;
+import com.example.bootshelf.reviewsvc.review.repository.ReviewRepository;
 import com.example.bootshelf.reviewsvc.reviewcomment.model.entity.ReviewComment;
 import com.example.bootshelf.reviewsvc.reviewcomment.model.request.PatchUpdateReviewCommentReq;
 import com.example.bootshelf.reviewsvc.reviewcomment.model.request.PostCreateReviewCommentReq;
@@ -29,35 +33,52 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ReviewCommentService {
     private final ReviewCommentRepository reviewCommentRepository;
+    private final ReviewRepository reviewRepository;
 
     // 댓글 작성
     @Transactional(readOnly = false)
     public BaseRes createReviewComment(User user, Integer reviewIdx, PostCreateReviewCommentReq postCreateReviewCommentReq) {
 
+        Optional<Review> findReview = reviewRepository.findByIdx(reviewIdx);
+
+        // 댓글을 작성하려는 후기글이 존재하지 않을 때
+        if (!findReview.isPresent()) {
+            throw new BoardCommentException(ErrorCode.REVIEW_COMMENT_NOT_EXISTS, String.format("Board with idx %d not found.", reviewIdx));
+        }
+
         // 댓글의 내용이 비어있을 때
         if (postCreateReviewCommentReq.getReviewCommentContent() == null || postCreateReviewCommentReq.getReviewCommentContent().isEmpty()) {
             throw new ReviewCommentException(ErrorCode.INVALID_INPUT_VALUE, String.format("Content is empty."));
         }
-            reviewCommentRepository.save(ReviewComment.builder()
-                    .review(Review.builder().idx(reviewIdx).build())
-                    .user(user)
-                    .reviewCommentContent(postCreateReviewCommentReq.getReviewCommentContent())
-                    .status(true)
-                    .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-                    .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-                    .build());
 
-            PostCreateReviewCommentRes postCreateReviewCommentRes = PostCreateReviewCommentRes.builder()
-                    .reviewCommentContent(postCreateReviewCommentReq.getReviewCommentContent())
-                    .build();
+        Review review = findReview.get();
 
-            BaseRes baseRes = BaseRes.builder()
-                    .isSuccess(true)
-                    .message("댓글 등록 성공")
-                    .result(postCreateReviewCommentRes)
-                    .build();
+        ReviewComment reviewComment = ReviewComment.builder()
+                .review(review)
+                .user(user)
+                .reviewCommentContent(postCreateReviewCommentReq.getReviewCommentContent())
+                .status(true)
+                .upCnt(0)
+                .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .build();
 
-            return baseRes;
+        reviewCommentRepository.save(reviewComment);
+        review.increaseCommentUpCnt();
+        reviewRepository.save(review);
+
+        PostCreateReviewCommentRes postCreateReviewCommentRes = PostCreateReviewCommentRes.builder()
+                .idx(reviewComment.getIdx())
+                .reviewCommentContent(postCreateReviewCommentReq.getReviewCommentContent())
+                .build();
+
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("댓글 등록 성공")
+                .result(postCreateReviewCommentRes)
+                .build();
+
+        return baseRes;
 
     }
 
@@ -112,7 +133,7 @@ public class ReviewCommentService {
     // 댓글/대댓글 수정
     @Transactional(readOnly = false)
     public BaseRes updateComment(User user, Integer reviewIdx, Integer idx, PatchUpdateReviewCommentReq patchUpdateReviewCommentReq) {
-        Optional<ReviewComment> result = reviewCommentRepository.findByIdx(idx);
+        Optional<ReviewComment> result = reviewCommentRepository.findByIdxAndUserIdx(idx, user.getIdx());
 
         // 수정하고자 하는 댓글/대댓글을 찾지 못할 때
         if (!result.isPresent()) {
@@ -154,22 +175,41 @@ public class ReviewCommentService {
     // 댓글/대댓글 삭제
     @Transactional(readOnly = false)
     public BaseRes deleteComment(Integer idx, User user) {
-        Optional<ReviewComment> result = reviewCommentRepository.findByIdx(idx);
+        Optional<ReviewComment> result = reviewCommentRepository.findByIdxAndUserIdx(idx, user.getIdx());
 
         // 삭제하고자 하는 댓글을 찾지 못할 때
         if (result.equals(0)) {
             throw new ReviewException(ErrorCode.REVIEW_COMMENT_NOT_EXISTS, String.format("ReviewCommentIdx [ idx : %s ] is not exists.", idx));
         }
 
-            ReviewComment reviewComment = result.get();
+        ReviewComment reviewComment = result.get();
+        Review review = reviewComment.getReview();
 
-            reviewCommentRepository.delete(reviewComment);
+        if (reviewComment.getParent() == null) {
+            // 하위 댓글들도 함께 삭제
+            deleteChildrenComments(reviewComment.getChildren());
+        }
 
-            return BaseRes.builder()
-                    .isSuccess(true)
-                    .message("댓글 삭제 성공")
-                    .result("후기글 댓글 삭제 성공")
-                    .build();
+        reviewCommentRepository.delete(reviewComment);
+
+        review.decreaseCommentUpCnt();
+        reviewRepository.save(review);
+
+        return BaseRes.builder()
+                .isSuccess(true)
+                .message("댓글 삭제 성공")
+                .result("후기글 댓글 삭제 성공")
+                .build();
+    }
+
+    private void deleteChildrenComments(List<ReviewComment> children) {
+        if (children != null && !children.isEmpty()) {
+            for (ReviewComment childComment : children) {
+                // 재귀적으로 하위 댓글 삭제
+                deleteChildrenComments(childComment.getChildren());
+                reviewCommentRepository.delete(childComment);
+            }
+        }
     }
 
     // 대댓글 작성

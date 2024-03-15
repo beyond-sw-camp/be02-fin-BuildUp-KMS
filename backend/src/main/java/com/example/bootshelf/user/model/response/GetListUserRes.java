@@ -9,8 +9,11 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class GetListUserRes {
+
     private Integer userIdx;
-    private String userEmail;
+    private String email;
     private String name;
+    private String nickName;
+    private String profileImage;
 
 }

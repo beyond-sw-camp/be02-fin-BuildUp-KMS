@@ -1,5 +1,7 @@
 package com.example.bootshelf.reviewsvc.review.service;
 
+import com.example.bootshelf.boardsvc.board.model.entity.Board;
+import com.example.bootshelf.boardsvc.board.model.response.GetBoardListByQueryRes;
 import com.example.bootshelf.boardsvc.board.model.response.GetBoardListByQueryResResult;
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.common.error.ErrorCode;
@@ -63,7 +65,7 @@ public class ReviewService {
 
         review = reviewRepository.save(review);
 
-        if (reviewImages == null || reviewImages.length == 0) {
+        if (reviewImages != null || reviewImages.length > 0) {
             reviewImageService.createReviewImage(review, reviewImages);
         }
 
@@ -222,6 +224,7 @@ public class ReviewService {
 
         GetReadReviewRes getReadReviewRes = GetReadReviewRes.builder()
                 .reviewIdx(review.getIdx())
+                .reviewCategoryName(review.getReviewCategory().getCategoryName())
                 .userIdx(review.getUser().getIdx())
                 .userNickName(review.getUser().getNickName())
                 .profileImage(review.getUser().getProfileImage())
@@ -229,8 +232,8 @@ public class ReviewService {
                 .reviewContent(review.getReviewContent())
                 .courseName(review.getCourseName())
                 .courseEvaluation(review.getCourseEvaluation())
-                .viewCnt(review.getViewCnt())
                 .upCnt(review.getUpCnt())
+                .scrapCnt(review.getScrapCnt())
                 .commentCnt(review.getCommentCnt())
                 .updatedAt(review.getUpdatedAt())
                 .reviewImageList(getListImageReviewResList)
@@ -264,6 +267,44 @@ public class ReviewService {
                 .upCnt(reviewComment.getUpCnt())
                 .updatedAt(reviewComment.getUpdatedAt())
                 .children(childCommentsRes)
+                .build();
+    }
+
+    @Transactional(readOnly = true)
+    public BaseRes searchReviewListByQuery(String query, Integer searchType, Pageable pageable) {
+        Page<Review> reviewList = reviewRepository.searchReviewListByQuery(pageable, query, searchType);
+
+        List<GetReviewListByQueryRes> getReviewListByQueryResList = new ArrayList<>();
+
+        for (Review review : reviewList) {
+            GetReviewListByQueryRes getReviewListByQueryRes = GetReviewListByQueryRes.builder()
+                    .reviewIdx(review.getIdx())
+                    .reviewTitle(review.getReviewTitle())
+                    .reviewContent(review.getReviewContent())
+                    .reviewCategoryName(review.getReviewCategory().getCategoryName())
+                    .nickName(review.getUser().getNickName())
+                    .createdAt(review.getCreatedAt())
+                    .viewCnt(review.getViewCnt())
+                    .commentCnt(review.getCommentCnt())
+                    .upCnt(review.getUpCnt())
+                    .build();
+
+            getReviewListByQueryResList.add(getReviewListByQueryRes);
+        }
+
+        Long totalCnt = reviewList.getTotalElements();
+        Integer totalPages = reviewList.getTotalPages();
+
+        GetReviewListByQueryResResult result = GetReviewListByQueryResResult.builder()
+                .totalCnt(totalCnt)
+                .totalPages(totalPages)
+                .list(getReviewListByQueryResList)
+                .build();
+
+        return BaseRes.builder()
+                .isSuccess(true)
+                .message("메인 페이지 검색 결과 조회 성공 <후기>")
+                .result(result)
                 .build();
     }
 

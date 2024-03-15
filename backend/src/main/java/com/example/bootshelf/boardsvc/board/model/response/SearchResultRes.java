@@ -4,17 +4,18 @@ import lombok.*;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class GetBoardListByQueryRes {
-    private Integer boardIdx;
-    private String boardTitle;
-    private String boardContent;
-    private String boardCategoryName;
+public class SearchResultRes {
+    private Integer idx;
+    private String title;
+    private String content;
+    private String categoryName;
     private String nickName;
     private String createdAt;
     private Integer viewCnt;
     private Integer commentCnt;
     private Integer upCnt;
+    private String type;
 }

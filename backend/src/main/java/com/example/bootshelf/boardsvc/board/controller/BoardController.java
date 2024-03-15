@@ -143,6 +143,22 @@ public class BoardController {
         return ResponseEntity.ok().body(boardService.searchBoardListByQuery(query, searchType, pageable));
     }
 
+    /*
+    @Operation(summary = "Board+Review 게시글 검색어로 조회 v2",
+            description = "게시판+후기 데이터를 검색어(키워드)로 조회하는 API입니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500",description = "서버 내부 오류")})
+    @GetMapping ("/searchv2")
+    public ResponseEntity<BaseRes> searchResultListByQueryV2 (
+            @RequestParam String query,
+            @RequestParam Integer searchType,
+            @PageableDefault(size = 20) Pageable pageable
+    ){
+        return ResponseEntity.ok().body(boardService.searchResultListByQueryV2(query, searchType, pageable));
+    }
+    */
+
 
     @Operation(summary = "Board 게시글 수정 기능",
             description = "게시판의 게시글을 수정하는 API 입니다.")
