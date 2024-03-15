@@ -105,11 +105,11 @@ public class BoardService {
                 Board board = result.get();
 
                 List<BoardTag> boardTagList = board.getBoardTagList();
-                List<Integer> tagIdxs = new ArrayList<>();
+                List<String> tagNames = new ArrayList<>();
 
                 for(BoardTag boardTag : boardTagList){
-                    Integer tagIdx = boardTag.getIdx();
-                    tagIdxs.add(tagIdx);
+                    String tagName = boardTag.getTag().getTagName();
+                    tagNames.add(tagName);
                 }
 
                 List<BoardImage> boardImageList = board.getBoardImageList();
@@ -124,9 +124,9 @@ public class BoardService {
                         .idx(board.getIdx())
                         .boardTitle(board.getBoardTitle())
                         .boardContent(board.getBoardContent())
-                        .boardCategoryIdx(board.getBoardCategory().getIdx())
+                        .boardCategoryName(board.getBoardCategory().getCategoryName())
                         .boardImageList(fileNames)
-                        .boardTagListIdx(tagIdxs)
+                        .boardTagNameList(tagNames)
                         .commentCnt(board.getCommentCnt())
                         .viewCnt(board.getViewCnt())
                         .upCnt(board.getUpCnt())
@@ -387,17 +387,6 @@ public class BoardService {
                 .result(result)
                 .build();
     }
-
-//    public  void getTagList(Integer boardIdx){
-//        Optional<Board> result = boardRepository.findByIdx(boardIdx);
-//        List<Integer> boardTagList = new ArrayList<>();
-//
-//        for(Board board: result){
-//
-//        }
-//        // 보드에서 tagIdxList 추출
-//        // tagIdx리스트를 활용해서 Ta
-//    }
 
     public BaseRes updateBoard (User user, PatchUpdateBoardReq patchUpdateBoardReq, Integer boardIdx){
         Optional<Board> result = boardRepository.findByIdxAndUserIdx(boardIdx, user.getIdx());

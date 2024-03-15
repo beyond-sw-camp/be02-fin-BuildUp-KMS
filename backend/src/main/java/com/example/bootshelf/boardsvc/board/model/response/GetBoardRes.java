@@ -16,9 +16,9 @@ public class GetBoardRes {
 
     private String boardContent;
 
-    private Integer boardCategoryIdx;
+    private String boardCategoryName;
 
-    private List<Integer> boardTagListIdx;
+    private List<String> boardTagNameList;
 
     private Integer viewCnt;
 
