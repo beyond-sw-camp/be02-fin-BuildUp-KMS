@@ -130,13 +130,10 @@ public class User implements UserDetails {
 
     public void update(PatchUpdateUserReq patchUpdateUserReq, String userPassword) {
         if (userPassword != null) {
-            this.password = password;
+            this.password = userPassword;
         }
         if (patchUpdateUserReq.getNickName() != null) {
             this.nickName = patchUpdateUserReq.getNickName();
-        }
-        if (patchUpdateUserReq.getProfileImage() != null) {
-            this.profileImage = patchUpdateUserReq.getProfileImage();
         }
     }
 }
