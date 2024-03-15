@@ -88,7 +88,7 @@
                   v-for="boards in boardStore.boardList"
                   :key="boards.boardIdx"
                 >
-                  <CategoryBoardComponent :boards="boards" />
+                <CategoryBoardComponent :boards="boards" />
                 </div>
               </ul>
             </div>

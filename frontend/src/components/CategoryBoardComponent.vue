@@ -54,7 +54,10 @@
             >
               <img
                 sizes="100vw"
-                src="../assets/img/bbb.png"
+                v-if="boards.userProfileImage"
+                :src="boards.userProfileImage
+                ? boards.userProfileImage : 
+                'https://bootshelf-profile.s3.ap-northeast-2.amazonaws.com/2024/03/14/6a0ac29b-55c8-4fd0-808a-fcd1b9deda76_default.png'"
                 decoding="async"
                 data-nimg="fill"
                 style="

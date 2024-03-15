@@ -1,10 +1,27 @@
 <template>
-  <div class="css-1kc14yj">#&nbsp;백엔드</div>
+  <div>
+    <div v-for="(tag, index) in boardtags" :key="index" class="css-1kc14yj">
+      {{ tag.name }}
+    </div>
+  </div>
 </template>
 
 <script>
+import { mapStores } from "pinia";
+import { useBoardStore } from "@/stores/useBoardStore";
+
 export default {
   name: "TagComponent",
+  props: {
+    // Board의 태그 목록을 전달받음
+    boardtags: {
+      type: Array,
+      required: true
+    }
+  },
+  computed: {
+    ...mapStores(useBoardStore),
+  },
 };
 </script>
 
