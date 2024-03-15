@@ -54,7 +54,7 @@
     <div class="css-16z0wya">
       <section class="css-zea7jz">
         <div class="css-143hej">
-          <router-link to="/board">
+          <router-link to="/board/knowledge">
             <a>
               <button class="css-bcb9a9">
                 <div class="css-197aby8">
@@ -66,7 +66,7 @@
                 <img src="../assets/img/knowledge.png" loading="lazy" class="css-1522xt9" />
               </button></a>
           </router-link>
-          <router-link to="/board">
+          <router-link to="/board/qna">
             <a>
               <button class="css-bcb9a9">
                 <div class="css-197aby8">
@@ -96,7 +96,7 @@
       </section>
       <section class="css-zea7jz2">
         <div class="css-143hej">
-          <router-link to="/board">
+          <router-link to="/review">
             <a>
               <button class="css-bcb9a9">
                 <div class="css-197aby8">
