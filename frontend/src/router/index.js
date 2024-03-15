@@ -23,6 +23,24 @@ import AdminWithdrawPage from "@/pages/AdminWithdrawPage.vue";
 import AdminCategoryRegisterPage from "@/pages/AdminCategoryRegisterPage.vue";
 import AdminTagRegisterPage from "@/pages/AdminTagRegisterPage.vue";
 
+const requireAuth = () => (from, to, next) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    return next();
+  }
+  next("/login");
+}
+
+/*
+const requireAdminAuth = () => (from, to, next) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    return next();
+  }
+  next("/admin");
+}
+*/
+
 const routes = [
   { path: "/", component: MainPage },
   {
@@ -34,20 +52,20 @@ const routes = [
   { path: "/auth/signup", component: AuthSignupPage },
   { path: "/KakaoLogIn", component: KakaoLogIn },
   { path: "/signup", component: SignupPage },
-  { path: "/profile", component: MyProfilePage },
-  { path: "/mypage", component: MyActivePage },
+  { path: "/profile", component: MyProfilePage, beforeEnter: requireAuth() },
+  { path: "/mypage", component: MyActivePage, beforeEnter: requireAuth() },
   { path: "/result", component: SearchResultPage },
-  { path: "/board/new", component: BoardWritePage },
-  { path: "/review/new", component: ReviewWritePage },
+  { path: "/board/new", component: BoardWritePage, beforeEnter: requireAuth() },
+  { path: "/review/new", component: ReviewWritePage, beforeEnter: requireAuth() },
   { path: "/study", component: StudyBoardPage },
-  { path: "/board/detail", component: BoardDetailsPage },
-  { path: "/review/detail/:idx", component: ReviewDetailsPage },
+  { path: "/board/:idx", component: BoardDetailsPage },
+  { path: "/review/:idx", component: ReviewDetailsPage },
   { path: "/board", component: BoardListPage },
   { path: "/review", component: ReviewListPage },
   { path: "/select/signup", component: SelectSignupPage },
   { path: "/email/verify", component: EmailValidationPage },
   { path: "/notice", component: NoticeBoardPage },
-  { path: "/admin", component: AdminMainPage },
+  { path: "/admin", component: AdminMainPage, },
   { path: "/admin/withdraw", component: AdminWithdrawPage },
   { path: "/admin/category/register", component: AdminCategoryRegisterPage },
   { path: "/admin/tag/register", component: AdminTagRegisterPage },

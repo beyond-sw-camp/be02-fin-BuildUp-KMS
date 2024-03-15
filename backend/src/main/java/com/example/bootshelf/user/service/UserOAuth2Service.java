@@ -27,7 +27,7 @@ public class UserOAuth2Service extends DefaultOAuth2UserService {
         String userName = (String) properties.get("nickname");
         String profileImage = (String) properties.get("profile_image");
 
-        User user = userService.getUserEmail(userName);
+        User user = userService.getUserEmail(userName+"@kakao.com");
         if(user == null) {
             // DB에 없으면 회원 가입
             userService.kakaoSignup(userName, profileImage);

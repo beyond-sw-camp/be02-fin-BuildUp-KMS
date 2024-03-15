@@ -45,7 +45,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         Map<String, Object> properties = (Map<String, Object>) oAuth2User.getAttributes().get("properties");
         String nickname = (String) properties.get("nickname");
 
-        Optional<User> result = userRepository.findByEmail(nickname);
+        Optional<User> result = userRepository.findByEmail(nickname+"@kakao.com");
 
         User user = result.get();
         String jwt = JwtUtils.generateAccessTokenForOAuth(user, secretKey, expiredTimeMs);
