@@ -114,6 +114,27 @@ public class BoardRepositoryCustomImpl extends QuerydslRepositorySupport impleme
         return orderSpecifiers.toArray(new OrderSpecifier[0]);
     }
 
+    @Override
+    public Page<Board> searchBoardListByQueryAndCategory(Pageable pageable, String query, Integer boardCategoryIdx, Integer sortIdx) {
+        QBoard qBoard = QBoard.board;
+
+        // 검색 조건
+        BooleanExpression searchCondition = titleContains(query).or(contentContains(query));
+        OrderSpecifier[] orderSpecifiers = createOrderSpecifier(sortIdx, qBoard);
+
+        // 조회 쿼리 생성 및 페이징 처리
+        JPQLQuery<Board> querySQL = from(qBoard)
+                .leftJoin(qBoard.user).fetchJoin()
+                .leftJoin(qBoard.boardCategory).fetchJoin()
+                .where(searchCondition.and(qBoard.boardCategory.idx.eq(boardCategoryIdx)))
+                .orderBy(orderSpecifiers);
+
+        // pagination 적용
+        JPQLQuery<Board> pageableQuery = getQuerydsl().applyPagination(pageable, querySQL);
+        List<Board> boardList = pageableQuery.fetch();
+
+        return new PageImpl<>(boardList, pageable, pageableQuery.fetchCount());
+    }
 
     @Override
     public Page<Board> searchBoardListByQuery(Pageable pageable, String query, Integer searchType) {
