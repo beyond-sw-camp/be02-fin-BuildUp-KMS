@@ -3,7 +3,7 @@ import axios from "axios";
 
 // const backend = 'https://www.lonuashop.kro.kr/api';
 const backend = "http://localhost:8080";
-// const storedToken = sessionStorage.getItem("token");
+const storedToken = localStorage.getItem("token");
 
 export const useReviewStore = defineStore("review", {
   state: () => ({ reviewList: [], isOrderExist: true, review: "" }),
@@ -18,6 +18,7 @@ export const useReviewStore = defineStore("review", {
       try {
         let response = await axios.post(backend + `/review/create`, formData, {
           headers: {
+            Authorization: `Bearer ${storedToken}`,
             "Content-Type": "multipart/form-data",
           },
         });

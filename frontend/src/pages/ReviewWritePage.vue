@@ -258,6 +258,7 @@ export default {
       ],
       tags: [],
       inputValue: "",
+      reviewImage: null,
       imageUrl: null,
       buttonOpacity: 1,
       review: {
@@ -343,6 +344,8 @@ export default {
       const file = event.target.files[0];
       if (!file) return;
 
+      this.reviewImage = file;
+
       const reader = new FileReader();
       reader.onload = () => {
         this.imageUrl = reader.result;
@@ -350,7 +353,7 @@ export default {
       reader.readAsDataURL(file);
     },
     async createReview() {
-      await this.reviewStore.createReview(this.review, this.imageUrl);
+      await this.reviewStore.createReview(this.review, this.reviewImage);
     },
   },
 };
