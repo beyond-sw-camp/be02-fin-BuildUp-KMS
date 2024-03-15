@@ -36,9 +36,7 @@ public class GetBoardRes {
 
     private List<String> boardImageList;
 
-    private List<Integer> boardCommentList;
-
-    private String userProfile;
+    private String userProfileImage;
 
     private String userName;
 }

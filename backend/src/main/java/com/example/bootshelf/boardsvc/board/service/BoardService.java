@@ -111,14 +111,6 @@ public class BoardService {
                     tagIdxs.add(tagIdx);
                 }
 
-                List<BoardComment> commentList = board.getBoardCommentList();
-                List<Integer> commentIdxs = new ArrayList<>();
-
-                for(BoardComment boardComment : commentList){
-                    Integer commentIdx = boardComment.getIdx();
-                    commentIdxs.add(commentIdx);
-                }
-
                 List<BoardImage> boardImageList = board.getBoardImageList();
                 List<String> fileNames = new ArrayList<>();
 
@@ -134,13 +126,13 @@ public class BoardService {
                         .boardCategoryIdx(board.getBoardCategory().getIdx())
                         .boardImageList(fileNames)
                         .boardTagListIdx(tagIdxs)
-                        .boardCommentList(commentIdxs)
+                        .commentCnt(board.getCommentCnt())
                         .viewCnt(board.getViewCnt())
                         .upCnt(board.getUpCnt())
                         .scrapCnt(board.getScrapCnt())
                         .createdAt(board.getCreatedAt())
                         .updatedAt(board.getUpdatedAt())
-                        .userProfile(board.getUser().getProfileImage())
+                        .userProfileImage(board.getUser().getProfileImage())
                         .userName(board.getUser().getName())
                         .build();
 
