@@ -1,5 +1,6 @@
 package com.example.bootshelf.reviewsvc.review.repository.querydsl;
 
+import com.example.bootshelf.boardsvc.board.model.entity.Board;
 import com.example.bootshelf.reviewsvc.review.model.entity.Review;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,4 +15,7 @@ public interface ReviewRepositoryCustom {
 
     Page<Review> findReviewsBySearchTerm(Integer sortType, String searchTerm, Pageable pageable);
 
+    Page<Review> searchReviewListByQuery(Pageable pageable, String query, Integer searchType);
+
+    Page<Review> searchReviewListByQueryV2(Pageable pageable, String query, Integer searchType);
 }

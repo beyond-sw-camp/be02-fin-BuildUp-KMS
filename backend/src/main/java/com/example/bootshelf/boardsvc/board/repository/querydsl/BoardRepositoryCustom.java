@@ -1,9 +1,12 @@
 package com.example.bootshelf.boardsvc.board.repository.querydsl;
 
 import com.example.bootshelf.boardsvc.board.model.entity.Board;
+import com.example.bootshelf.reviewsvc.review.model.entity.Review;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface BoardRepositoryCustom {
