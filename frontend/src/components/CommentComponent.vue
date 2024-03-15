@@ -1,5 +1,5 @@
 <template>
-  <div class="css-f7no94" v-for="(comment, index) in commentList" :key="index">
+  <div class="css-f7no94" v-for="comment in commentList" :key="comment.idx">
     <!-- <div class="css-f7no94"> -->
     <div class="css-3o2y5e">
       <div width="36px" height="36px" class="css-jg5tbe">
@@ -39,43 +39,22 @@
 import { useBoardCommentStore } from '@/stores/useBoardCommentStore';
 // import VueJwtDecode from "vue-jwt-decode";
 
-
-
-
-import axios from "axios";
-const backend = "http://localhost:8080";
-let boardIdx = 1;
-
 export default {
   name: "CommentComponent",
-
+  props: {
+    commentList: {
+      type: Array,
+      required: true
+    }
+  },
   data() {
     return {
-      commentList: [],
       editable: false,
+      boardDetail: null
     }
   },
 
   methods: {
-    async getBoardCommentList() {
-      try {
-        let response = await axios.get(backend + `/board/${boardIdx}/comment`);
-        this.commentList = response.data.result;
-        console.log(this.commentList);
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    // async getBoardCommentList() {
-    //   try {
-    //     await useBoardCommentStore.getBoardCommentList();
-    //     this.commentList = useBoardCommentStore.boardComments;
-    //     console.log(this.commentList);
-    //   } catch (error) {
-    //     console.error(error);
-    //   }
-    // }
-
     async saveComment(commentIdx) {
       try {
         await useBoardCommentStore().updateBoardComment(this.updateComment, commentIdx);
@@ -96,10 +75,6 @@ export default {
     }
 
   },
-
-  mounted() {
-    this.getBoardCommentList();
-  }
 };
 </script>
 

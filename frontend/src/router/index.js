@@ -58,7 +58,7 @@ const routes = [
   { path: "/board/new", component: BoardWritePage, beforeEnter: requireAuth() },
   { path: "/review/new", component: ReviewWritePage, beforeEnter: requireAuth() },
   { path: "/study", component: StudyBoardPage },
-  { path: "/board/:idx", component: BoardDetailsPage },
+  { path: "/board/:boardIdx", component: BoardDetailsPage },
   { path: "/review/:idx", component: ReviewDetailsPage },
   { path: "/board", component: BoardListPage },
   { path: "/review", component: ReviewListPage },
