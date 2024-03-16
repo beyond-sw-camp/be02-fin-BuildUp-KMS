@@ -240,6 +240,7 @@ export default {
     border-bottom: 1px solid rgb(228, 235, 240);
     gap: 14px;
     cursor: pointer;
+    padding-right: 0px;
   }
 }
 .css-aw1sgr {
@@ -249,6 +250,11 @@ export default {
   padding: 24px 16px;
   background-color: rgb(255, 255, 255);
   gap: 16px;
+  padding-right: 0px;
+}
+
+.css-aw1sgr:hover {
+  background-color: rgb(242, 246, 248);
 }
 .css-amlmv6 {
   width: 100%;
@@ -294,7 +300,7 @@ export default {
   justify-content: space-between;
   -webkit-box-align: center;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
 }
 .css-12i5occ {
   display: flex;
@@ -403,6 +409,7 @@ export default {
   -webkit-box-align: center;
   align-items: center;
   height: 24px;
+  margin-right: 20px;
 }
 .css-1fhge30 {
   display: flex;
@@ -602,13 +609,14 @@ export default {
   }
 }
 .css-17s6wd5 {
-  width: 92px;
+  width: 100px;
   height: 92px;
   border-radius: 8px;
   overflow: hidden;
   position: relative;
   display: flex;
   flex-shrink: 0;
+  margin-right: 17px;
 }
 
 img {
@@ -618,6 +626,12 @@ img {
   -ms-interpolation-mode: nearest-neighbor;
 }
 a {
-    text-decoration: none;
+  color: rgb(157, 167, 174);
+  text-decoration: none;
+}
+
+a:hover {
+  color: rgb(157, 167, 174);
+  text-decoration: none;
 }
 </style>
