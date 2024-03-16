@@ -2,6 +2,7 @@ package com.example.bootshelf.user.controller;
 
 
 import com.example.bootshelf.common.BaseRes;
+import com.example.bootshelf.config.naver.NaverOcrApi;
 import com.example.bootshelf.user.model.entity.User;
 import com.example.bootshelf.user.model.request.*;
 import com.example.bootshelf.user.service.EmailVerifyService;
@@ -14,6 +15,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +27,8 @@ import org.springframework.web.servlet.view.RedirectView;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -87,10 +93,10 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
-    @RequestMapping(method = RequestMethod.GET, value = "/list/{page}/{size}")
-    public ResponseEntity<BaseRes> list(@PathVariable @NotNull @Positive Integer page, @PathVariable @NotNull @Positive Integer size) {
+    @RequestMapping(method = RequestMethod.GET, value = "/list")
+    public ResponseEntity<BaseRes> list(@PageableDefault(size = 10) Pageable pageable) {
 
-        BaseRes baseRes = userService.list(page, size);
+        BaseRes baseRes = userService.list(pageable);
         return ResponseEntity.ok().body(baseRes);
     }
 
@@ -157,6 +163,7 @@ public class UserController {
     })
     @RequestMapping(method = RequestMethod.DELETE, value = "/delete/{userIdx}")
     public ResponseEntity<BaseRes> delete(@PathVariable @NotNull @Positive Integer userIdx) {
+
         BaseRes baseRes = userService.delete(userIdx);
 
         return ResponseEntity.ok().body(baseRes);
@@ -168,11 +175,24 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
-    @RequestMapping(method = RequestMethod.POST, value = "/checkPw")
+    @RequestMapping(method = RequestMethod.POST, value = "/checkpw")
     public ResponseEntity checkPassword(@RequestBody @Valid PostCheckPasswordReq postCheckPasswordReq) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 
         return ResponseEntity.ok().body(userService.checkPassword(user, postCheckPasswordReq));
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/check/course")
+    public ResponseEntity checkCourse(@RequestPart("courseImage") MultipartFile file) throws IOException {
+
+        String result = NaverOcrApi.callApi("POST", file.getBytes(), "VHlLZ3BiR0tGT3lNaVFxeUFhVUx3cVpTRlBRWmlFYWQ=", "jpg");
+
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("Naver Clova Ocr Success")
+                .result(result)
+                .build();
+
+        return ResponseEntity.ok().body(baseRes);
+    }
 }

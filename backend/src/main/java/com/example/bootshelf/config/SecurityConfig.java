@@ -20,7 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @RequiredArgsConstructor
-public class SecurityConfig{
+public class SecurityConfig {
 
     @Value("${jwt.secret-key}")
     private String secretKey;
@@ -46,6 +46,34 @@ public class SecurityConfig{
                     .authorizeHttpRequests()
                     .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()  // CORS 해결하기 위한 OPTION 메서드 허용
                     .antMatchers("/**").permitAll()
+                    .antMatchers("/user/signup", "/user/check/course").permitAll()
+                    .antMatchers("/user/verify", "/user/login").permitAll()
+                    .antMatchers("/review/list/**", "/review/**/search/**", "/review/search/**", "/review/*", "/review/*/comment", "/reviewcomment/up/list").permitAll()
+
+                    .antMatchers("/board/category/**", "/board/tag/**", "/board/*", "/board/search/**", "/board/*/search/**", "/board/searchv2/**", "/board/*/comment", "/boardcomment/up/list").permitAll()
+
+                    .antMatchers("/user/read").hasAnyRole("USER", "AUTHUSER", "KAKAO", "ADMIN")
+                    .antMatchers("/user/update", "/user/update/image", "/user/checkpw").hasAnyRole("USER", "AUTHUSER")
+                    .antMatchers("/user/cancel").hasAnyRole("USER", "AUTHUSER", "KAKAO")
+
+                    .antMatchers("/review/*/comment/create", "/review/*/update/*", "/review/*/delete/*", "/review/*/comment/create/*").hasAnyRole("USER", "AUTHUSER", "KAKAO")
+                    .antMatchers("/reviewcomment/up/create", "/reviewcomment/up/check/**", "/reviewcomment/up/delete/**").hasAnyRole("USER", "AUTHUSER", "KAKAO")
+                    .antMatchers("/reviewscrap/create", "/reviewscrap/list", "/reviewscrap/check/**", "/reviewscrap/delete/**").hasAnyRole("USER", "AUTHUSER", "KAKAO")
+                    .antMatchers("/reviewup/create", "/reviewup/list", "/reviewup/check/**", "/reviewup/delete/**").hasAnyRole("USER", "AUTHUSER", "KAKAO")
+
+                    .antMatchers("/board/create", "/board/mylist/**", "/board/update/**", "/board/delete/**").hasAnyRole("USER", "AUTHUSER", "KAKAO")
+                    .antMatchers("/board/*/comment/create", "/board/*/update/*", "/board/*/delete/*", "/board/*/comment/create/*").hasAnyRole("USER", "AUTHUSER", "KAKAO")
+                    .antMatchers("/boardcomment/up/create", "/boardcomment/up/check/**", "/boardcomment/up/delete/**").hasAnyRole("USER", "AUTHUSER", "KAKAO")
+                    .antMatchers("/boardscrap/create", "/boardscrap/list", "/boardscrap/check/**", "/boardscrap/delete/**").hasAnyRole("USER", "AUTHUSER", "KAKAO")
+                    .antMatchers("/boardup/create", "/boardup/list", "/boardup/check/**", "/boardup/delete/**").hasAnyRole("USER", "AUTHUSER", "KAKAO")
+
+                    .antMatchers("/review/create", "/review/myList", "/review/update", "/review/delete/**").hasRole("AUTHUSER")
+
+                    .antMatchers("/user/list/**", "/user/delete/**", "/admin/signup", "/admin/login", "/admin/update", "/admin/delete/**").hasRole("ADMIN")
+                    .antMatchers("/admin/review/create", "/admin/review/list", "/admin/review/update/**", "/admin/review/delete/**").hasRole("ADMIN")
+                    .antMatchers("/admin/board/create", "/admin/board/list", "/admin/board/update/**", "/admin/board/delete/**").hasRole("ADMIN")
+                    .antMatchers("/admin/tag/create", "/admin/tag/list", "/admin/tag/update", "/admin/tag/delete/**").hasRole("ADMIN")
+
                     .anyRequest().authenticated()
                     .and()
                     .exceptionHandling()
@@ -64,7 +92,7 @@ public class SecurityConfig{
                     .userInfoEndpoint()
                     // userInfoEndpoint로부터 얻은 사용자 정보를 처리할 사용자 서비스를 지정
                     .userService(userOAuth2Service);
-            return  http.build();
+            return http.build();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

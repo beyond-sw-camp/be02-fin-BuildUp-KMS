@@ -8,6 +8,7 @@ import com.example.bootshelf.reviewsvc.review.model.entity.Review;
 import com.example.bootshelf.reviewsvc.review.repository.ReviewRepository;
 import com.example.bootshelf.reviewsvc.reviewscrap.model.entity.ReviewScrap;
 import com.example.bootshelf.reviewsvc.reviewscrap.model.request.PostCreateReviewScrapReq;
+import com.example.bootshelf.reviewsvc.reviewscrap.model.response.GetCheckReviewScrapRes;
 import com.example.bootshelf.reviewsvc.reviewscrap.model.response.GetFindReviewScrapRes;
 import com.example.bootshelf.reviewsvc.reviewscrap.model.response.PostCreateReviewScrapRes;
 import com.example.bootshelf.reviewsvc.reviewscrap.repository.ReviewScrapRepository;
@@ -60,6 +61,9 @@ public class ReviewScrapService {
 
         reviewScrap = reviewScrapRepository.save(reviewScrap);
 
+        review.increaseScrapCnt();
+        reviewRepository.save(review);
+
         PostCreateReviewScrapRes res = PostCreateReviewScrapRes.toDto(reviewScrap);
 
         return BaseRes.builder()
@@ -100,16 +104,40 @@ public class ReviewScrapService {
     public BaseRes checkReviewScrap(User user, Integer reviewIdx) {
         ReviewScrap reviewScrapResult = reviewScrapRepository.findByUserIdxAndReviewIdx(user.getIdx(), reviewIdx);
         if (reviewScrapResult != null) {
-            return BaseRes.builder()
-                    .isSuccess(true)
-                    .message("리뷰 스크랩 여부 확인 성공")
-                    .result(true)
-                    .build();
+            if (reviewScrapResult.getStatus().equals(true)) {
+                GetCheckReviewScrapRes res = GetCheckReviewScrapRes.builder()
+                        .reviewScrapIdx(reviewScrapResult.getIdx())
+                        .status(true)
+                        .build();
+
+                return BaseRes.builder()
+                        .isSuccess(true)
+                        .message("후기 스크랩 여부 확인 성공")
+                        .result(res)
+                        .build();
+            }
+            else {
+                GetCheckReviewScrapRes res = GetCheckReviewScrapRes.builder()
+                        .reviewScrapIdx(reviewScrapResult.getIdx())
+                        .status(false)
+                        .build();
+
+                return BaseRes.builder()
+                        .isSuccess(true)
+                        .message("후기 스크랩 여부 확인 성공")
+                        .result(res)
+                        .build();
+            }
+
         } else {
+            GetCheckReviewScrapRes res = GetCheckReviewScrapRes.builder()
+                    .status(false)
+                    .build();
+
             return BaseRes.builder()
                     .isSuccess(true)
-                    .message("리뷰 스크랩 여부 확인 성공")
-                    .result(false)
+                    .message("후기 스크랩 이력 존재 x")
+                    .result(res)
                     .build();
         }
     }

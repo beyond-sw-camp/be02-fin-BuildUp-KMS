@@ -15,5 +15,6 @@ public class GetListUserRes {
     private String name;
     private String nickName;
     private String profileImage;
+    private String status;
 
 }

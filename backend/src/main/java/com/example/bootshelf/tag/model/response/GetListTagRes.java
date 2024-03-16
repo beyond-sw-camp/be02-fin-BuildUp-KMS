@@ -2,11 +2,10 @@ package com.example.bootshelf.tag.model.response;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-public class PostCreateTagRes {
+public class GetListTagRes {
     private Integer idx;
     private String tagName;
 }
