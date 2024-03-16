@@ -50,17 +50,17 @@ public class BoardService {
     private final BoardImageService boardImageService;
     private final ReviewRepository reviewRepository;
 
-    public PostCreateBoardRes createBoard(User user, PostCreateBoardReq request, MultipartFile[] uploadFiles) {
+    public BaseRes createBoard(User user, PostCreateBoardReq request, MultipartFile[] uploadFiles) {
 
-        Optional<Board> result = boardRepository.findByBoardTitle(request.getTitle());
+        Optional<Board> result = boardRepository.findByBoardTitle(request.getBoardTitle());
 
         if (result.isPresent()) {
             throw new DuplicateRequestException("같은 이름을 가진 게시들이 존재합니다");
         }
 
         Board board = Board.builder()
-                .boardTitle(request.getTitle())
-                .boardContent(request.getContent())
+                .boardTitle(request.getBoardTitle())
+                .boardContent(request.getBoardContent())
                 .boardCategory(BoardCategory.builder().idx(request.getBoardCategoryIdx()).build())
                 .user(user)
                 .status(true)
@@ -81,14 +81,20 @@ public class BoardService {
         }
 
         PostCreateBoardRes response = PostCreateBoardRes.builder()
-                .idx(board.getIdx())
+                .boardIdx(board.getIdx())
                 .boardtitle(board.getBoardTitle())
                 .boardcontent(board.getBoardContent())
                 .boardCategoryIdx(board.getBoardCategory().getIdx())
                 .boardTagList(request.getTagList())
                 .build();
 
-        return  response;
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("게시글 등록 성공")
+                .result(response)
+                .build();
+
+        return baseRes;
     }
 
     public BaseRes findBoardByIdx(Integer boardIdx){

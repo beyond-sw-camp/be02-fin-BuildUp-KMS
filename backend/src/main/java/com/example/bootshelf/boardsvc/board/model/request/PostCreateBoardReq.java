@@ -1,25 +1,36 @@
 package com.example.bootshelf.boardsvc.board.model.request;
 
-import lombok.Builder;
-import lombok.Data;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.*;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class PostCreateBoardReq {
 
-    @NotBlank(message = "제목은 필수 입력 사항입니다.")
-    @Size(max = 200, message = "100자 미만으로 입력해주세요")
-    private String title;
-
-    @NotBlank(message = "내용은 반드시 입력해주세요.")
-    @Size(max = 400, message = "400자 미만으로 입력해주세요")
-    private String content;
-
+    @NotNull(message = "게시글 카테고리 IDX는 필수 입력 항목입니다.")
+    @Min(value = 1, message = "게시글 카테고리 IDX는 최소 1 이상의 숫자여야 합니다.")
+    @ApiModelProperty(value = "게시글 카테고리 IDX( 1이상의 숫자 )", example = "1", required = true)
     private Integer boardCategoryIdx;
+
+    @NotNull(message = "게시글 제목은 필수 입력 항목입니다.")
+    @Length(min=1, max=100, message = "게시글 제목은 최소 1글자 이상, 최대 100자 이하여야 합니다.")
+    @ApiModelProperty(value = "후기 제목(100자 이하)", example = "코딩 테스트 준비 어떻게 하시나요?", required = true)
+    private String boardTitle;
+
+    @NotNull(message = "게시글 내용은 필수 입력 항목입니다.")
+    @Length(min=1, max=400, message = "게시글 내용은 최소 1글자 이상, 최대 400자 이하여야 합니다.")
+    @ApiModelProperty(value = "게시글 내용(400자 이하)", example = "백준이나 프로그래머스 중 모가 좋을까요...", required = true)
+    private String boardContent;
 
     private List<String> tagList;
 }

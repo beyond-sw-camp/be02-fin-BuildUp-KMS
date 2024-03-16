@@ -42,12 +42,13 @@ public class BoardController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500",description = "서버 내부 오류")})
     @PostMapping("/create")
-    public ResponseEntity<PostCreateBoardRes> createBoard(
+    public ResponseEntity<BaseRes> createBoard(
             @AuthenticationPrincipal User user,
             @RequestPart(value="board") PostCreateBoardReq postCreateBoardReq,
             @RequestPart(value = "boardImage") MultipartFile[] uploadFiles
     ) {
-        return ResponseEntity.ok().body(boardService.createBoard(user, postCreateBoardReq, uploadFiles));
+        BaseRes baseRes = boardService.createBoard(user, postCreateBoardReq, uploadFiles);
+        return ResponseEntity.ok().body(baseRes);
     }
 
     @Operation(summary = "Board 본인 게시글 전체 조회",
