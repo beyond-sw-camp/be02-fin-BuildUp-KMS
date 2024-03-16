@@ -44,22 +44,24 @@ export const useUserStore = defineStore("user", {
     },
 
     decodeToken() {
-      const storedToken = localStorage.getItem("token");
-      if (storedToken) {
-        const decoded = VueJwtDecode.decode(storedToken);
+      const token = localStorage.getItem('token');
+      if (token) {
+        const decoded = VueJwtDecode.decode(token);
         if (decoded.exp < Date.now() / 1000) {
           this.logout();
         } else {
-          this.decodedToken = decoded;
           this.isAuthenticated = true;
+          this.decodedToken = decoded;
         }
       }
     },
 
     logout() {
-      window.localStorage.removeItem("token");
+      localStorage.removeItem("token");
       this.isAuthenticated = false;
       this.decodedToken = null;
+
+      this.$router.push("/");
     },
 
     async getUserInfo() {

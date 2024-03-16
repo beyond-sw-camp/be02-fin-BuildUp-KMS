@@ -28,16 +28,18 @@
                   </div>
                   <div class="css-bt1qy">
                     <div class="css-1hqtm5a">
-                      <div>
+                      <div @click="createBoardUp()">
                         <img width="23px" height="23px"
-                          src="https://img.icons8.com/pastel-glyph/64/facebook-like--v1.png" alt="facebook-like--v1" />
+                          :src="isRecommended ? require('../assets/img/up_ok.png') : require('../assets/img/up.png')"
+                          alt="facebook-like" />
                         <p style="font-size: 10px; text-align: center">{{ boardDetail.upCnt }}</p>
                       </div>
                     </div>
 
                     <div class="css-1hqtm5a">
-                      <div>
-                        <img width="23px" height="23px" src="https://img.icons8.com/windows/64/bookmark-ribbon--v1.png"
+                      <div @click="createBoardScrap()">
+                        <img width="23px" height="23px"
+                          :src="isScrapped ? require('../assets/img/scrap_ok.png') : require('../assets/img/scrap.png')"
                           alt="bookmark-ribbon--v1" />
                         <p class="css-scrap" style="font-size: 10px; text-align: center">
                           {{ boardDetail.scrapCnt }}
@@ -46,6 +48,8 @@
                     </div>
                   </div>
                 </div>
+                <ConfirmDialogComponent v-if="showMyPageConfirmDialog" :isVisible="showMyPageConfirmDialog"
+                  message="마이페이지로 이동하시겠습니까?" :onConfirm="moveMyPage" :onCancel="dontMoveMyPage" />
                 <div class="css-99cwur">
                   <div class="css-1fhge30">
                     <div class="css-aw18wm">
@@ -154,20 +158,21 @@
 </template>
 
 <script>
-// import axios  from "axios";
-
 import CommentComponent from "../components/CommentComponent.vue";
 import TagComponent from "../components/TagComponent.vue";
 import { useBoardCommentStore } from "../stores/useBoardCommentStore";
 import { useBoardStore } from "@/stores/useBoardStore";
 import { useUserStore } from "@/stores/useUserStore";
 import { mapStores } from "pinia";
+import ConfirmDialogComponent from "/src/components/ConfirmDialogComponent.vue";
+
 
 export default {
   name: "BoardDetailsPage",
   components: {
     CommentComponent,
     TagComponent,
+    ConfirmDialogComponent,
   },
   data() {
     return {
@@ -175,7 +180,10 @@ export default {
       boardDetail: null,
       boardIdx: null,
       commentList: null,
-      isAuthenticated: null
+      isAuthenticated: null,
+      showMyPageConfirmDialog: false,
+      isRecommended: false,
+      isScrapped: false,
     };
   },
   computed: {
@@ -191,6 +199,10 @@ export default {
 
     await this.boardCommentStore.getBoardCommentList(boardIdx);
     this.commentList = this.boardCommentStore.commentList;
+
+    // 게시글 추천 및 스크랩 상태 확인
+    await this.checkBoardUp();
+    await this.checkBoardScrap();
   },
   methods: {
     async submitComment() {
@@ -200,6 +212,86 @@ export default {
         // 댓글 생성 후 필요한 작업 작성
       } catch (error) {
         console.error('댓글 작성 실패:', error);
+      }
+    },
+    async createBoardUp() {
+      try {
+        let token = window.localStorage.getItem("token");
+        let requestBody = {
+          boardIdx: this.boardIdx
+        }
+
+        const response = await this.boardStore.createBoardUp(token, requestBody);
+
+        if (response.status === 200 && response.data) {
+          console.log("게시글 추천 성공!");
+          this.isRecommended = true;
+          this.showMyPageConfirmDialog = true;
+        } else {
+          console.error("게시글 추천 실패");
+          alert("게시글 추천 실패");
+        }
+      } catch (e) {
+        console.error("게시글 추천 과정에서 문제가 발생했습니다!", e);
+      }
+    },
+    async createBoardScrap() {
+      try {
+        let token = window.localStorage.getItem("token");
+        let requestBody = {
+          boardIdx: this.boardIdx
+        }
+
+        const response = await this.boardStore.createBoardScrap(token, requestBody);
+
+        if (response.status === 200 && response.data) {
+          console.log("게시글 스크랩 성공!");
+          this.isScrapped = true;
+          this.showMyPageConfirmDialog = true;
+        } else {
+          console.error("게시글 스크랩 실패");
+          alert("게시글 스크랩 실패");
+        }
+      } catch (e) {
+        console.error("게시글 스크랩 과정에서 문제가 발생했습니다!", e);
+      }
+    },
+    moveMyPage() {
+      this.showMyPageConfirmDialog = false;
+      this.$router.push("/mypage");
+    },
+    dontMoveMyPage() {
+      this.showMyPageConfirmDialog = false;
+      window.location.reload();
+    },
+    async checkBoardUp() {
+      try {
+        let token = window.localStorage.getItem("token");
+        let response = await this.boardStore.checkBoardUp(token, this.boardIdx);
+        console.log(response);
+
+        if (response.data && response.data.result) {
+          this.isRecommended = true;
+        } else {
+          this.isRecommended = false;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    async checkBoardScrap() {
+      try {
+        let token = window.localStorage.getItem("token");
+        let response = await this.boardStore.checkBoardScrap(token, this.boardIdx);
+        console.log(response);
+
+        if (response.data && response.data.result) {
+          this.isScrapped = true;
+        } else {
+          this.isScrapped = false;
+        }
+      } catch (e) {
+        console.error(e);
       }
     },
   }
