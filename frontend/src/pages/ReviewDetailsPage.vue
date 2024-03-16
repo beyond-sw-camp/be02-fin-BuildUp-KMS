@@ -25,42 +25,32 @@
                   </div>
                   <div class="css-bt1qy">
                     <div class="css-1hqtm5a">
-                      <div>
-                        <img
-                          width="23px"
-                          height="23px"
-                          src="https://img.icons8.com/pastel-glyph/64/facebook-like--v1.png"
-                          alt="facebook-like--v1"
-                        />
-                        <p style="font-size: 10px; text-align: center">
-                          {{ reviewStore.review.upCnt }}
-                        </p>
+                      <div @click="createReviewUp()">
+                        <img width="23px" height="23px"
+                          :src="isRecommended ? require('../assets/img/up_ok.png') : require('../assets/img/up.png')"
+                          alt="facebook-like" />
+                        <p style="font-size: 10px; text-align: center">{{ reviewStore.review.upCnt }}</p>
                       </div>
                     </div>
 
                     <div class="css-1hqtm5a">
-                      <div>
-                        <img
-                          width="23px"
-                          height="23px"
-                          src="https://img.icons8.com/windows/64/bookmark-ribbon--v1.png"
-                          alt="bookmark-ribbon--v1"
-                        />
-                        <p
-                          class="css-scrap"
-                          style="font-size: 10px; text-align: center"
-                        >
+                      <div @click="createReviewScrap()">
+                        <img width="23px" height="23px"
+                          :src="isScrapped ? require('../assets/img/scrap_ok.png') : require('../assets/img/scrap.png')"
+                          alt="bookmark-ribbon--v1" />
+                        <p class="css-scrap" style="font-size: 10px; text-align: center">
                           {{ reviewStore.review.scrapCnt }}
                         </p>
                       </div>
                     </div>
                   </div>
                 </div>
+                <ConfirmDialogComponent v-if="showMyPageConfirmDialog" :isVisible="showMyPageConfirmDialog"
+                  message="마이페이지로 이동하시겠습니까?" :onConfirm="moveMyPage" :onCancel="dontMoveMyPage" />
                 <div class="css-99cwur">
                   <div class="css-1fhge30">
                     <div class="css-aw18wm">
-                      <span
-                        style="
+                      <span style="
                           box-sizing: border-box;
                           display: block;
                           overflow: hidden;
@@ -73,12 +63,7 @@
                           padding: 0px;
                           position: absolute;
                           inset: 0px;
-                        "
-                        ><img
-                          sizes="100vw"
-                          :src="reviewStore.review.profileImage"
-                          decoding="async"
-                          data-nimg="fill"
+                        "><img sizes="100vw" :src="reviewStore.review.profileImage" decoding="async" data-nimg="fill"
                           style="
                             position: absolute;
                             inset: 0px;
@@ -93,21 +78,14 @@
                             max-width: 100%;
                             min-height: 100%;
                             max-height: 100%;
-                          "
-                      /></span>
+                          " /></span>
                     </div>
                     <div class="css-5zcuov">
                       <div class="css-1sika4i">
                         {{ reviewStore.review.userNickName }}
                       </div>
                       <div class="css-1tify6w">
-                        <svg
-                          width="2"
-                          height="2"
-                          viewBox="0 0 2 2"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
+                        <svg width="2" height="2" viewBox="0 0 2 2" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <circle cx="1" cy="1" r="1" fill="#9DA7AE"></circle>
                         </svg>
                       </div>
@@ -125,18 +103,11 @@
                 <p class="css-content">
                   {{ reviewStore.review.reviewContent }}
                 </p>
-                <div
-                  v-if="
-                    reviewStore.review.reviewImageList &&
+                <div v-if="reviewStore.review.reviewImageList &&
                     reviewStore.review.reviewImageList.length > 0
-                  "
-                >
-                  <img
-                    v-for="(image, index) in reviewStore.review.reviewImageList"
-                    :key="image.reviewImageIdx"
-                    :alt="`이미지 ${index + 1}`"
-                    :src="image.reviewImage"
-                  />
+                    ">
+                  <img v-for="(image, index) in reviewStore.review.reviewImageList" :key="image.reviewImageIdx"
+                    :alt="`이미지 ${index + 1}`" :src="image.reviewImage" />
                 </div>
               </div>
               <div class="css-iqys2n"></div>
@@ -144,20 +115,14 @@
             <div class="css-1k90lkz">
               <div class="css-lua631">
                 <div class="css-13ku1qm">
-                  <div
-                    style="
+                  <div style="
                       display: inline-block;
                       width: 24px;
                       height: 24px;
                       text-align: center;
-                    "
-                  >
-                    <img
-                      width="16px"
-                      height="16px"
-                      src="https://img.icons8.com/tiny-glyph/32/000000/comments.png"
-                      alt="comments"
-                    />
+                    ">
+                    <img width="16px" height="16px" src="https://img.icons8.com/tiny-glyph/32/000000/comments.png"
+                      alt="comments" />
                   </div>
                   댓글 {{ reviewStore.review.commentCnt }}
                 </div>
@@ -168,21 +133,12 @@
                 <div class="css-jpe6jj">
                   <div class="css-3o2y5e">
                     <div width="36px" height="36px" class="css-jg5tbe">
-                      <img
-                        alt="프로필 이미지"
-                        width="34px"
-                        height="34px"
-                        :src="userProfileImage"
-                      />
+                      <img alt="프로필 이미지" width="34px" height="34px" :src="userProfileImage" />
                     </div>
                   </div>
                   <div class="css-13ljjbe">
                     <div class="commentEditor">
-                      <input
-                        class="css-001"
-                        type="text"
-                        placeholder="댓글을 남겨주세요"
-                      />
+                      <input class="css-001" type="text" placeholder="댓글을 남겨주세요" />
                     </div>
                     <div class="css-btn-div">
                       <button class="css-btn">저장</button>
@@ -208,17 +164,26 @@ import { mapStores } from "pinia";
 import { useReviewStore } from "../stores/useReviewStore";
 import { useUserStore } from "../stores/useUserStore";
 import CommentComponent from "../components/CommentComponent.vue";
+import ConfirmDialogComponent from "/src/components/ConfirmDialogComponent.vue";
 
 export default {
   name: "ReviewDetailsPage",
   components: {
     CommentComponent,
+    ConfirmDialogComponent,
+  },
+  data() {
+    return {
+      reviewIdx: null,
+      showMyPageConfirmDialog: false,
+      isRecommended: false,
+      isScrapped: false,
+      reviewUpIdx: null,
+      reviewScrapIdx: null
+    };
   },
   computed: {
     ...mapStores(useReviewStore, useUserStore),
-    isLoggedIn() {
-      return !!localStorage.getItem("token");
-    },
     userProfileImage() {
       // 사용자 정보 로딩 후 사용자 프로필 이미지 반환
       if (this.userStore.user && this.userStore.user.profileImage) {
@@ -232,10 +197,117 @@ export default {
   created() {
     const reviewIdx = this.$route.params.idx;
     this.reviewStore.getReviewDetail(reviewIdx);
-    if (this.isLoggedIn) {
-      this.userStore.getUserInfo();
-    }
+    this.reviewIdx = reviewIdx;
   },
+  async mounted() {
+    await this.checkReviewUp();
+    await this.checkReviewScrap();
+  },
+  methods: {
+    async createReviewUp() {
+      let token = window.localStorage.getItem("token");
+      let requestBody = {
+        reviewIdx: this.reviewIdx
+      };
+
+      try {
+        if (this.isRecommended) {
+          await this.reviewStore.cancelReviewUp(token, this.reviewUpIdx);
+          console.log("후기 추천 취소 성공");
+          this.isRecommended = false;
+
+          window.location.reload();
+        } else {
+          const response = await this.reviewStore.createReviewUp(token, requestBody);
+
+          if (response.status === 200 && response.data) {
+            console.log("후기 추천 성공!");
+            this.isRecommended = true;
+            this.showMyPageConfirmDialog = true;
+          } else {
+            console.error("후기 추천 실패");
+            alert("후기 추천 실패");
+          }
+        }
+      } catch (e) {
+        console.error("후기 추천 과정에서 문제가 발생했습니다!", e);
+      }
+    },
+
+    async createReviewScrap() {
+      let token = window.localStorage.getItem("token");
+      let requestBody = {
+        reviewIdx: this.reviewIdx
+      };
+
+      try {
+        if (this.isScrapped) {
+          await this.reviewStore.cancelReviewScrap(token, this.reviewScrapIdx);
+          console.log("후기 스크랩 취소 성공");
+          this.isScrapped = false;
+          
+          window.location.reload();
+        } else {
+          const response = await this.reviewStore.createReviewScrap(token, requestBody);
+
+          if (response.status === 200 && response.data) {
+            console.log("후기 스크랩 성공!");
+            this.isScrapped = true;
+            this.showMyPageConfirmDialog = true;
+          } else {
+            console.error("후기 스크랩 실패");
+            alert("후기 스크랩 실패");
+          }
+        }
+      } catch (e) {
+        console.error("후기 스크랩 과정에서 문제가 발생했습니다!", e);
+      }
+    },
+
+    moveMyPage() {
+      this.showMyPageConfirmDialog = false;
+      this.$router.push("/mypage");
+    },
+
+    dontMoveMyPage() {
+      this.showMyPageConfirmDialog = false;
+      window.location.reload();
+    },
+
+    async checkReviewUp() {
+      try {
+        let token = window.localStorage.getItem("token");
+        let response = await this.reviewStore.checkReviewUp(token, this.reviewIdx);
+        console.log(response);
+
+        if (response.data && response.data.result.status === true) {
+          this.isRecommended = true;
+          this.reviewUpIdx = response.data.result.reviewUpIdx;
+        } else {
+          this.isRecommended = false;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    },
+
+    async checkReviewScrap() {
+      try {
+        let token = window.localStorage.getItem("token");
+        let response = await this.reviewStore.checkReviewScrap(token, this.reviewIdx);
+        console.log(response);
+
+        if (response.data && response.data.result.status === true) {
+          this.isScrapped = true;
+          this.reviewScrapIdx = response.data.result.reviewScrapIdx;
+        } else {
+          this.isScrapped = false;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    },
+  }
 };
 </script>
 
@@ -312,6 +384,7 @@ a {
     padding: 150px 0 120px;
   }
 }
+
 .css-1g39gls {
   background-color: #fff;
 }
@@ -504,6 +577,7 @@ a {
 .editedQ_QContent {
   min-height: 180px;
 }
+
 img {
   image-rendering: -moz-crisp-edges;
   image-rendering: -o-crisp-edges;
@@ -517,10 +591,12 @@ img {
   font-weight: 400;
   letter-spacing: normal;
 }
+
 .editedQ_QContent img {
   margin-top: 20px;
   max-width: 89vw;
 }
+
 @media (min-width: 1024px) {
   .editedQ_QContent img {
     margin-top: 20px;
