@@ -6,7 +6,14 @@ const backend = "http://localhost:8080";
 const storedToken = localStorage.getItem("token");
 
 export const useReviewStore = defineStore("review", {
-  state: () => ({ reviewList: [], isOrderExist: true, review: "" }),
+  state: () => ({
+    reviewList: [],
+    isOrderExist: true,
+    review: "",
+    currentPage: 0,
+    totalPages: 0,
+    totalCnt: 0,
+  }),
   actions: {
     async createReview(review, reviewImage) {
       const formData = new FormData();
@@ -32,10 +39,14 @@ export const useReviewStore = defineStore("review", {
       }
     },
 
-    async getReviewList(reviewCategoryIdx, sortType) {
+    async getReviewList(reviewCategoryIdx, sortType, page = 1) {
       try {
+        const params = new URLSearchParams({
+          page: page - 1,
+        }).toString();
+
         let response = await axios.get(
-          backend + `/review/list/${reviewCategoryIdx}/${sortType}`,
+          backend + `/review/list/${reviewCategoryIdx}/${sortType}?${params}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -44,6 +55,10 @@ export const useReviewStore = defineStore("review", {
         );
 
         this.reviewList = response.data.result.list;
+        this.totalPages = response.data.result.totalPages;
+        this.currentPage = page;
+        this.totalCnt = response.data.result.totalCnt;
+
         if (response.data.result.length !== 0) {
           this.isReviewExist = false;
         }
@@ -52,13 +67,17 @@ export const useReviewStore = defineStore("review", {
       }
     },
 
-    async getSearchReviewList(searchTerm, sortType) {
+    async getSearchReviewList(searchTerm, sortType, page = 1) {
       try {
+        const params = new URLSearchParams({
+          page: page - 1,
+        }).toString();
+        
         let response = await axios.get(
           backend +
             `/review/${sortType}/search?searchTerm=${encodeURIComponent(
               searchTerm
-            )}`,
+            )}&${params}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -67,6 +86,10 @@ export const useReviewStore = defineStore("review", {
         );
 
         this.reviewList = response.data.result.list;
+        this.totalPages = response.data.result.totalPages;
+        this.currentPage = page;
+        this.totalCnt = response.data.result.totalCnt;
+        
         if (response.data.result.length !== 0) {
           this.isReviewExist = false;
         }

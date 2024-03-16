@@ -2,10 +2,6 @@
   <div class="css-1hnxdb7">
     <div class="css-130kwtj">
       <div class="css-1hwcs2h">
-        <!-- <div class="css-xbcdvo">자유게시판</div>
-          <div class="css-s5p19z">학습 질문</div>
-          <div class="css-s5p19z">개발일지</div>
-          <div class="css-s5p19z">나의 활동</div> -->
       </div>
     </div>
     <div height="120px" class="css-jbj5u0"></div>
@@ -13,11 +9,6 @@
       <div class="css-1f9h8vh">
         <div class="css-110bgim">
           <div class="css-28nsux">
-            <!-- <div class="css-19831hi">자유게시판</div>
-              <div class="css-nw8p9d">학습 질문</div>
-              <div class="css-nw8p9d">개발일지</div>
-              <div class="css-17ta9kq"></div>
-              <div class="css-nw8p9d">나의 활동</div> -->
           </div>
         </div>
       </div>
@@ -25,22 +16,6 @@
         <div class="css-axl4y">
           <div class="css-1yuvfju">
             <div class="css-k59gj9">
-              <!-- <div class="css-o01lup">
-                      <div class="css-ts29it">
-                        <div class="css-1ry6usa">댓글</div>
-                        <div class="css-1ry6usa">3</div>
-                      </div>
-                      <div class="css-dbc8ke">・</div>
-                      <div class="css-ts29it">
-                        <div class="css-1ry6usa">추천</div>
-                        <div class="css-1ry6usa">1</div>
-                      </div>
-                      <div class="css-dbc8ke">・</div>
-                      <div class="css-ts29it">
-                        <div class="css-1ry6usa">조회수</div>
-                        <div class="css-1ry6usa">32</div>
-                      </div>
-                    </div> -->
             </div>
             <div class="css-z2xt5y"></div>
           </div>
@@ -107,39 +82,6 @@
                   value=""
                 />
               </div>
-              <!-- <div class="css-1yfg4fi">
-            <div v-for="(tag, index) in tags" :key="index" class="css-170uj16">
-              <div class="css-dcsj63">{{ tag }}</div>
-              <svg
-                @click="removeTag(index)"
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M3.33435 3.33435L12.6677 12.6677"
-                  stroke="#9DA7AE"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                />
-                <path
-                  d="M12.6656 3.33435L3.33232 12.6677"
-                  stroke="#9DA7AE"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                />
-              </svg>
-            </div>
-            <input
-              placeholder="# 태그를 입력해주세요. (최대 3개)"
-              class="css-9y3tf9"
-              @focus="onFocus"
-              @keyup.enter="addTag"
-              v-model="inputValue"
-            />
-          </div> -->
             </div>
           </div>
           <br />
@@ -192,31 +134,6 @@
               </div>
             </div>
             <div id="toolbar" class="ql-toolbar ql-snow">
-              <!-- <span class="ql-formats"
-                ><button
-                  content="코드 블록"
-                  class="ql-code-block css-1qhzcav"
-                  type="button"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                  >
-                    <path
-                      d="M4.381 13.95a.875.875 0 1 0 1.238-1.237L4.38 13.951zM1.667 10l-.62-.619a.875.875 0 0 0 .001 1.237L1.667 10zm3.952-2.715A.875.875 0 1 0 4.38 6.047L5.62 7.284zm0 5.43L2.285 9.38l-1.237 1.237 3.333 3.334 1.238-1.238zm-3.334-2.097L5.62 7.284 4.38 6.047 1.048 9.38l1.237 1.237zM15.619 6.05a.875.875 0 1 0-1.238 1.237l1.238-1.238zM18.333 10l.62.619a.875.875 0 0 0 0-1.237l-.62.618zm-3.952 2.715a.875.875 0 0 0 1.238 1.237l-1.238-1.237zm0-5.43 3.334 3.334 1.237-1.237-3.333-3.334-1.238 1.238zm3.334 2.097-3.334 3.333 1.238 1.237 3.333-3.333-1.237-1.237z"
-                      fill="#505254"
-                    ></path>
-                    <path
-                      d="m12.5 4.168-5 11.667"
-                      stroke="#505254"
-                      stroke-width="1.75"
-                      stroke-linecap="round"
-                    ></path>
-                  </svg></button></span
-              > -->
               <span class="ql-formats"
                 ><button
                   content="이미지 첨부"

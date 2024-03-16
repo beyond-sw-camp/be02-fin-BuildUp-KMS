@@ -23,7 +23,7 @@ export default {
     flex-direction: column;
     gap: 32px;
     position: sticky;
-    top: 140px;
+    top: 258px;
     max-height: 490px;
     transition: all 0.4s ease 0s;
     margin-top: 70px;
