@@ -13,7 +13,7 @@ public class GetListBoardRes {
 
     private Integer boardIdx;
 
-    private String userNickName;
+    private String nickName;
 
     private String userProfileImage;
 
@@ -35,5 +35,5 @@ public class GetListBoardRes {
 
     private Integer commentCnt;
 
-    private String updatedAt;
+    private String createdAt;
 }

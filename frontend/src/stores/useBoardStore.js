@@ -62,7 +62,12 @@ export const useBoardStore = defineStore("board", {
     async findListByCategory(boardCategoryIdx, sortType, page = 1) {
       try {
         let response = await axios.get(backend + "/board/category/" + boardCategoryIdx + "/" + sortType + "?page=" + (page - 1));
-        this.boardList = response.data.result;
+        this.boardList = response.data.result.list;
+        this.totalPages = response.data.result.totalPages;
+        this.currentPage = page;
+        this.totalCnt = response.data.result.totalCnt;
+
+        console.log(response);
       } catch (error) {
         console.error(error);
       }
@@ -82,6 +87,8 @@ export const useBoardStore = defineStore("board", {
         );
 
         this.boardList = response.data.result.list;
+        this.totalPages = response.data.result.totalPages;
+        this.totalCnt = response.data.result.totalCnt;
         if (response.data.result.length !== 0) {
           this.isBoardExist = false;
         }
@@ -191,6 +198,29 @@ export const useBoardStore = defineStore("board", {
         console.error(e);
         throw e;
       }
-    }
+    },
+    async getCategoryBoardListByQuery(boardCategoryIdx ,query, option, page = 1) {
+      try {
+        let response = await axios.get(
+          backend +
+            "/board/search/by/" +
+            boardCategoryIdx +
+            "?query=" +
+            query +
+            "&sortType=" +
+            option +
+            "&page=" +
+            (page - 1)
+        );
+        this.boardList = response.data.result.list;
+        this.totalPages = response.data.result.totalPages;
+        this.currentPage = page;
+        this.totalCnt = response.data.result.totalCnt;
+  
+        console.log(response);
+      } catch (error) {
+        console.error(error);
+      }
+    },
   },
 });

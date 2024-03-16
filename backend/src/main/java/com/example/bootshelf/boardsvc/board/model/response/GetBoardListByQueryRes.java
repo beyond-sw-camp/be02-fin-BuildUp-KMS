@@ -2,6 +2,8 @@ package com.example.bootshelf.boardsvc.board.model.response;
 
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,4 +19,8 @@ public class GetBoardListByQueryRes {
     private Integer viewCnt;
     private Integer commentCnt;
     private Integer upCnt;
+    private String boardImg;
+    private String userProfileImage;
+    private List<String> tagNameList;
+    private String updatedAt;
 }

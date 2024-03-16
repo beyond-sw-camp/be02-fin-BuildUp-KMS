@@ -60,16 +60,15 @@ public class BoardRepositoryCustomImpl extends QuerydslRepositorySupport impleme
         QBoard board = new QBoard("board");
 
         OrderSpecifier[] orderSpecifiers = createOrderSpecifier(sortIdx, board);
-        List<Board> result = from(board)
+        JPQLQuery<Board> result = from(board)
                 .leftJoin(board.boardCategory)
                 .where(board.status.eq(true).and(board.boardCategory.idx.eq(categoryIdx)))
-                .orderBy(orderSpecifiers)
-                .distinct()
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch().stream().distinct().collect(Collectors.toList());
+                .orderBy(orderSpecifiers);
 
-        return new PageImpl<>(result, pageable, result.size());
+        JPQLQuery<Board> pageableQuery = getQuerydsl().applyPagination(pageable, result);
+        List<Board> boardList = pageableQuery.fetch();
+
+        return new PageImpl<>(boardList, pageable, pageableQuery.fetchCount());
     }
 
     @Override
@@ -78,17 +77,16 @@ public class BoardRepositoryCustomImpl extends QuerydslRepositorySupport impleme
         QBoardTag boardTag = new QBoardTag("boardTag");
 
         OrderSpecifier[] orderSpecifiers = createOrderSpecifier(sortIdx, board);
-        List<Board> result = from(board)
+        JPQLQuery<Board> result = from(board)
                 .leftJoin(boardTag)
                 .on(boardTag.board.idx.eq(board.idx))
                 .where(board.status.eq(true).and(boardTag.tag.idx.eq(tagIdx)))
-                .orderBy(orderSpecifiers)
-                .distinct()
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch().stream().distinct().collect(Collectors.toList());
+                .orderBy(orderSpecifiers);
 
-        return new PageImpl<>(result, pageable, result.size());
+        JPQLQuery<Board> pageableQuery = getQuerydsl().applyPagination(pageable, result);
+        List<Board> boardList = pageableQuery.fetch();
+
+        return new PageImpl<>(boardList, pageable, pageableQuery.fetchCount());
     }
 
     private OrderSpecifier[] createOrderSpecifier(Integer sortIdx, QBoard board) {
