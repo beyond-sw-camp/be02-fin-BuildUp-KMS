@@ -117,7 +117,7 @@ public class BoardRepositoryCustomImpl extends QuerydslRepositorySupport impleme
     }
 
     @Override
-    public Page<Board> searchBoardListByQueryAndCategory(Pageable pageable, String query, Integer boardCategoryIdx, Integer sortIdx) {
+    public Page<Board> searchBoardListByQueryAndCategory(Pageable pageable, Integer boardCategoryIdx, String query, Integer sortIdx) {
         QBoard qBoard = QBoard.board;
 
         // 검색 조건

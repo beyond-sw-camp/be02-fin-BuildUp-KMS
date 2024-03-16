@@ -27,6 +27,22 @@ export const useBoardStore = defineStore("board", {
       }
     },
 
+    async getBoardListByQueryAndCategory(boardCategoryIdx, query, sortType, page = 1) {
+      try {
+        ///board/search/by/1?query=스프링&sortType=1&page=0
+        let response = await axios.get(backend + "/board/search/by/" + boardCategoryIdx + "?query=" + query + "&sortType=" + sortType + "&page=" + (page - 1));
+        this.boardList = response.data.result.list;
+        this.totalPages = response.data.result.totalPages;
+        this.currentPage = page;
+        this.totalCnt = response.data.result.totalCnt;
+
+        console.log(response);
+
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
     async findListByCategory(boardCategoryIdx, sortType, page = 1)  {
       try {
         let response = await axios.get(backend + "/board/category/" + boardCategoryIdx + "/" + sortType + "?page=" + ( page - 1 ));

@@ -149,15 +149,14 @@ public class BoardController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500",description = "서버 내부 오류")})
-    @GetMapping ("/{boardCategoryIdx}/search")
+    @GetMapping ("/search/by/{boardCategoryIdx}")
     public ResponseEntity<BaseRes> searchBoardListByQueryAndCategory (
             @RequestParam String query,
             @PathVariable(value = "boardCategoryIdx") Integer boardCategoryIdx,
             @PageableDefault(size = 20) Pageable pageable,
-            @PathVariable @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") @ApiParam(value = "정렬유형 : 1 (최신순), 2 (추천수 순), 3 (조회수 순), 4 (스크랩수 순), 5 (댓글수 순)") Integer sortType
-
+            @RequestParam @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") @ApiParam(value = "정렬유형 : 1 (최신순), 2 (추천수 순), 3 (조회수 순), 4 (스크랩수 순), 5 (댓글수 순)") Integer sortType
     ){
-        return ResponseEntity.ok().body(boardService.searchBoardListByQueryAndCategory(query, boardCategoryIdx, sortType, pageable));
+        return ResponseEntity.ok().body(boardService.searchBoardListByQueryAndCategory(boardCategoryIdx, query, sortType, pageable));
     }
 
   

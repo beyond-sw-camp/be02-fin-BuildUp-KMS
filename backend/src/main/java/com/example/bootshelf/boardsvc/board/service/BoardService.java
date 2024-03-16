@@ -389,8 +389,8 @@ public class BoardService {
                 .build();
     }
     @Transactional(readOnly = true)
-    public BaseRes searchBoardListByQueryAndCategory(String query, Integer boardCategoryIdx, Integer sortIdx, Pageable pageable) {
-        Page<Board> boardList = boardRepository.searchBoardListByQueryAndCategory(pageable, query, boardCategoryIdx, sortIdx);
+    public BaseRes searchBoardListByQueryAndCategory(Integer boardCategoryIdx, String query, Integer sortIdx, Pageable pageable) {
+        Page<Board> boardList = boardRepository.searchBoardListByQueryAndCategory(pageable, boardCategoryIdx, query, sortIdx);
 
         List<GetBoardListByQueryRes> getBoardListByQueryResList = new ArrayList<>();
 

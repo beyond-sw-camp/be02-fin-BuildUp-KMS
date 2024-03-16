@@ -155,7 +155,7 @@ export default {
     loadBoardList() {
       // 검색어가 있는 경우
       if (this.searchTerm) {
-        this.boardStore.getBoardListByQuery(this.searchTerm, this.sortType);
+        this.boardStore.getBoardListByQueryAndCategory(this.searchTerm, this.sortType);
       } else {
         // 검색어가 없는 경우
         this.boardStore.findListByCategory(this.boardCategoryIdx, this.sortType);
