@@ -35,7 +35,14 @@ export const useReviewStore = defineStore("review", {
           window.location.href = "/review/" + response.data.result.reviewIdx;
         }
       } catch (e) {
-        console.log(e);
+        if (e.response && e.response.data) {
+          console.log(e.response.data);
+          if (e.response.data.code === "REVIEW-002") {
+            alert(
+              "후기글 제목이 이미 등록되어 있는 제목입니다. 제목을 변경해주세요."
+            );
+          }
+        }
       }
     },
 
@@ -67,12 +74,17 @@ export const useReviewStore = defineStore("review", {
       }
     },
 
-    async getSearchReviewList(reviewCategoryIdx, searchTerm, sortType, page = 1) {
+    async getSearchReviewList(
+      reviewCategoryIdx,
+      searchTerm,
+      sortType,
+      page = 1
+    ) {
       try {
         const params = new URLSearchParams({
           page: page - 1,
         }).toString();
-        
+
         let response = await axios.get(
           backend +
             `/review/${reviewCategoryIdx}/${sortType}/search?searchTerm=${encodeURIComponent(
@@ -108,7 +120,14 @@ export const useReviewStore = defineStore("review", {
 
         this.review = response.data.result;
       } catch (e) {
-        console.log(e);
+        if (e.response && e.response.data) {
+          console.log(e.response.data);
+          if (e.response.data.code === "REVIEW-001") {
+            alert(
+              "해당하는 후기글을 찾을 수 없습니다."
+            );
+          }
+        }
       }
     },
   },
