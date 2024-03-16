@@ -67,7 +67,7 @@ export const useReviewStore = defineStore("review", {
       }
     },
 
-    async getSearchReviewList(searchTerm, sortType, page = 1) {
+    async getSearchReviewList(reviewCategoryIdx, searchTerm, sortType, page = 1) {
       try {
         const params = new URLSearchParams({
           page: page - 1,
@@ -75,7 +75,7 @@ export const useReviewStore = defineStore("review", {
         
         let response = await axios.get(
           backend +
-            `/review/${sortType}/search?searchTerm=${encodeURIComponent(
+            `/review/${reviewCategoryIdx}/${sortType}/search?searchTerm=${encodeURIComponent(
               searchTerm
             )}&${params}`,
           {
@@ -89,7 +89,7 @@ export const useReviewStore = defineStore("review", {
         this.totalPages = response.data.result.totalPages;
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
-        
+
         if (response.data.result.length !== 0) {
           this.isReviewExist = false;
         }

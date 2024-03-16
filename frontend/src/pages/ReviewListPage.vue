@@ -250,6 +250,7 @@ export default {
       // 검색어가 있는 경우
       if (this.searchTerm) {
         this.reviewStore.getSearchReviewList(
+          this.reviewCategoryIdx,
           this.searchTerm,
           this.sortType,
           page
