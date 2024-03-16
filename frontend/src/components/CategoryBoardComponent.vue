@@ -88,6 +88,7 @@
               </svg>
             </div>
             <div class="css-1ry6usa"></div>
+            <div class="css-updatedTimeGms">{{ boards.updatedAt }}</div>
           </div>
         </div>
         <!-- 여기서부터 추천수 댓글수 등등 표시-->
@@ -588,5 +589,9 @@ export default {
   position: relative;
   display: flex;
   flex-shrink: 0;
+}
+.css-updatedTimeGms{
+  font-size: 10px;
+  color: rgb(157, 167, 174);
 }
 </style>
