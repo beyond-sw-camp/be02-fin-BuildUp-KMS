@@ -5,6 +5,7 @@ import com.example.bootshelf.boardsvc.board.repository.BoardRepository;
 import com.example.bootshelf.boardsvc.boardcommentup.model.response.PostCreateBoardCommentUpRes;
 import com.example.bootshelf.boardsvc.boardup.model.entity.BoardUp;
 import com.example.bootshelf.boardsvc.boardup.model.request.PostCreateBoardUpReq;
+import com.example.bootshelf.boardsvc.boardup.model.response.GetCheckBoardUpRes;
 import com.example.bootshelf.boardsvc.boardup.model.response.GetFindBoardUpRes;
 import com.example.bootshelf.boardsvc.boardup.model.response.PostCreateBoardUpRes;
 import com.example.bootshelf.boardsvc.boardup.repository.BoardUpRepository;
@@ -61,6 +62,9 @@ public class BoardUpService {
 
         boardUp = boardUpRepository.save(boardUp);
 
+        board.increaseUpCnt();
+        boardRepository.save(board);
+
         PostCreateBoardUpRes res = PostCreateBoardUpRes.toDto(boardUp);
 
         return BaseRes.builder()
@@ -98,16 +102,41 @@ public class BoardUpService {
     public BaseRes checkBoardUp(User user, Integer boardIdx) {
         BoardUp boardUpResult = boardUpRepository.findByUserIdxAndBoardIdx(user.getIdx(), boardIdx);
         if (boardUpResult != null) {
-            return BaseRes.builder()
-                    .isSuccess(true)
-                    .message("게시물 추천 여부 확인 성공")
-                    .result(true)
-                    .build();
+            if (boardUpResult.getStatus().equals(true)) {
+                GetCheckBoardUpRes res = GetCheckBoardUpRes.builder()
+                        .boardUpIdx(boardUpResult.getIdx())
+                        .status(true)
+                        .build();
+
+                return BaseRes.builder()
+                        .isSuccess(true)
+                        .message("게시물 추천 여부 확인 성공")
+                        .result(res)
+                        .build();
+            }
+            else {
+                GetCheckBoardUpRes res = GetCheckBoardUpRes.builder()
+                        .boardUpIdx(boardUpResult.getIdx())
+                        .status(false)
+                        .build();
+
+                return BaseRes.builder()
+                        .isSuccess(true)
+                        .message("게시물 추천 여부 확인 성공")
+                        .result(res)
+                        .build();
+            }
+
         } else {
+
+            GetCheckBoardUpRes res2 = GetCheckBoardUpRes.builder()
+                    .status(false)
+                    .build();
+
             return BaseRes.builder()
                     .isSuccess(true)
-                    .message("게시물 추천 여부 확인 성공")
-                    .result(false)
+                    .message("게시물 추천 이력 존재 x")
+                    .result(res2)
                     .build();
         }
     }
