@@ -91,7 +91,7 @@
               v-model="user.password"
               @blur="validatePassword"
             />
-          </div>       
+          </div>
           <div v-if="!passwordValid" class="passwordValidation-message">
             {{ passwordValidationMessage }}
           </div>
@@ -221,8 +221,14 @@ export default {
         .every((agreement) => agreement.checked);
 
       const isEmailValid = this.emailValid;
+      const isPasswordValid = this.passwordValid;
 
-      return isUserInfoFilled && isAllRequiredAgreed && isEmailValid;
+      return (
+        isUserInfoFilled &&
+        isAllRequiredAgreed &&
+        isEmailValid &&
+        isPasswordValid
+      );
     },
   },
   data() {
@@ -244,7 +250,6 @@ export default {
       uploadedFile: null,
       errorMessage: "",
 
-      isOpenGuide: false,
       allAgreements: false,
 
       emailValid: true, // 이메일 유효성 상태
@@ -266,17 +271,9 @@ export default {
   },
   methods: {
     async signUpData() {
-      const isCheckAgreed =
-        this.allAgreed ||
-        this.agreements.slice(0, 3).every((agreement) => agreement.checked);
-
-      if (!isCheckAgreed) {
-        alert("필수 동의 항목에 동의하지 않았습니다.");
-      } else {
-        await this.userStore.signUpData(this.user, this.selectedProfileImage);
-        if (this.userStore.isSuccess) {
-          this.$router.push({ path: "/email/verify" });
-        }
+      await this.userStore.signUpData(this.user, this.selectedProfileImage);
+      if (this.userStore.isSuccess) {
+        this.$router.push({ path: "/email/verify" });
       }
     },
     handleProfileImageChange(event) {
@@ -286,47 +283,6 @@ export default {
         this.selectedProfileImageURL = URL.createObjectURL(file);
         this.showUploadText = false; // 이미지가 선택되면 텍스트를 숨깁니다.
       }
-    },
-
-    handleFileUpload(event) {
-      const file = event.target.files[0];
-      const ext = file.name.split(".").pop().toLowerCase();
-
-      if (["gif", "png", "jpg", "jpeg"].indexOf(ext) === -1) {
-        this.errorMessage = "이미지 파일이 아닙니다.";
-      } else {
-        this.errorMessage = "";
-        this.isUploading = true;
-        const reader = new FileReader();
-
-        reader.onload = () => {
-          setTimeout(() => {
-            this.uploadedFile = reader.result;
-            this.isUploaded = true;
-            this.isUploading = false;
-          }, 3000);
-        };
-
-        reader.onprogress = (e) => {
-          if (e.lengthComputable) {
-            this.uploadProgress = Math.round((e.loaded / e.total) * 100);
-          }
-        };
-
-        reader.readAsDataURL(file);
-      }
-    },
-    removeUploadedFile() {
-      this.uploadedFile = null;
-      this.isUploaded = false;
-      this.uploadProgress = 0;
-    },
-
-    openGuideModal() {
-      this.isOpenGuide = true;
-    },
-    closeGuideModal() {
-      this.isOpenGuide = false;
     },
 
     toggleAllAgreements() {

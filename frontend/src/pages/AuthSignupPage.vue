@@ -1,5 +1,5 @@
 <template>
-    <div class="loadingio-spinner-spinner" v-if="userStore.isLoading">
+  <div class="loadingio-spinner-spinner" v-if="userStore.isLoading">
     <div class="ldio-f4nnk2ltl0v">
       <div></div>
       <div></div>
@@ -72,8 +72,12 @@
               type="string"
               autocapitalize="off"
               class="login-custom-input css-ownijh"
-              v-model="user.email"
+              v-model="email"
+              @blur="validateEmail"
             />
+          </div>
+          <div v-if="!emailValid" class="validation-message">
+            {{ emailValidationMessage }}
           </div>
           <div direction="vertical" size="20" class="css-1i0k62c"></div>
 
@@ -84,8 +88,12 @@
               type="password"
               autocapitalize="off"
               class="login-custom-input css-1f4y3nx"
-              v-model="user.password"
+              v-model="password"
+              @blur="validatePassword"
             />
+          </div>
+          <div v-if="!passwordValid" class="passwordValidation-message">
+            {{ passwordValidationMessage }}
           </div>
           <div direction="vertical" size="20" class="css-1i0k62c"></div>
           <div class="css-1b8vwo3-2">이름</div>
@@ -95,7 +103,7 @@
               type="string"
               autocapitalize="off"
               class="login-custom-input css-ownijh"
-              v-model="user.name"
+              v-model="name"
             />
           </div>
           <div direction="vertical" size="20" class="css-1i0k62c"></div>
@@ -107,7 +115,7 @@
               type="string"
               autocapitalize="off"
               class="login-custom-input css-ownijh"
-              v-model="user.nickName"
+              v-model="nickName"
             />
           </div>
 
@@ -227,7 +235,13 @@
             </div>
           </div>
           <div direction="vertical" size="40" class="css-ygt1wz"></div>
-          <button color="#FFFFFF" class="css-j27xag" @click="signUpData">가입하기</button>
+          <button
+            :class="['css-j27xag', { 'button-disabled': !isSubmitEnabled }]"
+            :disabled="!isSubmitEnabled"
+            @click="signUpData"
+          >
+            가입하기
+          </button>
         </div>
       </div>
     </div>
@@ -296,30 +310,56 @@ export default {
   name: "AuthSignupPage",
   computed: {
     ...mapStores(useUserStore),
-  }, 
+    isSubmitEnabled() {
+      const isUserInfoFilled =
+        this.email &&
+        this.password &&
+        this.name &&
+        this.nickName;
+
+      const isAllRequiredAgreed = this.agreements
+        .slice(0, 3)
+        .every((agreement) => agreement.checked);
+
+      const isEmailValid = this.emailValid;
+      const isPasswordValid = this.passwordValid;
+
+      return (
+        isUserInfoFilled &&
+        isAllRequiredAgreed &&
+        isEmailValid &&
+        isPasswordValid
+      );
+    },
+  },
   data() {
     return {
-      user: {
-        email: "",
-        password: "",
-        name: "",
-        nickName: "",
-        programName: "백엔드"
-      },
+
+      email: "",
+      password: "",
+      name: "",
+      nickName: "",
+
       defaultProfileImage: require("@/assets/img/profile.jpg"),
-      selectedProfileImage: null,  // 프로필 이미지
+      selectedProfileImage: null, // 프로필 이미지
       selectedProfileImageURL: "",
       showUploadText: false,
 
       isUploading: false,
       isUploaded: false,
       uploadProgress: 0,
-      uploadedFile: null,  // 인증용 이미지
+      uploadedFile: null, // 인증용 이미지
       errorMessage: "",
 
       isOpenGuide: false,
-
       allAgreements: false,
+
+      emailValid: true, // 이메일 유효성 상태
+      emailValidationMessage: "", // 이메일 유효성 검사 메시지
+
+      passwordValid: true, // 비밀번호 유효성 상태
+      passwordValidationMessage: "", // 비밀번호 유효성 검사 메시지
+
       agreements: [
         { label: "[필수] 만 14세 이상", checked: false },
         { label: "[필수] 서비스 약관 동의", checked: false },
@@ -333,15 +373,18 @@ export default {
   },
   methods: {
     async signUpData() {
-      const isCheckAgreed = this.allAgreed || this.agreements.slice(0, 3).every(agreement => agreement.checked);
 
-      if (!isCheckAgreed) {
-        alert('필수 동의 항목에 동의하지 않았습니다.');
-      } else {
-        await this.userStore.signUpData(this.user, this.selectedProfileImage);
-        if (this.userStore.isSuccess) {
-          this.$router.push({ path: "/email/verify" });
-        }
+      const user = {
+        email: this.email,
+        password: this.password,
+        name: this.name,
+        nickName: this.nickName,
+        programName: this.userStore.courseName, // Pinia store에서 가져온 추가 데이터 포함
+      };
+
+      await this.userStore.signUpData(user, this.selectedProfileImage);
+      if (this.userStore.isSuccess) {
+        this.$router.push({ path: "/email/verify" });
       }
     },
     handleProfileImageChange(event) {
@@ -367,6 +410,8 @@ export default {
         reader.onload = () => {
           setTimeout(() => {
             this.uploadedFile = reader.result;
+            this.userStore.checkCourse(file);
+
             this.isUploaded = true;
             this.isUploading = false;
           }, 3000);
@@ -405,6 +450,22 @@ export default {
       this.allAgreements = this.agreements.every(
         (agreement) => agreement.checked
       );
+    },
+    validateEmail() {
+      const regex =
+        /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/;
+      this.emailValid = regex.test(this.email);
+      this.emailValidationMessage = this.emailValid
+        ? ""
+        : "! 올바른 이메일 형식( test@example.com )으로 입력해주세요.";
+    },
+
+    validatePassword() {
+      const regex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,45}$/;
+      this.passwordValid = regex.test(this.password);
+      this.passwordValidationMessage = this.passwordValid
+        ? ""
+        : "! 패스워드는 대/소문자, 특수문자, 숫자를 반드시 포함한 8글자 이상이어야 합니다.";
     },
   },
 };
@@ -576,7 +637,22 @@ input[type="password" i] {
   width: 100%;
   height: 20px;
 }
+.validation-message {
+  font-size: 10px;
+  color: red;
+  margin-top: 10px;
+  margin-right: 150px;
+  font-weight: bold;
+}
 
+.passwordValidation-message {
+  font-size: 10px;
+  color: red;
+  margin-top: 10px;
+  margin-right: 54px;
+  font-weight: bold;
+  width: max-content;
+}
 .css-ygt1wz {
   width: 100%;
   height: 40px;
@@ -732,7 +808,9 @@ svg {
   align-items: center;
   gap: 8px;
 }
-
+.button-disabled {
+  opacity: 0.3;
+}
 .css-1wlmsap {
   display: flex;
   flex-direction: column;

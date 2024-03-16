@@ -14,6 +14,7 @@ export const useUserStore = defineStore("user", {
     isLoading: false,
     checkPasswordError: false,
     isPossibleUpdate: true,
+    courseName: "",
   }),
   actions: {
     async login(email, password) {
@@ -47,7 +48,7 @@ export const useUserStore = defineStore("user", {
       if (storedToken) {
         const decoded = VueJwtDecode.decode(storedToken);
         if (decoded.exp < Date.now() / 1000) {
-          this.logout(); 
+          this.logout();
         } else {
           this.decodedToken = decoded;
           this.isAuthenticated = true;
@@ -95,9 +96,17 @@ export const useUserStore = defineStore("user", {
           this.isSuccess = false;
         }
       } catch (e) {
-        console.log(e);
+        if (e.response && e.response.data) {
+          console.log(e.response.data);
+          if (e.response.data.code === "USER-001") {
+            alert("이미 사용중인 이메일입니다.");
+          } else if (e.response.data.code === "USER-002") {
+            alert("이미 사용중인 닉네임입니다. 닉네임을 변경해주세요.");
+          } else if (e.response.data.code === "COURSE-001") {
+            alert("수료한 과정이 존재하지 않습니다. 인증용 이미지를 다시 확인해주세요.");
+          }
+        }
         this.isSuccess = false;
-        alert("잘못된 요청입니다.");
       } finally {
         this.isLoading = false;
       }
@@ -173,17 +182,20 @@ export const useUserStore = defineStore("user", {
 
     // 회원정보 수정-3(프로필 이미지 수정)
     async updateProfileImage(profileImage) {
-
       let formData = new FormData();
       formData.append("profileImage", profileImage);
 
       try {
-        let response = await axios.patch(backend + "/user/update/image", formData, {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-            "Content-Type": "multipart/form-data",
-          },
-        });
+        let response = await axios.patch(
+          backend + "/user/update/image",
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${storedToken}`,
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
         if (response.data.isSuccess === true) {
           alert("회원 프로필 이미지를 수정하였습니다.");
           window.location.href = "/profile";
@@ -220,6 +232,37 @@ export const useUserStore = defineStore("user", {
       } catch (e) {
         console.log(e);
         alert("회원정보를 찾을 수 없습니다.");
+      }
+    },
+
+    // HRD-NET 훈련이력 확인
+    async checkCourse(courseImage) {
+      try {
+        let formData = new FormData();
+        formData.append("courseImage", courseImage);
+
+        let response = await axios.post(
+          backend + "/user/check/course",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        if (response.data.isSuccess === true) {
+          this.courseName = response.data.result;
+          alert("인증에 성공하였습니다. 회원가입을 이어서 진행해주세요!");
+        }
+      } catch (e) {
+        if (e.response && e.response.data) {
+          console.log(e.response.data);
+          if (e.response.data.code === "OCR-001") {
+            alert(
+              "나의 훈련이력 이미지를 잘못 첨부하였습니다. 가이드를 확인해주세요!"
+            );
+          }
+        }
       }
     },
   },
