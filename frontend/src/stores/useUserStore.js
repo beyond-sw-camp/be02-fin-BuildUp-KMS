@@ -29,7 +29,10 @@ export const useUserStore = defineStore("user", {
 
         if (response.data.isSuccess && response.data.result.token) {
           let token = response.data.result.token;
+          console.log(token);
+          
           let userClaims = VueJwtDecode.decode(token);
+          console.log(userClaims);
 
           window.localStorage.setItem("token", token);
           this.setDecodedToken(userClaims);
@@ -38,8 +41,17 @@ export const useUserStore = defineStore("user", {
         } else {
           console.error("토큰 발급 실패");
         }
-      } catch (error) {
-        console.error("Login failed:", error);
+      } catch (e) {
+        if (e.response && e.response.data) {
+          console.log(e.response.data);
+          if (e.response.data.code === "USER-003") {
+            alert("이메일을 찾을 수 없습니다. 가입한 이메일인지 다시 확인해주세요.");
+          } else if (e.response.data.code === "USER-004") {
+            alert("비밀번호가 틀렸습니다. 다시 입력해주세요.");
+          } else if (e.response.data.code === "COMMON-001") {
+            alert("이메일과 비밀번호를 다시 확인해주세요. 입력양식이 잘못되었습니다.");
+          }
+        }
       }
     },
 
@@ -48,7 +60,7 @@ export const useUserStore = defineStore("user", {
     },
 
     decodeToken() {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       if (token) {
         const decoded = VueJwtDecode.decode(token);
         if (decoded.exp < Date.now() / 1000) {
