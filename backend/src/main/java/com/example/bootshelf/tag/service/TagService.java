@@ -6,7 +6,8 @@ import com.example.bootshelf.common.error.ErrorCode;
 import com.example.bootshelf.common.error.entityexception.TagException;
 import com.example.bootshelf.tag.model.entity.Tag;
 import com.example.bootshelf.tag.model.request.PatchUpdateTagReq;
-import com.example.bootshelf.tag.model.response.PostCreateTagRes;
+import com.example.bootshelf.tag.model.response.GetListTagRes;
+import com.example.bootshelf.tag.model.response.GetListTagResResult;
 import com.example.bootshelf.tag.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,21 +46,30 @@ public class TagService {
 
         Page<Tag> tagList = tagRepository.findAll(pageable);
 
-        List<PostCreateTagRes> postCreateTagResList = new ArrayList<>();
+        List<GetListTagRes> getListTagResList = new ArrayList<>();
 
         for(Tag tag : tagList) {
-            PostCreateTagRes postCreateTagRes = PostCreateTagRes.builder()
+            GetListTagRes getListTagRes = GetListTagRes.builder()
                     .idx(tag.getIdx())
                     .tagName(tag.getTagName())
                     .build();
 
-            postCreateTagResList.add(postCreateTagRes);
+            getListTagResList.add(getListTagRes);
         }
+
+        Long totalCnt = tagList.getTotalElements();
+        Integer totalPages = tagList.getTotalPages();
+
+        GetListTagResResult result = GetListTagResResult.builder()
+                .totalCnt(totalCnt)
+                .totalPages(totalPages)
+                .list(getListTagResList)
+                .build();
 
         BaseRes baseRes = BaseRes.builder()
                 .isSuccess(true)
                 .message("태그 목록 조회 요청 성공")
-                .result(postCreateTagResList)
+                .result(result)
                 .build();
 
         return baseRes;
