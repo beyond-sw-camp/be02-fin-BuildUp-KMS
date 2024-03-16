@@ -59,7 +59,6 @@ public enum ErrorCode {
     REVIEW_COMMENT_UP_NOT_EXISTS(HttpStatus.NOT_FOUND, "REVIEWUP-004", "해당 후기 추천 데이터가 존재하지 않습니다."),
 
 
-
     // 게시판
     BOARD_NOT_EXISTS(HttpStatus.NOT_FOUND, "BOARD-001", "해당 게시글 IDX 가 존재하지 않는 경우"),
   
@@ -98,6 +97,8 @@ public enum ErrorCode {
     // 관리자 게시판 태그 등록
     BOARD_CATEGORY_NOT_EXISTS(HttpStatus.NOT_FOUND, "BOARD-CATEGORY-001", "해당 게시판 카테고리 IDX가 존재하지 않는 경우"),
 
+    // 네이버 OCR
+    OCR_TEXT_NOT_FOUND(HttpStatus.BAD_REQUEST, "OCR-001", "OCR 판독 결과 아무런 글자도 나오지 않은 경우")
     ;
 
     private final HttpStatus status;  // 헤더로 반환할 Http 상태 코드
