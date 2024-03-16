@@ -12,7 +12,6 @@ export const useBoardStore = defineStore("board", {
     totalCnt: 0,
     boardDetail: [],
     tagList: [],
-    boardCategoryList: [],
   }),
   actions: {
     async createBoard(board, boardImage) {
@@ -62,15 +61,7 @@ export const useBoardStore = defineStore("board", {
 
     async findListByCategory(boardCategoryIdx, sortType, page = 1) {
       try {
-        let response = await axios.get(
-          backend +
-            "/board/category/" +
-            boardCategoryIdx +
-            "/" +
-            sortType +
-            "?page=" +
-            (page - 1)
-        );
+        let response = await axios.get(backend + "/board/category/" + boardCategoryIdx + "/" + sortType + "?page=" + (page - 1));
         this.boardList = response.data.result;
       } catch (error) {
         console.error(error);
@@ -80,9 +71,9 @@ export const useBoardStore = defineStore("board", {
       try {
         let response = await axios.get(
           backend +
-            `/board/${sortType}/search?searchTerm=${encodeURIComponent(
-              searchTerm
-            )}`,
+          `/board/${sortType}/search?searchTerm=${encodeURIComponent(
+            searchTerm
+          )}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -104,9 +95,102 @@ export const useBoardStore = defineStore("board", {
         this.boardDetail = response.data.result;
 
         console.log(response);
+        return this.boardDetail;
       } catch (e) {
         console.log(e);
       }
     },
+    async createBoardUp(token, requestBody) {
+      try {
+        let response = await axios.post(backend + "/boardup/create", requestBody, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          }
+        })
+
+        return response;
+      } catch (e) {
+        console.error("게시글 추천 실패", e);
+        throw e;
+      }
+    },
+    async createBoardScrap(token, requestBody) {
+      try {
+        let response = await axios.post(backend + "/boardscrap/create", requestBody, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          }
+        })
+
+        return response;
+      } catch (e) {
+        console.error("게시글 스크랩 실패", e);
+        throw e;
+      }
+    },
+    async checkBoardUp(token, boardIdx) {
+      try {
+        let response = await axios.get(`${backend}/boardup/check/${boardIdx}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log(response);
+
+        this.isRecommended = response.data.result.status;
+
+        return response;
+      } catch (e) {
+        console.error(e);
+        throw e;
+      }
+    },
+    async checkBoardScrap(token, boardIdx) {
+      try {
+        let response = await axios.get(`${backend}/boardscrap/check/${boardIdx}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log(response);
+
+        this.isScrapped = response.data.result.status;
+
+        return response;
+      } catch (e) {
+        console.error(e);
+        throw e;
+      }
+    },
+    async cancelBoardUp(token, boardUpIdx) {
+      try {
+        let response = await axios.patch(`${backend}/boardup/delete/${boardUpIdx}`, {}, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+          },
+        });
+        console.log(response);
+      } catch (e) {
+        console.error(e);
+        throw e;
+      }
+    },
+    async cancelBoardScrap(token, boardScrapIdx) {
+      try {
+        let response = await axios.patch(`${backend}/boardscrap/delete/${boardScrapIdx}`, {}, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+          },
+        });
+        console.log(response);
+      } catch (e) {
+        console.error(e);
+        throw e;
+      }
+    }
   },
 });
