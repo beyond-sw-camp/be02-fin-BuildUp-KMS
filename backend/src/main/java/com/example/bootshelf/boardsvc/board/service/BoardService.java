@@ -55,7 +55,7 @@ public class BoardService {
         Optional<Board> result = boardRepository.findByBoardTitle(request.getBoardTitle());
 
         if (result.isPresent()) {
-            throw new DuplicateRequestException("같은 이름을 가진 게시들이 존재합니다");
+            throw new BoardException(ErrorCode.DUPICATED_BOARD_TITLE, String.format("Board Title [ %s ] is duplicated.", request.getBoardTitle()));
         }
 
         Board board = Board.builder()
@@ -101,11 +101,11 @@ public class BoardService {
         Optional<Board>result = boardRepository.findByIdx(boardIdx);
 
         if(!result.isPresent()){
-            throw new NotFoundException("해당 게시글을 찾을 수 없습니다");
+            throw new BoardException(ErrorCode.BOARD_NOT_EXISTS,String.format("Board Idx [ %s ] is not exists.", boardIdx));
         }
         else {
             if(!result.get().getStatus()==true){
-                throw new NotFoundException("해당 게시글을 찾을 수 없습니다");
+                throw new BoardException(ErrorCode.DUPICATED_BOARD_TITLE, String.format("Board Title [ %s ] is duplicated.", result.get().getBoardTitle()));
             }
             else{
                 Board board = result.get();
@@ -491,12 +491,12 @@ public class BoardService {
         Optional<Board> result = boardRepository.findByIdxAndUserIdx(boardIdx, user.getIdx());
 
         if(!result.isPresent()){
-            throw new NotFoundException("게시글을 찾을 수 없습니다.");
+            throw new BoardException(ErrorCode.BOARD_NOT_EXISTS,String.format("Board Idx [ %s ] is not exists.", boardIdx));
         }
         Optional<Board> resultTitle = boardRepository.findByBoardTitle(patchUpdateBoardReq.getBoardTitle());
 
         if(resultTitle.isPresent()){
-            throw new DuplicateRequestException("이미 존재하는 게시글 제목입니다.");
+            throw new BoardException(ErrorCode.DUPICATED_BOARD_TITLE, String.format("Board Title [ %s ] is duplicated.", patchUpdateBoardReq.getBoardTitle()));
         }
         boardTagService.updateBoardTag(patchUpdateBoardReq.getTagList(), boardIdx);
         Board board = result.get();
