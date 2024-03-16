@@ -13,7 +13,7 @@ public interface ReviewRepositoryCustom {
 
     Page<Review> findReviewList(Integer reviewCategoryIdx, Integer sortType, Pageable pageable);
 
-    Page<Review> findReviewsBySearchTerm(Integer sortType, String searchTerm, Pageable pageable);
+    Page<Review> findReviewsBySearchTerm(Integer reviewCategoryIdx, Integer sortType, String searchTerm, Pageable pageable);
 
     Page<Review> searchReviewListByQuery(Pageable pageable, String query, Integer searchType);
 

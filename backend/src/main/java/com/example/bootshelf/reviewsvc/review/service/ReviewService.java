@@ -367,9 +367,9 @@ public class ReviewService {
 
     // 검색어 별 후기글 목록 조회
     @Transactional(readOnly = true)
-    public BaseRes searchReview(Integer sortType, String searchTerm, Pageable pageable) {
+    public BaseRes searchReview(Integer reviewCategoryIdx, Integer sortType, String searchTerm, Pageable pageable) {
 
-        Page<Review> reviewList = reviewRepository.findReviewsBySearchTerm(sortType, searchTerm, pageable);
+        Page<Review> reviewList = reviewRepository.findReviewsBySearchTerm(reviewCategoryIdx, sortType, searchTerm, pageable);
 
         List<GetSearchListReviewRes> getSearchListReviewResList = new ArrayList<>();
 

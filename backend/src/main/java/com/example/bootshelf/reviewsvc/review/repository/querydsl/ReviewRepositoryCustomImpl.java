@@ -104,7 +104,7 @@ public class ReviewRepositoryCustomImpl extends QuerydslRepositorySupport implem
     }
 
     // 검색어를 포함하는 리뷰 목록 조회 (BooleanExpression 사용)
-    public Page<Review> findReviewsBySearchTerm(Integer sortType, String searchTerm, Pageable pageable) {
+    public Page<Review> findReviewsBySearchTerm(Integer reviewCategoryIdx, Integer sortType, String searchTerm, Pageable pageable) {
 
         QReview review = new QReview("review");
         QReviewCategory reviewCategory = new QReviewCategory("reviewCategory");
@@ -118,7 +118,8 @@ public class ReviewRepositoryCustomImpl extends QuerydslRepositorySupport implem
         List<Review> result = from(review)
                 .leftJoin(review.reviewCategory, reviewCategory).fetchJoin()
                 .leftJoin(review.user, user).fetchJoin()
-                .where(searchCondition)
+                .where(review.reviewCategory.idx.eq(reviewCategoryIdx)
+                        .and(searchCondition))
                 .orderBy(orderSpecifiers)
                 .distinct()
                 .offset(pageable.getOffset())
@@ -168,8 +169,8 @@ public class ReviewRepositoryCustomImpl extends QuerydslRepositorySupport implem
 
 
     /**
-     *  (게시판 +) 후기 검색 api (v2)
-     *  -> 페이지네이션 잘 안됨
+     * (게시판 +) 후기 검색 api (v2)
+     * -> 페이지네이션 잘 안됨
      */
     @Override
     public Page<Review> searchReviewListByQueryV2(Pageable pageable, String query, Integer searchType) {
