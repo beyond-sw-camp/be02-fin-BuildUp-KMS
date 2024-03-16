@@ -1,22 +1,19 @@
 <template>
   <div class="css-1hnxdb7">
     <div class="css-130kwtj">
-      <div class="css-1hwcs2h">
-      </div>
+      <div class="css-1hwcs2h"></div>
     </div>
     <div height="120px" class="css-jbj5u0"></div>
     <div class="css-1g39gls">
       <div class="css-1f9h8vh">
         <div class="css-110bgim">
-          <div class="css-28nsux">
-          </div>
+          <div class="css-28nsux"></div>
         </div>
       </div>
       <div class="css-1qjp6uf">
         <div class="css-axl4y">
           <div class="css-1yuvfju">
-            <div class="css-k59gj9">
-            </div>
+            <div class="css-k59gj9"></div>
             <div class="css-z2xt5y"></div>
           </div>
         </div>
@@ -72,14 +69,47 @@
                   placeholder="제목을 입력해주세요"
                   class="css-16kqrm"
                   style="overflow: hidden; resize: none"
+                  v-model="board.boardTitle"
                 ></textarea>
               </div>
               <div class="css-1yfg4fi">
-                <div class="css-1vitttd"></div>
+                <div class="css-1vitttd">
+                  <!-- 태그 표시 영역 -->
+                  <div
+                    v-for="(tag, index) in tags"
+                    :key="index"
+                    class="css-170uj16"
+                  >
+                    <div class="css-dcsj63">{{ tag }}</div>
+                    <svg
+                      @click="removeTag(index)"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M3.33435 3.33435L12.6677 12.6677"
+                        stroke="#9DA7AE"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                      ></path>
+                      <path
+                        d="M12.6656 3.33435L3.33232 12.6677"
+                        stroke="#9DA7AE"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
                 <input
+                  v-model="inputValue"
+                  @focus="onFocus"
                   placeholder="# 태그를 입력해주세요. (최대 3개)"
-                  class="css-9y3tf9"
-                  value=""
+                  class="css-ih6wu3"
+                  @keyup.enter="addTag"
                 />
               </div>
             </div>
@@ -99,7 +129,7 @@
                         v-if="imageUrl"
                         :src="imageUrl"
                         alt="Uploaded Image"
-                        style="max-width: 100%; height: auto"
+                        style="max-width: 70%; height: auto"
                       />
                     </div>
                   </div>
@@ -110,6 +140,7 @@
 
  • 게시판 특성에 맞지 않는 내용(분란성 글 및 댓글) 작성 시 별도의
  &nbsp;&nbsp;통보 없이 활동 정지, 글 이동 및 삭제될 수 있습니다."
+                    v-model="board.boardContent"
                   ></textarea>
                   <div
                     class="ql-clipboard"
@@ -185,8 +216,10 @@
             @change="handleImageUpload"
           />
           <div class="css-lycl0a">
-            <button class="css-9ns22y">취소</button>
-            <button class="css-1c8gn7d">등록하기</button>
+            <button class="css-9ns22y" @click="cancelCreateBoard()">
+              취소
+            </button>
+            <button class="css-1c8gn7d" @click="createBoard()">등록하기</button>
           </div>
         </div>
       </div>
@@ -194,90 +227,123 @@
   </div>
 </template>
 <script>
-import { ref } from "vue";
+import { mapStores } from "pinia";
+import { useBoardStore } from "../stores/useBoardStore";
 
 export default {
   name: "BoardWritePage",
-  setup() {
-    /*-----------카테고리-----------------*/
-    const isClicked = ref(false);
-    const selectedCategory = ref("");
-    const categories = ref([
-      { name: "지식 공유", selected: false },
-      { name: "QnA", selected: false },
-      { name: "스터디", selected: false },
-    ]);
-
-    function showCategory() {
-      isClicked.value = !isClicked.value;
-    }
-
-    function selectCategory(category) {
-      categories.value.forEach((cat) => {
+  data() {
+    return {
+      isClicked: false,
+      selectedCategory: "",
+      categories: [
+        { name: "지식 공유", selected: false },
+        { name: "QnA", selected: false },
+        { name: "스터디", selected: false },
+      ],
+      imageUrl: null,
+      boardImage: null,
+      tags: [],
+      tagList: [],
+      inputValue: "",
+      board: {
+        boardCategoryIdx: null,
+        boardTitle: "",
+        boardContent: "",
+        tagList: [],
+      },
+    };
+  },
+  computed: {
+    ...mapStores(useBoardStore),
+  },
+  watch: {
+    inputValue(newValue) {
+      if (newValue && !newValue.startsWith("#")) {
+        this.inputValue = "# " + newValue.trim();
+      }
+    },
+  },
+  methods: {
+    // 카테고리 선택
+    showCategory() {
+      this.isClicked = !this.isClicked;
+    },
+    selectCategory(category) {
+      this.categories.forEach((cat) => {
         cat.selected = false;
       });
       category.selected = true;
-      selectedCategory.value = category.name;
-      isClicked.value = false;
-    }
-    /*-----------태그-----------------*/
-    const tags = ref([]);
-    const inputValue = ref("");
+      this.selectedCategory = category.name;
+      this.isClicked = false;
 
-    const addTag = () => {
-      if (
-        inputValue.value.startsWith("#") &&
-        inputValue.value.length > 1 &&
-        tags.value.length < 3
-      ) {
-        tags.value.push(inputValue.value);
-        inputValue.value = ""; // 태그를 추가한 후 입력 필드 초기화
-      }
-    };
-
-    const removeTag = (index) => {
-      tags.value.splice(index, 1);
-    };
-
-    const onFocus = () => {
-      if (!inputValue.value) {
-        inputValue.value = "#";
-      }
-    };
-    /*-----------이미지-----------------*/
-    const imageUrl = ref(null);
-
-    const uploadImage = () => {
+      this.board.boardCategoryIdx = this.getBoardCategoryIndex(
+        this.selectedCategory
+      );
+    },
+    getBoardCategoryIndex(selectedCategory) {
+      return selectedCategory === "지식 공유"
+        ? 1
+        : selectedCategory === "QnA"
+        ? 2
+        : selectedCategory === "스터디"
+        ? 3
+        : null;
+    },
+    // 이미지 업로드
+    uploadImage() {
       const input = document.getElementById("input_file");
       input.click();
-    };
-    const handleImageUpload = (event) => {
+    },
+    handleImageUpload(event) {
       const file = event.target.files[0];
       if (!file) return;
 
+      this.boardImage = file;
+
       const reader = new FileReader();
       reader.onload = () => {
-        imageUrl.value = reader.result;
+        this.imageUrl = reader.result;
       };
       reader.readAsDataURL(file);
-    };
-    return {
-      isClicked,
-      categories,
-      selectedCategory,
-      showCategory,
-      selectCategory,
+    },
+    // 태그 추가
+    addTag() {
+      if (this.tags.length >= 3) {
+        alert("태그는 최대 3개까지 추가할 수 있습니다.");
+        return;
+      }
 
-      tags,
-      inputValue,
-      addTag,
-      removeTag,
-      onFocus,
+      if (
+        this.inputValue.startsWith("#") &&
+        this.inputValue.length > 1 &&
+        this.tags.length < 3
+      ) {
+        this.tags.push(this.inputValue);
+        this.tagList.push(this.inputValue.slice(1).trim());
+        this.inputValue = "";
 
-      imageUrl,
-      uploadImage,
-      handleImageUpload,
-    };
+        console.log(this.tagList);
+      }
+    },
+    removeTag(index) {
+      this.tags.splice(index, 1);
+      this.tagList.splice(index, 1);
+      console.log(this.tagList);
+    },
+    onFocus() {
+      if (!this.inputValue) {
+        this.inputValue = "# ";
+      }
+    },
+    async createBoard() {
+
+      this.board.tagList = this.tagList;
+      await this.boardStore.createBoard(this.board, this.boardImage);
+    },
+    cancelCreateReview() {
+      window.location.href = "/board";
+    },
   },
 };
 </script>
@@ -746,13 +812,13 @@ button {
   flex-flow: wrap;
   width: 100%;
   padding: 16px 12px;
-  border-radius: 8px;
-  border: 1px solid rgb(228, 235, 240);
+  border-radius: 12px;
+  border: 2px solid rgb(228, 235, 240);
   margin-top: 3px;
 }
 
 /*-------------태크------------------*/
-/* .css-1vitttd {
+.css-1vitttd {
   display: flex;
   flex-flow: wrap;
   gap: 8px;
@@ -761,7 +827,7 @@ button {
 }
 .css-170uj16 {
   height: 26px;
-  padding: 4px 8px;
+  padding: 0px 8px;
   display: flex;
   flex-shrink: 0;
   flex-direction: row;
@@ -793,7 +859,8 @@ button {
   font-size: 12px;
   line-height: 150%;
   color: rgb(95, 102, 107);
-} */
+  margin-left: 8px;
+}
 
 /*-------------태크------------------*/
 
@@ -1017,5 +1084,13 @@ ul {
 
 .css-image {
   margin-top: 20px;
+}
+
+.css-1yfg4fi:focus-within {
+  border: 2px solid rgb(58, 62, 65);
+}
+
+.css-16kqrm:focus-visible {
+  outline: 2px solid rgb(58, 62, 65);
 }
 </style>
