@@ -8,6 +8,7 @@ import com.example.bootshelf.reviewsvc.review.model.entity.Review;
 import com.example.bootshelf.reviewsvc.review.repository.ReviewRepository;
 import com.example.bootshelf.reviewsvc.reviewup.model.entity.ReviewUp;
 import com.example.bootshelf.reviewsvc.reviewup.model.request.PostCreateReviewUpReq;
+import com.example.bootshelf.reviewsvc.reviewup.model.response.GetCheckReviewUpRes;
 import com.example.bootshelf.reviewsvc.reviewup.model.response.GetFindReviewUpRes;
 import com.example.bootshelf.reviewsvc.reviewup.model.response.PostCreateReviewUpRes;
 import com.example.bootshelf.reviewsvc.reviewup.repository.ReviewUpRepository;
@@ -60,6 +61,9 @@ public class ReviewUpService {
 
         reviewUp = reviewUpRepository.save(reviewUp);
 
+        review.increaseUpCnt();
+        reviewRepository.save(review);
+
         PostCreateReviewUpRes res = PostCreateReviewUpRes.toDto(reviewUp);
 
         return BaseRes.builder()
@@ -96,16 +100,40 @@ public class ReviewUpService {
     public BaseRes checkReviewUp(User user, Integer reviewIdx) {
         ReviewUp reviewUpResult = reviewUpRepository.findByUserIdxAndReviewIdx(user.getIdx(), reviewIdx);
         if (reviewUpResult != null) {
-            return BaseRes.builder()
-                    .isSuccess(true)
-                    .message("후기 추천 여부 확인 성공")
-                    .result(true)
-                    .build();
+            if (reviewUpResult.getStatus().equals(true)) {
+                GetCheckReviewUpRes res = GetCheckReviewUpRes.builder()
+                        .reviewUpIdx(reviewUpResult.getIdx())
+                        .status(true)
+                        .build();
+
+                return BaseRes.builder()
+                        .isSuccess(true)
+                        .message("후기 추천 여부 확인 성공")
+                        .result(res)
+                        .build();
+            }
+            else {
+                GetCheckReviewUpRes res = GetCheckReviewUpRes.builder()
+                        .reviewUpIdx(reviewUpResult.getIdx())
+                        .status(false)
+                        .build();
+
+                return BaseRes.builder()
+                        .isSuccess(true)
+                        .message("후기 추천 여부 확인 성공")
+                        .result(res)
+                        .build();
+            }
+
         } else {
+            GetCheckReviewUpRes res = GetCheckReviewUpRes.builder()
+                    .status(false)
+                    .build();
+
             return BaseRes.builder()
                     .isSuccess(true)
-                    .message("후기 추천 여부 확인 성공")
-                    .result(false)
+                    .message("후기 추천 이력 존재 x")
+                    .result(res)
                     .build();
         }
     }
