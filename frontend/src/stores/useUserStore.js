@@ -15,6 +15,10 @@ export const useUserStore = defineStore("user", {
     checkPasswordError: false,
     isPossibleUpdate: true,
     courseName: "",
+    currentPage: 0,
+    totalPages: 0,
+    totalCnt: 0,
+    userList: [],
   }),
   actions: {
     async login(email, password) {
@@ -103,7 +107,9 @@ export const useUserStore = defineStore("user", {
           } else if (e.response.data.code === "USER-002") {
             alert("이미 사용중인 닉네임입니다. 닉네임을 변경해주세요.");
           } else if (e.response.data.code === "COURSE-001") {
-            alert("수료한 과정이 존재하지 않습니다. 인증용 이미지를 다시 확인해주세요.");
+            alert(
+              "수료한 과정이 존재하지 않습니다. 인증용 이미지를 다시 확인해주세요."
+            );
           }
         }
         this.isSuccess = false;
@@ -116,7 +122,7 @@ export const useUserStore = defineStore("user", {
     async checkPassword(currentPassword) {
       try {
         let response = await axios.post(
-          backend + "/user/checkPw",
+          backend + "/user/checkpw",
           currentPassword,
           {
             headers: {
@@ -263,6 +269,28 @@ export const useUserStore = defineStore("user", {
             );
           }
         }
+      }
+    },
+
+    // [관리자] 회원 목록 조회
+    async getUserList(page = 1) {
+      try {
+        const params = new URLSearchParams({
+          page: page - 1,
+        }).toString();
+
+        let response = await axios.get(backend + `/user/list/?${params}`, {
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+          },
+        });
+
+        this.userList = response.data.result.list;
+        this.totalPages = response.data.result.totalPages;
+        this.currentPage = page;
+        this.totalCnt = response.data.result.totalCnt;
+      } catch (e) {
+        console.log(e);
       }
     },
   },

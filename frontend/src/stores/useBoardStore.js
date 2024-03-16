@@ -11,7 +11,8 @@ export const useBoardStore = defineStore("board", {
     totalPages: 0,
     totalCnt: 0,
     boardDetail: [],
-    tagList: []
+    tagList: [],
+    boardCategoryList: [],
   }),
   actions: {
     async createBoard(board, boardImage) {
@@ -39,24 +40,38 @@ export const useBoardStore = defineStore("board", {
     },
     async getBoardListByQuery(query, option, page = 1) {
       try {
-        let response = await axios.get(backend + "/board/search?query=" + query + "&searchType=" + option + "&page=" + (page - 1));
+        let response = await axios.get(
+          backend +
+            "/board/search?query=" +
+            query +
+            "&searchType=" +
+            option +
+            "&page=" +
+            (page - 1)
+        );
         this.boardList = response.data.result.list;
         this.totalPages = response.data.result.totalPages;
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
         console.log(response);
-
       } catch (error) {
         console.error(error);
       }
     },
 
-    async findListByCategory(boardCategoryIdx, sortType, page = 1)  {
+    async findListByCategory(boardCategoryIdx, sortType, page = 1) {
       try {
-        let response = await axios.get(backend + "/board/category/" + boardCategoryIdx + "/" + sortType + "?page=" + ( page - 1 ));
+        let response = await axios.get(
+          backend +
+            "/board/category/" +
+            boardCategoryIdx +
+            "/" +
+            sortType +
+            "?page=" +
+            (page - 1)
+        );
         this.boardList = response.data.result;
-
       } catch (error) {
         console.error(error);
       }
@@ -92,6 +107,6 @@ export const useBoardStore = defineStore("board", {
       } catch (e) {
         console.log(e);
       }
-    }
+    },
   },
 });

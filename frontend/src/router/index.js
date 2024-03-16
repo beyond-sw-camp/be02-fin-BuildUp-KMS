@@ -17,25 +17,31 @@ import ReviewListPage from "@/pages/ReviewListPage.vue";
 import EmailValidationPage from "@/pages/EmailValidationPage.vue";
 import NoticeBoardPage from "@/pages/NoticeBoardPage.vue";
 import KakaoLogIn from "@/pages/KakaoLogIn.vue";
+import KnowledgeBoardListPage from "@/pages/KnowledgeBoardListPage.vue";
+import QnABoardListPage from "@/pages/QnABoardListPage.vue";
 
 import AdminMainPage from "@/pages/AdminMainPage.vue";
 import AdminWithdrawPage from "@/pages/AdminWithdrawPage.vue";
 import AdminCategoryRegisterPage from "@/pages/AdminCategoryRegisterPage.vue";
 import AdminTagRegisterPage from "@/pages/AdminTagRegisterPage.vue";
-import KnowledgeBoardListPage from "@/pages/KnowledgeBoardListPage.vue";
-import QnABoardListPage from "@/pages/QnABoardListPage.vue";
+import AdminBoardCategoryListPage from "@/pages/AdminBoardCategoryListPage.vue";
+import AdminReviewCategoryListPage from "@/pages/AdminReviewCategoryListPage.vue";
+import AdminTagListPage from "@/pages/AdminTagListPage.vue";
+import AdminUserListPage from "@/pages/AdminUserListPage.vue";
 
 
 const requireAuth = () => (from, to, next) => {
   const storedToken = localStorage.getItem("token");
   if (storedToken === null) {
+    alert("로그인 후 이용할 수 있습니다.")
     next("/");
   } else {
     const tokenData = VueJwtDecode.decode(storedToken);
 
     const currentTime = Math.floor(Date.now() / 1000);
     if (tokenData.exp < currentTime) {
-      sessionStorage.removeItem("token");
+      alert("로그인 유지시간이 만료되었습니다. 다시 로그인해주세요.")
+      localStorage.removeItem("token");
       next("/");
     } else {
       next();
@@ -82,6 +88,10 @@ const routes = [
   { path: "/admin/withdraw", component: AdminWithdrawPage },
   { path: "/admin/category/register", component: AdminCategoryRegisterPage },
   { path: "/admin/tag/register", component: AdminTagRegisterPage },
+  { path: "/admin/board/category", component: AdminBoardCategoryListPage },
+  { path: "/admin/review/category", component: AdminReviewCategoryListPage },
+  { path: "/admin/tag", component: AdminTagListPage },
+  { path: "/admin/user", component: AdminUserListPage },
 ];
 
 const router = createRouter({
