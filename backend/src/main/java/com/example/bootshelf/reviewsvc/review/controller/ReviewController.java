@@ -113,7 +113,7 @@ public class ReviewController {
     public ResponseEntity<BaseRes> searchReviewListByQuery (
             @RequestParam String query,
             @RequestParam Integer searchType,
-            @PageableDefault(size = 20) Pageable pageable
+            @PageableDefault(size = 10) Pageable pageable
     ){
         return ResponseEntity.ok().body(reviewService.searchReviewListByQuery(query, searchType, pageable));
     }

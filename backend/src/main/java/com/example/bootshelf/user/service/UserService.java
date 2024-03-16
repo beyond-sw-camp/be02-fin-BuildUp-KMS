@@ -15,6 +15,7 @@ import com.example.bootshelf.course.Course;
 import com.example.bootshelf.common.error.entityexception.CourseException;
 import com.example.bootshelf.course.repository.CourseRepository;
 import com.example.bootshelf.common.error.entityexception.UserException;
+import com.example.bootshelf.tag.model.response.GetListTagResResult;
 import com.example.bootshelf.user.model.entity.User;
 import com.example.bootshelf.user.model.request.PatchUpdateUserReq;
 import com.example.bootshelf.user.model.request.PostCheckPasswordReq;
@@ -74,17 +75,7 @@ public class UserService {
             savePath = s3Service.uploadBoardFile(profileBucket, profileImage, savePath);
         }
 
-        User user = User.builder()
-                .password(passwordEncoder.encode(postSignUpUserReq.getPassword()))
-                .name(postSignUpUserReq.getName())
-                .email(postSignUpUserReq.getEmail())
-                .nickName(postSignUpUserReq.getNickName())
-                .profileImage(savePath)
-                .authority("ROLE_USER")
-                .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
-                .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
-                .status(false)
-                .build();
+        User user = User.builder().password(passwordEncoder.encode(postSignUpUserReq.getPassword())).name(postSignUpUserReq.getName()).email(postSignUpUserReq.getEmail()).nickName(postSignUpUserReq.getNickName()).profileImage(savePath).authority("ROLE_USER").createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))).updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))).status(false).build();
 
         userRepository.save(user);
 
@@ -109,14 +100,7 @@ public class UserService {
         if (postSignUpUserReq.getProgramName() == null) {
             User user = saveUser(postSignUpUserReq, profileImage);
 
-            BaseRes baseRes = BaseRes.builder()
-                    .isSuccess(true)
-                    .message("회원가입에 성공하였습니다.")
-                    .result(PostSignUpUserRes.builder()
-                            .userEmail(user.getEmail())
-                            .userName(user.getName())
-                            .build())
-                    .build();
+            BaseRes baseRes = BaseRes.builder().isSuccess(true).message("회원가입에 성공하였습니다.").result(PostSignUpUserRes.builder().userEmail(user.getEmail()).userName(user.getName()).build()).build();
 
             return baseRes;
         } else {
@@ -128,55 +112,45 @@ public class UserService {
 
             User user = saveUser(postSignUpUserReq, profileImage);
 
-            Certification certification = Certification.builder()
-                    .user(user)
-                    .course(Course.builder().idx(resultCourse.get().getIdx()).build())
-                    .status(true)
-                    .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
-                    .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
-                    .build();
+            Certification certification = Certification.builder().user(user).course(Course.builder().idx(resultCourse.get().getIdx()).build()).status(true).createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))).updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))).build();
 
             certificationRepository.save(certification);
 
             user.setAuthority("ROLE_AUTHUSER");
             userRepository.save(user);
-            BaseRes baseRes = BaseRes.builder()
-                    .isSuccess(true)
-                    .message("인증회원 가입에 성공하였습니다.")
-                    .result(PostSignUpUserRes.builder()
-                            .userEmail(user.getEmail())
-                            .userName(user.getName())
-                            .build())
-                    .build();
+            BaseRes baseRes = BaseRes.builder().isSuccess(true).message("인증회원 가입에 성공하였습니다.").result(PostSignUpUserRes.builder().userEmail(user.getEmail()).userName(user.getName()).build()).build();
 
             return baseRes;
         }
     }
 
     @Transactional(readOnly = true)
-    public BaseRes list(Integer page, Integer size) {
+    public BaseRes list(Pageable pageable) {
 
-        Pageable pageable = PageRequest.of(page - 1, size);
-
-        Page<User> userList = userRepository.findUserList(pageable);
+        Page<User> userList = userRepository.findAll(pageable);
 
         List<GetListUserRes> getListUserResList = new ArrayList<>();
         for (User user : userList) {
+
+            String status = user.getStatus() ? "활성" : "비활성";
 
             GetListUserRes getListUserRes = GetListUserRes.builder()
                     .userIdx(user.getIdx())
                     .email(user.getEmail())
                     .name(user.getName())
-                    .build();
+                    .nickName(user.getNickName())
+                    .profileImage(user.getProfileImage())
+                    .status(status).build();
 
             getListUserResList.add(getListUserRes);
         }
 
-        return BaseRes.builder()
-                .isSuccess(true)
-                .message("요청 성공")
-                .result(getListUserResList)
-                .build();
+        Long totalCnt = userList.getTotalElements();
+        Integer totalPages = userList.getTotalPages();
+
+        GetListUserResResult result = GetListUserResResult.builder().totalCnt(totalCnt).totalPages(totalPages).list(getListUserResList).build();
+
+        return BaseRes.builder().isSuccess(true).message("요청 성공").result(result).build();
     }
 
     @Transactional(readOnly = true)
@@ -186,19 +160,10 @@ public class UserService {
         if (result.isPresent()) {
             User user = result.get();
 
-            GetListUserRes getListUserRes = GetListUserRes.builder()
-                    .userIdx(user.getIdx())
-                    .email(user.getEmail())
-                    .name(user.getName())
-                    .nickName(user.getNickName())
-                    .profileImage(user.getProfileImage())
-                    .build();
+            GetListUserRes getListUserRes = GetListUserRes.builder().userIdx(user.getIdx()).email(user.getEmail()).name(user.getName()).nickName(user.getNickName())
+                    .profileImage(user.getProfileImage()).build();
 
-            return BaseRes.builder()
-                    .isSuccess(true)
-                    .message("요청 성공")
-                    .result(getListUserRes)
-                    .build();
+            return BaseRes.builder().isSuccess(true).message("요청 성공").result(getListUserRes).build();
         } else {
             throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("User email [ %s ] is not exists.", email));
         }
@@ -215,15 +180,9 @@ public class UserService {
 
         User user = result.get();
         if (passwordEncoder.matches(postLoginUserReq.getPassword(), user.getPassword()) && user.getStatus().equals(true)) {
-            PostLoginUserRes postLogInUserRes = PostLoginUserRes.builder()
-                    .token(jwtUtils.generateAccessToken(user, secretKey, expiredTimeMs))
-                    .build();
+            PostLoginUserRes postLogInUserRes = PostLoginUserRes.builder().token(jwtUtils.generateAccessToken(user, secretKey, expiredTimeMs)).build();
 
-            return BaseRes.builder()
-                    .isSuccess(true)
-                    .message("로그인에 성공하였습니다.")
-                    .result(postLogInUserRes)
-                    .build();
+            return BaseRes.builder().isSuccess(true).message("로그인에 성공하였습니다.").result(postLogInUserRes).build();
         } else {
             throw new UserException(ErrorCode.DIFFERENT_USER_PASSWORD, String.format("User Password [ %s ] is different.", postLoginUserReq.getPassword()));
         }
@@ -254,20 +213,7 @@ public class UserService {
             String imagePath = "https://github.com/hyungdoyou/devops/assets/148875644/f9dc322f-9d41-455d-b35c-e3cfcd7c008d";
 
             // HTML 문자열에 이미지 포함
-            String content = "<html><body style= 'font-family: Arial, sans-serif;'>" +
-                    "<img src='" + imagePath + "' style='width: auto; height: auto;'/>" +
-                    "<p style='color: rgb(84, 29, 122); margin-bottom: 15px; height: 100%; margin: 0; text-align: center; font-size: 30px; line-height: 3;'>" +
-                    "<strong>BOOTSHELF</strong> 에 가입해주셔서 감사합니다" +
-                    "</p>" +
-                    "<p style='color: #333; margin-bottom: 15px; height: 100%; margin: 0; text-align: center; font-size: 20px; line-height: 3;'>" +
-                    "이메일 인증 완료 후 회원들과 지식을 공유해보세요" +
-                    "</p>" +
-                    "<div style='text-align: center;'>\n" +
-                    "    <a href='" + url + "' style='color: #fff; text-decoration: none; background-color: rgb(84, 29, 122); padding: 10px 20px; border-radius: 5px; border: 2px solid rgb(84, 29, 122); display: inline-block; font-size: 15px; line-height: 2;'>\n" +
-                    "        이메일 인증하기\n" +
-                    "    </a>\n" +
-                    "</div>" +
-                    "</body></html>";
+            String content = "<html><body style= 'font-family: Arial, sans-serif;'>" + "<img src='" + imagePath + "' style='width: auto; height: auto;'/>" + "<p style='color: rgb(84, 29, 122); margin-bottom: 15px; height: 100%; margin: 0; text-align: center; font-size: 30px; line-height: 3;'>" + "<strong>BOOTSHELF</strong> 에 가입해주셔서 감사합니다" + "</p>" + "<p style='color: #333; margin-bottom: 15px; height: 100%; margin: 0; text-align: center; font-size: 20px; line-height: 3;'>" + "이메일 인증 완료 후 회원들과 지식을 공유해보세요" + "</p>" + "<div style='text-align: center;'>\n" + "    <a href='" + url + "' style='color: #fff; text-decoration: none; background-color: rgb(84, 29, 122); padding: 10px 20px; border-radius: 5px; border: 2px solid rgb(84, 29, 122); display: inline-block; font-size: 15px; line-height: 2;'>\n" + "        이메일 인증하기\n" + "    </a>\n" + "</div>" + "</body></html>";
             helper.setText(content, true); // true는 HTML 메일임을 의미합니다.
             emailSender.send(message);
             emailVerifyService.create(postSignUpUserReq.getEmail(), uuid);
@@ -286,14 +232,7 @@ public class UserService {
             user.setStatus(true);
             userRepository.save(user);
 
-            return BaseRes.builder()
-                    .isSuccess(true)
-                    .message("메일 인증에 성공하였습니다.")
-                    .result(GetEmailVerifyRes.builder()
-                            .email(user.getEmail())
-                            .status(user.getStatus())
-                            .build())
-                    .build();
+            return BaseRes.builder().isSuccess(true).message("메일 인증에 성공하였습니다.").result(GetEmailVerifyRes.builder().email(user.getEmail()).status(user.getStatus()).build()).build();
         } else {
             throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("User email [ %s ] is not exists.", email));
         }
@@ -303,17 +242,7 @@ public class UserService {
     @Transactional
     public void kakaoSignup(String nickName, String profileImage) {
 
-        User user = User.builder()
-                .email(nickName + "@kakao.com")
-                .password(passwordEncoder.encode("kakao"))
-                .nickName(nickName)
-                .name(nickName)
-                .profileImage(profileImage)
-                .authority("ROLE_KAKAO")
-                .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
-                .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
-                .status(true)
-                .build();
+        User user = User.builder().email(nickName + "@kakao.com").password(passwordEncoder.encode("kakao")).nickName(nickName).name(nickName).profileImage(profileImage).authority("ROLE_KAKAO").createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))).updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))).status(true).build();
 
         user = userRepository.save(user);
 
@@ -364,11 +293,7 @@ public class UserService {
         user.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
         userRepository.save(user);
 
-        return BaseRes.builder()
-                .isSuccess(true)
-                .message("회원정보 수정 성공")
-                .result("요청 성공")
-                .build();
+        return BaseRes.builder().isSuccess(true).message("회원정보 수정 성공").result("요청 성공").build();
     }
 
     // 회원 프로필 이미지 수정
@@ -389,11 +314,7 @@ public class UserService {
         user.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
         userRepository.save(user);
 
-        BaseRes baseRes = BaseRes.builder()
-                .isSuccess(true)
-                .message("프로필 이미지 수정 성공")
-                .result("요청 성공")
-                .build();
+        BaseRes baseRes = BaseRes.builder().isSuccess(true).message("프로필 이미지 수정 성공").result("요청 성공").build();
         return baseRes;
     }
 
@@ -407,11 +328,7 @@ public class UserService {
             loginUser.setStatus(false);
             userRepository.save(loginUser);
 
-            return BaseRes.builder()
-                    .isSuccess(true)
-                    .message("요청 성공")
-                    .result("회원의 상태가 탈퇴 상태로 변경되었습니다.")
-                    .build();
+            return BaseRes.builder().isSuccess(true).message("요청 성공").result("회원의 상태가 탈퇴 상태로 변경되었습니다.").build();
         } else {
             throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("UserIdx [ %s ] is not exists.", userIdx));
         }
@@ -423,11 +340,7 @@ public class UserService {
         Integer result = userRepository.deleteByIdx(userIdx);
         if (!result.equals(0)) {
 
-            return BaseRes.builder()
-                    .isSuccess(true)
-                    .message("요청 성공")
-                    .result("회원이 삭제되었습니다.")
-                    .build();
+            return BaseRes.builder().isSuccess(true).message("요청 성공").result("회원이 삭제되었습니다.").build();
         } else {
             throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("UserIdx [ %s ] is not exists.", userIdx));
         }
@@ -443,26 +356,11 @@ public class UserService {
             throw new AdminException(ErrorCode.DUPLICATE_SIGNUP_EMAIL, String.format("SignUp Email [ %s ] is duplicated.", postSignUpAdminReq.getEmail()));
         }
 
-        User user = User.builder()
-                .password(passwordEncoder.encode(postSignUpAdminReq.getPassword()))
-                .name(postSignUpAdminReq.getName())
-                .email(postSignUpAdminReq.getEmail())
-                .authority("ROLE_ADMIN")
-                .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
-                .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
-                .status(true)
-                .build();
+        User user = User.builder().password(passwordEncoder.encode(postSignUpAdminReq.getPassword())).name(postSignUpAdminReq.getName()).email(postSignUpAdminReq.getEmail()).authority("ROLE_ADMIN").createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))).updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))).status(true).build();
 
         userRepository.save(user);
 
-        BaseRes baseRes = BaseRes.builder()
-                .isSuccess(true)
-                .message("관리자 가입에 성공하였습니다.")
-                .result(PostSignUpAdminRes.builder()
-                        .email(user.getEmail())
-                        .name(user.getName())
-                        .build())
-                .build();
+        BaseRes baseRes = BaseRes.builder().isSuccess(true).message("관리자 가입에 성공하였습니다.").result(PostSignUpAdminRes.builder().email(user.getEmail()).name(user.getName()).build()).build();
 
         return baseRes;
     }

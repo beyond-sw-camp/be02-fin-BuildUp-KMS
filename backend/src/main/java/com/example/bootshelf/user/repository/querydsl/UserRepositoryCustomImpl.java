@@ -17,19 +17,6 @@ public class UserRepositoryCustomImpl extends QuerydslRepositorySupport implemen
         super(User.class);
     }
 
-    @Override
-    public Page<User> findUserList(Pageable pageable) {
-        QUser user = new QUser("user");
-
-
-        List<User> result = from(user)
-                .distinct()
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch().stream().distinct().collect(Collectors.toList());
-
-        return new PageImpl<>(result, pageable, result.size());
-    }
 
     @Override
     public Optional<User> findUser(String email) {

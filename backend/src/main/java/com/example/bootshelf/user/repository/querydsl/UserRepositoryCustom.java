@@ -7,8 +7,6 @@ import org.springframework.data.domain.Pageable;
 import java.util.Optional;
 
 public interface UserRepositoryCustom {
-
-    Page<User> findUserList(Pageable pageable);
-
     Optional<User> findUser(String email);
+
 }

@@ -15,6 +15,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -91,10 +93,10 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
-    @RequestMapping(method = RequestMethod.GET, value = "/list/{page}/{size}")
-    public ResponseEntity<BaseRes> list(@PathVariable @NotNull @Positive Integer page, @PathVariable @NotNull @Positive Integer size) {
+    @RequestMapping(method = RequestMethod.GET, value = "/list")
+    public ResponseEntity<BaseRes> list(@PageableDefault(size = 10) Pageable pageable) {
 
-        BaseRes baseRes = userService.list(page, size);
+        BaseRes baseRes = userService.list(pageable);
         return ResponseEntity.ok().body(baseRes);
     }
 
@@ -161,6 +163,7 @@ public class UserController {
     })
     @RequestMapping(method = RequestMethod.DELETE, value = "/delete/{userIdx}")
     public ResponseEntity<BaseRes> delete(@PathVariable @NotNull @Positive Integer userIdx) {
+
         BaseRes baseRes = userService.delete(userIdx);
 
         return ResponseEntity.ok().body(baseRes);
@@ -172,7 +175,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
-    @RequestMapping(method = RequestMethod.POST, value = "/checkPw")
+    @RequestMapping(method = RequestMethod.POST, value = "/checkpw")
     public ResponseEntity checkPassword(@RequestBody @Valid PostCheckPasswordReq postCheckPasswordReq) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 

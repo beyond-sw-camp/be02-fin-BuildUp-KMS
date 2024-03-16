@@ -26,7 +26,7 @@ import javax.validation.constraints.Positive;
 @Api(tags = "[관리자] 태그")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/tag")
+@RequestMapping("/admin/tag")
 @CrossOrigin("*")
 public class TagController {
 
