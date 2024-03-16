@@ -98,11 +98,13 @@
               </div>
             </div>
             <div class="css-luqgif">
-              <div class="editedQ_QContent" v-for="(image, index) in boardDetail.boardImageList" :key="index">
+              <div class="editedQ_QContent">
                 <p class="css-content">
                   {{ boardDetail.boardContent }}
                 </p>
-                <img alt="게시판 이미지" :data-src="image" />
+                <div v-for="(image, index) in boardDetail.boardImageList" :key="index">
+                  <img alt="게시판 이미지" :data-src="image" />
+                </div>
               </div>
               <div class="css-iqys2n">
                 <!-- 태그 컴포넌트 자리-->
@@ -184,6 +186,8 @@ export default {
       showMyPageConfirmDialog: false,
       isRecommended: false,
       isScrapped: false,
+      boardUpIdx: null,
+      boardScrapIdx: null
     };
   },
   computed: {
@@ -194,8 +198,7 @@ export default {
 
     this.boardIdx = boardIdx;
 
-    await this.boardStore.findBoard(boardIdx);
-    this.boardDetail = this.boardStore.boardDetail;
+    this.boardDetail = await this.boardStore.findBoard(boardIdx);
 
     await this.boardCommentStore.getBoardCommentList(boardIdx);
     this.commentList = this.boardCommentStore.commentList;
@@ -215,42 +218,58 @@ export default {
       }
     },
     async createBoardUp() {
+      let token = window.localStorage.getItem("token");
+      let requestBody = {
+        boardIdx: this.boardIdx
+      };
+
       try {
-        let token = window.localStorage.getItem("token");
-        let requestBody = {
-          boardIdx: this.boardIdx
-        }
+        if (this.isRecommended) {
+          await this.boardStore.cancelBoardUp(token, this.boardUpIdx);
+          console.log("게시글 추천 취소 성공");
+          this.isRecommended = false;
 
-        const response = await this.boardStore.createBoardUp(token, requestBody);
-
-        if (response.status === 200 && response.data) {
-          console.log("게시글 추천 성공!");
-          this.isRecommended = true;
-          this.showMyPageConfirmDialog = true;
+          window.location.reload();
         } else {
-          console.error("게시글 추천 실패");
-          alert("게시글 추천 실패");
+          const response = await this.boardStore.createBoardUp(token, requestBody);
+
+          if (response.status === 200 && response.data) {
+            console.log("게시글 추천 성공!");
+            this.isRecommended = true;
+            this.showMyPageConfirmDialog = true;
+          } else {
+            console.error("게시글 추천 실패");
+            alert("게시글 추천 실패");
+          }
         }
       } catch (e) {
         console.error("게시글 추천 과정에서 문제가 발생했습니다!", e);
       }
     },
     async createBoardScrap() {
+      let token = window.localStorage.getItem("token");
+      let requestBody = {
+        boardIdx: this.boardIdx
+      };
+
       try {
-        let token = window.localStorage.getItem("token");
-        let requestBody = {
-          boardIdx: this.boardIdx
-        }
-
-        const response = await this.boardStore.createBoardScrap(token, requestBody);
-
-        if (response.status === 200 && response.data) {
-          console.log("게시글 스크랩 성공!");
-          this.isScrapped = true;
-          this.showMyPageConfirmDialog = true;
+        if (this.isScrapped) {
+          await this.boardStore.cancelBoardScrap(token, this.boardScrapIdx);
+          console.log("게시글 스크랩 취소 성공");
+          this.isScrapped = false;
+          
+          window.location.reload();
         } else {
-          console.error("게시글 스크랩 실패");
-          alert("게시글 스크랩 실패");
+          const response = await this.boardStore.createBoardScrap(token, requestBody);
+
+          if (response.status === 200 && response.data) {
+            console.log("게시글 스크랩 성공!");
+            this.isScrapped = true;
+            this.showMyPageConfirmDialog = true;
+          } else {
+            console.error("게시글 스크랩 실패");
+            alert("게시글 스크랩 실패");
+          }
         }
       } catch (e) {
         console.error("게시글 스크랩 과정에서 문제가 발생했습니다!", e);
@@ -270,8 +289,9 @@ export default {
         let response = await this.boardStore.checkBoardUp(token, this.boardIdx);
         console.log(response);
 
-        if (response.data && response.data.result) {
+        if (response.data && response.data.result.status === true) {
           this.isRecommended = true;
+          this.boardUpIdx = response.data.result.boardUpIdx;
         } else {
           this.isRecommended = false;
         }
@@ -285,8 +305,9 @@ export default {
         let response = await this.boardStore.checkBoardScrap(token, this.boardIdx);
         console.log(response);
 
-        if (response.data && response.data.result) {
+        if (response.data && response.data.result.status === true) {
           this.isScrapped = true;
+          this.boardScrapIdx = response.data.result.boardScrapIdx;
         } else {
           this.isScrapped = false;
         }
