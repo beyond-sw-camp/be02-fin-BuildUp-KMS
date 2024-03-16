@@ -12,5 +12,7 @@ import java.util.Optional;
 @Repository
 public interface CertificationRepository extends JpaRepository<Certification, Integer> {
 
+    Optional<Certification> findByUser_Idx(Integer userIdx);
+
 }
 
