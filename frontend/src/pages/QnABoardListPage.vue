@@ -94,7 +94,11 @@
             </div>
             <!-- /본격 글 리스트 -->
           </div>
-          <PaginationComponent />
+          <PaginationComponent 
+            :current-page="boardStore.currentPage"
+            :total-pages="boardStore.totalPages"
+            @change-page="changePage"
+          />
         </div>
       </div>
     </div>
@@ -120,6 +124,23 @@ export default {
   },
   computed:{
     ...mapStores(useBoardStore),
+    visiblePages() {
+      // 최대 5개의 페이지 번호만 보이도록 계산
+      let pages = [];
+      const total = this.boardStore.totalPages;
+
+      // 현재 페이지에서 앞뒤로 2개씩 보이게 하되, 총 페이지 수를 초과하지 않도록 조정
+      let start = Math.max(1, this.boardStore.currentPage - 2);
+      let end = Math.min(total, start + 4);
+
+      // 시작점 재조정: end가 변경되었을 때, 5개 페이지를 유지하려면 start도 조정해야 함
+      start = Math.max(1, Math.min(start, total - Math.min(total, 4)));
+
+      for (let i = start; i <= end; i++) {
+        pages.push(i);
+      }
+      return pages;
+    },
   },
   components: {
     CategoryBoardComponent,
@@ -127,7 +148,7 @@ export default {
     PaginationComponent,
   },
   mounted(){
-    this.loadBoardList();
+    this.loadBoardList(1);
   },
   methods: {
     updateSortType() {
@@ -150,19 +171,32 @@ export default {
         default:
           this.sortType = 1; // 기본값 또는 예외 처리
       }
-      this.loadBoardList();
+      this.loadBoardList(this.boardStore.currentPage);
     },
-    loadBoardList() {
+    loadBoardList(page) {
       // 검색어가 있는 경우
       if (this.searchTerm) {
-        this.boardStore.getBoardListByQuery(this.searchTerm, this.sortType);
+        this.boardStore.getCategoryBoardListByQuery(this.boardCategoryIdx,this.searchTerm, this.sortType,page);
       } else {
         // 검색어가 없는 경우
-        this.boardStore.findListByCategory(this.boardCategoryIdx, this.sortType);
+        this.boardStore.findListByCategory(this.boardCategoryIdx, this.sortType, page);
       }
     },
     sendSearchData() {
       this.loadBoardList();
+    },
+    changePage(page) {
+      this.loadBoardList(page);
+    },
+    jumpForward() {
+      // 현재 페이지에서 3페이지 앞으로 점프
+      let nextPage = Math.min(
+        this.boardStore.currentPage + 3,
+        this.boardStore.totalPages
+      );
+      this.changePage(nextPage);
+
+      this.boardStore.currentPage = nextPage;
     },
   }
 };

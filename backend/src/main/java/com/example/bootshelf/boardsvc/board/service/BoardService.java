@@ -172,7 +172,7 @@ public class BoardService {
 
             GetListBoardRes getListBoardRes = GetListBoardRes.builder()
                     .boardIdx(board.getIdx())
-                    .userNickName(user.getNickName())
+                    .nickName(user.getNickName())
                     .userProfileImage(user.getProfileImage())
                     .boardTitle(board.getBoardTitle())
                     .boardContent(board.getBoardContent())
@@ -182,7 +182,7 @@ public class BoardService {
                     .upCnt(board.getUpCnt())
                     .scrapCnt(board.getScrapCnt())
                     .commentCnt(board.getCommentCnt())
-                    .updatedAt(board.getUpdatedAt())
+                    .createdAt(board.getCreatedAt())
                     .build();
 
             List<BoardImage> boardImageList = board.getBoardImageList();
@@ -223,7 +223,7 @@ public class BoardService {
 
             GetListBoardRes getListBoardRes = GetListBoardRes.builder()
                     .boardIdx(board.getIdx())
-                    .userNickName(user.getNickName())
+                    .nickName(board.getUser().getNickName())
                     .userProfileImage(user.getProfileImage())
                     .boardTitle(board.getBoardTitle())
                     .boardContent(board.getBoardContent())
@@ -233,7 +233,7 @@ public class BoardService {
                     .upCnt(board.getUpCnt())
                     .scrapCnt(board.getScrapCnt())
                     .commentCnt(board.getCommentCnt())
-                    .updatedAt(board.getUpdatedAt())
+                    .createdAt(board.getCreatedAt())
                     .build();
 
             List<BoardImage> boardImageList = board.getBoardImageList();
@@ -273,7 +273,7 @@ public class BoardService {
 
             GetListBoardRes getListBoardRes = GetListBoardRes.builder()
                     .boardIdx(board.getIdx())
-                    .userNickName(board.getUser().getNickName())
+                    .nickName(board.getUser().getNickName())
                     .userProfileImage(board.getUser().getProfileImage())
                     .boardTitle(board.getBoardTitle())
                     .boardContent(board.getBoardContent())
@@ -283,7 +283,7 @@ public class BoardService {
                     .upCnt(board.getUpCnt())
                     .scrapCnt(board.getScrapCnt())
                     .commentCnt(board.getCommentCnt())
-                    .updatedAt(board.getUpdatedAt())
+                    .createdAt(board.getCreatedAt())
                     .build();
 
             List<BoardImage> boardImageList = board.getBoardImageList();
@@ -298,10 +298,20 @@ public class BoardService {
 
             getListBoardResList.add(getListBoardRes);
         }
+
+        Long totalCnt = boardList.getTotalElements();
+        Integer totalPages = boardList.getTotalPages();
+
+        GetBoardListResResult result = GetBoardListResResult.builder()
+                .totalCnt(totalCnt)
+                .totalPages(totalPages)
+                .list(getListBoardResList)
+                .build();
+
         BaseRes baseRes = BaseRes.builder()
                 .isSuccess(true)
                 .message("게시글 카테고리별 목록 조회 요청 성공")
-                .result(getListBoardResList)
+                .result(result)
                 .build();
 
         return baseRes;
@@ -324,7 +334,7 @@ public class BoardService {
 
             GetListBoardRes getListBoardRes = GetListBoardRes.builder()
                     .boardIdx(board.getIdx())
-                    .userNickName(board.getUser().getNickName())
+                    .nickName(board.getUser().getNickName())
                     .userProfileImage(board.getUser().getProfileImage())
                     .boardTitle(board.getBoardTitle())
                     .boardContent(board.getBoardContent())
@@ -334,7 +344,7 @@ public class BoardService {
                     .upCnt(board.getUpCnt())
                     .scrapCnt(board.getScrapCnt())
                     .commentCnt(board.getCommentCnt())
-                    .updatedAt(board.getUpdatedAt())
+                    .createdAt(board.getCreatedAt())
                     .build();
 
             List<BoardImage> boardImageList = board.getBoardImageList();
@@ -395,12 +405,20 @@ public class BoardService {
                 .build();
     }
     @Transactional(readOnly = true)
-    public BaseRes searchBoardListByQueryAndCategory(String query, Integer boardCategoryIdx, Integer sortIdx, Pageable pageable) {
-        Page<Board> boardList = boardRepository.searchBoardListByQueryAndCategory(pageable, query, boardCategoryIdx, sortIdx);
+    public BaseRes searchBoardListByQueryAndCategory(Integer boardCategoryIdx, String query, Integer sortIdx, Pageable pageable) {
+        Page<Board> boardList = boardRepository.searchBoardListByQueryAndCategory(pageable, boardCategoryIdx, query, sortIdx);
 
         List<GetBoardListByQueryRes> getBoardListByQueryResList = new ArrayList<>();
 
         for (Board board : boardList) {
+            List<BoardTag> boardTagList = board.getBoardTagList();
+            List<String> tagNames = new ArrayList<>();
+
+            for(BoardTag boardTag : boardTagList){
+                String tagName = boardTag.getTag().getTagName();
+                tagNames.add(tagName);
+            }
+
             GetBoardListByQueryRes getBoardListByQueryRes = GetBoardListByQueryRes.builder()
                     .boardIdx(board.getIdx())
                     .boardTitle(board.getBoardTitle())
@@ -410,7 +428,19 @@ public class BoardService {
                     .viewCnt(board.getViewCnt())
                     .commentCnt(board.getCommentCnt())
                     .upCnt(board.getUpCnt())
+                    .tagNameList(tagNames)
+                    .userProfileImage(board.getUser().getProfileImage())
                     .build();
+
+            List<BoardImage> boardImageList = board.getBoardImageList();
+            List<String> fileNames = new ArrayList<>();
+            if(!boardImageList.isEmpty()){
+                for(BoardImage boardImage : boardImageList){
+                    String fileName = boardImage.getBoardImage();
+                    fileNames.add(fileName);
+                }
+                getBoardListByQueryRes.setBoardImg(fileNames.get(0));
+            }
 
             getBoardListByQueryResList.add(getBoardListByQueryRes);
         }
