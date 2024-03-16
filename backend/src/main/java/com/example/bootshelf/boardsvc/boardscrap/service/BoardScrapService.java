@@ -4,6 +4,7 @@ import com.example.bootshelf.boardsvc.board.model.entity.Board;
 import com.example.bootshelf.boardsvc.board.repository.BoardRepository;
 import com.example.bootshelf.boardsvc.boardscrap.model.entity.BoardScrap;
 import com.example.bootshelf.boardsvc.boardscrap.model.request.PostCreateBoardScrapReq;
+import com.example.bootshelf.boardsvc.boardscrap.model.response.GetCheckBoardScrapRes;
 import com.example.bootshelf.boardsvc.boardscrap.model.response.GetFindBoardScrapRes;
 import com.example.bootshelf.boardsvc.boardscrap.model.response.PostCreateBoardScrapRes;
 import com.example.bootshelf.boardsvc.boardscrap.repository.BoardScrapRepository;
@@ -60,6 +61,9 @@ public class BoardScrapService {
 
         boardScrap = boardScrapRepository.save(boardScrap);
 
+        board.increaseScrapCnt();
+        boardRepository.save(board);
+
         PostCreateBoardScrapRes res = PostCreateBoardScrapRes.toDto(boardScrap);
 
         return BaseRes.builder()
@@ -99,16 +103,41 @@ public class BoardScrapService {
     public BaseRes checkBoardScrap(User user, Integer boardIdx) {
         BoardScrap boardScrapResult = boardScrapRepository.findByUserIdxAndBoardIdx(user.getIdx(), boardIdx);
         if (boardScrapResult != null) {
-            return BaseRes.builder()
-                    .isSuccess(true)
-                    .message("게시물 스크랩 여부 확인 성공")
-                    .result(true)
-                    .build();
+            if (boardScrapResult.getStatus().equals(true)) {
+                GetCheckBoardScrapRes res = GetCheckBoardScrapRes.builder()
+                        .boardScrapIdx(boardScrapResult.getIdx())
+                        .status(true)
+                        .build();
+
+                return BaseRes.builder()
+                        .isSuccess(true)
+                        .message("게시물 스크랩 여부 확인 성공")
+                        .result(res)
+                        .build();
+            }
+            else {
+                GetCheckBoardScrapRes res = GetCheckBoardScrapRes.builder()
+                        .boardScrapIdx(boardScrapResult.getIdx())
+                        .status(false)
+                        .build();
+
+                return BaseRes.builder()
+                        .isSuccess(true)
+                        .message("게시물 스크랩 여부 확인 성공")
+                        .result(res)
+                        .build();
+            }
+
         } else {
+            GetCheckBoardScrapRes res2 = GetCheckBoardScrapRes.builder()
+                    .boardScrapIdx(boardScrapResult.getIdx())
+                    .status(false)
+                    .build();
+
             return BaseRes.builder()
                     .isSuccess(true)
                     .message("게시물 스크랩 여부 확인 성공")
-                    .result(false)
+                    .result(res2)
                     .build();
         }
     }
