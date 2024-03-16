@@ -40,12 +40,12 @@ public class JwtUtils {
         claims.put("ROLE", user.getAuthority());
 
         if (user.getAuthority().equals("ROLE_AUTHUSER")) {
-            Optional<Certification> result = certificationRepository.findById(user.getIdx());
+            Optional<Certification> result = certificationRepository.findByUser_Idx(user.getIdx());
             if (result.isEmpty()) {
                 throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("User [%s] is not exists.", certificationRepository.findById(user.getIdx())));
             }
             Certification certification = result.get();
-            claims.put("courseName", certification.getCourse().getProgramName());
+//            claims.put("courseName", certification.getCourse().getProgramName());
         }
 
         byte[] secretBytes = secretKey.getBytes();
