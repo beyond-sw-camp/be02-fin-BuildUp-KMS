@@ -27,101 +27,121 @@
           <!--여기서부터 우리거 적용-->
           <div class="css-1rw3qt4">
             <!--게시글 작성 버튼-->
-            <div class="css-1hbxc4s">
-              <div class="css-ogh6wd">
-                <div class="css-1tttep5">
-                  <div class="css-1pbcmmt-001">
-                    <div class="css-5ala5m-001">
-                      <router-link to="/review/new">
-                        <div class="css-nmdn6a-001">작성하기</div>
-                      </router-link>
-                    </div>
-                  </div>
-                </div>
-                <!-- 검색창 -->
+            <div class="css-6cwwok">
+              <div class="css-1hbxc4s">
                 <div class="css-ogh6wd">
                   <div class="css-1tttep5">
-                    <div class="css-1pbcmmt-002">
-                      <div class="css-5ala5m-002">
-                        <div class="css-nmdn6a-002">
-                          <input
-                            class="css-search-002"
-                            type="text"
-                            placeholder="제목과 내용으로 검색할 단어를 입력하세요."
-                            v-model="searchTerm"
-                            @keyup.enter="sendSearchData()"
-                          />
-                        </div>
-                        <img
-                          class="css-search-img"
-                          src="https://img.icons8.com/ios-glyphs/30/search--v1.png"
-                          alt="search--v1"
-                          @click="sendSearchData()"
-                        />
+                    <div class="css-1pbcmmt-001">
+                      <div class="css-5ala5m-001">
+                        <router-link to="/review/new">
+                          <div class="css-nmdn6a-001">작성하기</div>
+                        </router-link>
                       </div>
                     </div>
                   </div>
-                </div>
-                <!-- 정렬 순서 셀렉터 -->
-                <div>
-                  <select
-                    class="css-select001"
-                    v-model="selectedSortType"
-                    @change="updateSortType"
-                  >
-                    <option value="최신순">최신순</option>
-                    <option value="추천순">추천순</option>
-                    <option value="조회순">조회순</option>
-                    <option value="스크랩순">스크랩순</option>
-                    <option value="댓글순">댓글순</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div class="css-6ylcwl">
-              <div class="css-1o94c7r">
-                <div class="css-1kb98ja">
-                  <svg
-                    width="4"
-                    height="4"
-                    viewBox="0 0 4 4"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <circle cx="2" cy="2" r="2" :fill="selectedReviewType === 'course' ? '#e8344e' : '#B4BFC6'"></circle>
-                  </svg>
-                  <!-- <div class="css-1619ajl">과정 후기</div> -->
-                  <div
-                    :class="
-                      selectedReviewType === 'course'
-                        ? 'css-1619ajl'
-                        : 'css-1j5hzn7'
-                    "
-                    @click="selectReviewType('course')"
-                  >
-                    과정 후기
+                  <!-- 검색창 -->
+                  <div class="css-ogh6wd">
+                    <div class="css-1tttep5">
+                      <div class="css-1pbcmmt-002">
+                        <div class="css-5ala5m-002">
+                          <div class="css-nmdn6a-002">
+                            <input
+                              class="css-search-002"
+                              type="text"
+                              placeholder="제목과 내용으로 검색할 단어를 입력하세요."
+                              v-model="searchTerm"
+                              @keyup.enter="sendSearchData()"
+                            />
+                          </div>
+                          <img
+                            class="css-search-img"
+                            src="https://img.icons8.com/ios-glyphs/30/search--v1.png"
+                            alt="search--v1"
+                            @click="sendSearchData()"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- 정렬 순서 셀렉터 -->
+                  <div class="css-select000">
+                    <select
+                      class="css-select001"
+                      v-model="selectedSortType"
+                      @change="updateSortType"
+                    >
+                      <option value="최신순">최신순</option>
+                      <option value="추천순">추천순</option>
+                      <option value="조회순">조회순</option>
+                      <option value="스크랩순">스크랩순</option>
+                      <option value="댓글순">댓글순</option>
+                    </select>
                   </div>
                 </div>
-                <div class="css-bewb21">
-                  <svg
-                    width="4"
-                    height="4"
-                    viewBox="0 0 4 4"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <circle cx="2" cy="2" r="2" :fill="selectedReviewType === 'course' ? '#B4BFC6' : '#e8344e'"></circle>
-                  </svg>
-                  <!-- <div class="css-1j5hzn7">강사 후기</div> -->
-                  <div
-                    :class="
-                      selectedReviewType === 'instructor'
-                        ? 'css-1619ajl'
-                        : 'css-1j5hzn7'
-                    "
-                    @click="selectReviewType('instructor')"
-                  >
-                    강사 후기
+              </div>
+              <div class="css-6ylcwl">
+                <div class="css-1o94c7r">
+                  <div class="css-1kb98ja">
+                    <svg
+                      width="4"
+                      height="4"
+                      viewBox="0 0 4 4"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle
+                        cx="2"
+                        cy="2"
+                        r="2"
+                        :fill="
+                          selectedReviewType === 'course'
+                            ? '#e8344e'
+                            : '#B4BFC6'
+                        "
+                      ></circle>
+                    </svg>
+                    <!-- <div class="css-1619ajl">과정 후기</div> -->
+                    <div
+                      :class="
+                        selectedReviewType === 'course'
+                          ? 'css-1619ajl'
+                          : 'css-1j5hzn7'
+                      "
+                      @click="selectReviewType('course')"
+                    >
+                      과정 후기
+                    </div>
+                  </div>
+                  <div class="css-bewb21">
+                    <svg
+                      width="4"
+                      height="4"
+                      viewBox="0 0 4 4"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle
+                        cx="2"
+                        cy="2"
+                        r="2"
+                        :fill="
+                          selectedReviewType === 'course'
+                            ? '#B4BFC6'
+                            : '#e8344e'
+                        "
+                      ></circle>
+                    </svg>
+                    <!-- <div class="css-1j5hzn7">강사 후기</div> -->
+                    <div
+                      :class="
+                        selectedReviewType === 'instructor'
+                          ? 'css-1619ajl'
+                          : 'css-1j5hzn7'
+                      "
+                      @click="selectReviewType('instructor')"
+                    >
+                      강사 후기
+                    </div>
                   </div>
                 </div>
               </div>
@@ -140,7 +160,13 @@
             </div>
             <!-- /본격 글 리스트 -->
           </div>
-          <PaginationComponent />
+          <div class="d-flex justify-content-center py-0 py-md-4">
+            <PaginationComponent
+              :current-page="reviewStore.currentPage"
+              :total-pages="reviewStore.totalPages"
+              @change-page="changePage"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -166,6 +192,23 @@ export default {
   },
   computed: {
     ...mapStores(useReviewStore),
+    visiblePages() {
+      // 최대 5개의 페이지 번호만 보이도록 계산
+      let pages = [];
+      const total = this.reviewStore.totalPages;
+
+      // 현재 페이지에서 앞뒤로 2개씩 보이게 하되, 총 페이지 수를 초과하지 않도록 조정
+      let start = Math.max(1, this.reviewStore.currentPage - 2);
+      let end = Math.min(total, start + 4);
+
+      // 시작점 재조정: end가 변경되었을 때, 5개 페이지를 유지하려면 start도 조정해야 함
+      start = Math.max(1, Math.min(start, total - Math.min(total, 4)));
+
+      for (let i = start; i <= end; i++) {
+        pages.push(i);
+      }
+      return pages;
+    },
   },
   components: {
     ReviewBoardComponent,
@@ -173,7 +216,7 @@ export default {
     PaginationComponent,
   },
   mounted() {
-    this.loadReviewList();
+    this.loadReviewList(1);
   },
   methods: {
     updateSortType() {
@@ -196,24 +239,46 @@ export default {
         default:
           this.sortType = 1; // 기본값 또는 예외 처리
       }
-      this.loadReviewList();
+      this.loadReviewList(this.reviewStore.currentPage);
     },
     selectReviewType(type) {
       this.selectedReviewType = type;
-      this.reviewCategoryIdx = type === 'course' ? '1' : '2';
-      this.loadReviewList();
+      this.reviewCategoryIdx = type === "course" ? "1" : "2";
+      this.loadReviewList(1); // 리뷰 카테고리 변경 시 첫 페이지로 돌아감.
     },
-    loadReviewList() {
+    loadReviewList(page) {
       // 검색어가 있는 경우
       if (this.searchTerm) {
-        this.reviewStore.getSearchReviewList(this.searchTerm, this.sortType);
+        this.reviewStore.getSearchReviewList(
+          this.reviewCategoryIdx,
+          this.searchTerm,
+          this.sortType,
+          page
+        );
       } else {
         // 검색어가 없는 경우
-        this.reviewStore.getReviewList(this.reviewCategoryIdx, this.sortType);
+        this.reviewStore.getReviewList(
+          this.reviewCategoryIdx,
+          this.sortType,
+          page
+        );
       }
     },
     sendSearchData() {
-      this.loadReviewList();
+      this.loadReviewList(1); // 검색 실행 시 첫 페이지로 돌아감.
+    },
+    changePage(page) {
+      this.loadReviewList(page);
+    },
+    jumpForward() {
+      // 현재 페이지에서 3페이지 앞으로 점프
+      let nextPage = Math.min(
+        this.reviewStore.currentPage + 3,
+        this.reviewStore.totalPages
+      );
+      this.changePage(nextPage);
+
+      this.reviewStore.currentPage = nextPage;
     },
   },
 };
@@ -255,14 +320,14 @@ div {
 }
 
 .css-1b9to7p {
-  width: 942px;
+  width: 1100px;
   padding-top: 150px;
   padding-bottom: 100px;
   margin: 0px auto;
   display: flex;
   flex-direction: row;
   background-color: rgb(255, 255, 255);
-  gap: 60px;
+  gap: 80px;
 }
 
 .css-vsssfb {
@@ -270,7 +335,7 @@ div {
   flex-direction: column;
   gap: 32px;
   position: sticky;
-  top: 140px;
+  top: 258x;
   max-height: 490px;
   transition: all 0.4s ease 0s;
 }
@@ -402,12 +467,13 @@ div {
   gap: 4px;
   position: relative;
   padding-left: 16px;
+  margin-bottom: 10px;
 }
 .css-18vdxik {
   font-family: Pretendard;
   font-style: normal;
   font-weight: 600;
-  font-size: 24px;
+  font-size: 30px;
   line-height: 34px;
   color: #141617;
   line-height: 33px;
@@ -440,6 +506,7 @@ div {
   flex-direction: row;
   gap: 12px;
   padding: 12px 16px;
+  padding-right: 0px;
   margin-bottom: 20px;
   align-items: center;
   position: relative;
@@ -480,7 +547,7 @@ div {
 .css-ogh6wd {
   display: flex;
   flex-direction: row;
-  gap: 6px;
+  gap: 50px;
   overflow-x: auto;
   white-space: nowrap;
 }
@@ -676,7 +743,7 @@ svg:not(:root) {
   justify-content: space-between;
   -webkit-box-align: center;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
 }
 .css-12i5occ {
   display: flex;
@@ -776,6 +843,7 @@ svg:not(:root) {
   -webkit-box-align: center;
   align-items: center;
   height: 24px;
+  margin-right: 20px;
 }
 .css-1fhge30 {
   display: flex;
@@ -1164,14 +1232,16 @@ a {
 /* 스터디 포스트잇 끝 */
 
 /* 정렬 순서 셀렉터 */
+
 .css-select001 {
-  padding-left: 5px;
-  width: 80px;
+  padding-left: 10px;
+  width: 95px;
   font-size: 14px;
   height: 35px;
   font-family: Pretendard;
   border-radius: 5px;
   border: 1px solid rgb(227, 227, 227);
+  letter-spacing: 2px; /* 글자 간격 추가 */
 }
 
 /* 정렬 순서 끝 */
@@ -1304,6 +1374,27 @@ a {
     color: #141617;
     line-height: 19.5px;
     color: #81898f;
+  }
+}
+.css-select000 {
+  padding-left: 5px;
+}
+.d-flex {
+  display: flex !important;
+}
+.justify-content-center {
+  justify-content: center !important;
+}
+@media (min-width: 768px) {
+  .pt-md-4,
+  .py-md-4 {
+    padding-top: 1.5rem !important;
+  }
+}
+@media (min-width: 768px) {
+  .pb-md-4,
+  .py-md-4 {
+    padding-bottom: 1.5rem !important;
   }
 }
 </style>

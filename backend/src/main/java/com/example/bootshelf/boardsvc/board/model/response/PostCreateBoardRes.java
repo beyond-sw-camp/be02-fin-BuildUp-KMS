@@ -10,7 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class PostCreateBoardRes {
-    private Integer idx;
+    private Integer boardIdx;
 
     private String boardtitle;
 

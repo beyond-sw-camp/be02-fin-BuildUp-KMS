@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import VueJwtDecode from "vue-jwt-decode";
 
 import MainPage from "@/pages/MainPage.vue";
 import AuthSignupPage from "@/pages/AuthSignupPage.vue";
@@ -24,13 +25,23 @@ import AdminTagRegisterPage from "@/pages/AdminTagRegisterPage.vue";
 import KnowledgeBoardListPage from "@/pages/KnowledgeBoardListPage.vue";
 import QnABoardListPage from "@/pages/QnABoardListPage.vue";
 
+
 const requireAuth = () => (from, to, next) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    return next();
+  const storedToken = localStorage.getItem("token");
+  if (storedToken === null) {
+    next("/");
+  } else {
+    const tokenData = VueJwtDecode.decode(storedToken);
+
+    const currentTime = Math.floor(Date.now() / 1000);
+    if (tokenData.exp < currentTime) {
+      sessionStorage.removeItem("token");
+      next("/");
+    } else {
+      next();
+    }
   }
-  next("/login");
-}
+};
 
 /*
 const requireAdminAuth = () => (from, to, next) => {
