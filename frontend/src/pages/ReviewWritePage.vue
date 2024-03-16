@@ -135,7 +135,7 @@
                         v-if="imageUrl"
                         :src="imageUrl"
                         alt="Uploaded Image"
-                        style="max-width: 100%; height: auto"
+                        style="max-width: 70%; height: auto"
                       />
                     </div>
                   </div>
@@ -222,7 +222,7 @@
             @change="handleImageUpload"
           />
           <div class="css-lycl0a">
-            <button class="css-9ns22y">취소</button>
+            <button class="css-9ns22y" @click="cancelCreateReview()">취소</button>
             <button class="css-1c8gn7d" @click="createReview()">
               등록하기
             </button>
@@ -297,11 +297,11 @@ export default {
       this.selectedCategory = category.name;
       this.isClicked = false;
 
-      this.review.reviewCategoryIdx = this.getCategoryIndex(
+      this.review.reviewCategoryIdx = this.getReviewCategoryIndex(
         this.selectedCategory
       );
     },
-    getCategoryIndex(selectedCategory) {
+    getReviewCategoryIndex(selectedCategory) {
       return selectedCategory === "과정 후기"
         ? 1
         : selectedCategory === "강사 후기"
@@ -355,6 +355,9 @@ export default {
     async createReview() {
       await this.reviewStore.createReview(this.review, this.reviewImage);
     },
+    cancelCreateReview() {
+      window.location.href="/review";
+    }
   },
 };
 </script>
@@ -1194,5 +1197,9 @@ ul {
 
 .css-image {
   margin-top: 20px;
+}
+
+.css-16kqrm:focus-visible {
+  outline: 2px solid rgb(58, 62, 65);
 }
 </style>

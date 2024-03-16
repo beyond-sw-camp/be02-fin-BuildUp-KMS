@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import axios from "axios";
 
 const backend = "http://localhost:8080";
+const storedToken = localStorage.getItem("token");
 
 export const useBoardStore = defineStore("board", {
   state: () => ({
@@ -9,9 +10,33 @@ export const useBoardStore = defineStore("board", {
     currentPage: 0,
     totalPages: 0,
     totalCnt: 0,
-    boardDetail: []
+    boardDetail: [],
+    tagList: []
   }),
   actions: {
+    async createBoard(board, boardImage) {
+      const formData = new FormData();
+
+      let json = JSON.stringify(board);
+      formData.append("board", new Blob([json], { type: "application/json" }));
+      formData.append("boardImage", boardImage);
+
+      try {
+        let response = await axios.post(backend + `/board/create`, formData, {
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        if (response.data.isSuccess === true) {
+          this.isSuccess = true;
+          alert("게시글이 등록되었습니다.");
+          window.location.href = "/bpard/" + response.data.result.boardIdx;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
     async getBoardListByQuery(query, option, page = 1) {
       try {
         let response = await axios.get(backend + "/board/search?query=" + query + "&searchType=" + option + "&page=" + (page - 1));
