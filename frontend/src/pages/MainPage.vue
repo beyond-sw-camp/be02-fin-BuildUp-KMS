@@ -34,7 +34,7 @@
                   class="_3CkPsH dropdown-item"><span>제목+내용</span></button>
               </div>
             </div>
-            <input class="ContentSearch_searchInput__dVET9" v-model="searchQuery" id="content-search" type="search"
+            <input class="ContentSearch_searchInput__dVET9" v-model="searchQuery" v-on:keyup.enter="search" id="content-search" type="search"
               placeholder="Search here..." />
             <span class="Icon_container__KMOfZ rotate-0 Icon_l-large__pSyZb Icon_m-large__BQ2ze"
               style="--color: var(rgb(84, 29, 112))" @click="search">
