@@ -62,6 +62,8 @@ public enum ErrorCode {
 
     // 게시판
     BOARD_NOT_EXISTS(HttpStatus.NOT_FOUND, "BOARD-001", "해당 게시글 IDX 가 존재하지 않는 경우"),
+
+    DUPICATED_BOARD_TITLE(HttpStatus.CONFLICT, "BOARD-002", "이미 존재하는 게시글 제목입니다"),
   
 
     // 게시판 스크랩
