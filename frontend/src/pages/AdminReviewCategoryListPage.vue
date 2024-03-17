@@ -4,13 +4,12 @@
       <!-- Menu and Navbar components are inserted here, ensuring proper layout structure -->
       <AdminMenuComponent />
       <div class="layout-page">
-        <AdminNavComponent />
         <div class="content-wrapper">
           <!-- Content -->
           <div class="container-xxl flex-grow-1 container-p-y">
-            <h4 class="py-3 mb-4">
-              <span class="text-muted fw-light">후기글 카테고리 /</span> 목록
-            </h4>
+            <h3 class="py-3 mb-4">
+              <span class="text-muted fw-light">후기 카테고리 /</span> 목록
+            </h3>
 
             <!-- 회원 목록 -->
             <div class="card">
@@ -46,17 +45,16 @@ import { mapStores } from "pinia";
 import { useCategoryStore } from "../stores/useCategoryStore";
 import AdminReviewCategoryListComponent from "@/components/AdminReviewCategoryListComponent.vue";
 import AdminMenuComponent from "@/components/AdminMenuComponent.vue";
-import AdminNavComponent from "@/components/AdminNavComponent.vue";
+import { useAdminStore } from "/src/stores/useAdminStore";
 
 export default {
   name: "AdminReviewCategoryListPage",
   components: {
     AdminMenuComponent,
-    AdminNavComponent,
     AdminReviewCategoryListComponent
   },
   computed: {
-    ...mapStores(useCategoryStore),
+    ...mapStores(useCategoryStore, useAdminStore),
   },
   mounted() {
     this.$root.hideHeaderAndFooter = true;

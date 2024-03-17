@@ -4,7 +4,6 @@
             <!-- Menu and Navbar components are inserted here, ensuring proper layout structure -->
             <AdminMenuComponent />
             <div class="layout-page">
-                <AdminNavComponent />
                 <div class="content-wrapper">
                     <!-- Content -->
                     <div class="container-xxl flex-grow-1 container-p-y">
@@ -39,16 +38,19 @@
 
 <script>
 import AdminMenuComponent from "@/components/AdminMenuComponent.vue";
-import AdminNavComponent from "@/components/AdminNavComponent.vue";
+import { mapStores } from "pinia";
+import { useAdminStore } from "/src/stores/useAdminStore";
 
 export default {
     name: "AdminWithdrawPage",
     components: {
         AdminMenuComponent,
-        AdminNavComponent
     },
     mounted() {
         this.$root.hideHeaderAndFooter = true;
+    },
+    computed: {
+        ...mapStores(useAdminStore),
     },
 };
 </script>

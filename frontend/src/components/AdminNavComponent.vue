@@ -1,6 +1,7 @@
 <template>
     <!-- Navbar -->
-    <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
+    <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+        id="layout-navbar">
         <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
             <a class="nav-item nav-link px-0 me-xl-4" href="#" @click.prevent="toggleMenu">
                 <i class="bx bx-menu bx-sm"></i>
@@ -14,20 +15,22 @@
                 <li class="nav-item navbar-dropdown dropdown-user dropdown">
                     <a class="nav-link dropdown-toggle hide-arrow" href="#" @click.prevent="toggleUserMenu">
                         <div class="avatar avatar-online">
-                            <img src="../assets/img/profile.jpg" alt="User profile" class="w-px-40 h-auto rounded-circle" />
+                            <img src="../assets/img/profile.jpg" alt="User profile"
+                                class="w-px-40 h-auto rounded-circle" />
                         </div>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end" v-show="userMenuVisible">
+                    <ul class="dropdown-menu dropdown-menu-start" v-show="userMenuVisible">
                         <li>
                             <a class="dropdown-item" href="#">
                                 <div class="d-flex">
                                     <div class="flex-shrink-0 me-3">
                                         <div class="avatar avatar-online">
-                                            <img src="../assets/img/profile.jpg" alt="User profile" class="w-px-40 h-auto rounded-circle" />
+                                            <img src="../assets/img/profile.jpg" alt="User profile"
+                                                class="w-px-40 h-auto rounded-circle" />
                                         </div>
                                     </div>
                                     <div class="flex-grow-1">
-                                        <span class="fw-semibold d-block">John Doe</span>
+                                        <span class="fw-semibold d-block">{{ adminDecodedToken && adminDecodedToken.name ? adminDecodedToken.name : 'null' }}</span>
                                         <small class="text-muted">Admin</small>
                                     </div>
                                 </div>
@@ -37,7 +40,7 @@
                             <div class="dropdown-divider"></div>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item" @click.prevent="logout">
                                 <i class="bx bx-power-off me-2"></i>
                                 <span class="align-middle">Log Out</span>
                             </a>
@@ -53,6 +56,8 @@
 
 <script>
 import { ref } from 'vue';
+import { useAdminStore } from "/src/stores/useAdminStore";
+import { mapStores } from "pinia";
 
 export default {
     name: "AdminNavComponent",
@@ -65,6 +70,48 @@ export default {
 
         return { userMenuVisible, toggleUserMenu };
     },
+    computed: {
+        ...mapStores(useAdminStore),
+        isAdminAuthenticated() {
+            const store = useAdminStore();
+            return store.isAdminAuthenticated;
+        },
+        adminDecodedToken() {
+            const store = useAdminStore();
+            return store.adminDecodedToken;
+        },
+    },
+    methods: {
+        logout() {
+            window.localStorage.removeItem("a_token");
+            const store = useAdminStore();
+            store.isAdminAuthenticated = false;
+            store.adminDecodedToken = {};
+            this.isDropdownOpen = false;
+            this.$router.push("/admin/login");
+        },
+        adminDecodeToken(token) {
+            const base64Url = token.split(".")[1];
+            const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+            const jsonPayload = decodeURIComponent(
+                atob(base64)
+                    .split("")
+                    .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+                    .join("")
+            );
+
+            return JSON.parse(jsonPayload);
+        },
+    },
+    created() {
+    const token = window.localStorage.getItem("a_token");
+    if (token) {
+      const decoded = this.adminDecodeToken(token);
+      const store = useAdminStore();
+      store.setDecodedToken(decoded);
+      store.isAdminAuthenticated = true;
+    }
+  },
 };
 </script>
 
@@ -140,6 +187,8 @@ a {
 .nav,
 .navbar-nav {
     list-style: none;
+    right: auto;
+    left: 0;
 }
 
 .avatar .avatar-initial,
@@ -2345,7 +2394,8 @@ html:not(.layout-menu-fixed) .menu-inner-shadow {
     }
 
     .dropdown-menu-sm-end {
-        --bs-position: end;
+        right: auto;
+        left: 0;
     }
 
     .dropdown-menu-sm-end[data-bs-popper] {
@@ -2788,12 +2838,13 @@ html:not(.layout-menu-fixed) .menu-inner-shadow {
     }
 
     .dropdown-menu-xl-end {
-        --bs-position: end;
+        right: auto;
+        left: 0;
     }
 
     .dropdown-menu-xl-end[data-bs-popper] {
-        right: 0;
-        left: auto;
+        right: auto;
+        left: 0;
     }
 }
 
@@ -3094,15 +3145,16 @@ html:not(.layout-navbar-fixed) .layout-content-navbar .layout-page {
     top: 100%;
     left: 0;
     margin-top: var(--bs-dropdown-spacer);
+    right: auto;
 }
 
 .dropdown-menu-end {
-    --bs-position: end;
+    --bs-position: start;
 }
 
 .dropdown-menu-end[data-bs-popper] {
-    right: 0;
-    left: auto;
+    right: auto;
+    left: 0;
 }
 
 .dropdown-divider {
@@ -3683,6 +3735,8 @@ button:focus-visible {
 
 .dropdown-menu {
     box-shadow: 0 0.25rem 1rem rgba(161, 172, 184, 0.45);
+    right: auto;
+    left: 0;
 }
 
 .dropdown-toggle::after {
