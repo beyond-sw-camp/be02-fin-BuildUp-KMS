@@ -3,7 +3,7 @@
     <div class="css-f7no94">
       <div class="css-3o2y5e">
         <div width="36px" height="36px" class="css-jg5tbe">
-          <img alt="나의얼굴" width="34px" height="34px" :src="reviewStore.review.profileImage" />
+          <img alt="나의얼굴" width="34px" height="34px" :src="reviewComment.userImg" />
         </div>
       </div>
       <div class="css-14f8kx2">
@@ -19,12 +19,11 @@
           </div>
           <div class="css-emxp17">
             <!-- 댓글 추천 -->
-            <img v-if="!reviewComment.isClicked" width="18" height="18"
+            <img width="18" height="18"
               src="https://img.icons8.com/sf-regular/48/facebook-like.png" alt="facebook-like"
-              @click="handleRecommendationClick(reviewComment)" />
-            <img v-else width="18" height="18" src="https://img.icons8.com/sf-regular-filled/48/facebook-like.png"
-              alt="facebook-like" @click="handleRecommendationClick(reviewComment)" />
-            <div>{{ reviewComment.upCnt }}</div>
+              @click="reviewRecommend(reviewComment.idx)" />
+            <img  width="18" height="18" src="https://img.icons8.com/sf-regular-filled/48/facebook-like.png"
+              alt="facebook-like" @click="cancelReviewComment(reviewComment.idx)" />
           </div>
         </div>
         <div class="editedCommentContent">
@@ -47,7 +46,7 @@
         <div class="css-3o2y5e">
           <div width="36px" height="36px" class="css-jg5tbe">
             <img alt="나의얼굴" width="34px" height="34px"
-              src="https://i.pinimg.com/236x/81/4a/b2/814ab2ad93fff69e311b9bb2df7b28ed.jpg">
+            :src="reviewStore.review.profileImage">
           </div>
         </div>
         <div class="css-14f8kx2">
@@ -68,7 +67,7 @@
         <div class="css-3o2y5e">
           <div width="36px" height="36px" class="css-jg5tbe">
             <img alt="나의얼굴" width="34px" height="34px"
-              src="https://i.pinimg.com/236x/81/4a/b2/814ab2ad93fff69e311b9bb2df7b28ed.jpg">
+            :src="childComment.userImg">
           </div>
         </div>
         <div class="css-14f8kx2-001">
@@ -82,10 +81,14 @@
               <div class="css-emxp17-001" @click="toggleEditMode(childComment)">수정</div>
               <div class="css-emxp17-001" @click="deleteComment(childComment.idx)">삭제</div>
             </div>
-            <!-- 댓글 추천 -->
+
+            <!-- 대댓글 추천 -->
             <div class="css-emxp17">
-              <img width="18" height="18" src="https://img.icons8.com/sf-regular/48/facebook-like.png"
-                alt="facebook-like" />
+              <img width="18" height="18"
+              src="https://img.icons8.com/sf-regular/48/facebook-like.png" alt="facebook-like"
+              @click="reviewRecommend(childComment.idx)" />
+            <img  width="18" height="18" src="https://img.icons8.com/sf-regular-filled/48/facebook-like.png"
+              alt="facebook-like" @click="cancelReviewComment(childComment.idx)" />
             </div>
           </div>
           <div class="editedCommentContent">
@@ -160,18 +163,20 @@ export default {
     },
 
     // 댓글 추천 기능
-    async handleRecommendationClick(reviewComment) {
+    async reviewRecommend(reviewCommentIdx) {
       try {
-        if (!reviewComment.isClicked) {
-          await this.reviewCommentStore.reviewRecommend(reviewComment.idx);
-        } else {
-          await this.reviewCommentStore.cancelReviewComment(reviewComment.idx);
-        }
-        // 서버 요청이 성공했을 때만 상태 변경
-        reviewComment.isClicked = !reviewComment.isClicked; // 클릭된 상태를 토글합니다.
-      } catch (error) {
+          await this.reviewCommentStore.reviewRecommend(reviewCommentIdx);
+        } 
+       catch (error) {
         console.error("ERROR : ", error);
-        // 서버 요청이 실패한 경우 상태 변경 없음
+      }
+    },
+
+    async cancelReviewComment(reviewCommentIdx){
+      try{
+        await this.reviewCommentStore.cancelReviewComment(reviewCommentIdx);
+      }       catch (error) {
+        console.error("ERROR : ", error);
       }
     },
 
