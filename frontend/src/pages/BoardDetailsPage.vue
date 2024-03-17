@@ -16,7 +16,9 @@
           <div class="css-1yuvfju">
             <div class="css-k59gj9">
               <div class="css-hmpurq">
-                <div class="css-category">{{ boardDetail.boardCategoryName }}</div>
+                <div class="css-category">
+                  {{ boardDetail.boardCategoryName }}
+                </div>
                 <div class="css-kem115">
                   <div class="css-12i5occ">
                     <div class="css-1jibmi3">
@@ -29,31 +31,56 @@
                   <div class="css-bt1qy">
                     <div class="css-1hqtm5a">
                       <div @click="createBoardUp()">
-                        <img width="23px" height="23px"
-                          :src="isRecommended ? require('../assets/img/up_ok.png') : require('../assets/img/up.png')"
-                          alt="facebook-like" />
-                        <p style="font-size: 10px; text-align: center">{{ boardDetail.upCnt }}</p>
+                        <img
+                          width="23px"
+                          height="23px"
+                          :src="
+                            isRecommended
+                              ? require('../assets/img/up_ok.png')
+                              : require('../assets/img/up.png')
+                          "
+                          alt="facebook-like"
+                        />
+                        <p style="font-size: 10px; text-align: center">
+                          {{ boardDetail.upCnt }}
+                        </p>
                       </div>
                     </div>
 
                     <div class="css-1hqtm5a">
                       <div @click="createBoardScrap()">
-                        <img width="23px" height="23px"
-                          :src="isScrapped ? require('../assets/img/scrap_ok.png') : require('../assets/img/scrap.png')"
-                          alt="bookmark-ribbon--v1" />
-                        <p class="css-scrap" style="font-size: 10px; text-align: center">
+                        <img
+                          width="23px"
+                          height="23px"
+                          :src="
+                            isScrapped
+                              ? require('../assets/img/scrap_ok.png')
+                              : require('../assets/img/scrap.png')
+                          "
+                          alt="bookmark-ribbon--v1"
+                        />
+                        <p
+                          class="css-scrap"
+                          style="font-size: 10px; text-align: center"
+                        >
                           {{ boardDetail.scrapCnt }}
                         </p>
                       </div>
                     </div>
                   </div>
                 </div>
-                <ConfirmDialogComponent v-if="showMyPageConfirmDialog" :isVisible="showMyPageConfirmDialog"
-                  message="마이페이지로 이동하시겠습니까?" :onConfirm="moveMyPage" :onCancel="dontMoveMyPage" />
+                <ConfirmDialogComponent
+                  v-if="showMyPageConfirmDialog"
+                  :isVisible="showMyPageConfirmDialog"
+                  message="마이페이지로 이동하시겠습니까?"
+                  :onConfirm="moveMyPage"
+                  :onCancel="dontMoveMyPage"
+                />
                 <div class="css-99cwur">
                   <div class="css-1fhge30">
                     <div class="css-aw18wm">
-                      <span style="
+                      <span
+                        style="
                           box-sizing: border-box;
                           display: block;
                           overflow: hidden;
@@ -66,7 +93,12 @@
                           padding: 0px;
                           position: absolute;
                           inset: 0px;
-                        "><img sizes="100vw" :src="boardDetail.userProfileImage" decoding="async" data-nimg="fill"
+                        "
+                        ><img
+                          sizes="100vw"
+                          :src="boardDetail.userProfileImage"
+                          decoding="async"
+                          data-nimg="fill"
                           style="
                             position: absolute;
                             inset: 0px;
@@ -81,16 +113,23 @@
                             max-width: 100%;
                             min-height: 100%;
                             max-height: 100%;
-                          " /></span>
+                          "
+                      /></span>
                     </div>
                     <div class="css-5zcuov">
-                      <div class="css-1sika4i">{{ boardDetail.userName }}</div>
+                      <div class="css-1sika4i">{{ boardDetail.nickName }}</div>
                       <div class="css-1tify6w">
-                        <svg width="2" height="2" viewBox="0 0 2 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg
+                          width="2"
+                          height="2"
+                          viewBox="0 0 2 2"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
                           <circle cx="1" cy="1" r="1" fill="#9DA7AE"></circle>
                         </svg>
                       </div>
-                      <div class="css-1ry6usa">{{ boardDetail.createdAt }}</div>
+                      <div class="css-1ry6usa">{{ boardDetail.updatedAt }}</div>
                     </div>
                   </div>
                 </div>
@@ -102,8 +141,18 @@
                 <p class="css-content">
                   {{ boardDetail.boardContent }}
                 </p>
-                <div v-for="(image, index) in boardDetail.boardImageList" :key="index">
-                  <img alt="게시판 이미지" :data-src="image" />
+                <div
+                  v-if="
+                    boardDetail.boardImageList &&
+                    boardDetail.boardImageList.length > 0
+                  "
+                >
+                  <img
+                    v-for="(image, index) in boardDetail.boardImageList"
+                    :key="image.boardImageIdx"
+                    :alt="`이미지 ${index + 1}`"
+                    :src="image.boardImage"
+                  />
                 </div>
               </div>
               <div class="css-iqys2n">
@@ -114,41 +163,65 @@
             <div class="css-1k90lkz">
               <div class="css-lua631">
                 <div class="css-13ku1qm">
-                  <div style="
+                  <div
+                    style="
                       display: inline-block;
                       width: 24px;
                       height: 24px;
                       text-align: center;
-                    ">
-                    <img width="16px" height="16px" src="https://img.icons8.com/tiny-glyph/32/000000/comments.png"
-                      alt="comments" />
+                    "
+                  >
+                    <img
+                      width="16px"
+                      height="16px"
+                      src="https://img.icons8.com/tiny-glyph/32/000000/comments.png"
+                      alt="comments"
+                    />
                   </div>
                   댓글 {{ boardDetail.commentCnt }}
                 </div>
               </div>
               <div class="css-qzobjv">
                 <!-- 댓글 컴포넌트 -->
-                <BoardCommentComponent :commentList="commentList" :boardIdx="boardIdx" :isCommentRecommended="isCommentRecommended" :boardCommentIdx="boardCommentIdx"/>
+                <BoardCommentComponent
+                  :commentList="commentList"
+                  :boardIdx="boardIdx"
+                  :isCommentRecommended="isCommentRecommended"
+                  :boardCommentIdx="boardCommentIdx"
+                />
                 <div class="css-jpe6jj">
                   <div class="css-3o2y5e">
                     <div width="36px" height="36px" class="css-jg5tbe">
-                      <img alt="나의얼굴" width="34px" height="34px"
-                        src="https://www.fitpetmall.com/wp-content/uploads/2023/10/image-14.png" />
+                      <img
+                        alt="프로필 이미지"
+                        width="34px"
+                        height="34px"
+                        :src="userProfileImage"
+                      />
                     </div>
                   </div>
                   <div class="css-13ljjbe">
                     <div class="commentEditor">
-                      <input class="css-001" type="text" placeholder="댓글을 남겨주세요" v-model="boardCommentContent" />
+                      <input
+                        class="css-001"
+                        type="text"
+                        placeholder="댓글을 남겨주세요"
+                        v-model="boardCommentContent"
+                      />
                     </div>
                     <div class="css-btn-div">
-                      <button class="css-btn" @click="submitComment()">저장</button>
+                      <button class="css-btn" @click="submitComment()">
+                        저장
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
               <!-- 목록으로 돌아가기 버튼 -->
               <div class="css-back-div">
-                <button class="css-board-back">목록가기</button>
+                <button class="css-board-back" @click="goBack()">
+                  목록가기
+                </button>
               </div>
               <!-- 돌아가기 버튼 끝 -->
             </div>
@@ -167,7 +240,6 @@ import { useBoardStore } from "@/stores/useBoardStore";
 import { useUserStore } from "@/stores/useUserStore";
 import { mapStores } from "pinia";
 import ConfirmDialogComponent from "/src/components/ConfirmDialogComponent.vue";
-
 
 export default {
   name: "BoardDetailsPage",
@@ -192,6 +264,23 @@ export default {
   },
   computed: {
     ...mapStores(useBoardStore, useBoardCommentStore, useUserStore),
+    isLoggedIn() {
+      return !!localStorage.getItem("token");
+    },
+    userProfileImage() {
+      // 사용자 정보 로딩 후 사용자 프로필 이미지 반환
+      if (this.userStore.user && this.userStore.user.profileImage) {
+        return this.userStore.user.profileImage;
+      } else {
+        // 기본 이미지 반환. 실제 경로로 변환 필요.
+        return require("@/assets/img/profile.jpg");
+      }
+    },
+  },
+  created() {
+    if (this.isLoggedIn) {
+      this.userStore.getUserInfo();
+    }
   },
   async mounted() {
     const boardIdx = this.$route.params.boardIdx;
@@ -206,21 +295,38 @@ export default {
     // 게시글 추천 및 스크랩 상태 확인
     await this.checkBoardUp();
     await this.checkBoardScrap();
+
+    const previousPath = localStorage.getItem("previousPath");
+    if (previousPath) {
+      this.boardStore.setPreviousPath(previousPath);
+    }
   },
   methods: {
+    goBack() {
+      if (this.boardStore.previousPath) {
+        this.$router.push(this.boardStore.previousPath);
+      } else {
+        // 기본 경로로 돌아가기
+        this.$router.push("/board/knowledge");
+      }
+    },
     async submitComment() {
       let isAuthenticated = this.userStore.isAuthenticated;
       try {
-        await useBoardCommentStore().createBoardComment(this.boardCommentContent, this.boardIdx, isAuthenticated);
+        await useBoardCommentStore().createBoardComment(
+          this.boardCommentContent,
+          this.boardIdx,
+          isAuthenticated
+        );
         // 댓글 생성 후 필요한 작업 작성
       } catch (error) {
-        console.error('댓글 작성 실패:', error);
+        console.error("댓글 작성 실패:", error);
       }
     },
     async createBoardUp() {
       let token = window.localStorage.getItem("token");
       let requestBody = {
-        boardIdx: this.boardIdx
+        boardIdx: this.boardIdx,
       };
 
       try {
@@ -231,7 +337,10 @@ export default {
 
           window.location.reload();
         } else {
-          const response = await this.boardStore.createBoardUp(token, requestBody);
+          const response = await this.boardStore.createBoardUp(
+            token,
+            requestBody
+          );
 
           if (response.status === 200 && response.data) {
             console.log("게시글 추천 성공!");
@@ -249,7 +358,7 @@ export default {
     async createBoardScrap() {
       let token = window.localStorage.getItem("token");
       let requestBody = {
-        boardIdx: this.boardIdx
+        boardIdx: this.boardIdx,
       };
 
       try {
@@ -260,7 +369,10 @@ export default {
 
           window.location.reload();
         } else {
-          const response = await this.boardStore.createBoardScrap(token, requestBody);
+          const response = await this.boardStore.createBoardScrap(
+            token,
+            requestBody
+          );
 
           if (response.status === 200 && response.data) {
             console.log("게시글 스크랩 성공!");
@@ -302,7 +414,10 @@ export default {
     async checkBoardScrap() {
       try {
         let token = window.localStorage.getItem("token");
-        let response = await this.boardStore.checkBoardScrap(token, this.boardIdx);
+        let response = await this.boardStore.checkBoardScrap(
+          token,
+          this.boardIdx
+        );
         console.log(response);
 
         if (response.data && response.data.result.status === true) {
@@ -315,8 +430,8 @@ export default {
         console.error(e);
       }
     },
-  }
-}
+  },
+};
 </script>
 
 <style scoped>
@@ -617,7 +732,6 @@ img {
   font-size: 14px;
   font-family: Pretendard;
 }
-
 
 .css-iqys2n {
   display: flex;

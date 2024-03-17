@@ -222,7 +222,9 @@
               </div>
               <!-- 목록으로 돌아가기 버튼 -->
               <div class="css-back-div">
-                <button class="css-board-back">목록가기</button>
+                <router-link to="/review">
+                  <button class="css-board-back">목록가기</button>
+                </router-link>
               </div>
               <!-- 돌아가기 버튼 끝 -->
             </div>
@@ -259,6 +261,9 @@ export default {
   },
   computed: {
     ...mapStores(useReviewStore, useUserStore, useReviewCommentStore),
+    isLoggedIn() {
+      return !!localStorage.getItem("token");
+    },
     userProfileImage() {
       // 사용자 정보 로딩 후 사용자 프로필 이미지 반환
       if (this.userStore.user && this.userStore.user.profileImage) {
@@ -273,6 +278,9 @@ export default {
     const reviewIdx = this.$route.params.idx;
     this.reviewStore.getReviewDetail(reviewIdx);
     this.reviewCommentStore.getReviewCommentList(reviewIdx);
+    if (this.isLoggedIn) {
+      this.userStore.getUserInfo();
+    }
 
     this.reviewIdx = reviewIdx;
   },
@@ -1029,7 +1037,7 @@ img {
   font-family: Pretendard;
   cursor: pointer;
   border-radius: 5px;
-  background-color: rgb(0 64 255 / 22%);;
+  background-color: rgb(0 64 255 / 22%);
   padding: 3px 10px;
 }
 .css-1sika4is {
