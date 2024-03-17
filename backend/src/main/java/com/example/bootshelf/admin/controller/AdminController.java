@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+
 @Tag(name = "관리자", description = "Admin CRUD")
 @Api(tags = "관리자 회원기능")
 @RestController
@@ -39,9 +40,9 @@ public class AdminController {
     })
     @RequestMapping(method = RequestMethod.POST, value = "/signup")
     public ResponseEntity<BaseRes> signup(
-            @RequestPart(value = "admin") @Valid PostSignUpAdminReq postSignUpAdminReq){
+            @RequestBody @Valid PostSignUpAdminReq postSignUpAdminReq
+    ) {
         BaseRes baseRes = userService.adminSignup(postSignUpAdminReq);
-
         return ResponseEntity.ok().body(baseRes);
     }
 
@@ -64,8 +65,8 @@ public class AdminController {
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
     @RequestMapping(method = RequestMethod.PATCH, value = "/update")
-    public ResponseEntity<BaseRes> update( @RequestPart(value = "admin") @Valid PatchUpdateUserReq patchUpdateUserReq
-                                  ) {
+    public ResponseEntity<BaseRes> update(@RequestPart(value = "admin") @Valid PatchUpdateUserReq patchUpdateUserReq
+    ) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         BaseRes baseRes = userService.update(user.getEmail(), patchUpdateUserReq);
 
