@@ -24,7 +24,7 @@ export default {
   cursor: pointer;
   width: auto;
   padding: 3px 8px;
-  margin-top: 10px;
+  /* margin-top: 10px; */
   border-radius: 5px;
   background-color: rgba(84, 29, 112, 0.148);
   font-size: 11px;
@@ -38,5 +38,6 @@ export default {
 .css-fortagcomponentgms{
   display: flex;
   gap: 3px;
+  min-height: 22px;
 }
 </style>

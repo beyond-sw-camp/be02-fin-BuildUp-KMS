@@ -36,7 +36,7 @@ import NoticeBoardComponent from "../components/NoticeBoardComponent.vue";
 import PaginationComponent from "../components/PaginationComponent.vue";
 
 export default {
-  name: "NoticeBoardPage",
+  name: "NoticeBoardListPage",
   components: {
     NoticeBoardComponent,
     PaginationComponent,

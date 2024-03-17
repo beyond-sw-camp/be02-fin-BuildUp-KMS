@@ -34,7 +34,12 @@ export const useBoardStore = defineStore("board", {
           window.location.href = "/bpard/" + response.data.result.boardIdx;
         }
       } catch (e) {
-        console.log(e);
+        if (e.response && e.response.data) {
+          console.log(e.response.data);
+          if (e.response.data.code === "BOARD-002") {
+            alert("이미 사용중인 제목입니다. 제목을 변경해주세요.");
+          }
+        }
       }
     },
     async getBoardListByQuery(query, option, page = 1) {

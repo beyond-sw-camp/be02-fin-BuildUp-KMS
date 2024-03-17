@@ -9,13 +9,13 @@ import MyProfilePage from "@/pages/MyProfilePage.vue";
 import SearchResultPage from "@/pages/SearchResultPage.vue";
 import BoardWritePage from "@/pages/BoardWritePage.vue";
 import ReviewWritePage from "@/pages/ReviewWritePage.vue";
-import StudyBoardPage from "@/pages/StudyBoardPage.vue";
+import StudyBoardListPage from "@/pages/StudyBoardListPage.vue";
 import SelectSignupPage from "@/pages/SelectSignupPage.vue";
 import BoardDetailsPage from "@/pages/BoardDetailsPage.vue";
 import ReviewDetailsPage from "@/pages/ReviewDetailsPage.vue";
 import ReviewListPage from "@/pages/ReviewListPage.vue";
 import EmailValidationPage from "@/pages/EmailValidationPage.vue";
-import NoticeBoardPage from "@/pages/NoticeBoardPage.vue";
+import NoticeBoardListPage from "@/pages/NoticeBoardListPage.vue";
 import KakaoLogIn from "@/pages/KakaoLogIn.vue";
 import KnowledgeBoardListPage from "@/pages/KnowledgeBoardListPage.vue";
 import QnABoardListPage from "@/pages/QnABoardListPage.vue";
@@ -75,7 +75,7 @@ const routes = [
   { path: "/result", component: SearchResultPage },
   { path: "/board/new", component: BoardWritePage, beforeEnter: requireAuth() },
   { path: "/review/new", component: ReviewWritePage, beforeEnter: requireAuth() },
-  { path: "/study", component: StudyBoardPage },
+  { path: "/study", component: StudyBoardListPage },
   { path: "/board/:boardIdx", component: BoardDetailsPage },
   { path: "/review/:idx", component: ReviewDetailsPage },
   { path: "/board/knowledge", component: KnowledgeBoardListPage },
@@ -83,7 +83,7 @@ const routes = [
   { path: "/review", component: ReviewListPage },
   { path: "/select/signup", component: SelectSignupPage },
   { path: "/email/verify", component: EmailValidationPage },
-  { path: "/notice", component: NoticeBoardPage },
+  { path: "/notice", component: NoticeBoardListPage },
   { path: "/admin", component: AdminMainPage, },
   { path: "/admin/withdraw", component: AdminWithdrawPage },
   { path: "/admin/category/register", component: AdminCategoryRegisterPage },

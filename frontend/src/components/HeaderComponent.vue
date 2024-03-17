@@ -1,12 +1,20 @@
 <template>
   <header>
-    <div class="css-wkr2a" :style="{
-      borderBottom: showBorder ? '1px solid rgb(228, 235, 240)' : 'none',
-    }">
+    <div
+      class="css-wkr2a"
+      :style="{
+        borderBottom: showBorder ? '1px solid rgb(228, 235, 240)' : 'none',
+      }"
+    >
       <div class="css-we70d5">
         <div class="css-un3w91">
           <router-link to="/">
-            <img src="../assets/img/logo.png" v-if="showLogo" alt="BOOKSHELF 로고" class="css-huvhzc" />
+            <img
+              src="../assets/img/logo.png"
+              v-if="showLogo"
+              alt="BOOKSHELF 로고"
+              class="css-huvhzc"
+            />
           </router-link>
         </div>
         <div class="css-1butcu2" v-if="showMenu">
@@ -33,10 +41,18 @@
         </div>
         <div class="css-1butcu">
           <div>
-            <button class="css-login-button" @click="openLoginModal()" v-if="!isAuthenticated">
+            <button
+              class="css-login-button"
+              @click="openLoginModal()"
+              v-if="!isAuthenticated"
+            >
               로그인
             </button>
-            <button class="css-signup-button" @click="selectSignUp()" v-if="!isAuthenticated">
+            <button
+              class="css-signup-button"
+              @click="selectSignUp()"
+              v-if="!isAuthenticated"
+            >
               회원가입
             </button>
             <!-- 로그인 되었을 때 닉네임을 표시 -->
@@ -44,12 +60,31 @@
               <span class="user-nickname">{{ decodedToken.name }}</span>
             </div>
           </div>
-          <div class="css-26c0za" v-if="isAuthenticated" @click="toggleDropdownMenu">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="12" cy="8" r="4" stroke="#141617" stroke-width="2"></circle>
+          <div
+            class="css-26c0za"
+            v-if="isAuthenticated"
+            @click="toggleDropdownMenu"
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle
+                cx="12"
+                cy="8"
+                r="4"
+                stroke="#141617"
+                stroke-width="2"
+              ></circle>
               <path
                 d="M4.20703 19.998C5.76317 17.3079 8.67172 15.498 12.003 15.498C15.3343 15.498 18.2428 17.3079 19.799 19.998"
-                stroke="#141617" stroke-width="2" stroke-linecap="round"></path>
+                stroke="#141617"
+                stroke-width="2"
+                stroke-linecap="round"
+              ></path>
             </svg>
           </div>
           <div class="css-1fgr4mj" v-if="isDropdownOpen">
@@ -60,8 +95,12 @@
                     <div class="css-a72rbc"></div>
                   </div>
                   <div class="css-zqyw9">
-                    <div class="css-156933a" style="font-weight: lighter;">{{ decodedToken.name }}</div>
-                    <div class="css-10kntrg" style="font-weight: lighter;">{{ decodedToken.email }}</div>
+                    <div class="css-156933a" style="font-weight: lighter">
+                      {{ decodedToken.name }}
+                    </div>
+                    <div class="css-10kntrg" style="font-weight: lighter">
+                      {{ decodedToken.email }}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -96,7 +135,9 @@
                   <div class="css-ik70s9">
                     <div class="css-1jibmi3">
                       <div class="css-28a73i">
-                        <div class="css-4l7ba3" @click.prevent="logout">로그아웃</div>
+                        <div class="css-4l7ba3" @click.prevent="logout">
+                          로그아웃
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -112,11 +153,25 @@
     <div class="css-4oebd2">
       <div class="css-1n1k95p">
         <div class="css-myjkxi" @click="closeLoginModal()">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M4.16663 4.16669L15.8333 15.8334" stroke="#3A3E41" stroke-width="1.75" stroke-linecap="round">
-            </path>
-            <path d="M15.8334 4.16669L4.16671 15.8334" stroke="#3A3E41" stroke-width="1.75" stroke-linecap="round">
-            </path>
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4.16663 4.16669L15.8333 15.8334"
+              stroke="#3A3E41"
+              stroke-width="1.75"
+              stroke-linecap="round"
+            ></path>
+            <path
+              d="M15.8334 4.16669L4.16671 15.8334"
+              stroke="#3A3E41"
+              stroke-width="1.75"
+              stroke-linecap="round"
+            ></path>
           </svg>
         </div>
       </div>
@@ -132,21 +187,41 @@
           </div>
           <div class="css-1hal8c">BOOTSHELF 회원들과 함께 공유해보세요!</div>
           <div direction="vertical" size="40" class="css-ygt1wz"></div>
-          <button color="#141617" class="css-18wq8ro" @click.stop="loginKakao()">
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <button
+            color="#141617"
+            class="css-18wq8ro"
+            @click.stop="loginKakao()"
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 18 18"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
               <path
                 d="M9.00043 2.16699C4.80722 2.16699 1.4082 4.7989 1.4082 8.04735C1.4082 10.161 2.84752 12.0135 5.00935 13.0499C4.85022 13.63 4.43449 15.1538 4.35134 15.4796C4.24812 15.8841 4.50187 15.8785 4.66959 15.7703C4.80005 15.6846 6.74972 14.3855 7.59123 13.8252C8.04854 13.8912 8.51875 13.9263 9.00043 13.9263C13.1937 13.9263 16.5927 11.2944 16.5927 8.04735C16.5927 4.8003 13.1937 2.16699 9.00043 2.16699Z"
-                fill="#141617"></path>
+                fill="#141617"
+              ></path>
             </svg>
             카카오로 3초만에 시작하기
           </button>
           <div direction="vertical" size="16" class="css-10vhklm"></div>
-          <button color="#141617" class="css-fqtlj" @click="openEmailLoginModal()">
+          <button
+            color="#141617"
+            class="css-fqtlj"
+            @click="openEmailLoginModal()"
+          >
             이메일로 시작하기
           </button>
           <div direction="vertical" size="32" class="css-h23ofx"></div>
-          <span color="#81898F" class="css-1cap2q" style="text-decoration: underline"
-            @click="selectSignUp()">회원가입</span>
+          <span
+            color="#81898F"
+            class="css-1cap2q"
+            style="text-decoration: underline"
+            @click="selectSignUp()"
+            >회원가입</span
+          >
         </div>
         <div class="css-1sfln3b"></div>
       </div>
@@ -157,20 +232,50 @@
     <div class="css-4oebd2">
       <div class="css-1n1k95p">
         <div class="css-1a96vvi" @click="closeEmailLoginModal()">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M9.16699 5L4.16699 10L9.16699 15" stroke="#3A3E41" stroke-width="1.75" stroke-linecap="round"
-              stroke-linejoin="round"></path>
-            <path d="M5 10L15.8333 10" stroke="#3A3E41" stroke-width="1.75" stroke-linecap="round"
-              stroke-linejoin="round"></path>
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9.16699 5L4.16699 10L9.16699 15"
+              stroke="#3A3E41"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+            <path
+              d="M5 10L15.8333 10"
+              stroke="#3A3E41"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
           </svg>
           뒤로
         </div>
         <div class="css-myjkxi" @click="closeAllLoginModal()">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M4.16663 4.16669L15.8333 15.8334" stroke="#3A3E41" stroke-width="1.75" stroke-linecap="round">
-            </path>
-            <path d="M15.8334 4.16669L4.16671 15.8334" stroke="#3A3E41" stroke-width="1.75" stroke-linecap="round">
-            </path>
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4.16663 4.16669L15.8333 15.8334"
+              stroke="#3A3E41"
+              stroke-width="1.75"
+              stroke-linecap="round"
+            ></path>
+            <path
+              d="M15.8334 4.16669L4.16671 15.8334"
+              stroke="#3A3E41"
+              stroke-width="1.75"
+              stroke-linecap="round"
+            ></path>
           </svg>
         </div>
       </div>
@@ -179,22 +284,50 @@
           <div class="css-bbe5fx">이메일 로그인</div>
           <form id="loginForm" @submit.prevent="onLoginFormSubmit">
             <div direction="vertical" size="40" class="css-ygt1wz"></div>
-            <input placeholder="이메일 입력" type="string" autocapitalize="off" class="login-custom-input css-krmsb5"
-              value="" v-model="email" />
+            <input
+              placeholder="이메일 입력"
+              type="string"
+              autocapitalize="off"
+              class="login-custom-input css-krmsb5"
+              value=""
+              v-model="email"
+            />
             <div direction="vertical" size="12" class="css-j86f64"></div>
-            <input placeholder="비밀번호 입력" type="password" autocapitalize="off" class="login-custom-input css-krmsb5"
-              value="" v-model="password" />
+            <input
+              placeholder="비밀번호 입력"
+              type="password"
+              autocapitalize="off"
+              class="login-custom-input css-krmsb5"
+              value=""
+              v-model="password"
+            />
             <div direction="vertical" size="40" class="css-ygt1wz"></div>
             <button color="#FFFFFF" class="css-uscuon">로그인</button>
           </form>
         </div>
         <div class="css-1sfln3b">
           <div class="css-1lvb576">
-            <span color="#81898F" class="css-1cap2q" style="text-decoration: none" @click="selectSignUp()">회원가입</span>
+            <span
+              color="#81898F"
+              class="css-1cap2q"
+              style="text-decoration: none"
+              @click="selectSignUp()"
+              >회원가입</span
+            >
             <div class="css-1653a83"></div>
-            <span color="#81898F" class="css-1cap2q" style="text-decoration: none">이메일 찾기</span>
+            <span
+              color="#81898F"
+              class="css-1cap2q"
+              style="text-decoration: none"
+              >이메일 찾기</span
+            >
             <div class="css-1653a83"></div>
-            <span color="#81898F" class="css-1cap2q" style="text-decoration: none">비밀번호 찾기</span>
+            <span
+              color="#81898F"
+              class="css-1cap2q"
+              style="text-decoration: none"
+              >비밀번호 찾기</span
+            >
           </div>
         </div>
       </div>
@@ -228,7 +361,7 @@ export default {
       isEmailLogin: false,
       email: "",
       password: "",
-      isDropdownOpen: false
+      isDropdownOpen: false,
     };
   },
   computed: {
@@ -289,9 +422,11 @@ export default {
     async onLoginFormSubmit() {
       try {
         await this.userStore.login(this.email, this.password);
-        this.closeAllLoginModal();
-        this.$router.push("/");
-        this.closeLoginModal();
+        if (this.userStore.isAuthenticated === true) {
+          this.closeAllLoginModal();
+          this.$router.push("/");
+          this.closeLoginModal();
+        }
       } catch (error) {
         console.error("Login failed:", error);
       }
@@ -319,8 +454,10 @@ export default {
   font-family: "SpoqaHanSansNeo";
   font-style: normal;
   font-weight: 400;
-  src: url("https://static.spartacodingclub.kr/static/fonts/SpoqaHanSansNeo/SpoqaHanSansNeo-Regular.woff") format("woff"),
-    url("https://static.spartacodingclub.kr/static/fonts/SpoqaHanSansNeo/SpoqaHanSansNeo-Regular.otf") format("otf");
+  src: url("https://static.spartacodingclub.kr/static/fonts/SpoqaHanSansNeo/SpoqaHanSansNeo-Regular.woff")
+      format("woff"),
+    url("https://static.spartacodingclub.kr/static/fonts/SpoqaHanSansNeo/SpoqaHanSansNeo-Regular.otf")
+      format("otf");
 }
 
 @font-face {
@@ -328,8 +465,10 @@ export default {
   font-family: "GmarketSans";
   font-weight: 300;
   font-style: normal;
-  src: url("https://static.spartacodingclub.kr/static/fonts/GmarketSans/GmarketSansLight.woff2") format("woff2"),
-    url("https://static.spartacodingclub.kr/static/fonts/GmarketSans/GmarketSansLight.woff") format("woff");
+  src: url("https://static.spartacodingclub.kr/static/fonts/GmarketSans/GmarketSansLight.woff2")
+      format("woff2"),
+    url("https://static.spartacodingclub.kr/static/fonts/GmarketSans/GmarketSansLight.woff")
+      format("woff");
 }
 
 @font-face {
@@ -337,8 +476,10 @@ export default {
   font-family: "GmarketSans";
   font-weight: 400;
   font-style: normal;
-  src: url("https://static.spartacodingclub.kr/static/fonts/GmarketSans/GmarketSansMedium.woff2") format("woff2"),
-    url("https://static.spartacodingclub.kr/static/fonts/GmarketSans/GmarketSansMedium.woff") format("woff");
+  src: url("https://static.spartacodingclub.kr/static/fonts/GmarketSans/GmarketSansMedium.woff2")
+      format("woff2"),
+    url("https://static.spartacodingclub.kr/static/fonts/GmarketSans/GmarketSansMedium.woff")
+      format("woff");
 }
 
 @font-face {
@@ -346,8 +487,10 @@ export default {
   font-family: "GmarketSans";
   font-weight: 700;
   font-style: normal;
-  src: url("https://static.spartacodingclub.kr/static/fonts/GmarketSans/GmarketSansBold.woff2") format("woff2"),
-    url("https://static.spartacodingclub.kr/static/fonts/GmarketSans/GmarketSansBold.woff") format("woff");
+  src: url("https://static.spartacodingclub.kr/static/fonts/GmarketSans/GmarketSansBold.woff2")
+      format("woff2"),
+    url("https://static.spartacodingclub.kr/static/fonts/GmarketSans/GmarketSansBold.woff")
+      format("woff");
 }
 
 @font-face {
@@ -356,8 +499,10 @@ export default {
   font-weight: 100;
   font-style: normal;
   src: local(Pretendard Thin),
-    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Thin.subset.woff2") format("woff2"),
-    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Thin.subset.woff") format("woff"),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Thin.subset.woff2")
+      format("woff2"),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Thin.subset.woff")
+      format("woff"),
     url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Thin.otf");
 }
 
@@ -367,8 +512,10 @@ export default {
   font-weight: 200;
   font-style: normal;
   src: local(Pretendard ExtraLight),
-    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-ExtraLight.subset.woff2") format("woff2"),
-    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-ExtraLight.subset.woff") format("woff"),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-ExtraLight.subset.woff2")
+      format("woff2"),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-ExtraLight.subset.woff")
+      format("woff"),
     url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-ExtraLight.otf");
 }
 
@@ -378,8 +525,10 @@ export default {
   font-weight: 300;
   font-style: normal;
   src: local(Pretendard Light),
-    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Light.subset.woff2") format("woff2"),
-    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Light.subset.woff") format("woff"),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Light.subset.woff2")
+      format("woff2"),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Light.subset.woff")
+      format("woff"),
     url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Light.otf");
 }
 
@@ -389,8 +538,10 @@ export default {
   font-weight: 400;
   font-style: normal;
   src: local(Pretendard Regular),
-    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Regular.subset.woff2") format("woff2"),
-    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Regular.subset.woff") format("woff"),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Regular.subset.woff2")
+      format("woff2"),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Regular.subset.woff")
+      format("woff"),
     url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Regular.otf");
 }
 
@@ -400,8 +551,10 @@ export default {
   font-weight: 500;
   font-style: normal;
   src: local(Pretendard Medium),
-    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Medium.subset.woff2") format("woff2"),
-    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Medium.subset.woff") format("woff"),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Medium.subset.woff2")
+      format("woff2"),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Medium.subset.woff")
+      format("woff"),
     url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Medium.otf");
 }
 
@@ -411,8 +564,10 @@ export default {
   font-weight: 600;
   font-style: normal;
   src: local(Pretendard SemiBold),
-    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-SemiBold.subset.woff2") format("woff2"),
-    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-SemiBold.subset.woff") format("woff"),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-SemiBold.subset.woff2")
+      format("woff2"),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-SemiBold.subset.woff")
+      format("woff"),
     url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-SemiBold.otf");
 }
 
@@ -422,8 +577,10 @@ export default {
   font-weight: 700;
   font-style: normal;
   src: local(Pretendard Bold),
-    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Bold.subset.woff2") format("woff2"),
-    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Bold.subset.woff") format("woff"),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Bold.subset.woff2")
+      format("woff2"),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Bold.subset.woff")
+      format("woff"),
     url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Bold.otf");
 }
 
@@ -432,8 +589,10 @@ export default {
   font-family: "Pretendard";
   font-weight: 800;
   font-style: normal;
-  src: url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-ExtraBold.subset.woff2") format("woff2"),
-    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-ExtraBold.subset.woff") format("woff"),
+  src: url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-ExtraBold.subset.woff2")
+      format("woff2"),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-ExtraBold.subset.woff")
+      format("woff"),
     url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-ExtraBold.otf");
 }
 
@@ -442,8 +601,10 @@ export default {
   font-family: "Pretendard";
   font-weight: 900;
   font-style: normal;
-  src: url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Black.subset.woff2") format("woff2"),
-    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Black.subset.woff") format("woff"),
+  src: url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Black.subset.woff2")
+      format("woff2"),
+    url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Black.subset.woff")
+      format("woff"),
     url("https://static.spartacodingclub.kr/static/fonts/Pretendard/Pretendard-Black.otf");
 }
 
@@ -452,7 +613,8 @@ export default {
   font-family: "SpoqaHanSans";
   font-weight: 300;
   font-style: normal;
-  src: url("https://static.spartacodingclub.kr/static/fonts/SpoqaHanSans/SpoqaHanSans-Light.woff") format("woff");
+  src: url("https://static.spartacodingclub.kr/static/fonts/SpoqaHanSans/SpoqaHanSans-Light.woff")
+    format("woff");
 }
 
 @font-face {
@@ -460,7 +622,8 @@ export default {
   font-family: "SpoqaHanSans";
   font-weight: 400;
   font-style: normal;
-  src: url("https://static.spartacodingclub.kr/static/fonts/SpoqaHanSans/SpoqaHanSans-Regular.woff") format("woff");
+  src: url("https://static.spartacodingclub.kr/static/fonts/SpoqaHanSans/SpoqaHanSans-Regular.woff")
+    format("woff");
 }
 
 @font-face {
@@ -468,7 +631,8 @@ export default {
   font-family: "SpoqaHanSans";
   font-weight: 700;
   font-style: normal;
-  src: url("https://static.spartacodingclub.kr/static/fonts/SpoqaHanSans/SpoqaHanSans-Bold.woff") format("woff");
+  src: url("https://static.spartacodingclub.kr/static/fonts/SpoqaHanSans/SpoqaHanSans-Bold.woff")
+    format("woff");
 }
 
 @font-face {
@@ -476,8 +640,10 @@ export default {
   font-family: "Cafe24Ohsquare";
   font-weight: 500;
   font-style: normal;
-  src: url("https://static.spartacodingclub.kr/static/fonts/Cafe24Ohsquare/Cafe24Ohsquare.woff2") format("woff2"),
-    url("https://static.spartacodingclub.kr/static/fonts/Cafe24Ohsquare/Cafe24Ohsquare.woff") format("woff"),
+  src: url("https://static.spartacodingclub.kr/static/fonts/Cafe24Ohsquare/Cafe24Ohsquare.woff2")
+      format("woff2"),
+    url("https://static.spartacodingclub.kr/static/fonts/Cafe24Ohsquare/Cafe24Ohsquare.woff")
+      format("woff"),
     url("https://static.spartacodingclub.kr/static/fonts/Cafe24Ohsquare/Cafe24Ohsquare.ttf");
 }
 
@@ -485,14 +651,16 @@ export default {
   font-family: "NanumHandWritingDaughter";
   font-style: normal;
   font-weight: 400;
-  src: url("https://static.spartacodingclub.kr/static/fonts/NanumHandWritingDaughter.subset.woff2") format("woff2");
+  src: url("https://static.spartacodingclub.kr/static/fonts/NanumHandWritingDaughter.subset.woff2")
+    format("woff2");
 }
 
 @font-face {
   font-family: "ThefaceshopInklipquid";
   font-style: normal;
   font-weight: 400;
-  src: url("https://static.spartacodingclub.kr/static/fonts/ThefaceshopInklipquid/ThefaceshopInklipquid.woff") format("woff"),
+  src: url("https://static.spartacodingclub.kr/static/fonts/ThefaceshopInklipquid/ThefaceshopInklipquid.woff")
+      format("woff"),
     url("https://static.spartacodingclub.kr/static/fonts/ThefaceshopInklipquid/ThefaceshopInklipquid.ttf");
 }
 
@@ -500,8 +668,10 @@ export default {
   font-family: "SbAggroBold";
   font-weight: 700;
   font-style: normal;
-  src: url("https://static.spartacodingclub.kr/static/fonts/SbAggro/SB_aggro_bold.woff2") format("woff2"),
-    url("https://static.spartacodingclub.kr/static/fonts/SbAggro/SB_aggro_bold.woff") format("woff"),
+  src: url("https://static.spartacodingclub.kr/static/fonts/SbAggro/SB_aggro_bold.woff2")
+      format("woff2"),
+    url("https://static.spartacodingclub.kr/static/fonts/SbAggro/SB_aggro_bold.woff")
+      format("woff"),
     url("https://static.spartacodingclub.kr/static/fonts/SbAggro/SB_aggro_bold.ttf");
 }
 
@@ -509,7 +679,8 @@ export default {
   font-family: "DungGeunMo";
   font-style: normal;
   font-weight: 400;
-  src: url("https://static.spartacodingclub.kr/static/fonts/DungGeunMo/DungGeunMo.woff") format("woff"),
+  src: url("https://static.spartacodingclub.kr/static/fonts/DungGeunMo/DungGeunMo.woff")
+      format("woff"),
     url("https://static.spartacodingclub.kr/static/fonts/DungGeunMo/DungGeunMo.ttf");
 }
 
@@ -517,7 +688,8 @@ export default {
   font-family: "Tmoney RoundWind";
   font-style: normal;
   font-weight: 400;
-  src: url("https://static.spartacodingclub.kr/static/fonts/TmoneyRoundWindExtraBold.woff2") format("woff2"),
+  src: url("https://static.spartacodingclub.kr/static/fonts/TmoneyRoundWindExtraBold.woff2")
+      format("woff2"),
     url("https://static.spartacodingclub.kr/static/fonts/TmoneyRoundWindExtraBold.ttf");
 }
 
@@ -525,20 +697,23 @@ export default {
   font-family: "Cafe24Surround";
   font-style: normal;
   font-weight: 400;
-  src: url("https://static.spartacodingclub.kr/static/fonts/Cafe24Ssurround-v2.0.woff2") format("woff2"),
+  src: url("https://static.spartacodingclub.kr/static/fonts/Cafe24Ssurround-v2.0.woff2")
+      format("woff2"),
     url("https://static.spartacodingclub.kr/static/fonts/Cafe24Ssurround-v2.0.woff");
 }
 
 @font-face {
   font-family: "EBSHunminjeongeumSBA";
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/EBSHunminjeongeum.woff") format("woff");
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/EBSHunminjeongeum.woff")
+    format("woff");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Dokrip";
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.1/Dokrip.woff") format("woff");
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.1/Dokrip.woff")
+    format("woff");
   font-weight: normal;
   font-style: normal;
 }
@@ -547,9 +722,12 @@ export default {
   font-family: "YoonDokrip";
   font-style: normal;
   font-weight: 500;
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.1/Dokrip.woff") format("woff"),
-    url("https://static.spartacodingclub.kr/static/fonts/YoonDokrip.woff") format("woff"),
-    url("https://static.spartacodingclub.kr/static/fonts/YoonDokrip.otf") format("otf");
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.1/Dokrip.woff")
+      format("woff"),
+    url("https://static.spartacodingclub.kr/static/fonts/YoonDokrip.woff")
+      format("woff"),
+    url("https://static.spartacodingclub.kr/static/fonts/YoonDokrip.otf")
+      format("otf");
 }
 
 .css-huvhzc {
@@ -775,7 +953,7 @@ export default {
   margin: 0px 16px;
 }
 
-.Icon_container__KMOfZ2+.ContentSearch_searchInput__dVET92 {
+.Icon_container__KMOfZ2 + .ContentSearch_searchInput__dVET92 {
   flex-grow: 1;
   color: rgb(82, 29, 112);
   /* 아이콘 색상 변경 */
@@ -847,7 +1025,6 @@ export default {
   color: #141617;
   color: #3a3e41;
 }
-
 
 .css-1fgr4mj::-webkit-scrollbar {
   display: none;
