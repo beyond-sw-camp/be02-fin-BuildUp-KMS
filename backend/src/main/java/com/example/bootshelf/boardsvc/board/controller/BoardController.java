@@ -26,7 +26,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
-@Tag(name="Board", description = "Board 숙소 CRUD")
+@Tag(name = "Board", description = "Board 숙소 CRUD")
 @Api(tags = "Board")
 @RestController
 @RequiredArgsConstructor
@@ -40,11 +40,11 @@ public class BoardController {
             description = "게시판에 게시글을 등록하는 API입니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
-            @ApiResponse(responseCode = "500",description = "서버 내부 오류")})
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
     @PostMapping("/create")
     public ResponseEntity<BaseRes> createBoard(
             @AuthenticationPrincipal User user,
-            @RequestPart(value="board") PostCreateBoardReq postCreateBoardReq,
+            @RequestPart(value = "board") PostCreateBoardReq postCreateBoardReq,
             @RequestPart(value = "boardImage", required = false) MultipartFile[] uploadFiles
     ) {
         BaseRes baseRes = boardService.createBoard(user, postCreateBoardReq, uploadFiles);
@@ -60,7 +60,7 @@ public class BoardController {
     public ResponseEntity<BaseRes> myList(
             @PageableDefault(size = 9) Pageable pageable,
             @PathVariable @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") @ApiParam(value = "정렬유형 : 1 (최신순), 2 (추천수 순), 3 (조회수 순), 4 (스크랩수 순), 5 (댓글수 순)") Integer sortType
-    ){
+    ) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         BaseRes baseRes = boardService.findMyBoardList(user, pageable, sortType);
 
@@ -77,7 +77,7 @@ public class BoardController {
             @PageableDefault(size = 9) Pageable pageable,
             @PathVariable(value = "boardCategoryIdx") Integer boardCategoryIdx,
             @PathVariable @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") @ApiParam(value = "정렬유형 : 1 (최신순), 2 (추천수 순), 3 (조회수 순), 4 (스크랩수 순), 5 (댓글수 순)") Integer sortType
-    ){
+    ) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         BaseRes baseRes = boardService.findMyBoardListByCategory(user, pageable, boardCategoryIdx, sortType);
 
@@ -94,7 +94,7 @@ public class BoardController {
             @PageableDefault(size = 9) Pageable pageable,
             @PathVariable(value = "boardCategoryIdx") Integer boardCategoryIdx,
             @PathVariable @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") @ApiParam(value = "정렬유형 : 1 (최신순), 2 (추천수 순), 3 (조회수 순), 4 (스크랩수 순), 5 (댓글수 순)") Integer sortType
-    ){
+    ) {
         BaseRes baseRes = boardService.findListByCategory(pageable, boardCategoryIdx, sortType);
 
         return ResponseEntity.ok().body(baseRes);
@@ -110,7 +110,7 @@ public class BoardController {
             @PageableDefault(size = 9) Pageable pageable,
             @PathVariable(value = "tagIdx") Integer tagIdx,
             @PathVariable @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") @ApiParam(value = "정렬유형 : 1 (최신순), 2 (추천수 순), 3 (조회수 순), 4 (스크랩수 순), 5 (댓글수 순)") Integer sortType
-    ){
+    ) {
         BaseRes baseRes = boardService.findListByTag(pageable, tagIdx, sortType);
 
         return ResponseEntity.ok().body(baseRes);
@@ -120,62 +120,60 @@ public class BoardController {
             description = "게시판의 게시글을 게시글의 idx로 조회하는 API입니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
-            @ApiResponse(responseCode = "500",description = "서버 내부 오류")})
-    @GetMapping ("/{boardIdx}")
-    public ResponseEntity<BaseRes> findBoardByIdx (
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
+    @GetMapping("/{boardIdx}")
+    public ResponseEntity<BaseRes> findBoardByIdx(
             @PathVariable Integer boardIdx
-    ){
+    ) {
         return ResponseEntity.ok().body(boardService.findBoardByIdx(boardIdx));
     }
-
 
     @Operation(summary = "Board 게시글 검색어로 조회",
             description = "게시판의 게시글을 검색어(키워드)로 조회하는 API입니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
-            @ApiResponse(responseCode = "500",description = "서버 내부 오류")})
-    @GetMapping ("/search")
-    public ResponseEntity<BaseRes> searchBoardListByQuery (
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
+    @GetMapping("/search")
+    public ResponseEntity<BaseRes> searchBoardListByQuery(
             @RequestParam String query,
             @RequestParam Integer searchType,
             @PageableDefault(size = 20) Pageable pageable
 
-    ){
+    ) {
         return ResponseEntity.ok().body(boardService.searchBoardListByQuery(query, searchType, pageable));
     }
-
 
     @Operation(summary = "Board 카테고리별 게시글 검색어로 조회",
             description = "카테고리별 게시판의 게시글을 검색어(키워드)로 조회하는 API입니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
-            @ApiResponse(responseCode = "500",description = "서버 내부 오류")})
-    @GetMapping ("/search/by/{boardCategoryIdx}")
-    public ResponseEntity<BaseRes> searchBoardListByQueryAndCategory (
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
+    @GetMapping("/search/by/{boardCategoryIdx}")
+    public ResponseEntity<BaseRes> searchBoardListByQueryAndCategory(
             @RequestParam String query,
             @PathVariable(value = "boardCategoryIdx") Integer boardCategoryIdx,
             @PageableDefault(size = 9) Pageable pageable,
             @RequestParam @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") @ApiParam(value = "정렬유형 : 1 (최신순), 2 (추천수 순), 3 (조회수 순), 4 (스크랩수 순), 5 (댓글수 순)") Integer sortType
-    ){
+    ) {
         return ResponseEntity.ok().body(boardService.searchBoardListByQueryAndCategory(boardCategoryIdx, query, sortType, pageable));
     }
 
-  
+
     /**
-     *  게시판 + 후기 검색 api (v2)
-     *  -> 페이지네이션 잘 안됨
+     * 게시판 + 후기 검색 api (v2)
+     * -> 페이지네이션 잘 안됨
      */
     @Operation(summary = "Board+Review 게시글 검색어로 조회 v2",
             description = "게시판+후기 데이터를 검색어(키워드)로 조회하는 API입니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
-            @ApiResponse(responseCode = "500",description = "서버 내부 오류")})
-    @GetMapping ("/searchv2")
-    public ResponseEntity<BaseRes> searchResultListByQueryV2 (
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
+    @GetMapping("/searchv2")
+    public ResponseEntity<BaseRes> searchResultListByQueryV2(
             @RequestParam String query,
             @RequestParam Integer searchType,
             @PageableDefault(size = 20) Pageable pageable
-    ){
+    ) {
         return ResponseEntity.ok().body(boardService.searchResultListByQueryV2(query, searchType, pageable));
     }
 
@@ -189,23 +187,39 @@ public class BoardController {
     public ResponseEntity<BaseRes> updateBoard(
             @Valid @RequestBody PatchUpdateBoardReq patchUpdateBoardReq,
             @PathVariable(value = "boardIdx") Integer boardIdx
-    ){
+    ) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         BaseRes baseRes = boardService.updateBoard(user, patchUpdateBoardReq, boardIdx);
         return ResponseEntity.ok().body(baseRes);
     }
 
     @Operation(summary = "Board 게시글 삭제 기능",
-        description = "게시판의 게시글을 삭제하는 API 입니다.")
+            description = "게시판의 게시글을 삭제하는 API 입니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
     @RequestMapping(method = RequestMethod.DELETE, value = "/delete/{boardIdx}")
     public ResponseEntity<BaseRes> deleteBoard(
             @PathVariable(value = "boardIdx") Integer boardIdx
-    ){
+    ) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         BaseRes baseRes = boardService.deleteBoard(user, boardIdx);
+
+        return ResponseEntity.ok().body(baseRes);
+    }
+
+    @Operation(summary = "Board 본인 게시글 수정을 위한 상세 조회",
+            description = "본인이 작성한 게시글을 수정하기 위해 작성한 게시글을 불러오는 API입니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
+    @GetMapping("/mywrite/{boardIdx}")
+    public ResponseEntity<BaseRes> findBoardDetailByUserIdx(
+            @PathVariable Integer boardIdx
+    ) {
+
+        User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        BaseRes baseRes = boardService.findBoardDetailByUserIdx(boardIdx, user);
 
         return ResponseEntity.ok().body(baseRes);
     }
