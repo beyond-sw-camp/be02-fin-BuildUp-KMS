@@ -7,7 +7,16 @@
           <div class="css-110bgim">
             <div class="css-28nsux">
               <!-- HOT TAG 컴포넌트 -->
-              <HotTagComponent></HotTagComponent>
+              <div class="css-nw8p9d">
+                <div class="css-19831his"># 인기태그</div>
+              </div>
+              <div
+                class="css-nw8p9d"
+                v-for="hotTags in boardTagStore.hotTagList"
+                :key="hotTags.tagIdx"
+              >
+                <HotTagComponent :hotTags="hotTags" />
+              </div>
             </div>
           </div>
         </div>
@@ -176,6 +185,7 @@
 <script>
 import { mapStores } from "pinia";
 import { useReviewStore } from "../stores/useReviewStore";
+import { useBoardTagStore } from "../stores/useBoardTagStore";
 import ReviewBoardComponent from "@/components/ReviewBoardComponent.vue";
 import HotTagComponent from "@/components/HotTagComponent.vue";
 import PaginationComponent from "@/components/PaginationComponent.vue";
@@ -191,7 +201,7 @@ export default {
     };
   },
   computed: {
-    ...mapStores(useReviewStore),
+    ...mapStores(useReviewStore, useBoardTagStore),
     visiblePages() {
       // 최대 5개의 페이지 번호만 보이도록 계산
       let pages = [];
@@ -217,6 +227,7 @@ export default {
   },
   mounted() {
     this.loadReviewList(1);
+    this.boardTagStore.getHotTagList();
   },
   methods: {
     updateSortType() {
@@ -346,6 +357,7 @@ div {
   gap: 16px;
   background-color: rgb(255, 255, 255);
   flex-shrink: 0;
+  margin-top: 100px;
 }
 .css-28nsux {
   display: flex;
@@ -358,7 +370,24 @@ div {
   border-radius: 8px;
   padding: 0px 16px;
   /* 클릭하면 배경이 아래 색상으로 변경됨 */
+  background-color: white;
+  height: 48px;
+  font-family: Pretendard;
+  font-style: normal;
+  font-size: 16px;
+  line-height: 48px;
+  font-weight: 400;
+  color: rgb(157, 167, 174);
+  cursor: pointer;
+}
+.css-19831hi:hover {
   background-color: rgb(242, 246, 248);
+}
+.css-19831his {
+  width: 100%;
+  padding: 0px 16px;
+  /* 클릭하면 배경이 아래 색상으로 변경됨 */
+  background-color: white;
   height: 48px;
   font-family: Pretendard;
   font-style: normal;
@@ -367,11 +396,12 @@ div {
   font-weight: 700;
   color: rgb(20, 22, 23);
   cursor: pointer;
+  border-bottom: 1px solid rgb(228, 235, 240);
 }
 .css-nw8p9d {
   width: 100%;
   border-radius: 8px;
-  padding: 0px 16px;
+  padding: 0px 6px;
   background-color: rgb(255, 255, 255);
   height: 48px;
   font-family: Pretendard;

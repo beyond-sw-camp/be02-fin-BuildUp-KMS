@@ -4,7 +4,7 @@
     <div class="css-3o2y5e">
       <div width="36px" height="36px" class="css-jg5tbe">
         <img alt="나의얼굴" width="34px" height="34px"
-          src="https://blog.kakaocdn.net/dn/5UYz8/btq4diRXkGE/HkHufR4G8X4bIX3h3lNjck/img.jpg" />
+          :src="comment.profileImage" />
       </div>
     </div>
     <div class="css-14f8kx2">

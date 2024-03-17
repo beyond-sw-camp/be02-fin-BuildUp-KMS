@@ -22,6 +22,7 @@ import QnABoardListPage from "@/pages/QnABoardListPage.vue";
 import BoardUpdatePage from "@/pages/BoardUpdatePage.vue";
 import StudyDetailPage from "@/pages/StudyDetailPage.vue";
 import HotListPage from "@/pages/HotListPage.vue";
+import TagBoardListPage from "@/pages/TagBoardListPage.vue";
 
 import AdminMainPage from "@/pages/AdminMainPage.vue";
 import AdminWithdrawPage from "@/pages/AdminWithdrawPage.vue";
@@ -35,18 +36,17 @@ import AdminUserListPage from "@/pages/AdminUserListPage.vue";
 import AdminSignUpPage from "@/pages/AdminSignUpPage.vue";
 import AdminLoginPage from "@/pages/AdminLoginPage.vue";
 
-
 const requireAuth = () => (from, to, next) => {
   const storedToken = window.localStorage.getItem("token");
   if (storedToken === null) {
-    alert("로그인 후 이용할 수 있습니다.")
+    alert("로그인 후 이용할 수 있습니다.");
     next("/login");
   } else {
     const tokenData = VueJwtDecode.decode(storedToken);
     const currentTime = Math.floor(Date.now() / 1000);
 
     if (tokenData.exp < currentTime) {
-      alert("로그인 유지시간이 만료되었습니다. 다시 로그인해주세요.")
+      alert("로그인 유지시간이 만료되었습니다. 다시 로그인해주세요.");
       localStorage.removeItem("token");
       next("/");
     } else {
@@ -54,7 +54,6 @@ const requireAuth = () => (from, to, next) => {
     }
   }
 };
-
 
 const requireAdminAuth = () => (from, to, next) => {
   const token = window.localStorage.getItem("a_token");
@@ -64,18 +63,16 @@ const requireAdminAuth = () => (from, to, next) => {
   } else {
     const tokenData = VueJwtDecode.decode(token);
     const currentTime = Math.floor(Date.now() / 1000);
-    
+
     if (tokenData.exp < currentTime) {
       alert("로그인 유지시간이 만료되었습니다. 다시 로그인해주세요.");
       localStorage.removeItem("a_token");
       next("/admin/login");
     } else {
-      next(); 
+      next();
     }
   }
 };
-
-
 
 const routes = [
   { path: "/", component: MainPage },
@@ -92,28 +89,61 @@ const routes = [
   { path: "/mypage", component: MyActivePage, beforeEnter: requireAuth() },
   { path: "/result", component: SearchResultPage },
   { path: "/board/new", component: BoardWritePage, beforeEnter: requireAuth() },
-  { path: "/review/new", component: ReviewWritePage, beforeEnter: requireAuth() },
+  {
+    path: "/review/new",
+    component: ReviewWritePage,
+    beforeEnter: requireAuth(),
+  },
   { path: "/study", component: StudyBoardListPage },
   { path: "/board/:boardIdx", component: BoardDetailsPage },
   { path: "/review/:idx", component: ReviewDetailsPage },
   { path: "/board/knowledge", component: KnowledgeBoardListPage },
+  { path: "/board/tag", component: TagBoardListPage },
   { path: "/board/qna", component: QnABoardListPage },
   { path: "/review", component: ReviewListPage },
   { path: "/hot", component: HotListPage },
   { path: "/select/signup", component: SelectSignupPage },
   { path: "/email/verify", component: EmailValidationPage },
   { path: "/notice", component: NoticeBoardListPage },
-  { path: "/board/mywrite/:boardIdx", component: BoardUpdatePage},
-  { path: "/study/detail/:boardIdx", component: StudyDetailPage},
+  { path: "/board/mywrite/:boardIdx", component: BoardUpdatePage },
+  { path: "/study/detail/:boardIdx", component: StudyDetailPage },
   { path: "/admin", component: AdminMainPage, beforeEnter: requireAdminAuth() },
-  { path: "/admin/withdraw", component: AdminWithdrawPage, beforeEnter: requireAdminAuth() },
-  { path: "/admin/board/category/register", component: AdminBoardCategoryRegisterPage, beforeEnter: requireAdminAuth() },
+  {
+    path: "/admin/withdraw",
+    component: AdminWithdrawPage,
+    beforeEnter: requireAdminAuth(),
+  },
+  {
+    path: "/admin/board/category/register",
+    component: AdminBoardCategoryRegisterPage,
+    beforeEnter: requireAdminAuth(),
+  },
   // { path: "/admin/review/category/register", component: AdminReviewCategoryRegisterPage, beforeEnter: requireAdminAuth() },
-  { path: "/admin/tag/register", component: AdminTagRegisterPage, beforeEnter: requireAdminAuth() },
-  { path: "/admin/board/category", component: AdminBoardCategoryListPage, beforeEnter: requireAdminAuth() },
-  { path: "/admin/review/category", component: AdminReviewCategoryListPage, beforeEnter: requireAdminAuth() },
-  { path: "/admin/tag", component: AdminTagListPage, beforeEnter: requireAdminAuth() },
-  { path: "/admin/user", component: AdminUserListPage, beforeEnter: requireAdminAuth() },
+  {
+    path: "/admin/tag/register",
+    component: AdminTagRegisterPage,
+    beforeEnter: requireAdminAuth(),
+  },
+  {
+    path: "/admin/board/category",
+    component: AdminBoardCategoryListPage,
+    beforeEnter: requireAdminAuth(),
+  },
+  {
+    path: "/admin/review/category",
+    component: AdminReviewCategoryListPage,
+    beforeEnter: requireAdminAuth(),
+  },
+  {
+    path: "/admin/tag",
+    component: AdminTagListPage,
+    beforeEnter: requireAdminAuth(),
+  },
+  {
+    path: "/admin/user",
+    component: AdminUserListPage,
+    beforeEnter: requireAdminAuth(),
+  },
   { path: "/admin/signup", component: AdminSignUpPage },
   { path: "/admin/login", component: AdminLoginPage },
 ];
