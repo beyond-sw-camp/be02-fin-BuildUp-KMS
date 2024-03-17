@@ -1,25 +1,13 @@
 <template>
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <h3 class="py-3 mb-4"><span class="text-muted fw-light">{{ categoryName }} /</span> 등록</h3>
-
-        <!-- Basic Layout -->
-        <div class="row">
-            <div class="col-xl">
-                <div class="card mb-4">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">이름</h5>
-                    </div>
-                    <div class="card-body">
-                        <form @submit.prevent="submitForm">
-                            <div class="mb-3 flex-end-container">
-                                <input type="text" class="form-control" id="itemName" v-model="itemName"
-                                    :placeholder="`${categoryName}`" />
-                                <div style="margin-right: 30px;">
-                                    <button type="submit" class="btn btn-primary">저장</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+    <div class="layout-wrapper layout-content-navbar">
+        <div class="layout-container">
+            <!-- Menu and Navbar components are inserted here, ensuring proper layout structure -->
+            <AdminMenuComponent />
+            <div class="layout-page">
+                <div class="content-wrapper">
+                    <!-- Content -->
+                    <AdminRegisterComponent category-name="후기 카테고리" />
+                    <div class="content-backdrop fade"></div>
                 </div>
             </div>
         </div>
@@ -27,30 +15,23 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import AdminMenuComponent from "@/components/AdminMenuComponent.vue";
+import AdminRegisterComponent from "@/components/AdminRegisterComponent.vue";
+import { mapStores } from "pinia";
+import { useAdminStore } from "/src/stores/useAdminStore";
 
 export default {
-    name: "AdminRegisterComponent",
-    props: {
-        categoryName: String,
-        submitAction: Function,
+    name: "AdminCategoryRegisterPage",
+    components: {
+        AdminMenuComponent,
+        AdminRegisterComponent
     },
-    setup(props) {
-        const itemName = ref('');
-
-        const submitForm = async () => {
-            if (!itemName.value) {
-                alert(`${props.categoryName} 이름을 입력해주세요.`);
-                return;
-            }
-
-            await props.submitAction(itemName.value);
-            alert(`${props.categoryName}가 성공적으로 생성되었습니다.`);
-            itemName.value = '';
-        };
-
-        return { itemName, submitForm };
-    }
+    mounted() {
+        this.$root.hideHeaderAndFooter = true;
+    },
+    computed: {
+        ...mapStores(useAdminStore),
+    },
 };
 </script>
 
