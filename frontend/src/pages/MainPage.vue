@@ -58,9 +58,9 @@
             <a>
               <button class="css-bcb9a9">
                 <div class="css-197aby8">
-                  <p class="css-1r2nemk">지식 공유 서비스</p>
+                  <p class="css-1r2nemk">&nbsp;지식 공유 서비스</p>
                   <p class="css-12j2poz">
-                    집단 지성이 참여하고 <br />토론할 수 있는 문화
+                    집단 지성이 참여하고 <br />&nbsp;토론할 수 있는 문화
                   </p>
                 </div>
                 <img src="../assets/img/knowledge.png" loading="lazy" class="css-1522xt9" />
@@ -70,9 +70,9 @@
             <a>
               <button class="css-bcb9a9">
                 <div class="css-197aby8">
-                  <p class="css-1r2nemk">무엇이든 물어보세요</p>
+                  <p class="css-1r2nemk">&nbsp;무엇이든 물어보세요</p>
                   <p class="css-12j2poz">
-                    구성원이 서로 소통하며 <br />관심 분야에 대해<br />자연스럽게
+                    구성원이 서로 소통하며 <br />&nbsp;관심 분야에 대해<br />&nbsp;자연스럽게
                     공유하는 환경 제공
                   </p>
                 </div>
@@ -83,10 +83,10 @@
             <a>
               <button class="css-bcb9a9">
                 <div class="css-197aby8">
-                  <p class="css-1r2nemk">프로그램 참여 후기</p>
+                  <p class="css-1r2nemk">&nbsp;프로그램 참여 후기</p>
                   <p class="css-12j2poz">
-                    실제 부트캠프에 참여한 <br />구성원들의 생생한 후기를
-                    <br />공유하는 문화 형성
+                    실제 부트캠프에 참여한 <br />&nbsp;구성원들의 생생한 후기를
+                    <br />&nbsp;공유하는 문화 형성
                   </p>
                 </div>
                 <img src="../assets/img/ddabong.png" loading="lazy" class="css-1522xt9" />
@@ -100,8 +100,8 @@
             <a>
               <button class="css-bcb9a9">
                 <div class="css-197aby8">
-                  <p class="css-1r2nemk">인기 게시글</p>
-                  <p class="css-12j2poz">회원들의 HOT ISSUE</p>
+                  <p class="css-1r2nemk">&nbsp;인기 게시글</p>
+                  <p class="css-12j2poz">&nbsp;회원들의 HOT ISSUE</p>
                 </div>
                 <img src="../assets/img/danger.png" loading="lazy" class="css-1522xt9" />
               </button></a>
@@ -110,9 +110,9 @@
             <a>
               <button class="css-bcb9a9">
                 <div class="css-197aby8">
-                  <p class="css-1r2nemk">스터디원 모집</p>
+                  <p class="css-1r2nemk">&nbsp;스터디원 모집</p>
                   <p class="css-12j2poz">
-                    함꼐 프로그래밍 공부를 할 <br />팀원을 모을 수 있는 환경
+                    함께 프로그래밍 공부를 할 <br />&nbsp;팀원을 모을 수 있는 환경
                   </p>
                 </div>
                 <img src="../assets/img/study.png" loading="lazy" class="css-1522xt9" />
@@ -122,8 +122,8 @@
             <a>
               <button class="css-bcb9a9">
                 <div class="css-197aby8">
-                  <p class="css-1r2nemk">공지사항</p>
-                  <p class="css-12j2poz">BOOTSHELF 공지사항</p>
+                  <p class="css-1r2nemk">&nbsp;공지사항</p>
+                  <p class="css-12j2poz">&nbsp;BOOTSHELF 공지사항</p>
                 </div>
                 <img src="../assets/img/notice.png" loading="lazy" class="css-1522xt9" />
               </button></a>
