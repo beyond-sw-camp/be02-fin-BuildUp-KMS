@@ -11,9 +11,13 @@ import com.example.bootshelf.boardsvc.boardcomment.model.response.PatchUpdateBoa
 import com.example.bootshelf.boardsvc.boardcomment.model.response.PostCreateBoardCommentRes;
 import com.example.bootshelf.boardsvc.boardcomment.model.response.PostCreateBoardReplyRes;
 import com.example.bootshelf.boardsvc.boardcomment.repository.BoardCommentRepository;
+import com.example.bootshelf.boardsvc.boardcommentup.model.entity.BoardCommentUp;
+import com.example.bootshelf.boardsvc.boardcommentup.repository.BoardCommentUpRepository;
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.common.error.ErrorCode;
 import com.example.bootshelf.common.error.entityexception.BoardCommentException;
+import com.example.bootshelf.reviewsvc.review.model.entity.Review;
+import com.example.bootshelf.reviewsvc.reviewcommentup.model.entity.ReviewCommentUp;
 import com.example.bootshelf.user.model.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,6 +34,7 @@ import java.util.Optional;
 public class BoardCommentService {
     private final BoardCommentRepository boardCommentRepository;
     private final BoardRepository boardRepository;
+    private final BoardCommentUpRepository boardCommentUpRepository;
 
     // 댓글 작성
     @Transactional(readOnly = false)
@@ -180,8 +185,14 @@ public class BoardCommentService {
         BoardComment boardComment = result.get();
         Board board = boardComment.getBoard();
 
+        List<BoardCommentUp> boardCommentUps = boardCommentUpRepository.findByBoardCommentIdx(idx);
+        for (BoardCommentUp boardCommentUp : boardCommentUps) {
+            boardCommentUp.setBoardComment(null);
+            boardCommentUp.setStatus(false);
+            boardCommentUpRepository.save(boardCommentUp);
+        }
+
         if (boardComment.getParent() == null) {
-            // 하위 댓글들도 함께 삭제
             deleteChildrenComments(boardComment.getChildren());
         }
 
@@ -212,6 +223,7 @@ public class BoardCommentService {
     public BaseRes createBoardReply(User user, Integer boardIdx, Integer parentIdx, PostCreateBoardReplyReq postCreateBoardReplyReq) {
 
         Optional<BoardComment> parentBoardComment = boardCommentRepository.findById(parentIdx);
+        Optional<Board> findBoard = boardRepository.findByIdx(boardIdx);
 
         // 상위댓글이 없을 때
         if (parentBoardComment.equals(0)) {
@@ -222,7 +234,7 @@ public class BoardCommentService {
         if (postCreateBoardReplyReq.getBoardReplyContent() == null || postCreateBoardReplyReq.getBoardReplyContent().isEmpty()) {
             throw new BoardCommentException(ErrorCode.INVALID_INPUT_VALUE, String.format("Content is empty."));
         }
-
+        Board board = findBoard.get();
         BoardComment childrenBoardComment = BoardComment.builder()
                 .board(Board.builder().idx(boardIdx).build())
                 .user(user)
@@ -235,8 +247,10 @@ public class BoardCommentService {
                 .build();
 
         parentBoardComment.get().getChildren().add(childrenBoardComment);
-
         boardCommentRepository.save(childrenBoardComment);
+
+        board.increaseCommentUpCnt();
+        boardRepository.save(board);
 
         PostCreateBoardReplyRes postCreateBoardReplyRes = PostCreateBoardReplyRes.builder()
                 .parentIdx(childrenBoardComment.getParent().getIdx())
