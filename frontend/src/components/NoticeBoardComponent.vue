@@ -2,7 +2,7 @@
   <div class="css-1agvh3p" @click="showContent()">
     <div class="css-1x8gxrp">
       <div :class="{ 'css-s3qw6k': !isClicked, 'css-1b9opqm': isClicked }">
-        <span class="css-0">[공지] 팀스파르타 개인정보 처리방침 개정 안내</span
+        <span class="css-0">{{ notice.boardTitle }}</span
         ><span class="css-1wp0bsh"></span><span class="css-1hkyyfd">N</span>
       </div>
     </div>
@@ -27,80 +27,13 @@
     </div>
   </div>
   <div :class="{ 'css-173r1bj': !isClicked, 'css-gx45j9': isClicked }">
-    <p>안녕하세요.</p>
-    <p>
-      스파르타코딩클럽을 비롯한 팀스파르타의 서비스를 이용해주시는 여러분들께
-      진심으로 감사드립니다.
-    </p>
-    <p><br /></p>
-    <p>팀스파르타의 개인정보 처리방침 개정 관련 공지드립니다.</p>
-    <p><br /></p>
-    <p>
-      <strong style="color: rgb(58, 62, 65)"
-        >개인정보 처리방침 변경 안내</strong
-      >
-    </p>
-    <p>
-      팀스파르타의 개인정보 처리방침이 아래와 같이 일부 변경되어 2024년 02월
-      23일 부로 시행됩니다.
-    </p>
-    <p><br /></p>
-    <p><strong>[변경내용]</strong></p>
-    <p>1) 개정 내용</p>
-    <p>
-      a. 제1조(수집하는 개인정보 항목 및 수집방법) 중 '부트캠프 취업지원 서비스
-      이용 시' 내용 추가
-    </p>
-    <p>
-      b. 제6조(개인정보의 처리위탁) 중 '부트캠프 취업지원 서비스' 관련 제3자
-      제공 내용 추가
-    </p>
-    <p><br /></p>
-    <p>
-      2) 개정 사유:&nbsp;<strong>부트캠프 취업지원 서비스 제공에</strong
-      ><strong style="color: rgb(80, 82, 84)">
-        따른 개인정보 수집 및 활용 안내를 위함</strong
-      >
-    </p>
-    <p><br /></p>
-    <p><u>3) 시행 일자: 2024년 02월 23일</u></p>
-    <p>
-      <em
-        >* 시행일까지 회원이 별도의 동의 또는 거부의 의사표시를 하지 않을 경우,
-        승낙한 것으로 간주됩니다.</em
-      >
-    </p>
-    <p><br /></p>
-    <p>
-      <a
-        href="https://teamsparta.notion.site/7b1dc644460946f08bab08b794de685f"
-        rel="noopener noreferrer"
-        target="_blank"
-        style="color: rgb(17, 152, 227)"
-        >4) 개인정보 처리방침 확인하</a
-      ><a
-        href="https://teamsparta.notion.site/7b1dc644460946f08bab08b794de685f"
-        rel="noopener noreferrer"
-        target="_blank"
-        >기</a
-      >
-    </p>
-    <p><br /></p>
-    <p>
-      관련하여 궁금하신 사항은 홈페이지 우측 하단 [문의하기]를 이용해주세요.
-    </p>
-    <p><br /></p>
-    <p>
-      <span style="color: rgb(80, 82, 84)"
-        >언제나 팀스파르타 서비스를 사랑해주시고 이용해주셔서 진심으로
-        감사합니다.</span
-      >
-    </p>
+    {{ notice.boardContent }}
   </div>
 </template>
 <script>
 export default {
   name: "NoticeBoardComponent",
+  props: ["notice"],
   data() {
     return {
       isClicked: false,

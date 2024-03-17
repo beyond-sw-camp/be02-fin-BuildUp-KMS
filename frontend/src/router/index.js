@@ -40,7 +40,7 @@ const requireAuth = () => (from, to, next) => {
   const storedToken = window.localStorage.getItem("token");
   if (storedToken === null) {
     alert("로그인 후 이용할 수 있습니다.");
-    next("/login");
+    next("/");
   } else {
     const tokenData = VueJwtDecode.decode(storedToken);
     const currentTime = Math.floor(Date.now() / 1000);
@@ -49,6 +49,29 @@ const requireAuth = () => (from, to, next) => {
       alert("로그인 유지시간이 만료되었습니다. 다시 로그인해주세요.");
       localStorage.removeItem("token");
       next("/");
+    } else {
+      next();
+    }
+  }
+};
+
+const requireUserAuth = () => (from, to, next) => {
+  const storedToken = window.localStorage.getItem("token");
+
+  if (storedToken === null) {
+    alert("로그인 후 이용할 수 있습니다.");
+    next("/");
+  } else {
+    const tokenData = VueJwtDecode.decode(storedToken);
+    const currentTime = Math.floor(Date.now() / 1000);
+
+    if (tokenData.exp < currentTime) {
+      alert("로그인 유지시간이 만료되었습니다. 다시 로그인해주세요.");
+      localStorage.removeItem("token");
+      next("/");
+    } else if (tokenData.ROLE !== "ROLE_AUTHUSER") {
+      alert("인증회원만 후기글을 작성할 수 있습니다.");
+      next("/review");
     } else {
       next();
     }
@@ -92,7 +115,7 @@ const routes = [
   {
     path: "/review/new",
     component: ReviewWritePage,
-    beforeEnter: requireAuth(),
+    beforeEnter: requireUserAuth(),
   },
   { path: "/study", component: StudyBoardListPage },
   { path: "/board/:boardIdx", component: BoardDetailsPage },

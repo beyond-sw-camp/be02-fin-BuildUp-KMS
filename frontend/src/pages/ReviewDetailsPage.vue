@@ -71,6 +71,18 @@
                   :onConfirm="moveMyPage"
                   :onCancel="dontMoveMyPage"
                 />
+                <div class="css-z2xt5y">
+                  <div class="css-5zcuovs">
+                    <div class="css-1sika4is">
+                      {{ reviewStore.review.courseName }}
+                    </div>
+                  </div>
+                  <div class="css-5zcuovss">
+                    <div class="css-1sika4iss">
+                      평점 : {{ reviewStore.review.courseEvaluation }} 점
+                    </div>
+                  </div>
+                </div>
                 <div class="css-99cwur">
                   <div class="css-1fhge30">
                     <div class="css-aw18wm">
@@ -129,20 +141,21 @@
                       <div class="css-1ry6usa">
                         {{ reviewStore.review.updatedAt }}
                       </div>
-                      <div class="css-5zcuovs">
-                        <div class="css-1sika4is">
-                          {{ reviewStore.review.courseName }}
-                        </div>
-                      </div>
-                      <div class="css-5zcuovss">
-                        <div class="css-1sika4iss">
-                          평점 : {{ reviewStore.review.courseEvaluation }} 점
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="css-z2xt5y"></div>
+                <!-- <div class="css-z2xt5y">
+                  <div class="css-5zcuovs">
+                    <div class="css-1sika4is">
+                      {{ reviewStore.review.courseName }}
+                    </div>
+                  </div>
+                  <div class="css-5zcuovss">
+                    <div class="css-1sika4iss">
+                      평점 : {{ reviewStore.review.courseEvaluation }} 점
+                    </div>
+                  </div>
+                </div> -->
               </div>
             </div>
             <div class="css-luqgif">
@@ -1013,7 +1026,7 @@ img {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  margin-left: 20px;
+  margin-left: 0px;
   font-family: Pretendard;
   cursor: pointer;
   border-radius: 5px;
