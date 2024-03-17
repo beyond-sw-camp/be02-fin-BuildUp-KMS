@@ -112,6 +112,7 @@ public class ReviewCommentService {
                 .reviewIdx(reviewComment.getReview().getIdx())
                 .userIdx(reviewComment.getUser().getIdx())
                 .userNickName(reviewComment.getUser().getNickName())
+                .userImg(reviewComment.getUser().getProfileImage())
                 .reviewCommnetContent(reviewComment.getReviewCommentContent())
                 .createAt(reviewComment.getCreatedAt())
                 .updateAt(reviewComment.getUpdatedAt())
