@@ -1,10 +1,12 @@
 package com.example.bootshelf.reviewsvc.review.service;
 
 import com.example.bootshelf.boardsvc.board.model.entity.Board;
-import com.example.bootshelf.boardsvc.board.model.response.GetBoardListByQueryRes;
-import com.example.bootshelf.boardsvc.board.model.response.GetBoardListByQueryResResult;
+import com.example.bootshelf.boardsvc.board.model.response.GetBoardRes;
+import com.example.bootshelf.boardsvc.boardimage.model.entity.BoardImage;
+import com.example.bootshelf.boardsvc.boardtag.model.entity.BoardTag;
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.common.error.ErrorCode;
+import com.example.bootshelf.common.error.entityexception.BoardException;
 import com.example.bootshelf.common.error.entityexception.ReviewException;
 import com.example.bootshelf.reviewsvc.review.model.entity.Review;
 import com.example.bootshelf.reviewsvc.review.model.request.PatchUpdateReviewReq;
@@ -415,6 +417,43 @@ public class ReviewService {
                 .isSuccess(true)
                 .message("후기글 제목으로 검색결과 조회 요청 성공")
                 .result(result)
+                .build();
+
+        return baseRes;
+    }
+
+    @Transactional(readOnly = false)
+    public BaseRes findReviewDetailByUserIdx(Integer reviewIdx, User user) {
+        Optional<Review> result = reviewRepository.findByIdxAndUserIdx(reviewIdx, user.getIdx());
+
+        if (!result.isPresent()) {
+            throw new ReviewException(ErrorCode.REVIEW_NOT_EXISTS, String.format("Review Idx [ %s ] is not exists.", reviewIdx));
+        }
+
+        Review review = result.get();
+
+//        List<GetListImageReviewRes> reviewImages = new ArrayList<>();
+
+//        if (!review.getReviewImageList().isEmpty()) {
+//            for (ReviewImage reviewImage : review.getReviewImageList()) {
+//                reviewImages.add(reviewImage.getReviewImage());
+//            }
+//        }
+
+        GetReadReviewRes getReadReviewRes = GetReadReviewRes.builder()
+                .reviewIdx(review.getIdx())
+                .reviewCategoryName(review.getReviewCategory().getCategoryName())
+                .reviewCategoryIdx(review.getReviewCategory().getIdx())
+                .reviewTitle(review.getReviewTitle())
+                .reviewContent(review.getReviewContent())
+//                .reviewImageList(reviewImages)
+                .courseName(review.getCourseName())
+                .build();
+
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("본인 작성 후기글 상세 조회 성공")
+                .result(getReadReviewRes)
                 .build();
 
         return baseRes;

@@ -138,7 +138,7 @@ public class BoardService {
                         .createdAt(board.getCreatedAt())
                         .updatedAt(board.getUpdatedAt())
                         .userProfileImage(board.getUser().getProfileImage())
-                        .userName(board.getUser().getName())
+                        .nickName(board.getUser().getNickName())
                         .build();
 
 
