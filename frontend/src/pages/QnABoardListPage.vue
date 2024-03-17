@@ -39,44 +39,44 @@
                       </div>
                     </div>
                   </div>
-                </div>
-                <!-- 검색창 -->
-                <div class="css-ogh6wd">
-                  <div class="css-1tttep5">
-                    <div class="css-1pbcmmt-002">
-                      <div class="css-5ala5m-002">
-                        <div class="css-nmdn6a-002">
-                          <input
-                            class="css-search-002"
-                            type="text"
-                            placeholder="검색어를 입력하세요."
-                            v-model="searchTerm"
-                            @keyup.enter="sendSearchData()"
+                  <!-- 검색창 -->
+                  <div class="css-ogh6wd">
+                    <div class="css-1tttep5">
+                      <div class="css-1pbcmmt-002">
+                        <div class="css-5ala5m-002">
+                          <div class="css-nmdn6a-002">
+                            <input
+                              class="css-search-002"
+                              type="text"
+                              placeholder="검색어를 입력하세요."
+                              v-model="searchTerm"
+                              @keyup.enter="sendSearchData()"
+                            />
+                          </div>
+                          <img
+                            class="css-search-img"
+                            src="https://img.icons8.com/ios-glyphs/30/search--v1.png"
+                            alt="search--v1"
+                            @click="sendSearchData()"
                           />
                         </div>
-                        <img
-                          class="css-search-img"
-                          src="https://img.icons8.com/ios-glyphs/30/search--v1.png"
-                          alt="search--v1"
-                          @click="sendSearchData()"
-                        />
                       </div>
                     </div>
                   </div>
-                </div>
-                <!-- 정렬 순서 셀렉터 -->
-                <div>
-                  <select
-                    class="css-select001"
-                    v-model="selectedSortType"
-                    @change="updateSortType"
-                  >
-                    <option value="최신순">최신순</option>
-                    <option value="추천순">추천순</option>
-                    <option value="조회순">조회순</option>
-                    <option value="스크랩순">스크랩순</option>
-                    <option value="댓글순">댓글순</option>                  
-                  </select>
+                  <!-- 정렬 순서 셀렉터 -->
+                  <div class="css-select000">
+                    <select
+                      class="css-select001"
+                      v-model="selectedSortType"
+                      @change="updateSortType"
+                    >
+                      <option value="최신순">최신순</option>
+                      <option value="추천순">추천순</option>
+                      <option value="조회순">조회순</option>
+                      <option value="스크랩순">스크랩순</option>
+                      <option value="댓글순">댓글순</option>
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>
@@ -88,17 +88,19 @@
                   v-for="boards in boardStore.boardList"
                   :key="boards.boardIdx"
                 >
-                <CategoryBoardComponent :boards="boards" />
+                  <CategoryBoardComponent :boards="boards" />
                 </div>
               </ul>
             </div>
             <!-- /본격 글 리스트 -->
           </div>
-          <PaginationComponent 
+          <div class="d-flex justify-content-center py-0 py-md-4">
+          <PaginationComponent
             :current-page="boardStore.currentPage"
             :total-pages="boardStore.totalPages"
             @change-page="changePage"
           />
+          </div>
         </div>
       </div>
     </div>
@@ -114,7 +116,7 @@ import PaginationComponent from "@/components/PaginationComponent.vue";
 
 export default {
   name: "QnABoardListPage",
-  data(){
+  data() {
     return {
       selectedSortType: "최신순",
       sortType: 1,
@@ -122,7 +124,7 @@ export default {
       searchTerm: "",
     };
   },
-  computed:{
+  computed: {
     ...mapStores(useBoardStore),
     visiblePages() {
       // 최대 5개의 페이지 번호만 보이도록 계산
@@ -147,7 +149,7 @@ export default {
     HotTagComponent,
     PaginationComponent,
   },
-  mounted(){
+  mounted() {
     this.loadBoardList(1);
   },
   methods: {
@@ -176,10 +178,19 @@ export default {
     loadBoardList(page) {
       // 검색어가 있는 경우
       if (this.searchTerm) {
-        this.boardStore.getCategoryBoardListByQuery(this.boardCategoryIdx,this.searchTerm, this.sortType,page);
+        this.boardStore.getCategoryBoardListByQuery(
+          this.boardCategoryIdx,
+          this.searchTerm,
+          this.sortType,
+          page
+        );
       } else {
         // 검색어가 없는 경우
-        this.boardStore.findListByCategory(this.boardCategoryIdx, this.sortType, page);
+        this.boardStore.findListByCategory(
+          this.boardCategoryIdx,
+          this.sortType,
+          page
+        );
       }
     },
     sendSearchData() {
@@ -198,7 +209,7 @@ export default {
 
       this.boardStore.currentPage = nextPage;
     },
-  }
+  },
 };
 </script>
 
@@ -230,20 +241,22 @@ div {
   line-height: 1.5;
 }
 
+.css-1hnxdb7 {
+}
 .css-mbwamd {
   width: 100%;
   background-color: rgb(255, 255, 255);
 }
 
 .css-1b9to7p {
-  width: 942px;
+  width: 1100px;
   padding-top: 150px;
   padding-bottom: 100px;
   margin: 0px auto;
   display: flex;
   flex-direction: row;
   background-color: rgb(255, 255, 255);
-  gap: 60px;
+  gap: 80px;
 }
 
 .css-vsssfb {
@@ -251,7 +264,7 @@ div {
   flex-direction: column;
   gap: 32px;
   position: sticky;
-  top: 140px;
+  top: 258x;
   max-height: 490px;
   transition: all 0.4s ease 0s;
 }
@@ -383,18 +396,17 @@ div {
   gap: 4px;
   position: relative;
   padding-left: 16px;
-  margin-top: 5px;
+  margin-bottom: 10px;
 }
 .css-18vdxik {
   font-family: Pretendard;
   font-style: normal;
   font-weight: 600;
-  font-size: 36px;
+  font-size: 30px;
   line-height: 34px;
   color: #141617;
   line-height: 33px;
   color: #141617;
-  padding-bottom: 15px;
 }
 .css-1qzbd5x {
   font-family: Pretendard;
@@ -423,16 +435,10 @@ div {
   flex-direction: row;
   gap: 12px;
   padding: 12px 16px;
+  padding-right: 0px;
   margin-bottom: 20px;
   align-items: center;
   position: relative;
-}
-.css-ogh6wd {
-  display: flex;
-  flex-direction: row;
-  gap: 6px;
-  overflow-x: auto;
-  white-space: nowrap;
 }
 .css-1tttep5 {
   position: relative;
@@ -463,7 +469,7 @@ div {
 .css-ogh6wd {
   display: flex;
   flex-direction: row;
-  gap: 6px;
+  gap: 50px;
   overflow-x: auto;
   white-space: nowrap;
 }
@@ -602,7 +608,7 @@ svg:not(:root) {
   .css-aw1sgr {
     padding: 24px 0px;
     border-bottom: 1px solid rgb(228, 235, 240);
-    gap: 5px;
+    gap: 14px;
     cursor: pointer;
   }
 }
@@ -612,7 +618,7 @@ svg:not(:root) {
   width: 100%;
   padding: 24px 16px;
   background-color: rgb(255, 255, 255);
-  gap: 6px;
+  gap: 16px;
 }
 .css-amlmv6 {
   width: 100%;
@@ -659,7 +665,7 @@ svg:not(:root) {
   justify-content: space-between;
   -webkit-box-align: center;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
 }
 .css-12i5occ {
   display: flex;
@@ -759,6 +765,7 @@ svg:not(:root) {
   -webkit-box-align: center;
   align-items: center;
   height: 24px;
+  margin-right: 20px;
 }
 .css-1fhge30 {
   display: flex;
@@ -1127,11 +1134,11 @@ a {
 }
 
 /* li{
-    letter-spacing: -0.009em;
-    font-family: Pretendard;
-    line-height: 1.6;
-    list-style: none;
-} */
+      letter-spacing: -0.009em;
+      font-family: Pretendard;
+      line-height: 1.6;
+      list-style: none;
+  } */
 
 .css-li-001 {
   letter-spacing: -0.009em;
@@ -1147,15 +1154,169 @@ a {
 /* 스터디 포스트잇 끝 */
 
 /* 정렬 순서 셀렉터 */
+
 .css-select001 {
-  padding-left: 5px;
-  width: 80px;
+  padding-left: 10px;
+  width: 95px;
   font-size: 14px;
   height: 35px;
   font-family: Pretendard;
   border-radius: 5px;
   border: 1px solid rgb(227, 227, 227);
+  letter-spacing: 2px; /* 글자 간격 추가 */
 }
 
 /* 정렬 순서 끝 */
+
+.css-6ylcwl {
+  max-width: 942px;
+  width: 100%;
+  display: flex;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  align-items: center;
+  padding: 12px 16px;
+  background-color: rgb(255, 255, 255);
+  margin: 0px auto;
+}
+
+@media (min-width: 1024px) {
+  .css-6ylcwl {
+    padding: 10px 17px 30px;
+  }
+}
+.css-f7kuwm {
+  display: flex;
+  flex-direction: row;
+  -webkit-box-pack: start;
+  justify-content: flex-start;
+  -webkit-box-align: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.css-1o94c7r {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  gap: 30px;
+  background-color: #ffffff;
+}
+
+@media (min-width: 820px) {
+  .css-1o94c7r {
+    width: 100%;
+  }
+}
+
+.css-1kb98ja {
+  cursor: pointer;
+  display: flex;
+  gap: 4px;
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  color: rgb(20, 22, 23);
+  line-height: 18px;
+  -webkit-box-align: center;
+  align-items: center;
+}
+
+.css-1619ajl {
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 18px;
+  color: rgb(20, 22, 23);
+  border-bottom: 1px solid black;
+}
+
+@media (min-width: 820px) {
+  .css-1619ajl {
+    font-family: Pretendard;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 19.5px;
+    color: rgb(20, 22, 23);
+    border-bottom: 1px solid black;
+  }
+}
+
+.css-bewb21 {
+  cursor: pointer;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 4px;
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #141617;
+  line-height: 18px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: #3a3e41;
+}
+
+.css-1j5hzn7 {
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 18px;
+  color: #141617;
+  line-height: 18px;
+  color: #81898f;
+}
+
+@media (min-width: 820px) {
+  .css-1j5hzn7 {
+    font-family: Pretendard;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    color: #141617;
+    line-height: 19.5px;
+    color: #81898f;
+  }
+}
+.css-select000 {
+  padding-left: 5px;
+}
+.d-flex {
+  display: flex !important;
+}
+.justify-content-center {
+  justify-content: center !important;
+}
+@media (min-width: 768px) {
+  .pt-md-4,
+  .py-md-4 {
+    padding-top: 1.5rem !important;
+  }
+}
+@media (min-width: 768px) {
+  .pb-md-4,
+  .py-md-4 {
+    padding-bottom: 1.5rem !important;
+  }
+}
 </style>
