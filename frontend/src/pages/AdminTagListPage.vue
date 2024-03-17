@@ -82,9 +82,9 @@ export default {
       return pages;
     },
   },
-  mounted() {
+  async mounted() {
     this.$root.hideHeaderAndFooter = true;
-    this.tagStore.getTagList(1);
+    await this.tagStore.getTagList();
   },
   methods: {
     changePage(page) {
