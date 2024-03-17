@@ -9,7 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class GetBoardRes {
+public class GetReadBoardRes {
     private Integer idx;
 
     private Integer boardCategoryIdx;
@@ -19,8 +19,6 @@ public class GetBoardRes {
     private String boardContent;
 
     private String boardCategoryName;
-
-    private List<String> boardTagNameList;
 
     private Integer viewCnt;
 
@@ -34,7 +32,9 @@ public class GetBoardRes {
 
     private String updatedAt;
 
-    private List<String> boardImageList;
+    private List<GetListImageBoardRes> boardImageList;
+
+    private List<GetListCommentBoardRes> boardCommentList;
 
     private List<String> tagList;
 

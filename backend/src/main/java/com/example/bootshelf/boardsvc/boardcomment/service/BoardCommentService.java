@@ -102,6 +102,7 @@ public class BoardCommentService {
                 .boardIdx(boardComment.getBoard().getIdx())
                 .userIdx(boardComment.getUser().getIdx())
                 .nickName(boardComment.getUser().getNickName())
+                .profileImage(boardComment.getUser().getProfileImage())
                 .boardCommnetContent(boardComment.getCommentContent())
                 .upCnt(boardComment.getUpCnt())
                 .createAt(boardComment.getCreatedAt())

@@ -9,7 +9,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class GetBoardListResResult {
+public class GetListBoardResResult {
     private Long totalCnt;
     private Integer totalPages;
     private List<GetListBoardRes> list;
