@@ -207,13 +207,13 @@ public class ReviewService {
         reviewRepository.save(review);
 
         // 댓글 조회
-        List<GetListCommentReviewRes> getListCommentResListReview = new ArrayList<>();
+        List<GetListCommentReviewRes> getListCommentReviewResList = new ArrayList<>();
 
         for (ReviewComment reviewComment : review.getReviewCommentList()) {
 
             // 댓글이 최상위 댓글일 때만 처리
             if (reviewComment.getParent() == null) {
-                getListCommentResListReview.add(convertToCommentReviewRes(reviewComment));
+                getListCommentReviewResList.add(convertToCommentReviewRes(reviewComment));
             }
         }
 
@@ -246,12 +246,12 @@ public class ReviewService {
                 .commentCnt(review.getCommentCnt())
                 .updatedAt(review.getUpdatedAt())
                 .reviewImageList(getListImageReviewResList)
-                .reviewCommentList(getListCommentResListReview)
+                .reviewCommentList(getListCommentReviewResList)
                 .build();
 
         BaseRes baseRes = BaseRes.builder()
                 .isSuccess(true)
-                .message("후기글 목록 조회 요청 성공")
+                .message("후기글 상세 조회 요청 성공")
                 .result(getReadReviewRes)
                 .build();
 
@@ -394,6 +394,7 @@ public class ReviewService {
                     .reviewTitle(review.getReviewTitle())
                     .reviewContent(review.getReviewContent())
                     .courseName(review.getCourseName())
+                    .courseEvaluation(review.getCourseEvaluation())
                     .viewCnt(review.getViewCnt())
                     .upCnt(review.getUpCnt())
                     .scrapCnt(review.getScrapCnt())
