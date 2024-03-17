@@ -103,6 +103,7 @@ public class BoardCommentService {
                 .userIdx(boardComment.getUser().getIdx())
                 .nickName(boardComment.getUser().getNickName())
                 .boardCommnetContent(boardComment.getCommentContent())
+                .upCnt(boardComment.getUpCnt())
                 .createAt(boardComment.getCreatedAt())
                 .updateAt(boardComment.getUpdatedAt())
                 .build();

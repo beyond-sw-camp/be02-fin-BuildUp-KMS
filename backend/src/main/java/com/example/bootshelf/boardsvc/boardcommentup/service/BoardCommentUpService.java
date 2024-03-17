@@ -5,10 +5,12 @@ import com.example.bootshelf.boardsvc.boardcomment.model.entity.BoardComment;
 import com.example.bootshelf.boardsvc.boardcomment.repository.BoardCommentRepository;
 import com.example.bootshelf.boardsvc.boardcommentup.model.entity.BoardCommentUp;
 import com.example.bootshelf.boardsvc.boardcommentup.model.request.PostCreateBoardCommentUpReq;
+import com.example.bootshelf.boardsvc.boardcommentup.model.response.GetCheckBoardCommentUpRes;
 import com.example.bootshelf.boardsvc.boardcommentup.model.response.GetFindBoardCommentUpRes;
 import com.example.bootshelf.boardsvc.boardcommentup.model.response.PostCreateBoardCommentUpRes;
 import com.example.bootshelf.boardsvc.boardcommentup.repository.BoardCommentUpRepository;
 import com.example.bootshelf.boardsvc.boardup.model.entity.BoardUp;
+import com.example.bootshelf.boardsvc.boardup.model.response.GetCheckBoardUpRes;
 import com.example.bootshelf.boardsvc.boardup.model.response.GetFindBoardUpRes;
 import com.example.bootshelf.boardsvc.boardup.model.response.PostCreateBoardUpRes;
 import com.example.bootshelf.common.BaseRes;
@@ -65,6 +67,9 @@ public class BoardCommentUpService {
         BoardCommentUp boardCommentUp = BoardCommentUp.toEntity(user, req);
         boardCommentUp = boardCommentUpRepository.save(boardCommentUp);
 
+        boardComment.increaseUpCnt();
+        boardCommentRepository.save(boardComment);
+
         PostCreateBoardCommentUpRes res = PostCreateBoardCommentUpRes.toDto(boardCommentUp);
 
         return BaseRes.builder()
@@ -102,16 +107,40 @@ public class BoardCommentUpService {
     public BaseRes checkBoardCommentUp(User user, Integer boardCommentIdx) {
         BoardCommentUp boardCommentUpResult = boardCommentUpRepository.findByUserIdxAndBoardCommentIdx(user.getIdx(), boardCommentIdx);
         if (boardCommentUpResult != null) {
-            return BaseRes.builder()
-                    .isSuccess(true)
-                    .message("게시판 댓글 추천 여부 확인 성공")
-                    .result(true)
-                    .build();
+            if (boardCommentUpResult.getStatus().equals(true)) {
+                GetCheckBoardCommentUpRes res = GetCheckBoardCommentUpRes.builder()
+                        .boardCommentUpIdx(boardCommentUpResult.getIdx())
+                        .status(true)
+                        .build();
+
+                return BaseRes.builder()
+                        .isSuccess(true)
+                        .message("게시물 댓글 추천 여부 확인 성공")
+                        .result(res)
+                        .build();
+            } else {
+                GetCheckBoardCommentUpRes res = GetCheckBoardCommentUpRes.builder()
+                        .boardCommentUpIdx(boardCommentUpResult.getIdx())
+                        .status(false)
+                        .build();
+
+                return BaseRes.builder()
+                        .isSuccess(true)
+                        .message("게시물 댓글 추천 여부 확인 성공")
+                        .result(res)
+                        .build();
+            }
+
         } else {
+
+            GetCheckBoardCommentUpRes res2 = GetCheckBoardCommentUpRes.builder()
+                    .status(false)
+                    .build();
+
             return BaseRes.builder()
                     .isSuccess(true)
-                    .message("게시판 댓글 추천 여부 확인 성공")
-                    .result(false)
+                    .message("게시물 댓글 추천 이력 존재 x")
+                    .result(res2)
                     .build();
         }
     }
