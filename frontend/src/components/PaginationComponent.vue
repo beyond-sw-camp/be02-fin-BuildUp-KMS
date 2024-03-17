@@ -5,8 +5,10 @@
       <li class="page-item" :class="{ disabled: currentPage <= 1 }">
         <button @click.prevent="currentPage > 1 && $emit('change-page', currentPage - 1)" class="page-link">
           <!-- 이전 아이콘 -->
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left"
+            viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+              d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z" />
           </svg>
         </button>
       </li>
@@ -40,8 +42,10 @@
       <li class="page-item" :class="{ disabled: currentPage >= totalPages }">
         <button @click.prevent="currentPage < totalPages && $emit('change-page', currentPage + 1)" class="page-link">
           <!-- 다음 아이콘 -->
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right"
+            viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+              d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
           </svg>
         </button>
       </li>
@@ -58,24 +62,35 @@ export default {
   },
   computed: {
     visiblePages() {
+      // 총 페이지가 1페이지뿐인 경우에는 빈 배열을 반환하여 중복을 방지
+      if (this.totalPages === 1) {
+        return [];
+      }
+
       let pages = [];
+      // 첫 페이지와 마지막 페이지 번호를 제외하고 계산 시작
       let start = Math.max(this.currentPage - 1, 2);
-      let end = Math.min(start + 1, this.totalPages - 1);
+      let end = Math.min(start + 2, this.totalPages - 1);
 
-      if (this.currentPage - 1 > 2) {
-        start = Math.max(this.currentPage - 1, 2);
+      // 현재 페이지가 첫 페이지나 마지막 페이지 근처일 때 로직 조정
+      if (this.currentPage === 1 || this.currentPage === 2) {
+        start = 2; // 첫 페이지 다음 번호부터 시작
       }
-      if (this.totalPages - this.currentPage > 2) {
-        end = Math.min(this.currentPage + 1, this.totalPages - 1);
+      if (this.currentPage === this.totalPages || this.currentPage === this.totalPages - 1) {
+        end = this.totalPages - 1; // 마지막 페이지 이전 번호까지 포함
       }
 
+      // 첫 페이지와 마지막 페이지 번호를 중복 추가하지 않도록 필터링
       for (let i = start; i <= end; i++) {
-        pages.push(i);
+        if (i !== 1 && i !== this.totalPages) {
+          pages.push(i);
+        }
       }
 
       return pages;
     },
-  },
+  }
+
 };
 </script>
 
@@ -101,6 +116,7 @@ export default {
 }
 
 @media (min-width: 768px) {
+
   .pt-md-4,
   .py-md-4 {
     padding-top: 1.5rem !important;
@@ -108,6 +124,7 @@ export default {
 }
 
 @media (min-width: 768px) {
+
   .pb-md-4,
   .py-md-4 {
     padding-bottom: 1.5rem !important;
@@ -214,8 +231,7 @@ select {
   --bs-btn-hover-border-color: transparent;
   --bs-btn-box-shadow: none;
   --bs-btn-disabled-opacity: 0.65;
-  --bs-btn-focus-box-shadow: 0 0 0 0.05rem
-    rgba(var(--bs-btn-focus-shadow-rgb), 0.5);
+  --bs-btn-focus-box-shadow: 0 0 0 0.05rem rgba(var(--bs-btn-focus-shadow-rgb), 0.5);
   display: inline-block;
   padding: var(--bs-btn-padding-y) var(--bs-btn-padding-x);
   font-family: var(--bs-btn-font-family);
@@ -242,8 +258,7 @@ select {
   font-size: var(--bs-pagination-font-size);
   color: var(--bs-pagination-color);
   background-color: var(--bs-pagination-bg);
-  border: var(--bs-pagination-border-width) solid
-    var(--bs-pagination-border-color);
+  border: var(--bs-pagination-border-width) solid var(--bs-pagination-border-color);
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
     border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
@@ -256,7 +271,7 @@ select {
 }
 
 .page-link,
-.page-link > a {
+.page-link>a {
   border-radius: 0.375rem;
   line-height: 1;
   text-align: center;
@@ -388,9 +403,9 @@ svg {
 .page-item.active .page-link,
 .page-item.active .page-link:hover,
 .page-item.active .page-link:focus,
-.pagination li.active > a:not(.page-link),
-.pagination li.active > a:not(.page-link):hover,
-.pagination li.active > a:not(.page-link):focus {
+.pagination li.active>a:not(.page-link),
+.pagination li.active>a:not(.page-link):hover,
+.pagination li.active>a:not(.page-link):focus {
   border-color: #696cff;
   background-color: #541d7a;
   color: #fff;

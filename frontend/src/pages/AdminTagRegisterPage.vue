@@ -6,7 +6,7 @@
             <div class="layout-page">
                 <div class="content-wrapper">
                     <!-- Content -->
-                    <AdminRegisterComponent category-name="태그" />
+                    <AdminRegisterComponent category-name="태그" :submit-action="createTag" />
                     <div class="content-backdrop fade"></div>
                 </div>
             </div>
@@ -18,7 +18,8 @@
 import AdminMenuComponent from "@/components/AdminMenuComponent.vue";
 import AdminRegisterComponent from "@/components/AdminRegisterComponent.vue";
 import { mapStores } from "pinia";
-import { useAdminStore } from "@/stores/useAdminStore";
+import { useTagStore } from "@/stores/useTagStore";
+import { useRouter } from 'vue-router';
 
 export default {
     name: "AdminTagRegisterPage",
@@ -30,7 +31,23 @@ export default {
         this.$root.hideHeaderAndFooter = true;
     },
     computed: {
-        ...mapStores(useAdminStore),
+        ...mapStores(useTagStore),
+    },
+    setup() {
+        const tagStore = useTagStore();
+        const router = useRouter();
+
+        const createTag = async (tagName) => {
+            try {
+                await tagStore.createTag(tagName);
+                alert(`${tagName} 생성 완료!`);
+                router.push("/admin/tag");
+            } catch (e) {
+                console.error(e);
+                throw e;
+            }
+        };
+        return { createTag };
     },
 };
 </script>
@@ -342,7 +359,7 @@ html:not(.layout-footer-fixed) .content-wrapper {
     border: var(--bs-btn-border-width) solid var(--bs-btn-border-color);
     border-radius: var(--bs-btn-border-radius);
     transition: all 0.2s ease-in-out;
-    
+
 }
 
 button,
