@@ -8,7 +8,7 @@ export const useReviewCommentStore = defineStore("reviewComment", {
   state: () => ({
     reviewCommentList: [],
     reviewReplyList: [],
-    reviewCommentUpList:[]
+    reviewCommentUpList:[],
   }),
   actions: {
     // 댓글 조회
@@ -107,6 +107,28 @@ export const useReviewCommentStore = defineStore("reviewComment", {
       }
     },
 
+    //  대댓글 작성
+    async createReviewReply(reviewReplyContent,reviewIdx, reviewCommentIdx) {
+      try {
+        const response = await axios.post(
+          backend + `/review/${reviewIdx}/comment/create/${reviewCommentIdx}`,
+          { reviewReplyContent: reviewReplyContent },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log(response);
+        console.log("게시판 대댓글 작성 성공");
+        window.location.href = `http://localhost:8081/review/${reviewIdx}`;
+      } catch (error) {
+        console.error("ERROR : ", error);
+      }
+    },
+
+
     // 댓글 추천
     async reviewRecommend(commentIdx) {
       try {
@@ -148,4 +170,6 @@ export const useReviewCommentStore = defineStore("reviewComment", {
       }
     },
   },
+
+
 });
