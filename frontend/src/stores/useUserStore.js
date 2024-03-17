@@ -67,7 +67,7 @@ export const useUserStore = defineStore("user", {
           this.logout();
         } else {
           this.isAuthenticated = true;
-          this.decodedToken = decoded;
+          this.decodedToken = decodeURIComponent(escape(decoded));
         }
       }
     },

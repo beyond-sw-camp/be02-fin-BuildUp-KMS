@@ -37,7 +37,7 @@ export default {
 }
 .css-fortagcomponentgms{
   display: flex;
-  gap: 3px;
+  gap: 10px;
   min-height: 22px;
 }
 </style>

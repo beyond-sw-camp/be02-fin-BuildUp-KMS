@@ -157,7 +157,7 @@
               </div>
               <div class="css-iqys2n">
                 <!-- 태그 컴포넌트 자리-->
-                <TagComponent></TagComponent>
+                <TagComponent :tagNameList="boardDetail.tagList" />
               </div>
             </div>
             <div class="css-1k90lkz">
@@ -263,7 +263,7 @@ export default {
     };
   },
   computed: {
-    ...mapStores(useBoardStore, useBoardCommentStore, useUserStore),
+    ...mapStores(useBoardStore, useBoardCommentStore, useUserStore, ["tagList"]),
     isLoggedIn() {
       return !!localStorage.getItem("token");
     },
