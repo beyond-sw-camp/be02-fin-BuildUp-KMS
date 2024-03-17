@@ -2,7 +2,6 @@ import { defineStore } from "pinia";
 import axios from "axios";
 
 const backend = "http://localhost:8080";
-const storedToken = localStorage.getItem("token");
 
 export const useTagStore = defineStore("tag", {
   state: () => ({
@@ -14,20 +13,14 @@ export const useTagStore = defineStore("tag", {
   actions: {
     async getTagList(page = 1) {
       try {
-        const params = new URLSearchParams({
-          page: page - 1,
-        }).toString();
-
-        let response = await axios.get(backend + `/tag/list/?${params}`, {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-          },
-        });
+        let response = await axios.get(backend + "/admin/tag/list?page=" + (page - 1));
 
         this.tagList = response.data.result.list;
         this.totalPages = response.data.result.totalPages;
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
+
+        console.log(response);
       } catch (e) {
         console.log(e);
       }
