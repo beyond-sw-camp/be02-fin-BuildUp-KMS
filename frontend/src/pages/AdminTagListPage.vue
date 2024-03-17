@@ -4,13 +4,12 @@
       <!-- Menu and Navbar components are inserted here, ensuring proper layout structure -->
       <AdminMenuComponent />
       <div class="layout-page">
-        <AdminNavComponent />
         <div class="content-wrapper">
           <!-- Content -->
           <div class="container-xxl flex-grow-1 container-p-y">
-            <h4 class="py-3 mb-4">
+            <h3 class="py-3 mb-4">
               <span class="text-muted fw-light">태그 /</span> 목록
-            </h4>
+            </h3>
 
             <!-- 회원 목록 -->
             <div class="card">
@@ -53,19 +52,18 @@ import { mapStores } from "pinia";
 import { useTagStore } from "../stores/useTagStore";
 import AdminTagListComponent from "@/components/AdminTagListComponent.vue";
 import AdminMenuComponent from "@/components/AdminMenuComponent.vue";
-import AdminNavComponent from "@/components/AdminNavComponent.vue";
 import PaginationComponent from "@/components/PaginationComponent.vue";
+import { useAdminStore } from "@/stores/useAdminStore";
 
 export default {
   name: "AdminTagListPage",
   components: {
     AdminMenuComponent,
-    AdminNavComponent,
     AdminTagListComponent,
     PaginationComponent,
   },
   computed: {
-    ...mapStores(useTagStore),
+    ...mapStores(useTagStore, useAdminStore),
     visiblePages() {
       // 최대 5개의 페이지 번호만 보이도록 계산
       let pages = [];
