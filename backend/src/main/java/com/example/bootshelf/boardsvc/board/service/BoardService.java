@@ -234,6 +234,7 @@ public class BoardService {
                     .scrapCnt(board.getScrapCnt())
                     .commentCnt(board.getCommentCnt())
                     .createdAt(board.getCreatedAt())
+                    .updatedAt(board.getUpdatedAt())
                     .build();
 
             List<BoardImage> boardImageList = board.getBoardImageList();
@@ -284,6 +285,7 @@ public class BoardService {
                     .scrapCnt(board.getScrapCnt())
                     .commentCnt(board.getCommentCnt())
                     .createdAt(board.getCreatedAt())
+                    .updatedAt(board.getUpdatedAt())
                     .build();
 
             List<BoardImage> boardImageList = board.getBoardImageList();
@@ -345,6 +347,7 @@ public class BoardService {
                     .scrapCnt(board.getScrapCnt())
                     .commentCnt(board.getCommentCnt())
                     .createdAt(board.getCreatedAt())
+                    .updatedAt(board.getUpdatedAt())
                     .build();
 
             List<BoardImage> boardImageList = board.getBoardImageList();
@@ -425,6 +428,7 @@ public class BoardService {
                     .boardContent(board.getBoardContent())
                     .nickName(board.getUser().getNickName())
                     .createdAt(board.getCreatedAt())
+                    .updatedAt(board.getUpdatedAt())
                     .viewCnt(board.getViewCnt())
                     .commentCnt(board.getCommentCnt())
                     .upCnt(board.getUpCnt())
