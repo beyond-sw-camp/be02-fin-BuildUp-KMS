@@ -303,12 +303,7 @@ export default {
   },
   methods: {
     goBack() {
-      if (this.boardStore.previousPath) {
-        this.$router.push(this.boardStore.previousPath);
-      } else {
-        // 기본 경로로 돌아가기
-        this.$router.push("/board/knowledge");
-      }
+        this.$router.go(-1);
     },
     async submitComment() {
       let isAuthenticated = this.userStore.isAuthenticated;
