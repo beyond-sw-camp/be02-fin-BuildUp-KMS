@@ -128,7 +128,7 @@
               </div>
               <div class="css-qzobjv">
                 <!-- 댓글 컴포넌트 -->
-                <CommentComponent :commentList="commentList" />
+                <CommentComponent :commentList="commentList" :isCommentRecommended="isCommentRecommended" :boardCommentIdx="boardCommentIdx"  />
                 <div class="css-jpe6jj">
                   <div class="css-3o2y5e">
                     <div width="36px" height="36px" class="css-jg5tbe">
@@ -187,7 +187,7 @@ export default {
       isRecommended: false,
       isScrapped: false,
       boardUpIdx: null,
-      boardScrapIdx: null
+      boardScrapIdx: null,
     };
   },
   computed: {
@@ -257,7 +257,7 @@ export default {
           await this.boardStore.cancelBoardScrap(token, this.boardScrapIdx);
           console.log("게시글 스크랩 취소 성공");
           this.isScrapped = false;
-          
+
           window.location.reload();
         } else {
           const response = await this.boardStore.createBoardScrap(token, requestBody);

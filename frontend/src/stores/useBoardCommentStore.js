@@ -26,7 +26,7 @@ export const useBoardCommentStore = defineStore({
       try {
         console.log(token);
         const response = await axios.post(
-        backend + `/board/${boardIdx}/comment/create`,
+          backend + `/board/${boardIdx}/comment/create`,
           { boardCommentContent: boardCommentContent },
           {
             headers: {
@@ -106,14 +106,71 @@ export const useBoardCommentStore = defineStore({
     async getBoardCommentList(boardIdx) {
       try {
         let response = await axios.get(`${backend}/board/${boardIdx}/comment`);
-        console.log(response);
         this.commentList = response.data.result;
 
         console.log(this.commentList);
+
+        for (let comment of this.commentList) {
+          let checkResponse = await this.checkBoardCommentUp(token, comment.idx);
+          if (checkResponse.data && checkResponse.data.result) {
+            comment.isCommentRecommended = checkResponse.data.result.status;
+          } else {
+            comment.isCommentRecommended = false;
+          }
+        }
 
       } catch (error) {
         console.error(error);
       }
     },
+
+    async createBoardCommentUp(token, requestBody) {
+      try {
+        let response = await axios.post(backend + "/boardcomment/up/create", requestBody, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          }
+        })
+        return response;
+
+      } catch (e) {
+        console.error("게시글 댓글 추천 실패");
+        throw e;
+      }
+    },
+
+    async checkBoardCommentUp(token, boardCommentIdx) {
+      try {
+        let response = await axios.get(`${backend}/boardcomment/check/${boardCommentIdx}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log(response);
+
+        this.isCommentRecommend = response.data.result.status;
+
+        return response;
+      } catch (e) {
+        console.error(e);
+        throw e;
+      }
+    },
+
+    async cancelBoardCommentUp(token, boardCommentIdx) {
+      try {
+        let response = await axios.patch(`${backend}/boardcomment/delete/${boardCommentIdx}`, {}, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+          },
+        });
+        console.log(response);
+      } catch (e) {
+        console.error(e);
+        throw e;
+      }
+    }
   },
 });
