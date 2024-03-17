@@ -1,20 +1,19 @@
 <template>
   <!-- 스터디 게시글 컴포넌트 -->
-  <li class="css-li-001">
     <a class="css-1myomkm epbh2v50" href="#">
       <h2 aria-description="글 제목">
         <span
-          >신대방삼거리역 근처 스터디 모집합니다. 백엔드 개발자 필요합니다.
+          >{{ boards.boardTitle }}
         </span>
       </h2>
       <h3 aria-description="글 내용">
-        프론트 개발자 2명 모집합니다. 현재 백엔드 개발자 2명 있습니다. 함께
-        아이템 선정부터 개발, 기획 모두 함께해요 많이 연락주세요!
+        {{ boards.boardContent }}
       </h3>
+      <TagComponent :tagNameList="boards.tagNameList" />
       <div class="css-k57yxr epbh2v51">
         <img
           alt="닉네임입니당 프로필 이미지"
-          src="https://d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/560/8f741dd9ca7ceff5d6c856ba4ae861e7_res.jpeg"
+          :src="boards.userProfileImage"
           width="20"
           height="20"
           decoding="async"
@@ -24,13 +23,29 @@
         />
         <p>
           <span aria-description="유저 닉네임" class="css-1bf50wt epbh2v52"
-            >닉네임입니당</span
+            >{{ boards.nickName }}</span
           ><span aria-description="글 생성일" class="css-1mmbkao epbh2v53"
-            >2024-03-07</span
+            >{{ boards.updatedAt }}</span
           >
         </p>
       </div>
       <ul class="css-1k3qs23 epbh2v54">
+        <li aria-description="댓글수" class="css-17j46fn epbh2v55">
+          <img
+            width="10px"
+            height="10px"
+            src="../assets/img/comment-icon.png"
+            alt="chat--v1"
+          />{{ boards.commentCnt }}
+        </li>
+        <li aria-description="좋아요수" class="css-17j46fn epbh2v55">
+          <img
+            width="14px"
+            height="14px"
+            src="../assets/img/like-icon.png"
+            alt="facebook-like"
+          />{{ boards.upCnt }}
+        </li>
         <li aria-description="조회수" class="css-17j46fn epbh2v55">
           <img
             width="10px"
@@ -38,34 +53,22 @@
             src="../assets/img/eye-icon.png"
             alt="visible--v1"
             style="color: grey"
-          />1
-        </li>
-        <li aria-description="댓글수" class="css-17j46fn epbh2v55">
-          <img
-            width="10px"
-            height="10px"
-            src="../assets/img/eye-icon.png"
-            alt="chat--v1"
-          />1
-        </li>
-        <li aria-description="좋아요수" class="css-17j46fn epbh2v55">
-          <img
-            width="14px"
-            height="14px"
-            src="../assets/img/eye-icon.png"
-            alt="facebook-like"
-          />1
+          />{{ boards.viewCnt }}
         </li>
       </ul>
     </a>
-  </li>
-
   <!-- / 스터디 게시글 컴포넌트 -->
 </template>
 
 <script>
+import TagComponent from "@/components/TagComponent.vue";
+
 export default {
   name: "StudyBoardComponent",
+  props: ["boards"],
+  components: {
+    TagComponent,
+  },
 };
 </script>
 
@@ -317,4 +320,5 @@ a {
   border: 2px solid rgb(84, 29, 112, 0.3);
   border-radius: 20px;
 }
+
 </style>

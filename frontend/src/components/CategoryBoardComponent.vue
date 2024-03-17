@@ -643,7 +643,8 @@ a:hover {
 
 .css-fortagcomponentgms {
   display: flex;
-  gap: 3px;
+  gap: 10px;
+  padding-top: 10px;
 }
 .css-17s6wd5 {
   width: 92px;
