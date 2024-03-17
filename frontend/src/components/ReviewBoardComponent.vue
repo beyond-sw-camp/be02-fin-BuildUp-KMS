@@ -92,6 +92,11 @@
               {{ reviews.courseName }}
             </div>
           </div>
+          <div class="css-5zcuovss">
+                <div class="css-1sika4iss">
+                  평점 : {{ reviews.courseEvaluation }} 점
+                </div>
+              </div>
         </div>
         <!-- 여기서부터 추천수 댓글수 등등 표시-->
         <div class="css-o01lup">
@@ -467,7 +472,35 @@ export default {
   line-height: 18px;
   color: rgb(58, 62, 65);
 }
+.css-5zcuovss {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  gap: 4px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin-left: 20px;
+  font-family: Pretendard;
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: rgb(0 64 255 / 22%);;
+  padding: 3px 10px;
+}
 .css-1sika4is {
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 18px;
+  color: rgb(58, 62, 65);
+}
+.css-1sika4iss {
   font-family: Pretendard;
   font-style: normal;
   font-weight: bold;

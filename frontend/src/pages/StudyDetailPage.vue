@@ -179,7 +179,7 @@
               </div>
               <div class="css-qzobjv">
                 <!-- 댓글 컴포넌트 -->
-                <CommentComponent
+                <BoardCommentComponent
                   :commentList="commentList"
                   :isCommentRecommended="isCommentRecommended"
                   :boardCommentIdx="boardCommentIdx"
@@ -226,8 +226,8 @@
 </template>
 
 <script>
-import CommentComponent from "../components/CommentComponent.vue";
-import TagComponent from "../components/TagComponent.vue";
+import BoardCommentComponent from "@/components/BoardCommentComponent.vue";
+import TagComponent from "@/components/TagComponent.vue";
 import { useBoardCommentStore } from "../stores/useBoardCommentStore";
 import { useBoardStore } from "@/stores/useBoardStore";
 import { useUserStore } from "@/stores/useUserStore";
@@ -237,7 +237,7 @@ import ConfirmDialogComponent from "/src/components/ConfirmDialogComponent.vue";
 export default {
   name: "StudyDetailPage",
   components: {
-    CommentComponent,
+    BoardCommentComponent,
     TagComponent,
     ConfirmDialogComponent,
   },
