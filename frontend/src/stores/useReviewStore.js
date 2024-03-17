@@ -7,7 +7,6 @@ const storedToken = localStorage.getItem("token");
 export const useReviewStore = defineStore("review", {
   state: () => ({
     reviewList: [],
-    isOrderExist: true,
     review: "",
     currentPage: 0,
     totalPages: 0,

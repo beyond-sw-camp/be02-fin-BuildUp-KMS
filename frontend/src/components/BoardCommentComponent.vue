@@ -15,39 +15,47 @@
           <div class="css-emxp16">{{ comment.createAt }}</div>
         </div>
         <div class="css-dyzp2y-001">
-          <div class="css-emxp17">수정</div>
+          <div class="css-emxp17" @click="toggleEditMode(comment)">수정</div>
           <div class="css-emxp17" @click="deleteComment(comment.idx)">삭제</div>
         </div>
         <div @click="toggleRecommendation(comment)">
-          <img width="23px" height="23px"
+          <img width="20px" height="20px"
             :src="isCommentRecommended ? require('../assets/img/up_ok.png') : require('../assets/img/up.png')"
-            alt="facebook-like" />
+            alt="facebook-like"/>
           <p style="font-size: 10px; text-align: center">{{ comment.upCnt }}</p>
         </div>
       </div>
       <div class="editedCommentContent">
-        <input type="text" class="css-comment" v-model="updateComment">
-        <p>{{ comment.boardCommnetContent }}</p>
+        <input class="css-comment" type="text" v-model="updateComment" :placeholder="comment.boardCommnetContent" :readonly="!comment.editMode">
       </div>
       <div clas="css-btn">
-        <p class="css-reply">대댓글쓰기</p>
-        <button class="css-update" @click="saveComment(comment.idx)">저장</button>
+        <p class="css-reply"  v-if="!comment.editMode">대댓글쓰기</p>
+        <button class="css-update"  v-if="comment.editMode" @click="saveComment(comment.idx)">저장</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapStores } from "pinia";
 import { useBoardCommentStore } from '@/stores/useBoardCommentStore';
-// import VueJwtDecode from "vue-jwt-decode";
+import { useBoardStore } from '@/stores/useBoardStore';
+import VueJwtDecode from "vue-jwt-decode";
 
 export default {
   name: "CommentComponent",
+  computed: {
+    ...mapStores(useBoardCommentStore, useBoardStore),
+  },
   props: {
     commentList: {
       type: Array,
       required: true
     },
+    boardIdx: {
+      type: Number,
+      required: true
+    }
   },
   data() {
     return {
@@ -63,8 +71,7 @@ export default {
   methods: {
     async saveComment(commentIdx) {
       try {
-        await useBoardCommentStore().updateBoardComment(this.updateComment, commentIdx);
-        // 댓글 생성 후 필요한 작업 작성
+        await this.boardCommentStore.updateBoardComment(this.updateComment, commentIdx, this.boardIdx);
       } catch (error) {
         console.error('댓글 작성 실패:', error);
       }
@@ -72,44 +79,71 @@ export default {
 
     async deleteComment(commentIdx) {
       try {
-        await useBoardCommentStore().deleteBoardComment(commentIdx);
-        // 댓글 생성 후 필요한 작업 작성
+        await this.boardCommentStore.deleteBoardComment(commentIdx, this.boardIdx);
       } catch (error) {
         console.error('댓글 삭제 실패:', error);
       }
     },
 
-    async toggleRecommendation(comment) {
-      await this.createBoardCommentUp(comment.idx);
-      comment.isCommentRecommended = !comment.isCommentRecommended;
+    showBtn(commentUserIdx) {
+      let token = localStorage.getItem("token");
+      if (!token) return false; // 토큰이 없으면 버튼을 보이지 않음
+      let decodedToken = VueJwtDecode.decode(token).idx;
+      return commentUserIdx === decodedToken;
     },
 
-    async createBoardCommentUp(comment) {
-      let token = window.localStorage.getItem("token");
-      let requestBody = {
-        boardCommentIdx: comment.idx
-      };
+    toggleEditMode(comment) {
+      // 수정 모드를 전환
+      comment.editMode = !comment.editMode;
+      // 수정 모드가 활성화되면 편집 상자에 원래 댓글 내용을 설정
+      if (comment.editMode) {
+        comment.updatedContent = comment.boardCommnetContent;
+      }
+    },
 
+    async toggleRecommendation(comment) {
+    try {
+      await this.createBoardCommentUp(comment.idx);
+      console.log('댓글이 성공적으로 추천되었습니다.');
+    } catch (error) {
+      console.error('댓글 추천 실패:', error);
+    }
+  },
+
+    // async createBoardCommentUp(comment) {
+    //   let token = window.localStorage.getItem("token");
+    //   let requestBody = {
+    //     boardCommentIdx: comment.idx
+    //   };
+
+    //   try {
+    //     if (this.isCommentRecommended) {
+    //       await this.boardCommentStore.cancelBoardCommentUp(token, comment.idx);
+    //       console.log("게시글 댓글 추천 취소 성공");
+    //       comment.isCommentRecommended = false;
+
+    //       window.location.reload();
+    //     } else {
+    //       const response = await this.boardCommentStore.createBoardCommentUp(token, requestBody);
+
+    //       if (response.status === 200 && response.data) {
+    //         console.log("게시글 댓글 추천 성공!");
+    //         this.isCommentRecommended = true;
+    //       } else {
+    //         console.error("게시글 댓글 추천 실패");
+    //         alert("게시글 댓글 추천 실패");
+    //       }
+    //     }
+    //   } catch (e) {
+    //     console.error("게시글 댓글 추천 과정에서 문제가 발생했습니다!", e);
+    //   }
+    // },
+
+    async createBoardCommentUp(commentIdx) {
       try {
-        if (this.isCommentRecommended) {
-          await this.boardCommentStore.cancelBoardCommentUp(token, comment.idx);
-          console.log("게시글 댓글 추천 취소 성공");
-          comment.isCommentRecommended = false;
-
-          window.location.reload();
-        } else {
-          const response = await this.boardCommentStore.createBoardCommentUp(token, requestBody);
-
-          if (response.status === 200 && response.data) {
-            console.log("게시글 댓글 추천 성공!");
-            this.isCommentRecommended = true;
-          } else {
-            console.error("게시글 댓글 추천 실패");
-            alert("게시글 댓글 추천 실패");
-          }
-        }
-      } catch (e) {
-        console.error("게시글 댓글 추천 과정에서 문제가 발생했습니다!", e);
+        await this.boardCommentStore.createBoardCommentUp(commentIdx);
+      } catch (error) {
+        console.error('댓글 삭제 실패:', error);
       }
     },
 
@@ -136,6 +170,13 @@ export default {
 
 
 <style scoped>
+input{
+  border: none;
+  background-color: #f4f5f6;
+  outline: none;
+  color: black;
+}
+
 .css-update {
   background-color: rgb(52, 152, 219, 0.2);
   font-size: 12px;
@@ -210,8 +251,8 @@ html {
 }
 
 .css-jg5tbe {
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   border: solid 1px #adb5bd;
   background-color: #f1f1f1;
   border-radius: 100px;

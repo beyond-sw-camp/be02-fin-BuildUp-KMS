@@ -19,11 +19,14 @@ import NoticeBoardListPage from "@/pages/NoticeBoardListPage.vue";
 import KakaoLogIn from "@/pages/KakaoLogIn.vue";
 import KnowledgeBoardListPage from "@/pages/KnowledgeBoardListPage.vue";
 import QnABoardListPage from "@/pages/QnABoardListPage.vue";
+import BoardUpdatePage from "@/pages/BoardUpdatePage.vue";
+import StudyDetailPage from "@/pages/StudyDetailPage.vue";
+import HotListPage from "@/pages/HotListPage.vue";
 
 import AdminMainPage from "@/pages/AdminMainPage.vue";
 import AdminWithdrawPage from "@/pages/AdminWithdrawPage.vue";
 import AdminBoardCategoryRegisterPage from "@/pages/AdminBoardCategoryRegisterPage.vue";
-import AdminReviewCategoryRegisterPage from "@/pages/AdminReviewCategoryRegisterPage.vue";
+// import AdminReviewCategoryRegisterPage from "@/pages/AdminReviewCategoryRegisterPage.vue";
 import AdminTagRegisterPage from "@/pages/AdminTagRegisterPage.vue";
 import AdminBoardCategoryListPage from "@/pages/AdminBoardCategoryListPage.vue";
 import AdminReviewCategoryListPage from "@/pages/AdminReviewCategoryListPage.vue";
@@ -96,13 +99,16 @@ const routes = [
   { path: "/board/knowledge", component: KnowledgeBoardListPage },
   { path: "/board/qna", component: QnABoardListPage },
   { path: "/review", component: ReviewListPage },
+  { path: "/hot", component: HotListPage },
   { path: "/select/signup", component: SelectSignupPage },
   { path: "/email/verify", component: EmailValidationPage },
   { path: "/notice", component: NoticeBoardListPage },
+  { path: "/board/mywrite/:boardIdx", component: BoardUpdatePage},
+  { path: "/study/detail/:boardIdx", component: StudyDetailPage},
   { path: "/admin", component: AdminMainPage, beforeEnter: requireAdminAuth() },
   { path: "/admin/withdraw", component: AdminWithdrawPage, beforeEnter: requireAdminAuth() },
   { path: "/admin/board/category/register", component: AdminBoardCategoryRegisterPage, beforeEnter: requireAdminAuth() },
-  { path: "/admin/review/category/register", component: AdminReviewCategoryRegisterPage, beforeEnter: requireAdminAuth() },
+  // { path: "/admin/review/category/register", component: AdminReviewCategoryRegisterPage, beforeEnter: requireAdminAuth() },
   { path: "/admin/tag/register", component: AdminTagRegisterPage, beforeEnter: requireAdminAuth() },
   { path: "/admin/board/category", component: AdminBoardCategoryListPage, beforeEnter: requireAdminAuth() },
   { path: "/admin/review/category", component: AdminReviewCategoryListPage, beforeEnter: requireAdminAuth() },
@@ -110,7 +116,6 @@ const routes = [
   { path: "/admin/user", component: AdminUserListPage, beforeEnter: requireAdminAuth() },
   { path: "/admin/signup", component: AdminSignUpPage },
   { path: "/admin/login", component: AdminLoginPage },
-
 ];
 
 const router = createRouter({

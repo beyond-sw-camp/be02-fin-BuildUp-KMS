@@ -12,6 +12,8 @@ import java.util.List;
 public class GetBoardRes {
     private Integer idx;
 
+    private Integer boardCategoryIdx;
+
     private String boardTitle;
 
     private String boardContent;
@@ -34,7 +36,9 @@ public class GetBoardRes {
 
     private List<String> boardImageList;
 
+    private List<String> tagList;
+
     private String userProfileImage;
 
-    private String userName;
+    private String nickName;
 }

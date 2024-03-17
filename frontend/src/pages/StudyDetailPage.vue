@@ -1,5 +1,4 @@
 <template>
-  <!-- 내 코드 -->
   <div class="css-1hnxdb7">
     <div class="css-130kwtj">
       <div class="css-1hwcs2h"></div>
@@ -11,21 +10,19 @@
           <div class="css-1yuvfju">
             <div class="css-k59gj9">
               <div class="css-hmpurq">
-                <div class="css-category">
-                  {{ reviewStore.review.reviewCategoryName }}
-                </div>
+                <div class="css-category">스터디</div>
                 <div class="css-kem115">
                   <div class="css-12i5occ">
                     <div class="css-1jibmi3">
                       <div class="css-n7izk0">
-                        {{ reviewStore.review.reviewTitle }}
+                        {{ boardStore.boardDetail.boardTitle }}
                       </div>
                     </div>
                     <div class="css-sebsp7"></div>
                   </div>
                   <div class="css-bt1qy">
                     <div class="css-1hqtm5a">
-                      <div @click="createReviewUp()">
+                      <div @click="createBoardUp()">
                         <img
                           width="23px"
                           height="23px"
@@ -37,13 +34,13 @@
                           alt="facebook-like"
                         />
                         <p style="font-size: 10px; text-align: center">
-                          {{ reviewStore.review.upCnt }}
+                          {{ boardStore.boardDetail.upCnt }}
                         </p>
                       </div>
                     </div>
 
                     <div class="css-1hqtm5a">
-                      <div @click="createReviewScrap()">
+                      <div @click="createBoardScrap()">
                         <img
                           width="23px"
                           height="23px"
@@ -58,7 +55,7 @@
                           class="css-scrap"
                           style="font-size: 10px; text-align: center"
                         >
-                          {{ reviewStore.review.scrapCnt }}
+                          {{ boardStore.boardDetail.scrapCnt }}
                         </p>
                       </div>
                     </div>
@@ -91,7 +88,7 @@
                         "
                         ><img
                           sizes="100vw"
-                          :src="reviewStore.review.profileImage"
+                          src="https://blog.kakaocdn.net/dn/5UYz8/btq4diRXkGE/HkHufR4G8X4bIX3h3lNjck/img.jpg"
                           decoding="async"
                           data-nimg="fill"
                           style="
@@ -113,7 +110,7 @@
                     </div>
                     <div class="css-5zcuov">
                       <div class="css-1sika4i">
-                        {{ reviewStore.review.userNickName }}
+                        {{ boardStore.boardDetail.nickName }}
                       </div>
                       <div class="css-1tify6w">
                         <svg
@@ -127,17 +124,7 @@
                         </svg>
                       </div>
                       <div class="css-1ry6usa">
-                        {{ reviewStore.review.updatedAt }}
-                      </div>
-                      <div class="css-5zcuovs">
-                        <div class="css-1sika4is">
-                          {{ reviewStore.review.courseName }}
-                        </div>
-                      </div>
-                      <div class="css-5zcuovss">
-                        <div class="css-1sika4iss">
-                          평점 : {{ reviewStore.review.courseEvaluation }} 점
-                        </div>
+                        {{ boardStore.boardDetail.updatedAt }}
                       </div>
                     </div>
                   </div>
@@ -148,23 +135,26 @@
             <div class="css-luqgif">
               <div class="editedQ_QContent">
                 <p class="css-content">
-                  {{ reviewStore.review.reviewContent }}
+                  {{ boardStore.boardDetail.boardContent }}
                 </p>
-                <div
+                <!-- <div
                   v-if="
-                    reviewStore.review.reviewImageList &&
-                    reviewStore.review.reviewImageList.length > 0
+                    boardStore.board.boardImageList &&
+                    boardStore.board.boardImageList.length > 0
                   "
                 >
                   <img
-                    v-for="(image, index) in reviewStore.review.reviewImageList"
-                    :key="image.reviewImageIdx"
+                    v-for="(image, index) in boardStore.board.boardImageList"
+                    :key="image.boardImageIdx"
                     :alt="`이미지 ${index + 1}`"
-                    :src="image.reviewImage"
+                    :src="image.boardImage"
                   />
-                </div>
+                </div> -->
               </div>
-              <div class="css-iqys2n"></div>
+              <div class="css-iqys2n">
+                <!-- 태그 컴포넌트 자리-->
+                <TagComponent></TagComponent>
+              </div>
             </div>
             <div class="css-1k90lkz">
               <div class="css-lua631">
@@ -184,22 +174,24 @@
                       alt="comments"
                     />
                   </div>
-                  댓글 {{ reviewStore.review.commentCnt }}
+                  댓글 {{ boardStore.boardDetail.commentCnt }}
                 </div>
               </div>
               <div class="css-qzobjv">
                 <!-- 댓글 컴포넌트 -->
-                <ReviewCommentComponent
-                  :reviewCommentStore="reviewCommentStore"
-                ></ReviewCommentComponent>
+                <BoardCommentComponent
+                  :commentList="commentList"
+                  :isCommentRecommended="isCommentRecommended"
+                  :boardCommentIdx="boardCommentIdx"
+                />
                 <div class="css-jpe6jj">
                   <div class="css-3o2y5e">
                     <div width="36px" height="36px" class="css-jg5tbe">
                       <img
-                        alt="프로필 이미지"
+                        alt="나의얼굴"
                         width="34px"
                         height="34px"
-                        :src="userProfileImage"
+                        src="https://www.fitpetmall.com/wp-content/uploads/2023/10/image-14.png"
                       />
                     </div>
                   </div>
@@ -209,7 +201,7 @@
                         class="css-001"
                         type="text"
                         placeholder="댓글을 남겨주세요"
-                        v-model="reviewCommentContent"
+                        v-model="boardCommentContent"
                       />
                     </div>
                     <div class="css-btn-div">
@@ -224,7 +216,7 @@
               <div class="css-back-div">
                 <button class="css-board-back">목록가기</button>
               </div>
-              <!-- 돌아가기 버튼 끝 -->
+              <!-- 버튼 끝 -->
             </div>
           </div>
         </div>
@@ -234,152 +226,148 @@
 </template>
 
 <script>
+import BoardCommentComponent from "@/components/BoardCommentComponent.vue";
+import TagComponent from "@/components/TagComponent.vue";
+import { useBoardCommentStore } from "../stores/useBoardCommentStore";
+import { useBoardStore } from "@/stores/useBoardStore";
+import { useUserStore } from "@/stores/useUserStore";
 import { mapStores } from "pinia";
-import { useReviewStore } from "../stores/useReviewStore";
-import { useUserStore } from "../stores/useUserStore";
-import { useReviewCommentStore } from "../stores/useReviewCommentStore";
-import ReviewCommentComponent from "../components/ReviewCommentComponent.vue";
 import ConfirmDialogComponent from "/src/components/ConfirmDialogComponent.vue";
 
 export default {
-  name: "ReviewDetailsPage",
+  name: "StudyDetailPage",
   components: {
-    ReviewCommentComponent,
+    BoardCommentComponent,
+    TagComponent,
     ConfirmDialogComponent,
+  },
+  computed: {
+    ...mapStores(useBoardStore, useUserStore, useBoardCommentStore),
   },
   data() {
     return {
-      reviewIdx: null,
+      boardCommentContent: "",
+      boardDetail: null,
+      boardIdx: null,
+      commentList: null,
+      isAuthenticated: null,
       showMyPageConfirmDialog: false,
       isRecommended: false,
       isScrapped: false,
-      reviewUpIdx: null,
-      reviewScrapIdx: null,
+      boardUpIdx: null,
+      boardScrapIdx: null,
     };
   },
-  computed: {
-    ...mapStores(useReviewStore, useUserStore, useReviewCommentStore),
-    userProfileImage() {
-      // 사용자 정보 로딩 후 사용자 프로필 이미지 반환
-      if (this.userStore.user && this.userStore.user.profileImage) {
-        return this.userStore.user.profileImage;
-      } else {
-        // 기본 이미지 반환. 실제 경로로 변환 필요.
-        return require("@/assets/img/profile.jpg");
-      }
-    },
-  },
-  created() {
-    const reviewIdx = this.$route.params.idx;
-    this.reviewStore.getReviewDetail(reviewIdx);
-    this.reviewCommentStore.getReviewCommentList(reviewIdx);
-
-    this.reviewIdx = reviewIdx;
-  },
   async mounted() {
-    await this.checkReviewUp();
-    await this.checkReviewScrap();
+    this.boardStore.getStudyDetail();
+    const boardIdx = this.$route.params.boardIdx;
+
+    this.boardIdx = boardIdx;
+
+    this.boardDetail = await this.boardStore.findBoard(boardIdx);
+
+    await this.boardCommentStore.getBoardCommentList(boardIdx);
+    this.commentList = this.boardCommentStore.commentList;
+
+    // 게시글 추천 및 스크랩 상태 확인
+    await this.checkBoardUp();
+    await this.checkBoardScrap();
   },
   methods: {
     async submitComment() {
-      const reviewIdx = this.$route.params.idx;
+      let isAuthenticated = this.userStore.isAuthenticated;
       try {
-        await this.reviewCommentStore.createReviewComment(
-          this.reviewCommentContent,
-          reviewIdx
+        await useBoardCommentStore().createBoardComment(
+          this.boardCommentContent,
+          this.boardIdx,
+          isAuthenticated
         );
+        // 댓글 생성 후 필요한 작업 작성
       } catch (error) {
         console.error("댓글 작성 실패:", error);
       }
     },
-    async createReviewUp() {
+    async createBoardUp() {
       let token = window.localStorage.getItem("token");
       let requestBody = {
-        reviewIdx: this.reviewIdx,
+        boardIdx: this.boardIdx,
       };
 
       try {
         if (this.isRecommended) {
-          await this.reviewStore.cancelReviewUp(token, this.reviewUpIdx);
-          console.log("후기 추천 취소 성공");
+          await this.boardStore.cancelBoardUp(token, this.boardUpIdx);
+          console.log("게시글 추천 취소 성공");
           this.isRecommended = false;
 
           window.location.reload();
         } else {
-          const response = await this.reviewStore.createReviewUp(
+          const response = await this.boardStore.createBoardUp(
             token,
             requestBody
           );
 
           if (response.status === 200 && response.data) {
-            console.log("후기 추천 성공!");
+            console.log("게시글 추천 성공!");
             this.isRecommended = true;
             this.showMyPageConfirmDialog = true;
           } else {
-            console.error("후기 추천 실패");
-            alert("후기 추천 실패");
+            console.error("게시글 추천 실패");
+            alert("게시글 추천 실패");
           }
         }
       } catch (e) {
-        console.error("후기 추천 과정에서 문제가 발생했습니다!", e);
+        console.error("게시글 추천 과정에서 문제가 발생했습니다!", e);
       }
     },
-
-    async createReviewScrap() {
+    async createBoardScrap() {
       let token = window.localStorage.getItem("token");
       let requestBody = {
-        reviewIdx: this.reviewIdx,
+        boardIdx: this.boardIdx,
       };
 
       try {
         if (this.isScrapped) {
-          await this.reviewStore.cancelReviewScrap(token, this.reviewScrapIdx);
-          console.log("후기 스크랩 취소 성공");
+          await this.boardStore.cancelBoardScrap(token, this.boardScrapIdx);
+          console.log("게시글 스크랩 취소 성공");
           this.isScrapped = false;
 
           window.location.reload();
         } else {
-          const response = await this.reviewStore.createReviewScrap(
+          const response = await this.boardStore.createBoardScrap(
             token,
             requestBody
           );
 
           if (response.status === 200 && response.data) {
-            console.log("후기 스크랩 성공!");
+            console.log("게시글 스크랩 성공!");
             this.isScrapped = true;
             this.showMyPageConfirmDialog = true;
           } else {
-            console.error("후기 스크랩 실패");
-            alert("후기 스크랩 실패");
+            console.error("게시글 스크랩 실패");
+            alert("게시글 스크랩 실패");
           }
         }
       } catch (e) {
-        console.error("후기 스크랩 과정에서 문제가 발생했습니다!", e);
+        console.error("게시글 스크랩 과정에서 문제가 발생했습니다!", e);
       }
     },
-
     moveMyPage() {
       this.showMyPageConfirmDialog = false;
       this.$router.push("/mypage");
     },
-
     dontMoveMyPage() {
       this.showMyPageConfirmDialog = false;
       window.location.reload();
     },
-
-    async checkReviewUp() {
+    async checkBoardUp() {
       try {
         let token = window.localStorage.getItem("token");
-        let response = await this.reviewStore.checkReviewUp(
-          token,
-          this.reviewIdx
-        );
+        let response = await this.boardStore.checkBoardUp(token, this.boardIdx);
         console.log(response);
 
         if (response.data && response.data.result.status === true) {
           this.isRecommended = true;
-          this.reviewUpIdx = response.data.result.reviewUpIdx;
+          this.boardUpIdx = response.data.result.boardUpIdx;
         } else {
           this.isRecommended = false;
         }
@@ -387,19 +375,18 @@ export default {
         console.error(e);
       }
     },
-
-    async checkReviewScrap() {
+    async checkBoardScrap() {
       try {
         let token = window.localStorage.getItem("token");
-        let response = await this.reviewStore.checkReviewScrap(
+        let response = await this.boardStore.checkBoardScrap(
           token,
-          this.reviewIdx
+          this.boardIdx
         );
         console.log(response);
 
         if (response.data && response.data.result.status === true) {
           this.isScrapped = true;
-          this.reviewScrapIdx = response.data.result.reviewScrapIdx;
+          this.boardScrapIdx = response.data.result.boardScrapIdx;
         } else {
           this.isScrapped = false;
         }
@@ -410,7 +397,6 @@ export default {
   },
 };
 </script>
-
 <style scoped>
 body {
   height: 100%;
@@ -418,7 +404,6 @@ body {
   overflow-x: hidden;
   font-size: 1.4rem;
   box-sizing: border-box;
-  background-color: #fff;
 }
 
 * {
@@ -450,27 +435,23 @@ a {
   cursor: pointer;
 }
 
-.css-1hnxdb7 {
-  background-color: #fff;
-}
-
 .css-icon {
   font-size: 18px;
   color: #9da7ae;
 }
-
 .css-category {
+  /* cursor: pointer; */
   width: 65px;
   padding: 2px 0;
   border-radius: 40px;
-  background-color: #541d70;
+  /* border: solid 1px #dbdde0; */
+  background-color: rgb(84, 29, 112);
   color: #fff;
   font-size: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  font-family: Pretendard;
 }
 
 @media (min-width: 820px) {
@@ -485,21 +466,26 @@ a {
   }
 }
 
-.css-1g39gls {
-  background-color: #fff;
-}
-
 @media (min-width: 820px) {
   .css-1qjp6uf {
     max-width: 680px;
     border-radius: 8px;
     border: 1px solid #e4ebf0;
-    background-color: #fff;
+    background-color: #ffffff;
     padding: 40px;
     width: 100%;
     margin: auto;
   }
 }
+
+/* .css-axl4y{
+    background-color: #f4f5f6;
+    padding: 0 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: none;
+} */
 
 .css-1yuvfju {
   margin: auto;
@@ -520,13 +506,40 @@ a {
     gap: 14px;
   }
 }
-
 .css-hmpurq {
   display: flex;
   flex-direction: column;
   width: 100%;
-  background-color: #fff;
+  background-color: #ffffff;
 }
+
+@media ((min-width: 820px)) {
+  .css-amlmv6 {
+    display: none;
+  }
+}
+.css-amlmv6 {
+  width: 100%;
+  justify-content: start;
+  align-items: center;
+  gap: 8px;
+}
+
+/* .css-1254q6y{
+    margin-left: 8px;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 12px 0;
+    border-radius: 40px;
+    height: 28px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1;
+    color: #3a3e41;
+    background-color: #eef3f6;
+    display: inline-flex;
+    justify-content: start;
+} */
 
 .css-kem115 {
   display: flex;
@@ -562,7 +575,6 @@ a {
     max-width: 83%;
     font-size: 20px;
     font-weight: 700;
-    font-family: Pretendard;
   }
 }
 
@@ -649,11 +661,36 @@ a {
 }
 
 .css-1ry6usa {
+  /* font-family: Pretendard; */
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
   line-height: 18px;
   color: #9da7ae;
+}
+
+.css-o01lup {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2px;
+}
+
+.css-ts29it {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+}
+
+.css-dbc8ke {
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #9da7ae;
+  margin: 0 4px;
 }
 
 @media (min-width: 820px) {
@@ -678,38 +715,10 @@ a {
   min-height: 180px;
 }
 
-img {
-  image-rendering: -moz-crisp-edges;
-  image-rendering: -o-crisp-edges;
-  image-rendering: -webkit-optimize-contrast;
-  -ms-interpolation-mode: nearest-neighbor;
-}
-
-.editedQ_QContent * {
-  font-stretch: normal;
-  font-style: normal;
-  font-weight: 400;
-  letter-spacing: normal;
-}
-
-.editedQ_QContent img {
-  margin-top: 20px;
-  max-width: 89vw;
-}
-
-@media (min-width: 1024px) {
-  .editedQ_QContent img {
-    margin-top: 20px;
-    max-width: 400px;
-  }
-}
-
 .css-content {
   line-height: 30px;
   font-size: 14px;
-  font-family: Pretendard;
 }
-
 .css-iqys2n {
   display: flex;
   align-items: center;
@@ -724,6 +733,7 @@ img {
   width: 100px;
   padding: 7px 0;
   border-radius: 40px;
+  /* border: solid 1px #dbdde0; */
   background-color: #eaeaea;
   font-size: 12px;
   font-weight: 600;
@@ -731,6 +741,25 @@ img {
   align-items: center;
   justify-content: center;
   gap: 6px;
+}
+
+.css-151tj95 {
+  position: relative;
+  cursor: pointer !important;
+  width: 120px;
+  padding: 12px 0;
+  border-radius: 40px;
+  border: solid 1px #dbdde0;
+  background-color: #fff;
+  font-family: Pretendard;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: #1c1d1e !important;
 }
 
 .css-1k90lkz {
@@ -750,13 +779,22 @@ img {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-family: Pretendard;
+  font-family: Pretendard, -apple-system, “system-ui”, "Malgun Gothic",
+    "맑은 고딕", sans-serif;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: bold;
   line-height: 1.5;
   text-align: left;
   color: #1c1d1e;
 }
+
+/* 댓글 알림 부분 : html 192번 라인 
+.css-x2zrdg{
+    display: none;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+} */
 
 .css-qzobjv {
   display: flex;
@@ -779,8 +817,8 @@ img {
 }
 
 .css-jg5tbe {
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   border: solid 1px #adb5bd;
   background-color: #f1f1f1;
   border-radius: 100px;
@@ -792,7 +830,7 @@ img {
   max-width: 545px;
   padding: 20px;
   border-radius: 12px;
-  background-color: #f4f5f6;
+  background-color: rgb(244, 245, 246);
 }
 
 .css-1psklmw {
@@ -822,7 +860,7 @@ img {
   font-weight: 700;
   line-height: 1.5;
   text-align: left;
-  color: #1c1d1e;
+  color: rgb(28, 29, 30);
 }
 
 .css-khzu4u {
@@ -831,13 +869,13 @@ img {
   align-items: center;
   padding: 2px 6px;
   border-radius: 4px;
-  background-color: #1c1d1e;
+  background-color: rgb(28, 29, 30);
   font-family: Pretendard, -apple-system, “system-ui”, "Malgun Gothic",
     "맑은 고딕", sans-serif;
   font-size: 10px;
-  font-weight: 700;
+  font-weight: bold;
   line-height: 1.5;
-  color: #fff;
+  color: rgb(255, 255, 255);
 }
 
 .css-emxp16 {
@@ -845,7 +883,7 @@ img {
   font-weight: 500;
   line-height: 1.3;
   text-align: left;
-  color: #838689;
+  color: rgb(131, 134, 137);
 }
 
 .css-emxp17 {
@@ -853,8 +891,23 @@ img {
   font-weight: 500;
   line-height: 1.3;
   text-align: left;
-  color: #838689;
+  color: rgb(131, 134, 137);
   cursor: pointer;
+}
+
+/* html 221라인 */
+.editedCommentContent {
+}
+
+.css-comment {
+  font-size: 14px;
+}
+
+.css-reply {
+  font-size: 12px;
+  margin-top: 15px;
+  cursor: pointer;
+  color: #9da7ae;
 }
 
 .css-f7no94 {
@@ -867,6 +920,13 @@ img {
 .css-3o2y5e {
   margin-top: 10px;
   display: block;
+}
+
+.css-1ln580g {
+  width: 36px;
+  height: 36px;
+  overflow: hidden;
+  background-color: rgb(255, 255, 255);
 }
 
 .css-1psklmw {
@@ -898,6 +958,17 @@ img {
   height: 90px;
 }
 
+/* .commentEditor{
+    height: 50px;
+}
+
+.css-001{
+    width: 80%;
+    margin: 10px;
+    border: none;
+    outline: none;
+} */
+
 .commentEditor {
   display: flex;
   align-items: baseline;
@@ -906,10 +977,9 @@ img {
 
 .css-001 {
   flex: 1;
-  margin: 10px;
-  outline: 0;
+  margin: 10px; /* 텍스트 입력란과 버튼 사이의 간격 조절 */
+  outline: none;
   border: none;
-  font-family: Pretendard;
 }
 
 .css-btn-div {
@@ -921,7 +991,7 @@ img {
 .css-btn {
   background-color: rgb(52, 152, 219, 0.2);
   font-size: 12px;
-  color: #000;
+  color: black;
   font-weight: 700;
   width: 70px;
   height: 25px;
@@ -929,7 +999,29 @@ img {
   float: right;
   margin-right: 10px;
   cursor: pointer;
-  font-family: Pretendard;
+}
+
+.css-j12xmk {
+  display: flex;
+  flex-direction: row;
+  padding: 12px 10px;
+  height: 60px;
+  justify-content: space-between;
+  width: 100%;
+  background-color: rgb(255, 255, 255);
+  box-shadow: rgba(0, 0, 0, 0.08) 0px -4px 20px;
+  position: fixed;
+  bottom: 0px;
+}
+
+.css-170m71t {
+  display: flex;
+  gap: 8px;
+  line-height: 36px;
+  align-items: center;
+  font-size: 14px;
+  color: rgb(47, 48, 49);
+  font-weight: 700;
 }
 
 .css-5zcuov {
@@ -942,6 +1034,12 @@ img {
 .css-n4f4vi {
   width: 20px;
   height: 20px;
+}
+
+.css-zajkhg {
+  padding: 20px 0;
+  display: none;
+  background-color: #f4f5f6;
 }
 
 .css-n8w3ba {
@@ -972,16 +1070,17 @@ img {
 .css-board-back {
   cursor: pointer;
   width: 80px;
-  height: 40px;
-  padding: 10px 0;
+  height: 50px;
+  padding: 15px 0;
   border-radius: 10px;
-  background-color: #541d70;
+  /* background-color: #9378FF; */
+  background-color: rgb(84, 29, 112);
   font-size: 13px;
   display: flex;
+  /* align-items: center; */
   justify-content: center;
   gap: 6px;
-  color: #fff;
-  font-family: Pretendard;
+  color: #ffffff;
 }
 
 .css-back-div {
@@ -989,63 +1088,112 @@ img {
   margin-top: 50px;
 }
 
-.css-scrap {
-  margin-left: 4px;
-}
-.css-5zcuovs {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
+/* 채팅 버튼 */
+.channel-talk__redirect-button {
+  position: fixed;
+  z-index: 9999;
+  bottom: 72px;
+  right: 18px;
   display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  gap: 4px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
+  flex-wrap: nowrap;
   align-items: center;
-  margin-left: 20px;
-  font-family: Pretendard;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
   cursor: pointer;
-  border-radius: 5px;
-  background-color: rgba(84, 29, 112, 0.218);
-  padding: 3px 10px;
+  visibility: visible;
+  border-radius: 24px;
+  transition: visibility 0.4s ease 0s;
+  background-color: rgb(84, 29, 112);
+  box-shadow: inset 0 0 0 1px hsla(0, 0%, 100%, 0.2),
+    0 4px 6px rgba(0, 0, 0, 0.1), 0 8px 30px rgba(0, 0, 0, 0.15);
+  -webkit-backdrop-filter: blur(30px);
+  backdrop-filter: blur(30px);
+  will-change: transform, opacity;
 }
-.css-5zcuovss {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  gap: 4px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  margin-left: 20px;
-  font-family: Pretendard;
+a {
+  color: currentColor;
+  text-decoration: none;
   cursor: pointer;
-  border-radius: 5px;
-  background-color: rgb(0 64 255 / 22%);;
-  padding: 3px 10px;
 }
-.css-1sika4is {
-  font-family: Pretendard;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 18px;
-  color: rgb(58, 62, 65);
+a {
+  color: #1dc078;
 }
-.css-1sika4iss {
-  font-family: Pretendard;
+
+* {
+  box-sizing: border-box;
+}
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+}
+*,
+:after,
+:before {
+  box-sizing: inherit;
+}
+
+a:-webkit-any-link {
+  color: -webkit-link;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.ql-editor {
+  box-sizing: border-box;
+  line-height: 1.42;
+  outline: none;
+  padding: 12px 0;
+  tab-size: 4;
+  -moz-tab-size: 4;
+  text-align: left;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.ql-editor {
+  color: #6b6e72;
+  font-stretch: normal;
   font-style: normal;
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 18px;
-  color: rgb(58, 62, 65);
+  line-height: 1.3;
+  letter-spacing: normal;
+  font-weight: 500;
+  min-height: 200px;
+  width: 100%;
+  margin: auto;
+  padding: 24px 20px !important;
+  resize: none;
+  border: none;
+}
+
+.ql-editor {
+  height: 100%;
+  overflow-y: auto;
+  padding: 12px 15px;
+}
+.quill > .ql-container > .ql-editor.ql-blank:before {
+  color: #c7c9cb;
+  font-style: normal;
+  font-size: 14px;
+  white-space: pre-wrap;
+  line-height: 1.5;
+  padding: 5px;
+}
+
+.ql-editor.ql-blank:before {
+  color: rgba(0, 0, 0, 0.6);
+  content: attr(data-placeholder);
+  font-style: italic;
+  left: 20px;
+  pointer-events: none;
+  position: absolute;
+  right: 15px;
+  font-weight: 350;
+}
+
+.ql-editor.ql-blank:before {
+  left: 15px;
 }
 </style>

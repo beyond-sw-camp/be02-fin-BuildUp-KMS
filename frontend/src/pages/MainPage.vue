@@ -96,7 +96,7 @@
       </section>
       <section class="css-zea7jz2">
         <div class="css-143hej">
-          <router-link to="/review">
+          <router-link to="/hot">
             <a>
               <button class="css-bcb9a9">
                 <div class="css-197aby8">
