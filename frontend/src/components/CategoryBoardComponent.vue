@@ -246,6 +246,7 @@ export default {
     border-bottom: 1px solid rgb(228, 235, 240);
     gap: 14px;
     cursor: pointer;
+    padding-right: 0px;
   }
 }
 .css-aw1sgr {
@@ -255,6 +256,11 @@ export default {
   padding: 24px 16px;
   background-color: rgb(255, 255, 255);
   gap: 16px;
+  padding-right: 0px;
+}
+
+.css-aw1sgr:hover {
+  background-color: rgb(242, 246, 248);
 }
 .css-amlmv6 {
   width: 100%;
@@ -300,7 +306,7 @@ export default {
   justify-content: space-between;
   -webkit-box-align: center;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
 }
 .css-12i5occ {
   display: flex;
@@ -409,6 +415,7 @@ export default {
   -webkit-box-align: center;
   align-items: center;
   height: 24px;
+  margin-right: 20px;
 }
 .css-1fhge30 {
   display: flex;
@@ -438,7 +445,35 @@ export default {
   -ms-flex-align: center;
   align-items: center;
 }
+.css-5zcuovs {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  gap: 4px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin-left: 20px;
+  font-family: Pretendard;
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: rgba(84, 29, 112, 0.218);
+  padding: 3px 10px;
+}
 .css-1sika4i {
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 18px;
+  color: rgb(58, 62, 65);
+}
+.css-1sika4is {
   font-family: Pretendard;
   font-style: normal;
   font-weight: bold;
@@ -579,6 +614,33 @@ export default {
     display: flex;
   }
 }
+.css-17s6wd5 {
+  width: 100px;
+  height: 92px;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  margin-right: 17px;
+}
+
+img {
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  -ms-interpolation-mode: nearest-neighbor;
+}
+a {
+  color: rgb(157, 167, 174);
+  text-decoration: none;
+}
+
+a:hover {
+  color: rgb(157, 167, 174);
+  text-decoration: none;
+}
+
 .css-fortagcomponentgms {
   display: flex;
   gap: 3px;
