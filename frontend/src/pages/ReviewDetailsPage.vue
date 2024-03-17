@@ -129,7 +129,7 @@
               </div>
               <div class="css-qzobjv">
                 <!-- 댓글 컴포넌트 -->
-                <CommentComponent></CommentComponent>
+                <ReviewCommentComponent :reviewCommentStore="reviewCommentStore"></ReviewCommentComponent>
                 <div class="css-jpe6jj">
                   <div class="css-3o2y5e">
                     <div width="36px" height="36px" class="css-jg5tbe">
@@ -138,10 +138,10 @@
                   </div>
                   <div class="css-13ljjbe">
                     <div class="commentEditor">
-                      <input class="css-001" type="text" placeholder="댓글을 남겨주세요" />
+                      <input class="css-001" type="text" placeholder="댓글을 남겨주세요" v-model="reviewCommentContent" />
                     </div>
                     <div class="css-btn-div">
-                      <button class="css-btn">저장</button>
+                      <button class="css-btn"  @click="submitComment()">저장</button>
                     </div>
                   </div>
                 </div>
@@ -163,13 +163,14 @@
 import { mapStores } from "pinia";
 import { useReviewStore } from "../stores/useReviewStore";
 import { useUserStore } from "../stores/useUserStore";
-import CommentComponent from "../components/CommentComponent.vue";
+import { useReviewCommentStore } from "../stores/useReviewCommentStore";
+import ReviewCommentComponent from "../components/ReviewCommentComponent.vue";
 import ConfirmDialogComponent from "/src/components/ConfirmDialogComponent.vue";
 
 export default {
   name: "ReviewDetailsPage",
   components: {
-    CommentComponent,
+    ReviewCommentComponent,
     ConfirmDialogComponent,
   },
   data() {
@@ -183,7 +184,7 @@ export default {
     };
   },
   computed: {
-    ...mapStores(useReviewStore, useUserStore),
+    ...mapStores(useReviewStore, useUserStore, useReviewCommentStore),
     userProfileImage() {
       // 사용자 정보 로딩 후 사용자 프로필 이미지 반환
       if (this.userStore.user && this.userStore.user.profileImage) {
@@ -197,6 +198,8 @@ export default {
   created() {
     const reviewIdx = this.$route.params.idx;
     this.reviewStore.getReviewDetail(reviewIdx);
+    this.reviewCommentStore.getReviewCommentList(reviewIdx);
+
     this.reviewIdx = reviewIdx;
   },
   async mounted() {
@@ -204,6 +207,14 @@ export default {
     await this.checkReviewScrap();
   },
   methods: {
+    async submitComment() {
+      const reviewIdx = this.$route.params.idx;
+      try {
+        await this.reviewCommentStore.createReviewComment(this.reviewCommentContent, reviewIdx);
+      } catch (error) {
+        console.error('댓글 작성 실패:', error);
+      }
+    },
     async createReviewUp() {
       let token = window.localStorage.getItem("token");
       let requestBody = {
@@ -679,8 +690,8 @@ img {
 }
 
 .css-jg5tbe {
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   border: solid 1px #adb5bd;
   background-color: #f1f1f1;
   border-radius: 100px;
