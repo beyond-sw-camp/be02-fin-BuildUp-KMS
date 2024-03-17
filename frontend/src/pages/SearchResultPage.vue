@@ -1,11 +1,11 @@
 <template>
-  <section class="TkhYW1  _1etXfM">
+  <section class="TkhYW1 _1etXfM">
     <div class="_2kpZbi">
       <div>
         <div class="d-none d-lg-block container-lg">
-          <div class="_1anRgx _17fGk0 _2zXJMj" style="--box-gap:2rem">
+          <div class="_1anRgx _17fGk0 _2zXJMj" style="--box-gap: 2rem">
             <section class="bs_2vg flex-shrink-0">
-              <div class="_1anRgx _2EZ57H" style="--box-gap:1.25rem">
+              <div class="_1anRgx _2EZ57H" style="--box-gap: 1.25rem">
                 <div class="bg-gray-050 card">
                   <div class="card-body">
                     <h6 class="_3ZcrIA text-center mb-0">
@@ -13,11 +13,20 @@
                     </h6>
                     <router-link to="/board/new">
                       <a class="_2-sdMj btn btn-primary btn-lg btn-block">
-                        <div class="_2pYHs _1isiv"><svg fill="currentColor" width="16" height="16" viewBox="0 0 16 16"
-                            xmlns="http://www.w3.org/2000/svg" class="_1CkmD _1vN1F">
-                            <path fill-rule="evenodd" clip-rule="evenodd"
-                              d="M13.0498 7.3501V8.6501H8.65083V13.0501H7.34983V8.6501H2.94983V7.3501H7.34983V2.9501H8.65083V7.3501H13.0498Z">
-                            </path>
+                        <div class="_2pYHs _1isiv">
+                          <svg
+                            fill="currentColor"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 16 16"
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="_1CkmD _1vN1F"
+                          >
+                            <path
+                              fill-rule="evenodd"
+                              clip-rule="evenodd"
+                              d="M13.0498 7.3501V8.6501H8.65083V13.0501H7.34983V8.6501H2.94983V7.3501H7.34983V2.9501H8.65083V7.3501H13.0498Z"
+                            ></path>
                           </svg>
                           <span>새 질문 작성</span>
                         </div>
@@ -30,48 +39,115 @@
             <section class="flex-grow-1">
               <div class="overflow-hidden">
                 <div>
-                  <div class="_2kqp41 _2d5D_m _28qC73" style="--box-gap:0.75rem"><button type="button"
-                      class="_3Jflz btn btn-link btn-xl">
-                      <div class="_2pYHs ODppI"><svg fill="currentColor" width="16" height="16" viewBox="0 0 16 16"
-                          xmlns="http://www.w3.org/2000/svg" class="_1CkmD _1S27j">
-                          <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M8 1.5L1.5 8L8 14.5L9.149 13.349L4.612 8.812H14.5V7.187H4.612L9.149 2.649L8 1.5Z">
-                          </path>
-                        </svg></div>
+                  <div
+                    class="_2kqp41 _2d5D_m _28qC73"
+                    style="--box-gap: 0.75rem"
+                  >
+                    <button type="button" class="_3Jflz btn btn-link btn-xl">
+                      <div class="_2pYHs ODppI">
+                        <svg
+                          fill="currentColor"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="_1CkmD _1S27j"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            d="M8 1.5L1.5 8L8 14.5L9.149 13.349L4.612 8.812H14.5V7.187H4.612L9.149 2.649L8 1.5Z"
+                          ></path>
+                        </svg>
+                      </div>
                     </button>
-                    <div class="_1YCmw flex-grow-1"><input type="text" value="" placeholder="제목, 내용으로 질문을 찾아 보세요!"
-                        class="FMUyj _1LD4c form-control-xl form-control"><svg fill="currentColor" width="16"
-                        height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" class="A-RPq _2vGEB">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                          d="M11.46 10.54L10.54 11.46L8 8.92L5.46 11.46L4.54 10.54L7.08 8L4.54 5.46L5.46 4.54L8 7.08L10.54 4.54L11.46 5.46L8.92 8L11.46 10.54ZM8 1.5C4.412 1.5 1.5 4.412 1.5 8C1.5 11.588 4.412 14.5 8 14.5C11.588 14.5 14.5 11.588 14.5 8C14.5 4.412 11.588 1.5 8 1.5Z">
-                        </path>
-                      </svg></div><button type="button" class="flex-shrink-0 btn btn-outline-basic btn-xl">
+                    <div class="_1YCmw flex-grow-1">
+                      <input
+                        type="text"
+                        value=""
+                        placeholder="제목, 내용으로 질문을 찾아 보세요!"
+                        class="FMUyj _1LD4c form-control-xl form-control"
+                      /><svg
+                        fill="currentColor"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="A-RPq _2vGEB"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M11.46 10.54L10.54 11.46L8 8.92L5.46 11.46L4.54 10.54L7.08 8L4.54 5.46L5.46 4.54L8 7.08L10.54 4.54L11.46 5.46L8.92 8L11.46 10.54ZM8 1.5C4.412 1.5 1.5 4.412 1.5 8C1.5 11.588 4.412 14.5 8 14.5C11.588 14.5 14.5 11.588 14.5 8C14.5 4.412 11.588 1.5 8 1.5Z"
+                        ></path>
+                      </svg>
+                    </div>
+                    <button
+                      type="button"
+                      class="flex-shrink-0 btn btn-outline-basic btn-xl"
+                    >
                       <div class="_2pYHs ODppI"><span>검색</span></div>
                     </button>
                   </div>
                 </div>
-                <div class="d-flex justify-content-between mt-4 align-items-center">
+                <div
+                  class="d-flex justify-content-between mt-4 align-items-center"
+                >
                   <h5 class="mb-0">
-                    <div class="_2kqp41 _2d5D_m" style="--box-gap: 0.5rem;"><span><span>검색
-                          결과</span></span><span class="text-blue-500 ">{{ boardStore.totalCnt }}</span></div>
+                    <div class="_2kqp41 _2d5D_m" style="--box-gap: 0.5rem">
+                      <span><span>검색 결과</span></span
+                      ><span class="text-blue-500">{{
+                        boardStore.totalCnt
+                      }}</span>
+                    </div>
                   </h5>
                   <div class="dropdown">
-                    <button @click="toggleDropdown" type="button" aria-haspopup="true"
-                      :aria-expanded="dropdownOpen.toString()" class="_1rMfp _3NZzgf btn btn-select btn-lg">
+                    <button
+                      @click="toggleDropdown"
+                      type="button"
+                      aria-haspopup="true"
+                      :aria-expanded="dropdownOpen.toString()"
+                      class="_1rMfp _3NZzgf btn btn-select btn-lg"
+                    >
                       <span>최신순</span>
-                      <svg fill="currentColor" width="16" height="16" viewBox="0 0 16 16"
-                        xmlns="http://www.w3.org/2000/svg" class="_2-Js2">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                          d="M7.99997 11.04L3.29797 6.33801L4.21697 5.41901L7.99997 9.20201L11.783 5.41901L12.702 6.33801L7.99997 11.04Z">
-                        </path>
+                      <svg
+                        fill="currentColor"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="_2-Js2"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M7.99997 11.04L3.29797 6.33801L4.21697 5.41901L7.99997 9.20201L11.783 5.41901L12.702 6.33801L7.99997 11.04Z"
+                        ></path>
                       </svg>
                     </button>
-                    <div v-show="dropdownOpen" tabindex="-1" role="menu" aria-hidden="false"
-                      class="_20WMwO w-100 dropdown-menu">
-                      <button type="button" tabindex="0" role="menuitem"
-                        class="_3CkPsH dropdown-item active"><span>최신순</span></button>
-                      <button type="button" tabindex="0" role="menuitem"
-                        class="_3CkPsH dropdown-item"><span>인기순</span></button>
+                    <div
+                      v-show="dropdownOpen"
+                      tabindex="-1"
+                      role="menu"
+                      aria-hidden="false"
+                      class="_20WMwO w-100 dropdown-menu"
+                    >
+                      <button
+                        type="button"
+                        tabindex="0"
+                        role="menuitem"
+                        class="_3CkPsH dropdown-item active"
+                      >
+                        <span>최신순</span>
+                      </button>
+                      <button
+                        type="button"
+                        tabindex="0"
+                        role="menuitem"
+                        class="_3CkPsH dropdown-item"
+                      >
+                        <span>인기순</span>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -79,19 +155,33 @@
                   <span>
                     <div v-for="board in boardStore.boardList" :key="board.idx">
                       <li class="_3lQ639 _32Ay9Q" role="presentation">
-                        <div class="_2kqp41 flex-grow-1" style="--box-gap: 0.75rem;">
-                          <div class="_2kqp41 tttQ1F" style="--box-gap: 0.375rem;">
+                        <div
+                          class="_2kqp41 flex-grow-1"
+                          style="--box-gap: 0.75rem"
+                        >
+                          <div
+                            class="_2kqp41 tttQ1F"
+                            style="--box-gap: 0.375rem"
+                          >
                             <router-link :to="`board/${board.boardIdx}`">
-                              <p class="_3yzn7O mb-0 _2Sv3IV">{{ board.boardTitle }}</p>
+                              <p class="_3yzn7O mb-0 _2Sv3IV">
+                                {{ board.boardTitle }}
+                              </p>
                             </router-link>
                             <div>
                               <span class="d-none d-md-block">
-                                <span class="d-flex Dhz06G align-items-center text-gray-600">
-                                  <span class="text-gray-900 font-weight-normal flex-shrink-0">{{ board.nickName
-                                    }}</span>
+                                <span
+                                  class="d-flex Dhz06G align-items-center text-gray-600"
+                                >
+                                  <span
+                                    class="text-gray-900 font-weight-normal flex-shrink-0"
+                                    >{{ board.nickName }}</span
+                                  >
                                   <span class="paragraph-sm">·</span>
-                                  <span class="text-gray-600 flex-shrink-0" title="2024. 2. 17. 오후 7:25:30">{{
-                            board.createdAt }}
+                                  <span
+                                    class="text-gray-600 flex-shrink-0"
+                                    title="2024. 2. 17. 오후 7:25:30"
+                                    >{{ board.createdAt }}
                                   </span>
                                 </span>
                               </span>
@@ -102,40 +192,83 @@
                               <ol class="breadcrumb _3cKvl flex-nowrap">
                                 <li
                                   class="d-inline-flex align-items-center iFcHCl _1OTYG _2amVj _285DO active breadcrumb-item"
-                                  aria-current="page"><span class="_1t2_hP">{{ board.boardContent }}</span></li>
+                                  aria-current="page"
+                                >
+                                  <span class="_1t2_hP">{{
+                                    board.boardContent
+                                  }}</span>
+                                </li>
                               </ol>
                             </nav>
                           </div>
                           <div class="d-flex justify-content-between">
-                            <div class="d-flex align-items-center _1VWGjy"><span
-                                class="text-gray-600 d-inline-flex align-items-center _22s-QT"><svg fill="currentColor"
-                                  width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                                  <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M1 8.07129C3.24 4.73829 5.24 3.07129 8 3.07129C10.761 3.07129 12.761 4.73829 15 8.07129C12.761 11.4043 10.761 13.0713 8 13.0713C5.24 13.0713 3.24 11.4043 1 8.07129ZM8 12.0713C10.209 12.0713 12 10.2803 12 8.07129C12 5.86229 10.209 4.07129 8 4.07129C5.791 4.07129 4 5.86229 4 8.07129C4 10.2803 5.791 12.0713 8 12.0713ZM8 10.0713C6.896 10.0713 6 9.17629 6 8.07129C6 6.96729 6.896 6.07129 8 6.07129C9.104 6.07129 10 6.96729 10 8.07129C10 9.17629 9.104 10.0713 8 10.0713Z">
-                                  </path>
-                                </svg><span class="paragraph-sm">{{ board.viewCnt }}</span></span><span
-                                class="text-gray-600 d-inline-flex align-items-center _22s-QT"><svg fill="currentColor"
-                                  width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                                  <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M4 6.059H12V4.759H4V6.059ZM4 8.741H9.5V7.441H4V8.741ZM1.5 1.75V10.25V11.75V14.25L4 11.75H14.5V1.75H1.5Z">
-                                  </path>
-                                </svg><span class="paragraph-sm">{{ board.commentCnt }}</span></span><span
-                                class="text-gray-600 d-inline-flex align-items-center _22s-QT"><svg fill="currentColor"
-                                  width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                                  <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M9.95312 5.75011L10.4471 4.20511C10.7831 3.15311 10.4811 2.00111 9.67112 1.25011L5.30012 5.75011V13.7501H13.0001L15.0001 8.78811V5.75011H9.95312ZM1.50012 13.7501H4.00012V6.25011H1.50012V13.7501Z">
-                                  </path>
-                                </svg><span class="paragraph-sm">{{ board.upCnt }}</span></span></div>
+                            <div class="d-flex align-items-center _1VWGjy">
+                              <span
+                                class="text-gray-600 d-inline-flex align-items-center _22s-QT"
+                                ><svg
+                                  fill="currentColor"
+                                  width="16"
+                                  height="16"
+                                  viewBox="0 0 16 16"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    fill-rule="evenodd"
+                                    clip-rule="evenodd"
+                                    d="M1 8.07129C3.24 4.73829 5.24 3.07129 8 3.07129C10.761 3.07129 12.761 4.73829 15 8.07129C12.761 11.4043 10.761 13.0713 8 13.0713C5.24 13.0713 3.24 11.4043 1 8.07129ZM8 12.0713C10.209 12.0713 12 10.2803 12 8.07129C12 5.86229 10.209 4.07129 8 4.07129C5.791 4.07129 4 5.86229 4 8.07129C4 10.2803 5.791 12.0713 8 12.0713ZM8 10.0713C6.896 10.0713 6 9.17629 6 8.07129C6 6.96729 6.896 6.07129 8 6.07129C9.104 6.07129 10 6.96729 10 8.07129C10 9.17629 9.104 10.0713 8 10.0713Z"
+                                  ></path></svg
+                                ><span class="paragraph-sm">{{
+                                  board.viewCnt
+                                }}</span></span
+                              ><span
+                                class="text-gray-600 d-inline-flex align-items-center _22s-QT"
+                                ><svg
+                                  fill="currentColor"
+                                  width="16"
+                                  height="16"
+                                  viewBox="0 0 16 16"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    fill-rule="evenodd"
+                                    clip-rule="evenodd"
+                                    d="M4 6.059H12V4.759H4V6.059ZM4 8.741H9.5V7.441H4V8.741ZM1.5 1.75V10.25V11.75V14.25L4 11.75H14.5V1.75H1.5Z"
+                                  ></path></svg
+                                ><span class="paragraph-sm">{{
+                                  board.commentCnt
+                                }}</span></span
+                              ><span
+                                class="text-gray-600 d-inline-flex align-items-center _22s-QT"
+                                ><svg
+                                  fill="currentColor"
+                                  width="16"
+                                  height="16"
+                                  viewBox="0 0 16 16"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    fill-rule="evenodd"
+                                    clip-rule="evenodd"
+                                    d="M9.95312 5.75011L10.4471 4.20511C10.7831 3.15311 10.4811 2.00111 9.67112 1.25011L5.30012 5.75011V13.7501H13.0001L15.0001 8.78811V5.75011H9.95312ZM1.50012 13.7501H4.00012V6.25011H1.50012V13.7501Z"
+                                  ></path></svg
+                                ><span class="paragraph-sm">{{
+                                  board.upCnt
+                                }}</span></span
+                              >
+                            </div>
                           </div>
                         </div>
                       </li>
-                      <hr class="m-0 p-0">
+                      <hr class="m-0 p-0" />
                     </div>
                   </span>
                 </ul>
                 <div class="d-flex justify-content-center py-0 py-md-4">
-                  <PaginationComponent :current-page="boardStore.currentPage" :total-pages="boardStore.totalPages"
-                    @change-page="changePage" />
+                  <PaginationComponent
+                    :current-page="boardStore.currentPage"
+                    :total-pages="boardStore.totalPages"
+                    @change-page="changePage"
+                  />
                 </div>
               </div>
             </section>
@@ -155,13 +288,13 @@ import PaginationComponent from "@/components/PaginationComponent.vue";
 export default {
   name: "SearchResultPage",
   components: {
-    PaginationComponent
+    PaginationComponent,
   },
   data() {
     return {
       dropdownOpen: false,
       query: "",
-      searchType: ""
+      searchType: "",
     };
   },
   async mounted() {
@@ -169,11 +302,12 @@ export default {
     link.rel = "stylesheet";
     link.href =
       "https://statics.goorm.io/gds/goormstrap/v1.29.0/goormstrap.v4.min.css";
+    link.id = "goormstrap-css";
     document.head.appendChild(link);
 
     // URL에서 쿼리 매개변수 읽음
-    const query = this.$route.query.query || '';
-    const searchType = this.$route.query.option || '';
+    const query = this.$route.query.query || "";
+    const searchType = this.$route.query.option || "";
 
     // 상태 업데이트
     this.query = query;
@@ -181,6 +315,13 @@ export default {
 
     // 게시판 목록 불러오기
     await this.boardStore.getBoardListByQuery(query, searchType);
+  },
+  beforeUnmount() {
+    // 동적으로 추가한 스타일시트를 ID로 찾아 제거
+    const goormstrapLink = document.getElementById("goormstrap-css");
+    if (goormstrapLink) {
+      goormstrapLink.parentNode.removeChild(goormstrapLink);
+    }
   },
   computed: {
     ...mapStores(useBoardStore),
@@ -190,7 +331,8 @@ export default {
       const total = this.boardStore.totalPages;
       let start = Math.max(1, this.boardStore.currentPage - 2);
       let end = Math.min(total, start + 4);
-      if (end === total) { // 마지막 페이지가 범위에 포함되면 시작점 조정
+      if (end === total) {
+        // 마지막 페이지가 범위에 포함되면 시작점 조정
         start = Math.max(1, end - 4);
       }
       for (let i = start; i <= end; i++) {
@@ -208,11 +350,14 @@ export default {
     },
     jumpForward() {
       // 현재 페이지에서 3페이지 앞으로 점프
-      let nextPage = Math.min(this.boardStore.currentPage + 3, this.boardStore.totalPages);
+      let nextPage = Math.min(
+        this.boardStore.currentPage + 3,
+        this.boardStore.totalPages
+      );
       this.changePage(nextPage);
       // visiblePages를 업데이트하기 위해 currentPage를 설정
       this.boardStore.currentPage = nextPage;
-    }
+    },
   },
 };
 </script>
@@ -244,12 +389,20 @@ export default {
   --toastify-text-color-error: #fff;
   --toastify-spinner-color: #616161;
   --toastify-spinner-color-empty-area: #e0e0e0;
-  --toastify-color-progress-light: linear-gradient(90deg, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55);
+  --toastify-color-progress-light: linear-gradient(
+    90deg,
+    #4cd964,
+    #5ac8fa,
+    #007aff,
+    #34aadc,
+    #5856d6,
+    #ff2d55
+  );
   --toastify-color-progress-dark: #bb86fc;
   --toastify-color-progress-info: var(--toastify-color-info);
   --toastify-color-progress-success: var(--toastify-color-success);
   --toastify-color-progress-warning: var(--toastify-color-warning);
-  --toastify-color-progress-error: var(--toastify-color-error)
+  --toastify-color-progress-error: var(--toastify-color-error);
 }
 
 ._1Bbxo._1Bbxo {
@@ -257,20 +410,20 @@ export default {
   flex-direction: column;
   align-items: end;
   width: unset;
-  max-width: 35rem
+  max-width: 35rem;
 }
 
-@media only screen and (max-width:991px) {
+@media only screen and (max-width: 991px) {
   ._1Bbxo._1Bbxo {
     width: 100%;
-    max-width: 35rem
+    max-width: 35rem;
   }
 }
 
-@media only screen and (max-width:480px) {
+@media only screen and (max-width: 480px) {
   ._1Bbxo._1Bbxo {
     margin: unset;
-    padding: 1rem
+    padding: 1rem;
   }
 }
 
@@ -337,7 +490,7 @@ element.style {
   flex-direction: row;
 }
 
-._2zXJMj>section {
+._2zXJMj > section {
   min-width: 0;
 }
 
@@ -350,12 +503,10 @@ element.style {
   top: 1.5rem;
 }
 
-
 ._3ZcrIA {
   white-space: pre;
   word-break: keep-all;
 }
-
 
 ._2-sdMj {
   margin-top: 1.25rem;
@@ -388,12 +539,11 @@ element.style {
   flex-shrink: 0;
 }
 
-
 ._2pYHs {
   pointer-events: none;
 }
 
-._2zXJMj>section {
+._2zXJMj > section {
   min-width: 0;
 }
 
@@ -447,7 +597,6 @@ element.style {
   -ms-flex-negative: 0;
   flex-shrink: 0;
 }
-
 
 ._1YCmw {
   position: relative;
@@ -508,7 +657,7 @@ element.style {
 ._2-Js2 {
   margin-left: var(--spacer-xs, 0.25rem);
   display: inline-block;
-  transition: transform .3s, -webkit-transform .3s;
+  transition: transform 0.3s, -webkit-transform 0.3s;
 }
 
 ._20WMwO {
@@ -543,17 +692,13 @@ div {
   cursor: pointer;
 }
 
-
 ._32Ay9Q {
   cursor: pointer;
 }
 
-
-
 ._32Ay9Q {
   cursor: pointer;
 }
-
 
 li {
   text-align: -webkit-match-parent;
@@ -600,12 +745,12 @@ li {
 }
 
 ._2amVj {
-  font-size: .875rem;
+  font-size: 0.875rem;
   line-height: 1.375rem;
 }
 
 ._2amVj {
-  font-size: .875rem;
+  font-size: 0.875rem;
   line-height: 1.375rem;
 }
 
@@ -615,11 +760,11 @@ li {
 }
 
 ._2amVj {
-  font-size: .875rem;
+  font-size: 0.875rem;
   line-height: 1.375rem;
 }
 
-._1OTYG+._1OTYG:before {
+._1OTYG + ._1OTYG:before {
   width: 1rem;
   height: 1rem;
   transform: none;
@@ -632,7 +777,7 @@ li {
 }
 
 ._2amVj {
-  font-size: .875rem;
+  font-size: 0.875rem;
   line-height: 1.375rem;
 }
 
@@ -680,35 +825,33 @@ h6 {
   font-size: 1rem;
   font-weight: 500;
   line-height: 1.5rem;
-  letter-spacing: -.006rem;
+  letter-spacing: -0.006rem;
 }
-
 
 svg:not(:root) {
   overflow-clip-margin: content-box;
   overflow: hidden;
 }
 
-._1VYQb4 li+li {
+._1VYQb4 li + li {
   margin-left: 0.25rem;
 }
 
 ._1VYQb4 .active .page-link {
-  background: rgba(80, 148, 250, .24);
+  background: rgba(80, 148, 250, 0.24);
 }
 
 ._1VYQb4 {
   margin-bottom: 0px;
 }
 
-._2zXJMj>section {
+._2zXJMj > section {
   min-width: 0;
 }
 
 ._17fGk0 {
   flex-direction: row;
 }
-
 
 @media (min-width: 992px) {
   .container-lg {
@@ -723,7 +866,6 @@ svg:not(:root) {
   margin-right: auto;
   margin-left: auto;
 }
-
 
 ._3ZcrIA {
   white-space: pre;
