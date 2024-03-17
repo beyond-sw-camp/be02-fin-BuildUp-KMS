@@ -1,5 +1,6 @@
 package com.example.bootshelf.reviewsvc.reviewcommentup.service;
 
+import com.example.bootshelf.boardsvc.boardcommentup.model.response.GetCheckBoardCommentUpRes;
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.common.error.ErrorCode;
 import com.example.bootshelf.common.error.entityexception.*;
@@ -7,6 +8,7 @@ import com.example.bootshelf.reviewsvc.reviewcomment.model.entity.ReviewComment;
 import com.example.bootshelf.reviewsvc.reviewcomment.repository.ReviewCommentRepository;
 import com.example.bootshelf.reviewsvc.reviewcommentup.model.entity.ReviewCommentUp;
 import com.example.bootshelf.reviewsvc.reviewcommentup.model.request.PostCreateReviewCommentUpReq;
+import com.example.bootshelf.reviewsvc.reviewcommentup.model.response.GetCheckReviewCommentUpRes;
 import com.example.bootshelf.reviewsvc.reviewcommentup.model.response.GetFindReviewCommentUpRes;
 import com.example.bootshelf.reviewsvc.reviewcommentup.model.response.PostCreateReviewCommentUpRes;
 import com.example.bootshelf.reviewsvc.reviewcommentup.repository.ReviewCommentUpRepository;
@@ -58,6 +60,9 @@ public class ReviewCommentUpService {
         ReviewCommentUp reviewCommentUp = ReviewCommentUp.toEntity(user, req);
         reviewCommentUp = reviewCommentUpRepository.save(reviewCommentUp);
 
+        reviewComment.increaseUpCnt();
+        reviewCommentRepository.save(reviewComment);
+
         PostCreateReviewCommentUpRes res = PostCreateReviewCommentUpRes.toDto(reviewCommentUp);
 
         return BaseRes.builder()
@@ -95,16 +100,40 @@ public class ReviewCommentUpService {
     public BaseRes checkReviewCommentUp(User user, Integer reviewCommentIdx) {
         ReviewCommentUp reviewCommentUpResult = reviewCommentUpRepository.findByUserIdxAndReviewCommentIdx(user.getIdx(), reviewCommentIdx);
         if (reviewCommentUpResult != null) {
-            return BaseRes.builder()
-                    .isSuccess(true)
-                    .message("후기 댓글 추천 여부 확인 성공")
-                    .result(true)
-                    .build();
+            if (reviewCommentUpResult.getStatus().equals(true)) {
+                GetCheckReviewCommentUpRes res = GetCheckReviewCommentUpRes.builder()
+                        .reviewCommentUpIdx(reviewCommentUpResult.getIdx())
+                        .status(true)
+                        .build();
+
+                return BaseRes.builder()
+                        .isSuccess(true)
+                        .message("후기 댓글 추천 여부 확인 성공")
+                        .result(res)
+                        .build();
+            } else {
+                GetCheckReviewCommentUpRes res = GetCheckReviewCommentUpRes.builder()
+                        .reviewCommentUpIdx(reviewCommentUpResult.getIdx())
+                        .status(false)
+                        .build();
+
+                return BaseRes.builder()
+                        .isSuccess(true)
+                        .message("후기 댓글 추천 여부 확인 성공")
+                        .result(res)
+                        .build();
+            }
+
         } else {
+
+            GetCheckReviewCommentUpRes res2 = GetCheckReviewCommentUpRes.builder()
+                    .status(false)
+                    .build();
+
             return BaseRes.builder()
                     .isSuccess(true)
-                    .message("후기 댓글 추천 여부 확인 성공")
-                    .result(false)
+                    .message("후기 댓글 추천 이력 존재 x")
+                    .result(res2)
                     .build();
         }
     }
