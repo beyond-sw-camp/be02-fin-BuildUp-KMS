@@ -4,6 +4,8 @@ import com.example.bootshelf.certification.Certification;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -17,8 +19,8 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idx;
 
-    @OneToOne(mappedBy = "course", fetch = FetchType.LAZY)
-    private Certification certification;
+    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
+    private List<Certification> certificationList = new ArrayList<>();
 
     @Column(nullable = false, length = 50)
     private String institutionName;
