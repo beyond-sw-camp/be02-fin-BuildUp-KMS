@@ -6,7 +6,7 @@
             <div class="layout-page">
                 <div class="content-wrapper">
                     <!-- Content -->
-                    <AdminRegisterComponent category-name="게시판 카테고리" />
+                    <AdminRegisterComponent category-name="게시판 카테고리" :submit-action="createBoardCategory" />
                     <div class="content-backdrop fade"></div>
                 </div>
             </div>
@@ -19,6 +19,8 @@ import AdminMenuComponent from "@/components/AdminMenuComponent.vue";
 import AdminRegisterComponent from "@/components/AdminRegisterComponent.vue";
 import { mapStores } from "pinia";
 import { useAdminStore } from "/src/stores/useAdminStore";
+import { useBoardStore } from "@/stores/useBoardStore";
+import { useRouter } from 'vue-router';
 
 export default {
     name: "AdminCategoryRegisterPage",
@@ -30,7 +32,23 @@ export default {
         this.$root.hideHeaderAndFooter = true;
     },
     computed: {
-        ...mapStores(useAdminStore),
+        ...mapStores(useAdminStore, useBoardStore),
+    },
+    setup() {
+        const boardStore = useBoardStore();
+        const router = useRouter();
+
+        const createBoardCategory = async (categoryName) => {
+            try {
+                await boardStore.createBoardCategory(categoryName);
+                alert(`${categoryName} 생성 완료!`);
+                router.push("/admin/board/category");
+            } catch (e) {
+                console.error(e);
+                throw e;
+            }
+        };
+        return { createBoardCategory };
     },
 };
 </script>

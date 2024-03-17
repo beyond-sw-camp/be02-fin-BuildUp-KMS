@@ -227,5 +227,17 @@ export const useBoardStore = defineStore("board", {
         console.error(error);
       }
     },
+    async createBoardCategory(categoryName) {
+      try {
+        await axios.post(backend + "/admin/board/create", { categoryName: categoryName }, {
+          headers: {
+            "Content-Type": "application/json",
+          }
+        });
+      } catch (e) {
+        console.error(e);
+        throw e;
+      }
+    }
   },
 });
