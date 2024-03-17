@@ -6,7 +6,7 @@
             <div class="layout-page">
                 <div class="content-wrapper">
                     <!-- Content -->
-                    <AdminRegisterComponent category-name="후기 카테고리" />
+                    <AdminRegisterComponent category-name="후기 카테고리" :submit-action="createReviewCategory" />
                     <div class="content-backdrop fade"></div>
                 </div>
             </div>
@@ -19,6 +19,8 @@ import AdminMenuComponent from "@/components/AdminMenuComponent.vue";
 import AdminRegisterComponent from "@/components/AdminRegisterComponent.vue";
 import { mapStores } from "pinia";
 import { useAdminStore } from "/src/stores/useAdminStore";
+import { useReviewStore } from "@/stores/useReviewStore";
+import { useRouter } from 'vue-router';
 
 export default {
     name: "AdminCategoryRegisterPage",
@@ -30,7 +32,23 @@ export default {
         this.$root.hideHeaderAndFooter = true;
     },
     computed: {
-        ...mapStores(useAdminStore),
+        ...mapStores(useAdminStore, useReviewStore),
+    },
+    setup() {
+        const reviewStore = useReviewStore();
+        const router = useRouter();
+
+        const createReviewCategory = async (categoryName) => {
+            try {
+                await reviewStore.createReviewCategory(categoryName);
+                alert(`${categoryName} 생성 완료!`);
+                router.push("/admin/review/category");
+            } catch (e) {
+                console.error(e);
+                throw e;
+            }
+        };
+        return { createReviewCategory };
     },
 };
 </script>

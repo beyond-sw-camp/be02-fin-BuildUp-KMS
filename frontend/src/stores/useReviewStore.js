@@ -226,6 +226,19 @@ export const useReviewStore = defineStore("review", {
         console.error(e);
         throw e;
       }
+    },
+
+    async createReviewCategory(categoryName) {
+      try {
+        await axios.post(backend + "/admin/review/create", { categoryName: categoryName }, {
+          headers: {
+            "Content-Type": "application/json",
+          }
+        });
+      } catch (e) {
+        console.error(e);
+        throw e;
+      }
     }
   },
 });
