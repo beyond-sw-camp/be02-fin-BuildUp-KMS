@@ -1,0 +1,1199 @@
+<template>
+  <div class="css-1hnxdb7">
+    <div class="css-130kwtj">
+      <div class="css-1hwcs2h"></div>
+    </div>
+    <div height="120px" class="css-jbj5u0"></div>
+    <div class="css-1g39gls">
+      <div class="css-1qjp6uf">
+        <div class="css-axl4y">
+          <div class="css-1yuvfju">
+            <div class="css-k59gj9">
+              <div class="css-hmpurq">
+                <div class="css-category">스터디</div>
+                <div class="css-kem115">
+                  <div class="css-12i5occ">
+                    <div class="css-1jibmi3">
+                      <div class="css-n7izk0">
+                        {{ boardStore.boardDetail.boardTitle }}
+                      </div>
+                    </div>
+                    <div class="css-sebsp7"></div>
+                  </div>
+                  <div class="css-bt1qy">
+                    <div class="css-1hqtm5a">
+                      <div @click="createBoardUp()">
+                        <img
+                          width="23px"
+                          height="23px"
+                          :src="
+                            isRecommended
+                              ? require('../assets/img/up_ok.png')
+                              : require('../assets/img/up.png')
+                          "
+                          alt="facebook-like"
+                        />
+                        <p style="font-size: 10px; text-align: center">
+                          {{ boardStore.boardDetail.upCnt }}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="css-1hqtm5a">
+                      <div @click="createBoardScrap()">
+                        <img
+                          width="23px"
+                          height="23px"
+                          :src="
+                            isScrapped
+                              ? require('../assets/img/scrap_ok.png')
+                              : require('../assets/img/scrap.png')
+                          "
+                          alt="bookmark-ribbon--v1"
+                        />
+                        <p
+                          class="css-scrap"
+                          style="font-size: 10px; text-align: center"
+                        >
+                          {{ boardStore.boardDetail.scrapCnt }}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <ConfirmDialogComponent
+                  v-if="showMyPageConfirmDialog"
+                  :isVisible="showMyPageConfirmDialog"
+                  message="마이페이지로 이동하시겠습니까?"
+                  :onConfirm="moveMyPage"
+                  :onCancel="dontMoveMyPage"
+                />
+                <div class="css-99cwur">
+                  <div class="css-1fhge30">
+                    <div class="css-aw18wm">
+                      <span
+                        style="
+                          box-sizing: border-box;
+                          display: block;
+                          overflow: hidden;
+                          width: initial;
+                          height: initial;
+                          background: none;
+                          opacity: 1;
+                          border: 0px;
+                          margin: 0px;
+                          padding: 0px;
+                          position: absolute;
+                          inset: 0px;
+                        "
+                        ><img
+                          sizes="100vw"
+                          src="https://blog.kakaocdn.net/dn/5UYz8/btq4diRXkGE/HkHufR4G8X4bIX3h3lNjck/img.jpg"
+                          decoding="async"
+                          data-nimg="fill"
+                          style="
+                            position: absolute;
+                            inset: 0px;
+                            box-sizing: border-box;
+                            padding: 0px;
+                            border: none;
+                            margin: auto;
+                            display: block;
+                            width: 0px;
+                            height: 0px;
+                            min-width: 100%;
+                            max-width: 100%;
+                            min-height: 100%;
+                            max-height: 100%;
+                          "
+                      /></span>
+                    </div>
+                    <div class="css-5zcuov">
+                      <div class="css-1sika4i">
+                        {{ boardStore.boardDetail.nickName }}
+                      </div>
+                      <div class="css-1tify6w">
+                        <svg
+                          width="2"
+                          height="2"
+                          viewBox="0 0 2 2"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <circle cx="1" cy="1" r="1" fill="#9DA7AE"></circle>
+                        </svg>
+                      </div>
+                      <div class="css-1ry6usa">
+                        {{ boardStore.boardDetail.updatedAt }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="css-z2xt5y"></div>
+              </div>
+            </div>
+            <div class="css-luqgif">
+              <div class="editedQ_QContent">
+                <p class="css-content">
+                  {{ boardStore.boardDetail.boardContent }}
+                </p>
+                <!-- <div
+                  v-if="
+                    boardStore.board.boardImageList &&
+                    boardStore.board.boardImageList.length > 0
+                  "
+                >
+                  <img
+                    v-for="(image, index) in boardStore.board.boardImageList"
+                    :key="image.boardImageIdx"
+                    :alt="`이미지 ${index + 1}`"
+                    :src="image.boardImage"
+                  />
+                </div> -->
+              </div>
+              <div class="css-iqys2n">
+                <!-- 태그 컴포넌트 자리-->
+                <TagComponent></TagComponent>
+              </div>
+            </div>
+            <div class="css-1k90lkz">
+              <div class="css-lua631">
+                <div class="css-13ku1qm">
+                  <div
+                    style="
+                      display: inline-block;
+                      width: 24px;
+                      height: 24px;
+                      text-align: center;
+                    "
+                  >
+                    <img
+                      width="16px"
+                      height="16px"
+                      src="https://img.icons8.com/tiny-glyph/32/000000/comments.png"
+                      alt="comments"
+                    />
+                  </div>
+                  댓글 {{ boardStore.boardDetail.commentCnt }}
+                </div>
+              </div>
+              <div class="css-qzobjv">
+                <!-- 댓글 컴포넌트 -->
+                <CommentComponent
+                  :commentList="commentList"
+                  :isCommentRecommended="isCommentRecommended"
+                  :boardCommentIdx="boardCommentIdx"
+                />
+                <div class="css-jpe6jj">
+                  <div class="css-3o2y5e">
+                    <div width="36px" height="36px" class="css-jg5tbe">
+                      <img
+                        alt="나의얼굴"
+                        width="34px"
+                        height="34px"
+                        src="https://www.fitpetmall.com/wp-content/uploads/2023/10/image-14.png"
+                      />
+                    </div>
+                  </div>
+                  <div class="css-13ljjbe">
+                    <div class="commentEditor">
+                      <input
+                        class="css-001"
+                        type="text"
+                        placeholder="댓글을 남겨주세요"
+                        v-model="boardCommentContent"
+                      />
+                    </div>
+                    <div class="css-btn-div">
+                      <button class="css-btn" @click="submitComment()">
+                        저장
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- 목록으로 돌아가기 버튼 -->
+              <div class="css-back-div">
+                <button class="css-board-back">목록가기</button>
+              </div>
+              <!-- 버튼 끝 -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import CommentComponent from "../components/CommentComponent.vue";
+import TagComponent from "../components/TagComponent.vue";
+import { useBoardCommentStore } from "../stores/useBoardCommentStore";
+import { useBoardStore } from "@/stores/useBoardStore";
+import { useUserStore } from "@/stores/useUserStore";
+import { mapStores } from "pinia";
+import ConfirmDialogComponent from "/src/components/ConfirmDialogComponent.vue";
+
+export default {
+  name: "StudyDetailPage",
+  components: {
+    CommentComponent,
+    TagComponent,
+    ConfirmDialogComponent,
+  },
+  computed: {
+    ...mapStores(useBoardStore, useUserStore, useBoardCommentStore),
+  },
+  data() {
+    return {
+      boardCommentContent: "",
+      boardDetail: null,
+      boardIdx: null,
+      commentList: null,
+      isAuthenticated: null,
+      showMyPageConfirmDialog: false,
+      isRecommended: false,
+      isScrapped: false,
+      boardUpIdx: null,
+      boardScrapIdx: null,
+    };
+  },
+  async mounted() {
+    this.boardStore.getStudyDetail();
+    const boardIdx = this.$route.params.boardIdx;
+
+    this.boardIdx = boardIdx;
+
+    this.boardDetail = await this.boardStore.findBoard(boardIdx);
+
+    await this.boardCommentStore.getBoardCommentList(boardIdx);
+    this.commentList = this.boardCommentStore.commentList;
+
+    // 게시글 추천 및 스크랩 상태 확인
+    await this.checkBoardUp();
+    await this.checkBoardScrap();
+  },
+  methods: {
+    async submitComment() {
+      let isAuthenticated = this.userStore.isAuthenticated;
+      try {
+        await useBoardCommentStore().createBoardComment(
+          this.boardCommentContent,
+          this.boardIdx,
+          isAuthenticated
+        );
+        // 댓글 생성 후 필요한 작업 작성
+      } catch (error) {
+        console.error("댓글 작성 실패:", error);
+      }
+    },
+    async createBoardUp() {
+      let token = window.localStorage.getItem("token");
+      let requestBody = {
+        boardIdx: this.boardIdx,
+      };
+
+      try {
+        if (this.isRecommended) {
+          await this.boardStore.cancelBoardUp(token, this.boardUpIdx);
+          console.log("게시글 추천 취소 성공");
+          this.isRecommended = false;
+
+          window.location.reload();
+        } else {
+          const response = await this.boardStore.createBoardUp(
+            token,
+            requestBody
+          );
+
+          if (response.status === 200 && response.data) {
+            console.log("게시글 추천 성공!");
+            this.isRecommended = true;
+            this.showMyPageConfirmDialog = true;
+          } else {
+            console.error("게시글 추천 실패");
+            alert("게시글 추천 실패");
+          }
+        }
+      } catch (e) {
+        console.error("게시글 추천 과정에서 문제가 발생했습니다!", e);
+      }
+    },
+    async createBoardScrap() {
+      let token = window.localStorage.getItem("token");
+      let requestBody = {
+        boardIdx: this.boardIdx,
+      };
+
+      try {
+        if (this.isScrapped) {
+          await this.boardStore.cancelBoardScrap(token, this.boardScrapIdx);
+          console.log("게시글 스크랩 취소 성공");
+          this.isScrapped = false;
+
+          window.location.reload();
+        } else {
+          const response = await this.boardStore.createBoardScrap(
+            token,
+            requestBody
+          );
+
+          if (response.status === 200 && response.data) {
+            console.log("게시글 스크랩 성공!");
+            this.isScrapped = true;
+            this.showMyPageConfirmDialog = true;
+          } else {
+            console.error("게시글 스크랩 실패");
+            alert("게시글 스크랩 실패");
+          }
+        }
+      } catch (e) {
+        console.error("게시글 스크랩 과정에서 문제가 발생했습니다!", e);
+      }
+    },
+    moveMyPage() {
+      this.showMyPageConfirmDialog = false;
+      this.$router.push("/mypage");
+    },
+    dontMoveMyPage() {
+      this.showMyPageConfirmDialog = false;
+      window.location.reload();
+    },
+    async checkBoardUp() {
+      try {
+        let token = window.localStorage.getItem("token");
+        let response = await this.boardStore.checkBoardUp(token, this.boardIdx);
+        console.log(response);
+
+        if (response.data && response.data.result.status === true) {
+          this.isRecommended = true;
+          this.boardUpIdx = response.data.result.boardUpIdx;
+        } else {
+          this.isRecommended = false;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    async checkBoardScrap() {
+      try {
+        let token = window.localStorage.getItem("token");
+        let response = await this.boardStore.checkBoardScrap(
+          token,
+          this.boardIdx
+        );
+        console.log(response);
+
+        if (response.data && response.data.result.status === true) {
+          this.isScrapped = true;
+          this.boardScrapIdx = response.data.result.boardScrapIdx;
+        } else {
+          this.isScrapped = false;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    },
+  },
+};
+</script>
+<style scoped>
+body {
+  height: 100%;
+  margin: 0;
+  overflow-x: hidden;
+  font-size: 1.4rem;
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  line-height: 1.5;
+  line-height: 1.5;
+  box-sizing: border-box;
+  letter-spacing: normal;
+}
+
+div {
+  display: block;
+}
+
+html {
+  font-size: 10px;
+  scroll-behavior: smooth;
+  display: block;
+}
+
+button {
+  background: unset;
+  border: unset;
+  padding: unset;
+}
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.css-icon {
+  font-size: 18px;
+  color: #9da7ae;
+}
+.css-category {
+  /* cursor: pointer; */
+  width: 65px;
+  padding: 2px 0;
+  border-radius: 40px;
+  /* border: solid 1px #dbdde0; */
+  background-color: rgb(84, 29, 112);
+  color: #fff;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+@media (min-width: 820px) {
+  .css-1g39gls {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 43px;
+    max-width: 942px;
+    margin: 0 auto;
+    padding: 150px 0 120px;
+  }
+}
+
+@media (min-width: 820px) {
+  .css-1qjp6uf {
+    max-width: 680px;
+    border-radius: 8px;
+    border: 1px solid #e4ebf0;
+    background-color: #ffffff;
+    padding: 40px;
+    width: 100%;
+    margin: auto;
+  }
+}
+
+/* .css-axl4y{
+    background-color: #f4f5f6;
+    padding: 0 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: none;
+} */
+
+.css-1yuvfju {
+  margin: auto;
+  max-width: 942px;
+  width: 100%;
+}
+
+.css-k59gj9 {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+@media ((min-width: 820px)) {
+  .css-hmpurq {
+    padding: 24px 0;
+    border-bottom: 1px solid #e4ebf0;
+    gap: 14px;
+  }
+}
+.css-hmpurq {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: #ffffff;
+}
+
+@media ((min-width: 820px)) {
+  .css-amlmv6 {
+    display: none;
+  }
+}
+.css-amlmv6 {
+  width: 100%;
+  justify-content: start;
+  align-items: center;
+  gap: 8px;
+}
+
+/* .css-1254q6y{
+    margin-left: 8px;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 12px 0;
+    border-radius: 40px;
+    height: 28px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1;
+    color: #3a3e41;
+    background-color: #eef3f6;
+    display: inline-flex;
+    justify-content: start;
+} */
+
+.css-kem115 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+@media ((min-width: 820px)) {
+  .css-12i5occ {
+    gap: 4px;
+    width: 100%;
+  }
+}
+
+.css-12i5occ {
+  display: flex;
+  flex-direction: column;
+}
+
+.css-1jibmi3 {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+@media (min-width: 820px) {
+  .css-n7izk0 {
+    font-style: normal;
+    line-height: 24px;
+    color: #141617;
+    max-width: 83%;
+    font-size: 20px;
+    font-weight: 700;
+  }
+}
+
+.css-n7izk0 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.css-sebsp7 {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  height: 18px;
+}
+
+.css-bt1qy {
+  display: flex;
+  align-items: start;
+  flex-direction: row;
+  gap: 16px;
+  height: 46px;
+}
+
+.css-1hqtm5a {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
+
+.css-99cwur {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 24px;
+  margin: 0;
+  line-height: 1.5;
+  box-sizing: border-box;
+  letter-spacing: normal;
+  font-size: 1.4rem;
+}
+
+.css-1fhge30 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  line-height: 1.5;
+  box-sizing: border-box;
+  letter-spacing: normal;
+}
+
+.css-aw18wm {
+  width: 24px;
+  height: 24px;
+  position: relative;
+  border-radius: 100%;
+  overflow: hidden;
+}
+
+.css-5zcuov {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  align-items: center;
+}
+
+.css-1sika4i {
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #3a3e41;
+}
+
+.css-1tify6w {
+  width: 2px;
+  height: 2px;
+  display: flex;
+}
+
+.css-1ry6usa {
+  /* font-family: Pretendard; */
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #9da7ae;
+}
+
+.css-o01lup {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2px;
+}
+
+.css-ts29it {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+}
+
+.css-dbc8ke {
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #9da7ae;
+  margin: 0 4px;
+}
+
+@media (min-width: 820px) {
+  .css-z2xt5y {
+    display: flex;
+  }
+}
+
+.css-z2xt5y {
+  flex-direction: row;
+  align-items: center;
+}
+
+.css-luqgif {
+  padding: 39px 20px;
+  border-bottom: solid 1px #eaebed;
+  background-color: #fff;
+  border-top: 1px solid #e4ebf0;
+}
+
+.editedQ_QContent {
+  min-height: 180px;
+}
+
+.css-content {
+  line-height: 30px;
+  font-size: 14px;
+}
+.css-iqys2n {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  gap: 12px;
+  padding-bottom: 20px;
+  padding-top: 80px;
+}
+
+.css-1kc14yj {
+  cursor: pointer;
+  width: 100px;
+  padding: 7px 0;
+  border-radius: 40px;
+  /* border: solid 1px #dbdde0; */
+  background-color: #eaeaea;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.css-151tj95 {
+  position: relative;
+  cursor: pointer !important;
+  width: 120px;
+  padding: 12px 0;
+  border-radius: 40px;
+  border: solid 1px #dbdde0;
+  background-color: #fff;
+  font-family: Pretendard;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: #1c1d1e !important;
+}
+
+.css-1k90lkz {
+  padding: 39px 20px;
+  border-bottom: none;
+  background-color: #fff;
+}
+
+.css-lua631 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.css-13ku1qm {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: Pretendard, -apple-system, “system-ui”, "Malgun Gothic",
+    "맑은 고딕", sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1.5;
+  text-align: left;
+  color: #1c1d1e;
+}
+
+/* 댓글 알림 부분 : html 192번 라인 
+.css-x2zrdg{
+    display: none;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+} */
+
+.css-qzobjv {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  gap: 12px;
+}
+
+.css-f7no94 {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 16px;
+}
+
+.css-3o2y5e {
+  margin-top: 10px;
+  display: block;
+}
+
+.css-jg5tbe {
+  width: 36px;
+  height: 36px;
+  border: solid 1px #adb5bd;
+  background-color: #f1f1f1;
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.css-14f8kx2 {
+  width: 100%;
+  max-width: 545px;
+  padding: 20px;
+  border-radius: 12px;
+  background-color: rgb(244, 245, 246);
+}
+
+.css-1psklmw {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.css-dyzp2y {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.css-dyzp2y-001 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin-left: 200px;
+}
+
+.css-wqf8ry {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.5;
+  text-align: left;
+  color: rgb(28, 29, 30);
+}
+
+.css-khzu4u {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background-color: rgb(28, 29, 30);
+  font-family: Pretendard, -apple-system, “system-ui”, "Malgun Gothic",
+    "맑은 고딕", sans-serif;
+  font-size: 10px;
+  font-weight: bold;
+  line-height: 1.5;
+  color: rgb(255, 255, 255);
+}
+
+.css-emxp16 {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: left;
+  color: rgb(131, 134, 137);
+}
+
+.css-emxp17 {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: left;
+  color: rgb(131, 134, 137);
+  cursor: pointer;
+}
+
+/* html 221라인 */
+.editedCommentContent {
+}
+
+.css-comment {
+  font-size: 14px;
+}
+
+.css-reply {
+  font-size: 12px;
+  margin-top: 15px;
+  cursor: pointer;
+  color: #9da7ae;
+}
+
+.css-f7no94 {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 16px;
+}
+
+.css-3o2y5e {
+  margin-top: 10px;
+  display: block;
+}
+
+.css-1ln580g {
+  width: 36px;
+  height: 36px;
+  overflow: hidden;
+  background-color: rgb(255, 255, 255);
+}
+
+.css-1psklmw {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.css-dyzp2y {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 4px;
+}
+
+.css-jpe6jj {
+  gap: 16px;
+  width: 100%;
+  display: flex;
+  align-items: start;
+  justify-content: center;
+}
+
+.css-13ljjbe {
+  width: 100%;
+  border: 1px solid #eaebed;
+  border-radius: 12px;
+  height: 90px;
+}
+
+/* .commentEditor{
+    height: 50px;
+}
+
+.css-001{
+    width: 80%;
+    margin: 10px;
+    border: none;
+    outline: none;
+} */
+
+.commentEditor {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.css-001 {
+  flex: 1;
+  margin: 10px; /* 텍스트 입력란과 버튼 사이의 간격 조절 */
+  outline: none;
+  border: none;
+}
+
+.css-btn-div {
+  display: flex;
+  justify-content: flex-end;
+  margin-left: 10px;
+}
+
+.css-btn {
+  background-color: rgb(52, 152, 219, 0.2);
+  font-size: 12px;
+  color: black;
+  font-weight: 700;
+  width: 70px;
+  height: 25px;
+  border-radius: 10px;
+  float: right;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.css-j12xmk {
+  display: flex;
+  flex-direction: row;
+  padding: 12px 10px;
+  height: 60px;
+  justify-content: space-between;
+  width: 100%;
+  background-color: rgb(255, 255, 255);
+  box-shadow: rgba(0, 0, 0, 0.08) 0px -4px 20px;
+  position: fixed;
+  bottom: 0px;
+}
+
+.css-170m71t {
+  display: flex;
+  gap: 8px;
+  line-height: 36px;
+  align-items: center;
+  font-size: 14px;
+  color: rgb(47, 48, 49);
+  font-weight: 700;
+}
+
+.css-5zcuov {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  align-items: center;
+}
+
+.css-n4f4vi {
+  width: 20px;
+  height: 20px;
+}
+
+.css-zajkhg {
+  padding: 20px 0;
+  display: none;
+  background-color: #f4f5f6;
+}
+
+.css-n8w3ba {
+  display: flex;
+  justify-content: center;
+  background-color: #1c1d1e;
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: 700;
+  color: #f4f5f6;
+  gap: 8px;
+}
+
+.css-1qam7gv {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+.css-1vdbpsh {
+  background-color: #1c1d1e;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.css-board-back {
+  cursor: pointer;
+  width: 80px;
+  height: 50px;
+  padding: 15px 0;
+  border-radius: 10px;
+  /* background-color: #9378FF; */
+  background-color: rgb(84, 29, 112);
+  font-size: 13px;
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+  gap: 6px;
+  color: #ffffff;
+}
+
+.css-back-div {
+  text-align: center;
+  margin-top: 50px;
+}
+
+/* 채팅 버튼 */
+.channel-talk__redirect-button {
+  position: fixed;
+  z-index: 9999;
+  bottom: 72px;
+  right: 18px;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  cursor: pointer;
+  visibility: visible;
+  border-radius: 24px;
+  transition: visibility 0.4s ease 0s;
+  background-color: rgb(84, 29, 112);
+  box-shadow: inset 0 0 0 1px hsla(0, 0%, 100%, 0.2),
+    0 4px 6px rgba(0, 0, 0, 0.1), 0 8px 30px rgba(0, 0, 0, 0.15);
+  -webkit-backdrop-filter: blur(30px);
+  backdrop-filter: blur(30px);
+  will-change: transform, opacity;
+}
+a {
+  color: currentColor;
+  text-decoration: none;
+  cursor: pointer;
+}
+a {
+  color: #1dc078;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+}
+*,
+:after,
+:before {
+  box-sizing: inherit;
+}
+
+a:-webkit-any-link {
+  color: -webkit-link;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.ql-editor {
+  box-sizing: border-box;
+  line-height: 1.42;
+  outline: none;
+  padding: 12px 0;
+  tab-size: 4;
+  -moz-tab-size: 4;
+  text-align: left;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.ql-editor {
+  color: #6b6e72;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.3;
+  letter-spacing: normal;
+  font-weight: 500;
+  min-height: 200px;
+  width: 100%;
+  margin: auto;
+  padding: 24px 20px !important;
+  resize: none;
+  border: none;
+}
+
+.ql-editor {
+  height: 100%;
+  overflow-y: auto;
+  padding: 12px 15px;
+}
+.quill > .ql-container > .ql-editor.ql-blank:before {
+  color: #c7c9cb;
+  font-style: normal;
+  font-size: 14px;
+  white-space: pre-wrap;
+  line-height: 1.5;
+  padding: 5px;
+}
+
+.ql-editor.ql-blank:before {
+  color: rgba(0, 0, 0, 0.6);
+  content: attr(data-placeholder);
+  font-style: italic;
+  left: 20px;
+  pointer-events: none;
+  position: absolute;
+  right: 15px;
+  font-weight: 350;
+}
+
+.ql-editor.ql-blank:before {
+  left: 15px;
+}
+</style>

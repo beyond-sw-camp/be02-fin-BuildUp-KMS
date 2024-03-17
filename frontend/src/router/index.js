@@ -19,6 +19,8 @@ import NoticeBoardListPage from "@/pages/NoticeBoardListPage.vue";
 import KakaoLogIn from "@/pages/KakaoLogIn.vue";
 import KnowledgeBoardListPage from "@/pages/KnowledgeBoardListPage.vue";
 import QnABoardListPage from "@/pages/QnABoardListPage.vue";
+import BoardUpdatePage from "@/pages/BoardUpdatePage.vue";
+import StudyDetailPage from "@/pages/StudyDetailPage.vue";
 
 import AdminMainPage from "@/pages/AdminMainPage.vue";
 import AdminWithdrawPage from "@/pages/AdminWithdrawPage.vue";
@@ -84,6 +86,8 @@ const routes = [
   { path: "/select/signup", component: SelectSignupPage },
   { path: "/email/verify", component: EmailValidationPage },
   { path: "/notice", component: NoticeBoardListPage },
+  { path: "/board/mywrite/:boardIdx", component: BoardUpdatePage},
+  { path: "/study/detail/:boardIdx", component: StudyDetailPage},
   { path: "/admin", component: AdminMainPage, },
   { path: "/admin/withdraw", component: AdminWithdrawPage },
   { path: "/admin/category/register", component: AdminCategoryRegisterPage },

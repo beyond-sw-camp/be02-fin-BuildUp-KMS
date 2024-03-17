@@ -66,7 +66,15 @@ export const useBoardStore = defineStore("board", {
 
     async findListByCategory(boardCategoryIdx, sortType, page = 1) {
       try {
-        let response = await axios.get(backend + "/board/category/" + boardCategoryIdx + "/" + sortType + "?page=" + (page - 1));
+        let response = await axios.get(
+          backend +
+            "/board/category/" +
+            boardCategoryIdx +
+            "/" +
+            sortType +
+            "?page=" +
+            (page - 1)
+        );
         this.boardList = response.data.result.list;
         this.totalPages = response.data.result.totalPages;
         this.currentPage = page;
@@ -81,9 +89,9 @@ export const useBoardStore = defineStore("board", {
       try {
         let response = await axios.get(
           backend +
-          `/board/${sortType}/search?searchTerm=${encodeURIComponent(
-            searchTerm
-          )}`,
+            `/board/${sortType}/search?searchTerm=${encodeURIComponent(
+              searchTerm
+            )}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -114,12 +122,16 @@ export const useBoardStore = defineStore("board", {
     },
     async createBoardUp(token, requestBody) {
       try {
-        let response = await axios.post(backend + "/boardup/create", requestBody, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+        let response = await axios.post(
+          backend + "/boardup/create",
+          requestBody,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
           }
-        })
+        );
 
         return response;
       } catch (e) {
@@ -129,12 +141,16 @@ export const useBoardStore = defineStore("board", {
     },
     async createBoardScrap(token, requestBody) {
       try {
-        let response = await axios.post(backend + "/boardscrap/create", requestBody, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+        let response = await axios.post(
+          backend + "/boardscrap/create",
+          requestBody,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
           }
-        })
+        );
 
         return response;
       } catch (e) {
@@ -161,11 +177,14 @@ export const useBoardStore = defineStore("board", {
     },
     async checkBoardScrap(token, boardIdx) {
       try {
-        let response = await axios.get(`${backend}/boardscrap/check/${boardIdx}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        let response = await axios.get(
+          `${backend}/boardscrap/check/${boardIdx}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         console.log(response);
 
         this.isScrapped = response.data.result.status;
@@ -178,12 +197,16 @@ export const useBoardStore = defineStore("board", {
     },
     async cancelBoardUp(token, boardUpIdx) {
       try {
-        let response = await axios.patch(`${backend}/boardup/delete/${boardUpIdx}`, {}, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json"
-          },
-        });
+        let response = await axios.patch(
+          `${backend}/boardup/delete/${boardUpIdx}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
         console.log(response);
       } catch (e) {
         console.error(e);
@@ -192,19 +215,28 @@ export const useBoardStore = defineStore("board", {
     },
     async cancelBoardScrap(token, boardScrapIdx) {
       try {
-        let response = await axios.patch(`${backend}/boardscrap/delete/${boardScrapIdx}`, {}, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json"
-          },
-        });
+        let response = await axios.patch(
+          `${backend}/boardscrap/delete/${boardScrapIdx}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
         console.log(response);
       } catch (e) {
         console.error(e);
         throw e;
       }
     },
-    async getCategoryBoardListByQuery(boardCategoryIdx ,query, option, page = 1) {
+    async getCategoryBoardListByQuery(
+      boardCategoryIdx,
+      query,
+      option,
+      page = 1
+    ) {
       try {
         let response = await axios.get(
           backend +
@@ -221,10 +253,67 @@ export const useBoardStore = defineStore("board", {
         this.totalPages = response.data.result.totalPages;
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
-  
+
         console.log(response);
       } catch (error) {
         console.error(error);
+      }
+    },
+
+    // 자신이 쓴 글 불러오기
+    async findBoardDetailByUserIdx() {
+      try {
+        let response = await axios.get(backend + "/board/mywrite/2", {
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+          },
+        });
+        this.boardDetail = response.data.result;
+
+        console.log(response);
+        return this.boardDetail;
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async updateBoard(board, boardImage) {
+      const formData = new FormData();
+
+      let json = JSON.stringify(board);
+      formData.append("board", new Blob([json], { type: "application/json" }));
+      formData.append("boardImage", boardImage);
+
+      try {
+        let response = await axios.patch(
+          backend + "/board/update/2",
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${storedToken}`,
+              // "Content-Type": "multipart/form-data",
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (response.data.isSuccess === true) {
+          this.isSuccess = true;
+          alert("게시글이 수정되었습니다.");
+          window.location.href = "/board/" + response.data.result.boardIdx;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    // 스터디 글 불러오기
+    async getStudyDetail() {
+      try {
+        let response = await axios.get(backend + "/board/2", );
+        this.boardDetail = response.data.result;
+
+        console.log(response);
+        return this.boardDetail;
+      } catch (e) {
+        console.log(e);
       }
     },
   },
