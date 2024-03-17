@@ -18,9 +18,11 @@
           <div class="css-emxp17">수정</div>
           <div class="css-emxp17" @click="deleteComment(comment.idx)">삭제</div>
         </div>
-        <div class="css-emxp17">
-          <img width="18px" height="17px" src="https://img.icons8.com/pastel-glyph/64/facebook-like--v1.png"
-            alt="facebook-like--v1" />
+        <div @click="toggleRecommendation(comment)">
+          <img width="23px" height="23px"
+            :src="isCommentRecommended ? require('../assets/img/up_ok.png') : require('../assets/img/up.png')"
+            alt="facebook-like" />
+          <p style="font-size: 10px; text-align: center">{{ comment.upCnt }}</p>
         </div>
       </div>
       <div class="editedCommentContent">
@@ -45,13 +47,17 @@ export default {
     commentList: {
       type: Array,
       required: true
-    }
+    },
   },
   data() {
     return {
       editable: false,
-      boardDetail: null
+      updateComment: '',
     }
+  },
+
+  created() {
+    this.checkBoardCommentUp();
   },
 
   methods: {
@@ -71,7 +77,57 @@ export default {
       } catch (error) {
         console.error('댓글 삭제 실패:', error);
       }
+    },
 
+    async toggleRecommendation(comment) {
+      await this.createBoardCommentUp(comment.idx);
+      comment.isCommentRecommended = !comment.isCommentRecommended;
+    },
+
+    async createBoardCommentUp(comment) {
+      let token = window.localStorage.getItem("token");
+      let requestBody = {
+        boardCommentIdx: comment.idx
+      };
+
+      try {
+        if (this.isCommentRecommended) {
+          await this.boardCommentStore.cancelBoardCommentUp(token, comment.idx);
+          console.log("게시글 댓글 추천 취소 성공");
+          comment.isCommentRecommended = false;
+
+          window.location.reload();
+        } else {
+          const response = await this.boardCommentStore.createBoardCommentUp(token, requestBody);
+
+          if (response.status === 200 && response.data) {
+            console.log("게시글 댓글 추천 성공!");
+            this.isCommentRecommended = true;
+          } else {
+            console.error("게시글 댓글 추천 실패");
+            alert("게시글 댓글 추천 실패");
+          }
+        }
+      } catch (e) {
+        console.error("게시글 댓글 추천 과정에서 문제가 발생했습니다!", e);
+      }
+    },
+
+    async checkBoardCommentUp(comment) {
+      try {
+        let token = window.localStorage.getItem("token");
+        let response = await this.boardCommentStore.checkBoardCommentUp(token, comment.idx);
+        console.log(response);
+
+        if (response.data && response.data.result.status === true) {
+          this.isCommentRecommended = true;
+          this.boardCommentIdx = response.data.result.boardCommentIdx;
+        } else {
+          this.isCommentRecommended = false;
+        }
+      } catch (e) {
+        console.error(e);
+      }
     }
 
   },
