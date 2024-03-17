@@ -4,12 +4,16 @@
         :class="{ 'is-active': menuVisible.visible }">
         <div class="app-brand demo">
             <a href="#" class="app-brand-link" @click.prevent="toggleMenu">
-                <span class="app-brand-logo demo">
-                    <img src="../assets/img/icon.png" alt="icon" width="30px" />
-                </span>
-                <span class="app-brand-text demo menu-text fw-bold ms-2">
-                    <img src="../assets/img/logo.png" alt="logo" width="120px" />
-                </span>
+                <router-link to="/admin/tag">
+                    <span class="app-brand-logo demo">
+                        <img src="../assets/img/icon.png" alt="icon" width="30px" />
+                    </span>
+                </router-link>
+                <router-link to="/admin/tag">
+                    <span class="app-brand-text demo menu-text fw-bold ms-2">
+                        <img src="../assets/img/logo.png" alt="logo" width="120px" />
+                    </span>
+                </router-link>
             </a>
             <!-- 메뉴 토글 버튼 -->
             <a href="#" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none"
@@ -20,8 +24,9 @@
         <div class="menu-inner-shadow"></div>
         <ul class="menu-inner py-1">
             <!-- Menu Header -->
-            <li class="menu-header small text-uppercase">
-                <span class="menu-header-text">admin</span>
+            <li class="menu-header">
+                <span class="menu-header-text">{{ adminDecodedToken && adminDecodedToken.name ? adminDecodedToken.name :
+            'null' }}</span>
             </li>
             <!-- Menu Items -->
             <li class="menu-item" v-for="(item, key) in submenuVisible" :key="key">
@@ -31,7 +36,7 @@
                 </a>
                 <ul class="menu-sub" :class="{ 'd-block': item.visible, 'd-none': !item.visible }">
                     <li class="menu-item" v-for="subItem in item.submenu" :key="subItem.name">
-                        <a href="#" class="menu-link">
+                        <a href="#" class="menu-link" @click.prevent="itemClicked(subItem)">
                             <div>{{ subItem.name }}</div>
                         </a>
                     </li>
@@ -44,6 +49,8 @@
 
 <script>
 import { reactive, ref, onMounted } from 'vue';
+import { useAdminStore } from "/src/stores/useAdminStore";
+import { mapStores } from "pinia";
 
 export default {
     name: "AdminMenuComponent",
@@ -54,8 +61,9 @@ export default {
                 icon: 'bx bx-lock-open-alt',
                 visible: false,
                 submenu: [
-                    { name: '관리자 회원 가입' },
-                    { name: '관리자 회원 탈퇴' },
+                    { name: '관리자 회원 가입', path: '/admin/signup' },
+                    { name: '관리자 회원 탈퇴', path: '/admin/withdraw' },
+                    { name: '관리자 로그 아웃', action: 'logout' }
                 ],
             },
             member: {
@@ -63,7 +71,7 @@ export default {
                 icon: 'bx bx-dock-top',
                 visible: false,
                 submenu: [
-                    { name: '회원 조회' },
+                    { name: '회원 조회', path: '/admin/user' },
                 ],
             },
             category: {
@@ -71,8 +79,10 @@ export default {
                 icon: 'bx bx-cube-alt',
                 visible: false,
                 submenu: [
-                    { name: '카테고리 등록' },
-                    { name: '카테고리 조회' },
+                    { name: '게시판 카테고리 등록', path: '/admin/board/category/register' },
+                    { name: '후기 카테고리 등록', path: '/admin/review/category/register' },
+                    { name: '게시판 카테고리 조회', path: '/admin/board/category' },
+                    { name: '후기 카테고리 조회', path: '/admin/review/category' },
                 ],
             },
             tag: {
@@ -80,19 +90,19 @@ export default {
                 icon: 'bx bx-tag',
                 visible: false,
                 submenu: [
-                    { name: '태그 등록' },
-                    { name: '태그 조회' },
+                    { name: '태그 등록', path: '/admin/tag/register' },
+                    { name: '태그 조회', path: '/admin/tag' },
                 ],
             },
-            notice: {
-                name: '공지사항',
-                icon: 'bx bx-news',
-                visible: false,
-                submenu: [
-                    { name: '공지사항 등록' },
-                    { name: '공지사항 조회' },
-                ],
-            },
+            // notice: {
+            //     name: '공지사항',
+            //     icon: 'bx bx-news',
+            //     visible: false,
+            //     submenu: [
+            //         { name: '공지사항 등록', path: '/admin/notice/register' },
+            //         { name: '공지사항 조회', path: '/admin/notice' },
+            //     ],
+            // },
         });
 
         const menuVisible = ref(false);
@@ -115,6 +125,55 @@ export default {
 
         return { submenuVisible, toggleSubmenu, toggleMenu, menuVisible, menuToggleButton };
     },
+    computed: {
+        ...mapStores(useAdminStore),
+        isAdminAuthenticated() {
+            const store = useAdminStore();
+            return store.isAdminAuthenticated;
+        },
+        adminDecodedToken() {
+            const store = useAdminStore();
+            return store.adminDecodedToken;
+        },
+    },
+    methods: {
+        logout() {
+            window.localStorage.removeItem("a_token");
+            const store = useAdminStore();
+            store.isAdminAuthenticated = false;
+            store.adminDecodedToken = {};
+            this.isDropdownOpen = false;
+            this.$router.push("/admin/login");
+        },
+        adminDecodeToken(token) {
+            const base64Url = token.split(".")[1];
+            const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+            const jsonPayload = decodeURIComponent(
+                atob(base64)
+                    .split("")
+                    .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+                    .join("")
+            );
+
+            return JSON.parse(jsonPayload);
+        },
+        itemClicked(subItem) {
+            if (subItem.path) {
+                this.$router.push(subItem.path);
+            } else if (subItem.action && typeof this[subItem.action] === 'function') {
+                this[subItem.action]();
+            }
+        },
+    },
+    created() {
+        const token = window.localStorage.getItem("a_token");
+        if (token) {
+            const decoded = this.adminDecodeToken(token);
+            const store = useAdminStore();
+            store.setDecodedToken(decoded);
+            store.isAdminAuthenticated = true;
+        }
+    }
 };
 </script>
 

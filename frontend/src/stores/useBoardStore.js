@@ -31,7 +31,7 @@ export const useBoardStore = defineStore("board", {
         if (response.data.isSuccess === true) {
           this.isSuccess = true;
           alert("게시글이 등록되었습니다.");
-          window.location.href = "/bpard/" + response.data.result.boardIdx;
+          window.location.href = "/board/" + response.data.result.boardIdx;
         }
       } catch (e) {
         if (e.response && e.response.data) {
