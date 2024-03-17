@@ -25,5 +25,18 @@ export const useTagStore = defineStore("tag", {
         console.log(e);
       }
     },
+
+    async createTag(tagName) {
+      try {
+        await axios.post(backend + "/admin/tag/create", { tagName: tagName }, {
+          headers: {
+            "Content-Type": "application/json",
+          }
+        });
+      } catch (e) {
+        console.error(e);
+        throw e;
+      }
+    }
   },
 });
