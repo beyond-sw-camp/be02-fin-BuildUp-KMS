@@ -289,15 +289,7 @@ export const useUserStore = defineStore("user", {
     // [관리자] 회원 목록 조회
     async getUserList(page = 1) {
       try {
-        const params = new URLSearchParams({
-          page: page - 1,
-        }).toString();
-
-        let response = await axios.get(backend + `/user/list/?${params}`, {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-          },
-        });
+        let response = await axios.get(backend + "/user/list/?page=" + (page - 1));
 
         this.userList = response.data.result.list;
         this.totalPages = response.data.result.totalPages;

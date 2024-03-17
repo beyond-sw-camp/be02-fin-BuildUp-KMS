@@ -87,7 +87,7 @@ export default {
   },
   mounted() {
     this.$root.hideHeaderAndFooter = true;
-    this.userStore.getUserList(1);
+    this.userStore.getUserList();
   },
   methods: {
     changePage(page) {
