@@ -260,6 +260,19 @@ export const useBoardStore = defineStore("board", {
       }
     },
 
+    async createBoardCategory(categoryName) {
+      try {
+        await axios.post(backend + "/admin/board/create", { categoryName: categoryName }, {
+          headers: {
+            "Content-Type": "application/json",
+          }
+        });
+      } catch (e) {
+        console.error(e);
+        throw e;
+      }
+    },
+
     // 자신이 쓴 글 불러오기
     async findBoardDetailByUserIdx() {
       try {
