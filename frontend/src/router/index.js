@@ -26,7 +26,7 @@ import HotListPage from "@/pages/HotListPage.vue";
 import AdminMainPage from "@/pages/AdminMainPage.vue";
 import AdminWithdrawPage from "@/pages/AdminWithdrawPage.vue";
 import AdminBoardCategoryRegisterPage from "@/pages/AdminBoardCategoryRegisterPage.vue";
-import AdminReviewCategoryRegisterPage from "@/pages/AdminReviewCategoryRegisterPage.vue";
+// import AdminReviewCategoryRegisterPage from "@/pages/AdminReviewCategoryRegisterPage.vue";
 import AdminTagRegisterPage from "@/pages/AdminTagRegisterPage.vue";
 import AdminBoardCategoryListPage from "@/pages/AdminBoardCategoryListPage.vue";
 import AdminReviewCategoryListPage from "@/pages/AdminReviewCategoryListPage.vue";
@@ -108,7 +108,7 @@ const routes = [
   { path: "/admin", component: AdminMainPage, beforeEnter: requireAdminAuth() },
   { path: "/admin/withdraw", component: AdminWithdrawPage, beforeEnter: requireAdminAuth() },
   { path: "/admin/board/category/register", component: AdminBoardCategoryRegisterPage, beforeEnter: requireAdminAuth() },
-  { path: "/admin/review/category/register", component: AdminReviewCategoryRegisterPage, beforeEnter: requireAdminAuth() },
+  // { path: "/admin/review/category/register", component: AdminReviewCategoryRegisterPage, beforeEnter: requireAdminAuth() },
   { path: "/admin/tag/register", component: AdminTagRegisterPage, beforeEnter: requireAdminAuth() },
   { path: "/admin/board/category", component: AdminBoardCategoryListPage, beforeEnter: requireAdminAuth() },
   { path: "/admin/review/category", component: AdminReviewCategoryListPage, beforeEnter: requireAdminAuth() },
