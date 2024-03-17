@@ -158,7 +158,6 @@ public class BoardController {
         return ResponseEntity.ok().body(boardService.searchBoardListByQueryAndCategory(boardCategoryIdx, query, sortType, pageable));
     }
 
-
     /**
      * 게시판 + 후기 검색 api (v2)
      * -> 페이지네이션 잘 안됨
@@ -176,7 +175,6 @@ public class BoardController {
     ) {
         return ResponseEntity.ok().body(boardService.searchResultListByQueryV2(query, searchType, pageable));
     }
-
 
     @Operation(summary = "Board 게시글 수정 기능",
             description = "게시판의 게시글을 수정하는 API 입니다.")
@@ -221,6 +219,39 @@ public class BoardController {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         BaseRes baseRes = boardService.findBoardDetailByUserIdx(boardIdx, user);
 
+        return ResponseEntity.ok().body(baseRes);
+    }
+
+    // 인기 게시글 용 조회 API
+    @Operation(summary = "Board 인기 게시글 카테고리 별 조회",
+            description = "게시판의 인기 게시글을 카테고리 별 추천수 별로 조회하는 API입니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
+    @RequestMapping(method = RequestMethod.GET, value = "/hotlist/{boardCategoryIdx}/{sortType}")
+    public ResponseEntity<BaseRes> listHotBoard(
+            @PageableDefault(size = 9) Pageable pageable,
+            @PathVariable @NotNull @Positive Integer boardCategoryIdx,
+            @PathVariable @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") @ApiParam(value = "정렬유형 : 1 (최신순), 2 (추천수 순), 3 (조회수 순), 4 (스크랩수 순), 5 (댓글수 순)") Integer sortType
+    ) {
+        BaseRes baseRes = boardService.listHotBoard(pageable, boardCategoryIdx, sortType);
+
+        return ResponseEntity.ok().body(baseRes);
+    }
+
+    @Operation(summary = "Board 인기 게시글 검색어로 조회",
+            description = "게시판의 인기 게시글을 추천수 별로 검색어(키워드)로 조회하는 API입니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
+    @GetMapping("/hotlist/{boardCategoryIdx}/{sortType}/search")
+    public ResponseEntity<BaseRes> searchHotBoard(
+            @PathVariable @NotNull(message = "후기 카테고리 IDX는 필수 입력 항목입니다.") @Positive(message = "후기 카테고리 IDX는 1이상의 양수입니다.") Integer boardCategoryIdx,
+            @PathVariable @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") @ApiParam(value = "정렬유형 : 1 (최신순), 2 (추천수 순), 3 (조회수 순), 4 (스크랩수 순), 5 (댓글수 순)") Integer sortType,
+            @RequestParam String searchTerm,
+            @PageableDefault(size = 9) Pageable pageable
+    ) {
+        BaseRes baseRes = boardService.searchHotBoard(boardCategoryIdx, searchTerm, sortType, pageable);
         return ResponseEntity.ok().body(baseRes);
     }
 }

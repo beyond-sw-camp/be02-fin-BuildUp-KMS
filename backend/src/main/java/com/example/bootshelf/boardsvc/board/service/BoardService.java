@@ -1,6 +1,5 @@
 package com.example.bootshelf.boardsvc.board.service;
 
-import com.amazonaws.services.kms.model.NotFoundException;
 import com.example.bootshelf.boardsvc.board.model.entity.Board;
 import com.example.bootshelf.boardsvc.board.model.request.PatchUpdateBoardReq;
 import com.example.bootshelf.boardsvc.board.model.request.PostCreateBoardReq;
@@ -10,7 +9,6 @@ import com.example.bootshelf.boardsvc.board.model.response.GetListBoardRes;
 import com.example.bootshelf.boardsvc.board.model.response.PostCreateBoardRes;
 import com.example.bootshelf.boardsvc.board.repository.BoardRepository;
 import com.example.bootshelf.boardsvc.boardcategory.model.entity.BoardCategory;
-import com.example.bootshelf.boardsvc.boardcomment.model.entity.BoardComment;
 import com.example.bootshelf.boardsvc.boardimage.model.entity.BoardImage;
 import com.example.bootshelf.boardsvc.boardimage.service.BoardImageService;
 import com.example.bootshelf.boardsvc.boardtag.model.entity.BoardTag;
@@ -20,9 +18,7 @@ import com.example.bootshelf.common.error.ErrorCode;
 import com.example.bootshelf.common.error.entityexception.BoardException;
 import com.example.bootshelf.reviewsvc.review.model.entity.Review;
 import com.example.bootshelf.reviewsvc.review.repository.ReviewRepository;
-import com.example.bootshelf.tag.model.entity.Tag;
 import com.example.bootshelf.user.model.entity.User;
-import com.sun.jdi.request.DuplicateRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -45,6 +41,7 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 @Slf4j
 public class BoardService {
+
     private final BoardRepository boardRepository;
     private final BoardTagService boardTagService;
     private final BoardImageService boardImageService;
@@ -138,7 +135,7 @@ public class BoardService {
                         .createdAt(board.getCreatedAt())
                         .updatedAt(board.getUpdatedAt())
                         .userProfileImage(board.getUser().getProfileImage())
-                        .userName(board.getUser().getName())
+                        .nickName(board.getUser().getNickName())
                         .build();
 
 
@@ -206,6 +203,7 @@ public class BoardService {
 
     @Transactional(readOnly = true)
     public BaseRes findMyBoardListByCategory(User user, Pageable pageable, Integer boardCategoryIdx, Integer sortIdx) {
+
         Page<Board> boardList = boardRepository.findMyBoardListByCategory(user.getIdx(), pageable, boardCategoryIdx, sortIdx);
         List<GetListBoardRes> getListBoardResList = new ArrayList<>();
 
@@ -550,7 +548,9 @@ public class BoardService {
 
     @Transactional(readOnly = false)
     public BaseRes deleteBoard(User user, Integer boardIdx) {
+
         Optional<Board> result = boardRepository.findByIdx(boardIdx);
+
         if (!result.isPresent()) {
             throw new BoardException(ErrorCode.BOARD_NOT_EXISTS, String.format("Board Idx [ %s ] is not exists.", boardIdx));
         }
@@ -607,6 +607,133 @@ public class BoardService {
                 .isSuccess(true)
                 .message("본인 작성 게시글 상세 조회 성공")
                 .result(getBoardRes)
+                .build();
+
+        return baseRes;
+    }
+
+    // Hot 인기 게시글 조회
+    public BaseRes listHotBoard(Pageable pageable, Integer boardCategoryIdx, Integer sortIdx) {
+        Page<Board> boardList = boardRepository.findBoardListByCategory(pageable, boardCategoryIdx, sortIdx);
+        List<GetListHotBoardRes> getListResListHotBoard = new ArrayList<>();
+
+        for (Board board : boardList) {
+
+            List<BoardTag> boardTagList = board.getBoardTagList();
+            List<String> tagNames = new ArrayList<>();
+
+            for (BoardTag boardTag : boardTagList) {
+                String tagName = boardTag.getTag().getTagName();
+                tagNames.add(tagName);
+            }
+
+            GetListHotBoardRes getListHotBoardRes = GetListHotBoardRes.builder()
+                    .idx(board.getIdx())
+                    .userIdx(board.getUser().getIdx())
+                    .nickName(board.getUser().getNickName())
+                    .profileImage(board.getUser().getProfileImage())
+                    .title(board.getBoardTitle())
+                    .content(board.getBoardContent())
+                    .tagNameList(tagNames)
+                    .viewCnt(board.getViewCnt())
+                    .upCnt(board.getUpCnt())
+                    .scrapCnt(board.getScrapCnt())
+                    .commentCnt(board.getCommentCnt())
+                    .createdAt(board.getCreatedAt())
+                    .updatedAt(board.getUpdatedAt())
+                    .type("board")
+                    .build();
+
+            List<BoardImage> boardImageList = board.getBoardImageList();
+            List<String> fileNames = new ArrayList<>();
+            if (!boardImageList.isEmpty()) {
+                for (BoardImage boardImage : boardImageList) {
+                    String fileName = boardImage.getBoardImage();
+                    fileNames.add(fileName);
+                }
+                getListHotBoardRes.setImage(fileNames.get(0));
+            }
+
+            getListResListHotBoard.add(getListHotBoardRes);
+        }
+
+        Long totalCnt = boardList.getTotalElements();
+        Integer totalPages = boardList.getTotalPages();
+
+        GetListHotBoardResResult result = GetListHotBoardResResult.builder()
+                .totalCnt(totalCnt)
+                .totalPages(totalPages)
+                .list(getListResListHotBoard)
+                .build();
+
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("인기 게시글 카테고리별 목록 조회 요청 성공")
+                .result(result)
+                .build();
+
+        return baseRes;
+    }
+
+    @Transactional(readOnly = true)
+    public BaseRes searchHotBoard(Integer boardCategoryIdx, String query, Integer sortIdx, Pageable pageable) {
+        Page<Board> boardList = boardRepository.searchBoardListByQueryAndCategory(pageable, boardCategoryIdx, query, sortIdx);
+
+        List<GetListHotBoardRes> getListResListHotBoard = new ArrayList<>();
+
+        for (Board board : boardList) {
+
+            List<BoardTag> boardTagList = board.getBoardTagList();
+            List<String> tagNames = new ArrayList<>();
+
+            for (BoardTag boardTag : boardTagList) {
+                String tagName = boardTag.getTag().getTagName();
+                tagNames.add(tagName);
+            }
+
+            GetListHotBoardRes getListHotBoardRes = GetListHotBoardRes.builder()
+                    .idx(board.getIdx())
+                    .userIdx(board.getUser().getIdx())
+                    .nickName(board.getUser().getNickName())
+                    .profileImage(board.getUser().getProfileImage())
+                    .title(board.getBoardTitle())
+                    .content(board.getBoardContent())
+                    .tagNameList(tagNames)
+                    .viewCnt(board.getViewCnt())
+                    .upCnt(board.getUpCnt())
+                    .scrapCnt(board.getScrapCnt())
+                    .commentCnt(board.getCommentCnt())
+                    .createdAt(board.getCreatedAt())
+                    .updatedAt(board.getUpdatedAt())
+                    .type("board")
+                    .build();
+
+            List<BoardImage> boardImageList = board.getBoardImageList();
+            List<String> fileNames = new ArrayList<>();
+            if (!boardImageList.isEmpty()) {
+                for (BoardImage boardImage : boardImageList) {
+                    String fileName = boardImage.getBoardImage();
+                    fileNames.add(fileName);
+                }
+                getListHotBoardRes.setImage(fileNames.get(0));
+            }
+
+            getListResListHotBoard.add(getListHotBoardRes);
+        }
+
+        Long totalCnt = boardList.getTotalElements();
+        Integer totalPages = boardList.getTotalPages();
+
+        GetListHotBoardResResult result = GetListHotBoardResResult.builder()
+                .totalCnt(totalCnt)
+                .totalPages(totalPages)
+                .list(getListResListHotBoard)
+                .build();
+
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("인기 게시글 검색어별 목록 조회 요청 성공")
+                .result(result)
                 .build();
 
         return baseRes;

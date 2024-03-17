@@ -40,5 +40,5 @@ public class GetBoardRes {
 
     private String userProfileImage;
 
-    private String userName;
+    private String nickName;
 }
