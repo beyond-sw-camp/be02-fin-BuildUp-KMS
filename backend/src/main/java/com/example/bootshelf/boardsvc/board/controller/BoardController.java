@@ -45,7 +45,7 @@ public class BoardController {
     public ResponseEntity<BaseRes> createBoard(
             @AuthenticationPrincipal User user,
             @RequestPart(value="board") PostCreateBoardReq postCreateBoardReq,
-            @RequestPart(value = "boardImage") MultipartFile[] uploadFiles
+            @RequestPart(value = "boardImage", required = false) MultipartFile[] uploadFiles
     ) {
         BaseRes baseRes = boardService.createBoard(user, postCreateBoardReq, uploadFiles);
         return ResponseEntity.ok().body(baseRes);
@@ -58,7 +58,7 @@ public class BoardController {
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
     @RequestMapping(method = RequestMethod.GET, value = "/mylist/{sortType}")
     public ResponseEntity<BaseRes> myList(
-            @PageableDefault(size = 10) Pageable pageable,
+            @PageableDefault(size = 9) Pageable pageable,
             @PathVariable @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") @ApiParam(value = "정렬유형 : 1 (최신순), 2 (추천수 순), 3 (조회수 순), 4 (스크랩수 순), 5 (댓글수 순)") Integer sortType
     ){
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
@@ -74,7 +74,7 @@ public class BoardController {
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
     @RequestMapping(method = RequestMethod.GET, value = "/mylist/{boardCategoryIdx}/{sortType}")
     public ResponseEntity<BaseRes> myListByCategory(
-            @PageableDefault(size = 10) Pageable pageable,
+            @PageableDefault(size = 9) Pageable pageable,
             @PathVariable(value = "boardCategoryIdx") Integer boardCategoryIdx,
             @PathVariable @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") @ApiParam(value = "정렬유형 : 1 (최신순), 2 (추천수 순), 3 (조회수 순), 4 (스크랩수 순), 5 (댓글수 순)") Integer sortType
     ){
@@ -91,7 +91,7 @@ public class BoardController {
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
     @RequestMapping(method = RequestMethod.GET, value = "/category/{boardCategoryIdx}/{sortType}")
     public ResponseEntity<BaseRes> boardListbyCategory(
-            @PageableDefault(size = 10) Pageable pageable,
+            @PageableDefault(size = 9) Pageable pageable,
             @PathVariable(value = "boardCategoryIdx") Integer boardCategoryIdx,
             @PathVariable @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") @ApiParam(value = "정렬유형 : 1 (최신순), 2 (추천수 순), 3 (조회수 순), 4 (스크랩수 순), 5 (댓글수 순)") Integer sortType
     ){
@@ -107,7 +107,7 @@ public class BoardController {
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
     @RequestMapping(method = RequestMethod.GET, value = "/tag/{tagIdx}/{sortType}")
     public ResponseEntity<BaseRes> boardListbyTag(
-            @PageableDefault(size = 10) Pageable pageable,
+            @PageableDefault(size = 9) Pageable pageable,
             @PathVariable(value = "tagIdx") Integer tagIdx,
             @PathVariable @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") @ApiParam(value = "정렬유형 : 1 (최신순), 2 (추천수 순), 3 (조회수 순), 4 (스크랩수 순), 5 (댓글수 순)") Integer sortType
     ){
@@ -154,7 +154,7 @@ public class BoardController {
     public ResponseEntity<BaseRes> searchBoardListByQueryAndCategory (
             @RequestParam String query,
             @PathVariable(value = "boardCategoryIdx") Integer boardCategoryIdx,
-            @PageableDefault(size = 10) Pageable pageable,
+            @PageableDefault(size = 9) Pageable pageable,
             @RequestParam @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") @ApiParam(value = "정렬유형 : 1 (최신순), 2 (추천수 순), 3 (조회수 순), 4 (스크랩수 순), 5 (댓글수 순)") Integer sortType
     ){
         return ResponseEntity.ok().body(boardService.searchBoardListByQueryAndCategory(boardCategoryIdx, query, sortType, pageable));
