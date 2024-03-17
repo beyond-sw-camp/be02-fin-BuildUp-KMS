@@ -139,8 +139,22 @@ public class ReviewCommentUpService {
     }
 
     @Transactional
-    public BaseRes deleteReviewCommentUp(User user, Integer reviewCommentUpIdx) {
-        Optional<ReviewCommentUp> result = reviewCommentUpRepository.findByIdx(reviewCommentUpIdx);
+    public BaseRes deleteReviewCommentUp(User user, Integer reviewCommentIdx) {
+        List<ReviewCommentUp> resultList = reviewCommentUpRepository.findByReviewCommentIdx(reviewCommentIdx);
+
+        if (resultList.isEmpty()) {
+            throw new ReviewUpException(ErrorCode.REVIEW_UP_NOT_EXISTS,
+                    String.format("Review recommend idx [ %s ] is not exists.", reviewCommentIdx));
+        }
+
+        Optional<ReviewCommentUp> result = Optional.empty();
+        for (ReviewCommentUp up : resultList) {
+            if (up.getReviewComment().getIdx().equals(reviewCommentIdx)) {
+                result = Optional.of(up);
+                break;
+            }
+        }
+
         if (result.isPresent()) {
             ReviewCommentUp reviewCommentUp = result.get();
             ReviewComment reviewComment = reviewCommentUp.getReviewComment();
@@ -156,11 +170,18 @@ public class ReviewCommentUpService {
                         .isSuccess(true)
                         .message("후기 댓글 추천 삭제 성공")
                         .build();
+            } else {
+                throw new ReviewUpException(ErrorCode.UNAUTHORIZED_REVIEW_COMMENT_UP,
+                        String.format("Current user is  [ %s ] .\n " +
+                                "But User who recommended review comment is [ %s ].", user.getIdx(), reviewCommentUp.getUser().getIdx()));
             }
-            throw new ReviewUpException(ErrorCode.UNAUTHORIZED_REVIEW_COMMENT_UP,
-                    String.format("Current user is  [ %s ] .\n " +
-                            "But User who recommended review comment is [ %s ].", user.getIdx(), reviewCommentUp.getUser().getIdx()));
+        } else {
+            throw new ReviewUpException(ErrorCode.REVIEW_UP_NOT_EXISTS,
+                    String.format("Review recommend idx [ %s ] is not exists.", reviewCommentIdx));
         }
-        throw new ReviewUpException(ErrorCode.REVIEW_UP_NOT_EXISTS, String.format("Review recommend idx [ %s ] is not exists.", reviewCommentUpIdx));
     }
+
+
 }
+
+
