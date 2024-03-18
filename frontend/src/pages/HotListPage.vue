@@ -257,6 +257,18 @@
                   />
                 </div>
               </ul>
+              <!---검색결과 없을 때-->
+              <div class="css-6g4q8b" v-show="!totalStore.isBoardExist">
+                <div class="css-aa80it">
+                  <img src="@/assets/img/002.png" class="css-1baht8c" />
+                  <div class="css-dhqp8i">
+                    <div class="css-c7zvxr">검색 결과가 없습니다.</div>
+                    <div class="css-1mcux1f">
+                      질문을 직접 남겨서 궁금증을 해결해 보세요!
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <!-- /본격 글 리스트 -->
           </div>
@@ -1545,5 +1557,66 @@ a {
   .py-md-4 {
     padding-bottom: 1.5rem !important;
   }
+}
+
+/* 검색 결과 없을 떄 */
+
+.css-6g4q8b {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  min-height: 400px;
+  background-color: white;
+  margin-bottom: 50px;
+}
+.css-aa80it {
+  display: flex;
+  flex-direction: column;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  gap: 16px;
+}
+img {
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  -ms-interpolation-mode: nearest-neighbor;
+}
+.css-1baht8c {
+  width: 160px;
+  height: 88px;
+}
+.css-dhqp8i {
+  display: flex;
+  flex-direction: column;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  gap: 6px;
+  text-align: center;
+}
+.css-c7zvxr {
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  color: rgb(28, 29, 30);
+}
+.css-1mcux1f {
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 20px;
+  color: rgb(131, 134, 137);
+  white-space: pre-wrap;
 }
 </style>
