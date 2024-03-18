@@ -303,11 +303,12 @@ export default {
   },
   methods: {
     goBack() {
-      if(this.boardStore.fromEdit) {
-        this.boardStore.fromEdit = false;
-        this.$router.push("/board/knowledge");
-      } else {
-        this.$router.go(-1);
+      if(this.boardDetail.boardCategoryName === "지식 공유") {
+        window.location.href="/board/knowledge";
+      } else if(this.boardDetail.boardCategoryName === "QnA") {
+        window.location.href="/board/qna";
+      } else if(this.boardDetail.boardCategoryName === "스터디") {
+        window.location.href="/study";
       }
     },
     async submitComment() {
