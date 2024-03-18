@@ -20,7 +20,7 @@ import KakaoLogIn from "@/pages/KakaoLogIn.vue";
 import KnowledgeBoardListPage from "@/pages/KnowledgeBoardListPage.vue";
 import QnABoardListPage from "@/pages/QnABoardListPage.vue";
 import BoardUpdatePage from "@/pages/BoardUpdatePage.vue";
-import StudyDetailPage from "@/pages/StudyDetailPage.vue";
+import StudyDetailsPage from "@/pages/StudyDetailsPage.vue";
 import HotListPage from "@/pages/HotListPage.vue";
 import TagBoardListPage from "@/pages/TagBoardListPage.vue";
 import ReviewUpdatePage from "@/pages/ReviewUpdatePage.vue";
@@ -139,19 +139,20 @@ const routes = [
     component: ReviewWritePage,
     beforeEnter: requireUserAuth(),
   },
-  { path: "/study", component: StudyBoardListPage },
   { path: "/board/:boardIdx", component: BoardDetailsPage },
   { path: "/review/:idx", component: ReviewDetailsPage },
+  { path: "/study/:boardIdx", component: StudyDetailsPage },
   { path: "/board/knowledge", component: KnowledgeBoardListPage },
   { path: "/board/tag", component: TagBoardListPage },
   { path: "/board/qna", component: QnABoardListPage },
+  { path: "/study", component: StudyBoardListPage },
   { path: "/review", component: ReviewListPage },
   { path: "/hot", component: HotListPage },
   { path: "/select/signup", component: SelectSignupPage },
   { path: "/email/verify", component: EmailValidationPage },
   { path: "/notice", component: NoticeBoardListPage },
   { path: "/board/mywrite/:boardIdx", component: BoardUpdatePage },
-  { path: "/study/detail/:boardIdx", component: StudyDetailPage },
+  { path: "/review/mywrite/:reviewIdx", component: ReviewUpdatePage},
   { path: "/admin", component: AdminMainPage, beforeEnter: requireAdminAuth() },
   { path: "/admin/withdraw", component: AdminWithdrawPage, beforeEnter: requireAdminAuth() },
   { path: "/admin/board/category/register", component: AdminBoardCategoryRegisterPage, beforeEnter: requireAdminAuth() },
@@ -167,6 +168,7 @@ const routes = [
   { path: "/admin/signup", component: AdminSignUpPage },
   { path: "/admin/login", component: AdminLoginPage },
   { path: "/review/mywrite/:reviewIdx", component: ReviewUpdatePage },
+
 ];
 
 const router = createRouter({
