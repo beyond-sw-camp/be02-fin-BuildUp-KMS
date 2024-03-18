@@ -1,18 +1,17 @@
 <template>
   <td>
-    <span class="fw-medium">{{ tags.idx }}</span>
+    <span class="fw-medium">{{ tag.idx }}</span>
   </td>
-  <td>{{ tags.tagName }}</td>
+  <td>{{ tag.tagName }}</td>
   <td>
     <div class="dropdown" @click.prevent="toggleUserMenu($event)">
       <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
         <i class="bx bx-dots-vertical-rounded"></i>
       </button>
       <div class="dropdown-menu" v-show="userMenuVisible">
-        <router-link
-          :to="{ name: 'AdminTagUpdate', params: { categoryIdx: tag.idx, categoryName: tag.name } }">
+        <!-- <router-link :to="{ name: 'AdminTagUpdate', params: { categoryIdx: tag.idx, categoryName: tag.tagName } }"> -->
           <a class="dropdown-item"><i class="bx bx-edit-alt me-1"></i>수정</a>
-        </router-link>
+        <!-- </router-link> -->
         <a class="dropdown-item" @click="deleteTag"><i class="bx bx-trash me-1"></i> 삭제</a>
       </div>
     </div>
@@ -46,7 +45,7 @@ export default {
 
     const deleteTag = async () => {
       try {
-        await tagStore.deleteTag(props.tag.idx);
+        await tagStore.deleteTag(props.tags.idx);
         alert('태그가 삭제되었습니다.');
       } catch (error) {
         console.error('태그 삭제 에러:', error);
