@@ -1,6 +1,6 @@
 <template>
   <!-- 스터디 게시글 컴포넌트 -->
-    <a class="css-1myomkm epbh2v50" href="#">
+    <a class="css-1myomkm epbh2v50"  :href="'/board/' + boards.boardIdx">
       <h2 aria-description="글 제목">
         <span
           >{{ boards.boardTitle }}

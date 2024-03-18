@@ -2,7 +2,10 @@ package com.example.bootshelf.boardsvc.boardtag.service;
 
 import com.example.bootshelf.boardsvc.board.model.entity.Board;
 import com.example.bootshelf.boardsvc.boardtag.model.entity.BoardTag;
+import com.example.bootshelf.boardsvc.boardtag.model.response.GetListHotTagRes;
+import com.example.bootshelf.boardsvc.boardtag.model.response.GetListHotTagResResult;
 import com.example.bootshelf.boardsvc.boardtag.repository.BoardTagRepository;
+import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.tag.model.entity.Tag;
 import com.example.bootshelf.tag.repository.TagRepository;
 import com.example.bootshelf.tag.service.TagService;
@@ -18,6 +21,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class BoardTagService {
+
     private final TagService tagService;
     private final BoardTagRepository boardTagRepository;
     private final TagRepository tagRepository;
@@ -60,7 +64,31 @@ public class BoardTagService {
             return;
         }
         saveBoardTag(reqTagList, idx);
+    }
 
+    public BaseRes listHotTag() {
 
+        List<GetListHotTagRes> boardTagList = boardTagRepository.findByHotTagList();
+
+        List<GetListHotTagResResult> getListHotTagResResultList = new ArrayList<>();
+
+        for(GetListHotTagRes GetListHotTagRes : boardTagList) {
+
+            GetListHotTagResResult getListHotTagResResult= GetListHotTagResResult.builder()
+                    .tagIdx(GetListHotTagRes.getTagIdx())
+                    .tagName(GetListHotTagRes.getTagName())
+                    .count(GetListHotTagRes.getCount())
+                    .build();
+
+            getListHotTagResResultList.add(getListHotTagResResult);
+        }
+
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("인기 태그 조회 성공")
+                .result(getListHotTagResResultList)
+                .build();
+
+        return baseRes;
     }
 }

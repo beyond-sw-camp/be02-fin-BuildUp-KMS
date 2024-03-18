@@ -71,6 +71,18 @@
                   :onConfirm="moveMyPage"
                   :onCancel="dontMoveMyPage"
                 />
+                <div class="css-z2xt5y">
+                  <div class="css-5zcuovs">
+                    <div class="css-1sika4is">
+                      {{ reviewStore.review.courseName }}
+                    </div>
+                  </div>
+                  <div class="css-5zcuovss">
+                    <div class="css-1sika4iss">
+                      평점 : {{ reviewStore.review.courseEvaluation }} 점
+                    </div>
+                  </div>
+                </div>
                 <div class="css-99cwur">
                   <div class="css-1fhge30">
                     <div class="css-aw18wm">
@@ -129,20 +141,21 @@
                       <div class="css-1ry6usa">
                         {{ reviewStore.review.updatedAt }}
                       </div>
-                      <div class="css-5zcuovs">
-                        <div class="css-1sika4is">
-                          {{ reviewStore.review.courseName }}
-                        </div>
-                      </div>
-                      <div class="css-5zcuovss">
-                        <div class="css-1sika4iss">
-                          평점 : {{ reviewStore.review.courseEvaluation }} 점
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="css-z2xt5y"></div>
+                <!-- <div class="css-z2xt5y">
+                  <div class="css-5zcuovs">
+                    <div class="css-1sika4is">
+                      {{ reviewStore.review.courseName }}
+                    </div>
+                  </div>
+                  <div class="css-5zcuovss">
+                    <div class="css-1sika4iss">
+                      평점 : {{ reviewStore.review.courseEvaluation }} 점
+                    </div>
+                  </div>
+                </div> -->
               </div>
             </div>
             <div class="css-luqgif">
@@ -222,7 +235,9 @@
               </div>
               <!-- 목록으로 돌아가기 버튼 -->
               <div class="css-back-div">
-                <button class="css-board-back">목록가기</button>
+                <router-link to="/review">
+                  <button class="css-board-back">목록가기</button>
+                </router-link>
               </div>
               <!-- 돌아가기 버튼 끝 -->
             </div>
@@ -259,6 +274,9 @@ export default {
   },
   computed: {
     ...mapStores(useReviewStore, useUserStore, useReviewCommentStore),
+    isLoggedIn() {
+      return !!localStorage.getItem("token");
+    },
     userProfileImage() {
       // 사용자 정보 로딩 후 사용자 프로필 이미지 반환
       if (this.userStore.user && this.userStore.user.profileImage) {
@@ -273,6 +291,9 @@ export default {
     const reviewIdx = this.$route.params.idx;
     this.reviewStore.getReviewDetail(reviewIdx);
     this.reviewCommentStore.getReviewCommentList(reviewIdx);
+    if (this.isLoggedIn) {
+      this.userStore.getUserInfo();
+    }
 
     this.reviewIdx = reviewIdx;
   },
@@ -1005,7 +1026,7 @@ img {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  margin-left: 20px;
+  margin-left: 0px;
   font-family: Pretendard;
   cursor: pointer;
   border-radius: 5px;
@@ -1029,7 +1050,7 @@ img {
   font-family: Pretendard;
   cursor: pointer;
   border-radius: 5px;
-  background-color: rgb(0 64 255 / 22%);;
+  background-color: rgb(0 64 255 / 22%);
   padding: 3px 10px;
 }
 .css-1sika4is {

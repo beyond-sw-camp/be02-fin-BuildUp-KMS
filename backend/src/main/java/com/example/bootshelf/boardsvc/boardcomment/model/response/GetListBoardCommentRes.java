@@ -14,6 +14,7 @@ public class GetListBoardCommentRes {
     private Integer boardIdx;
     private Integer userIdx;
     private String nickName;
+    private String profileImage;
     private String boardCommnetContent;
     private Integer upCnt;
     private String createAt;

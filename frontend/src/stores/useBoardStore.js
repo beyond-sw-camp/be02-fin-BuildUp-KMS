@@ -12,7 +12,11 @@ export const useBoardStore = defineStore("board", {
     totalCnt: 0,
     boardDetail: [],
     tagList: [],
+    tagIdx: 0,
+    tagName: "",
+    previousPath: ""
   }),
+
   actions: {
     async createBoard(board, boardImage) {
       const formData = new FormData();
@@ -320,7 +324,7 @@ export const useBoardStore = defineStore("board", {
     // 스터디 글 불러오기
     async getStudyDetail() {
       try {
-        let response = await axios.get(backend + "/board/2", );
+        let response = await axios.get(backend + "/board/2");
         this.boardDetail = response.data.result;
 
         console.log(response);
@@ -328,6 +332,63 @@ export const useBoardStore = defineStore("board", {
       } catch (e) {
         console.log(e);
       }
+    },
+    // 태그별 글 불러오기
+    async getTagBoardList(boardCategoryIdx, sortType, page = 1) {
+      let selectTagIdx = this.tagIdx
+      try {
+        let response = await axios.get(
+          backend +
+            "/board/tag/" +
+            selectTagIdx +
+            "/" +
+            boardCategoryIdx +
+            "/" +
+            sortType +
+            "?page=" +
+            (page - 1)
+        );
+        this.boardList = response.data.result.list;
+        this.totalPages = response.data.result.totalPages;
+        this.currentPage = page;
+        this.totalCnt = response.data.result.totalCnt;
+
+        console.log(response);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async getSearchTagBoardList(boardCategoryIdx, searchTerm, sortType, page = 1) {
+      let selectTagIdx = this.tagIdx
+      try {
+        const params = new URLSearchParams({
+          page: page - 1,
+        }).toString();
+
+        let response = await axios.get(
+          backend +
+            `/board/tag/${selectTagIdx}/${boardCategoryIdx}/${sortType}/search?searchTerm=${encodeURIComponent(
+              searchTerm
+            )}&${params}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        this.boardList = response.data.result.list;
+        this.totalPages = response.data.result.totalPages;
+        this.totalCnt = response.data.result.totalCnt;
+        if (response.data.result.length !== 0) {
+          this.isBoardExist = false;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    setPreviousPath(path) {
+      this.previousPath = path;
     },
 
     async deleteBoardCategory(boardCategoryIdx) {

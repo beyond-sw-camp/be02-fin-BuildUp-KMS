@@ -1,6 +1,6 @@
 <template>
   <div class="css-fortagcomponentgms">
-    <div v-for="(tagName, index) in tagNameList" :key="index" class="css-1kc14yj">
+    <div v-for="(tagName, index) in tagNameList" :key="index" class="css-1kc14yj" :id="tagNameList.idx">
       # {{ tagName }}
     </div>
   </div>
@@ -37,7 +37,7 @@ export default {
 }
 .css-fortagcomponentgms{
   display: flex;
-  gap: 3px;
+  gap: 10px;
   min-height: 22px;
 }
 </style>

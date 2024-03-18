@@ -1,5 +1,5 @@
 <template>
-  <a :href="'/review/' + boards.boardIdx">
+  <a :href="'/board/' + boards.boardIdx">
     <div class="css-k59gj9">
       <div class="css-aw1sgr">
         <div class="css-amlmv6">

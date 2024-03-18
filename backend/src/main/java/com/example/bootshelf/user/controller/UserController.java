@@ -94,7 +94,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
     @RequestMapping(method = RequestMethod.GET, value = "/list")
-    public ResponseEntity<BaseRes> list(@PageableDefault(size = 10) Pageable pageable) {
+    public ResponseEntity<BaseRes> list(@PageableDefault(size = 20) Pageable pageable) {
 
         BaseRes baseRes = userService.list(pageable);
         return ResponseEntity.ok().body(baseRes);

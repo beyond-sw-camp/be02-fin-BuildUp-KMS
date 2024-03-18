@@ -67,7 +67,7 @@
               <div class="css-1iqxhyo">
                 <textarea
                   rows="1"
-                  :placeholder="this.review.courseName"
+                  :placeholder="userStore.user.courseName"
                   class="css-16kqrm"
                   style="overflow: hidden; resize: none"
                   readonly
@@ -235,7 +235,7 @@
 <script>
 import { mapStores } from "pinia";
 import { useReviewStore } from "../stores/useReviewStore";
-import VueJwtDecode from "vue-jwt-decode";
+import { useUserStore } from "../stores/useUserStore";
 
 export default {
   name: "ReviewWritePage",
@@ -271,7 +271,7 @@ export default {
     };
   },
   computed: {
-    ...mapStores(useReviewStore),
+    ...mapStores(useReviewStore, useUserStore),
     reviewCategoryIdx() {
       return this.getCategoryIndex(this.selectedCategory);
     },
@@ -280,10 +280,7 @@ export default {
     },
   },
   mounted() {
-    let token = localStorage.getItem("token");
-    let userClaims = VueJwtDecode.decode(token);
-    let courseNameFromToken = decodeURIComponent(escape(userClaims.courseName));
-    this.review.courseName = courseNameFromToken;
+    this.userStore.getUserInfo();
   },
   methods: {
     showCategory() {
@@ -353,6 +350,7 @@ export default {
       reader.readAsDataURL(file);
     },
     async createReview() {
+      this.review.courseName = this.userStore.user.courseName;
       await this.reviewStore.createReview(this.review, this.reviewImage);
     },
     cancelCreateReview() {
