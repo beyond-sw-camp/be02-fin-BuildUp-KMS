@@ -119,6 +119,12 @@ const routes = [
     component: AdminBoardCategoryUpdatePage,
     props: true
   },
+  // {
+  //   path: '/admin/tags/update/:categoryIdx',
+  //   name: 'AdminTagUpdate',
+  //   component: AdminTagUpdatePage,
+  //   props: true  
+  // },  
   { path: "/auth/signup", component: AuthSignupPage },
   { path: "/KakaoLogIn", component: KakaoLogIn },
   { path: "/signup", component: SignupPage },

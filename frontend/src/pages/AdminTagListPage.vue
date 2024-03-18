@@ -24,8 +24,8 @@
                     </tr>
                   </thead>
                   <tbody class="table-border-bottom-0">
-                    <tr v-for="tags in tagStore.tagList" :key="tags.tagIdx">
-                      <AdminTagListComponent :tags="tags" />
+                    <tr v-for="tag in tagStore.tagList" :key="tag.tagIdx">
+                      <AdminTagListComponent :tag="tag" />
                     </tr>
                   </tbody>
                 </table>
