@@ -66,7 +66,7 @@ public class UserController {
     @RequestMapping(method = RequestMethod.GET, value = "/verify")
     public RedirectView verify(GetEmailVerifyReq getEmailVerifyReq) {
         if (emailVerifyService.verify(getEmailVerifyReq)) {
-            BaseRes baseRes = userService.updateStatus(getEmailVerifyReq.getEmail()); // 이메일 인증이 완료되면 회원의 status를 바꿔줌
+            userService.updateStatus(getEmailVerifyReq.getEmail()); // 이메일 인증이 완료되면 회원의 status를 바꿔줌
 
             return new RedirectView("http://localhost:8081/");
         } else {
