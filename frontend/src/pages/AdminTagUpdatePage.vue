@@ -7,7 +7,7 @@
                 <div class="content-wrapper">
                     <!-- Content -->
                     <div class="container-xxl flex-grow-1 container-p-y">
-                        <h3 class="py-3 mb-4"><span class="text-muted fw-light">후기 카테고리 /</span> 수정</h3>
+                        <h3 class="py-3 mb-4"><span class="text-muted fw-light">태그 /</span> 수정</h3>
 
                         <!-- Basic Layout -->
                         <div class="row">
@@ -23,7 +23,7 @@
                                         </div>
                                     </div> -->
                                     <div class="card-header d-flex justify-content-between align-items-center">
-                                        <h5 class="mb-0">새 카테고리명</h5>
+                                        <h5 class="mb-0">새 태그명</h5>
                                     </div>
                                     <div class="card-body">
                                         <form>
@@ -51,10 +51,10 @@ import { mapStores } from "pinia";
 import { useAdminStore } from "/src/stores/useAdminStore";
 import { ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { useReviewStore } from "@/stores/useReviewStore";
+import { useTagStore } from "@/stores/useTagStore";
 
 export default {
-    name: "AdminReviewCategoryUpdatePage",
+    name: "AdminTagUpdatePage",
     components: {
         AdminMenuComponent,
     },
@@ -66,12 +66,12 @@ export default {
         this.$root.hideHeaderAndFooter = true;
     },
     computed: {
-        ...mapStores(useAdminStore, useReviewStore),
+        ...mapStores(useAdminStore, useTagStore),
     },
     setup() {
         const router = useRouter();
         const route = useRoute();
-        const reviewStore = useReviewStore();
+        const tagStore = useTagStore();
 
         const categoryIdx = ref(route.params.categoryIdx);
         const currentCategoryName = ref(route.params.categoryName);
@@ -80,17 +80,17 @@ export default {
 
         const updateCategory = async () => {
             if (!newCategoryName.value.trim()) {
-                alert("Please enter a category name.");
+                alert("태그명을 입력하세요.");
                 return;
             }
 
             try {
-                await reviewStore.updateReviewCategory(categoryIdx.value, newCategoryName.value);
-                alert("후기 카테고리 수정 완료!");
-                router.push("/admin/review/category");
+                await tagStore.updateTag(categoryIdx.value, newCategoryName.value);
+                alert("태그 수정 완료!");
+                router.push("/admin/tag");
             } catch (error) {
-                console.error("후기 카테고리 수정 에러:", error);
-                alert("후기 카테고리 수정 실패");
+                console.error("태그 수정 에러:", error);
+                alert("태그 수정 실패");
             }
         };
 
