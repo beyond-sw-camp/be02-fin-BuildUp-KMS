@@ -277,5 +277,25 @@ export const useReviewStore = defineStore("review", {
         throw e;
       }
     },
+    
+    async deleteReviewCategory(reviewCategoryIdx) {
+      try {
+        await axios.delete(backend + "/admin/review/delete" + reviewCategoryIdx);
+      } catch (e) {
+        console.error(e);
+        throw e;
+      }
+    },
+
+    async updateReviewCategory(reviewCategoryIdx, newCategoryName) {
+      try {
+        await axios.patch(backend + "/admin/review/update/" + reviewCategoryIdx, {
+          categoryName: newCategoryName
+        })
+      } catch(e) {
+        console.error(e);
+        throw e;
+      }
+    }
   },
 });

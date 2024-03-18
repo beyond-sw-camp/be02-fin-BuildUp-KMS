@@ -27,7 +27,7 @@ import TagBoardListPage from "@/pages/TagBoardListPage.vue";
 import AdminMainPage from "@/pages/AdminMainPage.vue";
 import AdminWithdrawPage from "@/pages/AdminWithdrawPage.vue";
 import AdminBoardCategoryRegisterPage from "@/pages/AdminBoardCategoryRegisterPage.vue";
-// import AdminReviewCategoryRegisterPage from "@/pages/AdminReviewCategoryRegisterPage.vue";
+import AdminReviewCategoryRegisterPage from "@/pages/AdminReviewCategoryRegisterPage.vue";
 import AdminTagRegisterPage from "@/pages/AdminTagRegisterPage.vue";
 import AdminBoardCategoryListPage from "@/pages/AdminBoardCategoryListPage.vue";
 import AdminReviewCategoryListPage from "@/pages/AdminReviewCategoryListPage.vue";
@@ -35,6 +35,8 @@ import AdminTagListPage from "@/pages/AdminTagListPage.vue";
 import AdminUserListPage from "@/pages/AdminUserListPage.vue";
 import AdminSignUpPage from "@/pages/AdminSignUpPage.vue";
 import AdminLoginPage from "@/pages/AdminLoginPage.vue";
+import AdminReviewCategoryUpdatePage from "@/pages/AdminReviewCategoryUpdatePage";
+import AdminBoardCategoryUpdatePage from "@/pages/AdminBoardCategoryUpdatePage";
 
 const requireAuth = () => (from, to, next) => {
   const storedToken = window.localStorage.getItem("token");
@@ -105,6 +107,24 @@ const routes = [
     component: () => import("@/pages/KakaoLogIn.vue"),
     props: true,
   },
+  {
+    path: '/admin/review/category/update/:categoryIdx',
+    name: 'AdminReviewCategoryUpdate',
+    component: AdminReviewCategoryUpdatePage,
+    props: true
+  },
+  {
+    path: '/admin/board/category/update/:categoryIdx',
+    name: 'AdminBoardCategoryUpdate',
+    component: AdminBoardCategoryUpdatePage,
+    props: true
+  },
+  // {
+  //   path: '/admin/tags/update/:categoryIdx',
+  //   name: 'AdminTagUpdate',
+  //   component: AdminTagUpdatePage,
+  //   props: true  
+  // },  
   { path: "/auth/signup", component: AuthSignupPage },
   { path: "/KakaoLogIn", component: KakaoLogIn },
   { path: "/signup", component: SignupPage },
@@ -131,42 +151,16 @@ const routes = [
   { path: "/board/mywrite/:boardIdx", component: BoardUpdatePage },
   { path: "/study/detail/:boardIdx", component: StudyDetailPage },
   { path: "/admin", component: AdminMainPage, beforeEnter: requireAdminAuth() },
-  {
-    path: "/admin/withdraw",
-    component: AdminWithdrawPage,
-    beforeEnter: requireAdminAuth(),
-  },
-  {
-    path: "/admin/board/category/register",
-    component: AdminBoardCategoryRegisterPage,
-    beforeEnter: requireAdminAuth(),
-  },
-  // { path: "/admin/review/category/register", component: AdminReviewCategoryRegisterPage, beforeEnter: requireAdminAuth() },
-  {
-    path: "/admin/tag/register",
-    component: AdminTagRegisterPage,
-    beforeEnter: requireAdminAuth(),
-  },
-  {
-    path: "/admin/board/category",
-    component: AdminBoardCategoryListPage,
-    beforeEnter: requireAdminAuth(),
-  },
-  {
-    path: "/admin/review/category",
-    component: AdminReviewCategoryListPage,
-    beforeEnter: requireAdminAuth(),
-  },
-  {
-    path: "/admin/tag",
-    component: AdminTagListPage,
-    beforeEnter: requireAdminAuth(),
-  },
-  {
-    path: "/admin/user",
-    component: AdminUserListPage,
-    beforeEnter: requireAdminAuth(),
-  },
+  { path: "/admin/withdraw", component: AdminWithdrawPage, beforeEnter: requireAdminAuth() },
+  { path: "/admin/board/category/register", component: AdminBoardCategoryRegisterPage, beforeEnter: requireAdminAuth() },
+  { path: "/admin/review/category/register", component: AdminReviewCategoryRegisterPage, beforeEnter: requireAdminAuth() },
+  { path: "/admin/board/category/update", component: AdminBoardCategoryUpdatePage, beforeEnter: requireAdminAuth() },
+  { path: "/admin/review/category/update", component: AdminReviewCategoryUpdatePage, beforeEnter: requireAdminAuth() },
+  { path: "/admin/tag/register", component: AdminTagRegisterPage, beforeEnter: requireAdminAuth() },
+  { path: "/admin/board/category", component: AdminBoardCategoryListPage, beforeEnter: requireAdminAuth() },
+  { path: "/admin/review/category", component: AdminReviewCategoryListPage, beforeEnter: requireAdminAuth() },
+  { path: "/admin/tag", component: AdminTagListPage, beforeEnter: requireAdminAuth() },
+  { path: "/admin/user", component: AdminUserListPage, beforeEnter: requireAdminAuth() },
   { path: "/admin/signup", component: AdminSignUpPage },
   { path: "/admin/login", component: AdminLoginPage },
 ];
