@@ -10,6 +10,7 @@ export const useTotalStore = defineStore("total", {
     currentPage: 0,
     totalPages: 0,
     totalCnt: 0,
+    isBoardExist: true
   }),
   actions: {
 
@@ -28,8 +29,8 @@ export const useTotalStore = defineStore("total", {
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
-        if (response.data.result.length !== 0) {
-          this.isReviewExist = false;
+        if(response.data.result.list.length === 0 && response.data.result.totalCnt === 0) {
+          this.isBoardExist = false;
         }
       } catch (e) {
         console.log(e);
@@ -59,8 +60,8 @@ export const useTotalStore = defineStore("total", {
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
-        if (response.data.result.length !== 0) {
-          this.isReviewExist = false;
+        if(response.data.result.list.length === 0 && response.data.result.totalCnt === 0) {
+          this.isBoardExist = false;
         }
       } catch (e) {
         console.log(e);
@@ -83,6 +84,10 @@ export const useTotalStore = defineStore("total", {
         this.totalPages = response.data.result.totalPages;
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
+
+        if(response.data.result.list.length === 0 && response.data.result.totalCnt === 0) {
+          this.isBoardExist = false;
+        }
 
         console.log(response);
       } catch (error) {
@@ -113,8 +118,8 @@ export const useTotalStore = defineStore("total", {
           this.currentPage = page;
           this.totalCnt = response.data.result.totalCnt;
   
-          if (response.data.result.length !== 0) {
-            this.isReviewExist = false;
+          if(response.data.result.list.length === 0 && response.data.result.totalCnt === 0) {
+            this.isBoardExist = false;
           }
         } catch (e) {
           console.log(e);

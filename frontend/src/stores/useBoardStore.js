@@ -14,7 +14,8 @@ export const useBoardStore = defineStore("board", {
     tagList: [],
     tagIdx: 0,
     tagName: "",
-    previousPath: ""
+    previousPath: "",
+    isBoardExist: true
   }),
 
   actions: {
@@ -62,6 +63,10 @@ export const useBoardStore = defineStore("board", {
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
+        if(response.data.result.list.length === 0 && response.data.result.totalCnt === 0) {
+          this.isBoardExist = false;
+        }
+
         console.log(response);
       } catch (error) {
         console.error(error);
@@ -79,10 +84,15 @@ export const useBoardStore = defineStore("board", {
             "?page=" +
             (page - 1)
         );
+        
         this.boardList = response.data.result.list;
         this.totalPages = response.data.result.totalPages;
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
+        
+        if(response.data.result.list.length === 0 && response.data.result.totalCnt === 0) {
+          this.isBoardExist = false;
+        }
 
         console.log(response);
       } catch (error) {
@@ -106,7 +116,8 @@ export const useBoardStore = defineStore("board", {
         this.boardList = response.data.result.list;
         this.totalPages = response.data.result.totalPages;
         this.totalCnt = response.data.result.totalCnt;
-        if (response.data.result.length !== 0) {
+
+        if(response.data.result.list.length === 0 && response.data.result.totalCnt === 0) {
           this.isBoardExist = false;
         }
       } catch (e) {
@@ -258,6 +269,9 @@ export const useBoardStore = defineStore("board", {
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
+        if(response.data.result.list.length === 0 && response.data.result.totalCnt === 0) {
+          this.isBoardExist = false;
+        }
         console.log(response);
       } catch (error) {
         console.error(error);
@@ -353,6 +367,10 @@ export const useBoardStore = defineStore("board", {
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
+        if(response.data.result.list.length === 0 && response.data.result.totalCnt === 0) {
+          this.isBoardExist = false;
+        }
+
         console.log(response);
       } catch (error) {
         console.error(error);
@@ -380,7 +398,8 @@ export const useBoardStore = defineStore("board", {
         this.boardList = response.data.result.list;
         this.totalPages = response.data.result.totalPages;
         this.totalCnt = response.data.result.totalCnt;
-        if (response.data.result.length !== 0) {
+
+        if(response.data.result.list.length === 0 && response.data.result.totalCnt === 0) {
           this.isBoardExist = false;
         }
       } catch (e) {
