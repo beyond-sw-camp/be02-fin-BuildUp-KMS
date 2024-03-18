@@ -15,7 +15,8 @@ export const useBoardStore = defineStore("board", {
     tagIdx: 0,
     tagName: "",
     previousPath: "",
-    isBoardExist: true
+    isBoardExist: true,
+    isLoading: false,
   }),
 
   actions: {
@@ -49,6 +50,8 @@ export const useBoardStore = defineStore("board", {
     },
     async getBoardListByQuery(query, option, page = 1) {
       try {
+        this.isLoading = true;
+
         let response = await axios.get(
           backend +
             "/board/search?query=" +
@@ -63,18 +66,24 @@ export const useBoardStore = defineStore("board", {
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
-        if(response.data.result.list.length === 0 && response.data.result.totalCnt === 0) {
+        if (this.totalCnt === 0) {
           this.isBoardExist = false;
+        } else {
+          this.isBoardExist = true;
         }
 
         console.log(response);
       } catch (error) {
         console.error(error);
+      } finally {
+        this.isLoading = false;
       }
     },
 
     async findListByCategory(boardCategoryIdx, sortType, page = 1) {
       try {
+        this.isLoading = true;
+
         let response = await axios.get(
           backend +
             "/board/category/" +
@@ -84,23 +93,29 @@ export const useBoardStore = defineStore("board", {
             "?page=" +
             (page - 1)
         );
-        
+
         this.boardList = response.data.result.list;
         this.totalPages = response.data.result.totalPages;
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
-        
-        if(response.data.result.list.length === 0 && response.data.result.totalCnt === 0) {
+
+        if (this.totalCnt === 0) {
           this.isBoardExist = false;
+        } else {
+          this.isBoardExist = true;
         }
 
         console.log(response);
       } catch (error) {
         console.error(error);
+      } finally {
+        this.isLoading = false;
       }
     },
     async getSearchBoardList(searchTerm, sortType) {
       try {
+        this.isLoading = true;
+
         let response = await axios.get(
           backend +
             `/board/${sortType}/search?searchTerm=${encodeURIComponent(
@@ -117,11 +132,15 @@ export const useBoardStore = defineStore("board", {
         this.totalPages = response.data.result.totalPages;
         this.totalCnt = response.data.result.totalCnt;
 
-        if(response.data.result.list.length === 0 && response.data.result.totalCnt === 0) {
+        if (this.totalCnt === 0) {
           this.isBoardExist = false;
+        } else {
+          this.isBoardExist = true;
         }
       } catch (e) {
         console.log(e);
+      } finally {
+        this.isLoading = false;
       }
     },
     async findBoard(boardIdx) {
@@ -253,6 +272,8 @@ export const useBoardStore = defineStore("board", {
       page = 1
     ) {
       try {
+        this.isLoading = true;
+
         let response = await axios.get(
           backend +
             "/board/search/by/" +
@@ -269,32 +290,43 @@ export const useBoardStore = defineStore("board", {
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
-        if(response.data.result.list.length === 0 && response.data.result.totalCnt === 0) {
+        if (this.totalCnt === 0) {
           this.isBoardExist = false;
+        } else {
+          this.isBoardExist = true;
         }
         console.log(response);
       } catch (error) {
         console.error(error);
+      } finally {
+        this.isLoading = false;
       }
     },
 
     async createBoardCategory(categoryName) {
       try {
-        await axios.post(backend + "/admin/board/create", { categoryName: categoryName }, {
-          headers: {
-            "Content-Type": "application/json",
+        await axios.post(
+          backend + "/admin/board/create",
+          { categoryName: categoryName },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
           }
-        });
+        );
       } catch (e) {
         console.error(e);
         throw e;
       }
     },
 
-    // 자신이 쓴 글 불러오기
-    async findBoardDetailByUserIdx() {
+    async findBoardDetailByUserIdx(boardIdx) {
       try {
-        let response = await axios.get(backend + "/board/mywrite/2", {
+        this.isLoading = true;
+        
+        let response = await axios.get(
+          `${backend}/board/mywrite/${boardIdx}`,
+          {
           headers: {
             Authorization: `Bearer ${storedToken}`,
           },
@@ -305,6 +337,8 @@ export const useBoardStore = defineStore("board", {
         return this.boardDetail;
       } catch (e) {
         console.log(e);
+      } finally {
+        this.isLoading = false;
       }
     },
     async updateBoard(board, boardImage) {
@@ -316,26 +350,25 @@ export const useBoardStore = defineStore("board", {
 
       try {
         let response = await axios.patch(
-          backend + "/board/update/2",
+          `${backend}/board/update`,
           formData,
           {
             headers: {
               Authorization: `Bearer ${storedToken}`,
-              // "Content-Type": "multipart/form-data",
-              "Content-Type": "application/json",
+              "Content-Type": "multipart/form-data",
+              // "Content-Type": "application/json",
             },
           }
         );
         if (response.data.isSuccess === true) {
           this.isSuccess = true;
           alert("게시글이 수정되었습니다.");
-          window.location.href = "/board/" + response.data.result.boardIdx;
+          window.location.href = "/board/update" + response.data.result.boardIdx;
         }
       } catch (e) {
         console.log(e);
       }
     },
-    // 스터디 글 불러오기
     async getStudyDetail() {
       try {
         let response = await axios.get(backend + "/board/2");
@@ -349,8 +382,10 @@ export const useBoardStore = defineStore("board", {
     },
     // 태그별 글 불러오기
     async getTagBoardList(boardCategoryIdx, sortType, page = 1) {
-      let selectTagIdx = this.tagIdx
+      let selectTagIdx = this.tagIdx;
       try {
+        this.isLoading = true;
+
         let response = await axios.get(
           backend +
             "/board/tag/" +
@@ -367,18 +402,29 @@ export const useBoardStore = defineStore("board", {
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
-        if(response.data.result.list.length === 0 && response.data.result.totalCnt === 0) {
+        if (this.totalCnt === 0) {
           this.isBoardExist = false;
+        } else {
+          this.isBoardExist = true;
         }
 
         console.log(response);
       } catch (error) {
         console.error(error);
+      } finally {
+        this.isLoading = false;
       }
     },
-    async getSearchTagBoardList(boardCategoryIdx, searchTerm, sortType, page = 1) {
-      let selectTagIdx = this.tagIdx
+    async getSearchTagBoardList(
+      boardCategoryIdx,
+      searchTerm,
+      sortType,
+      page = 1
+    ) {
+      let selectTagIdx = this.tagIdx;
       try {
+        this.isLoading = true;
+
         const params = new URLSearchParams({
           page: page - 1,
         }).toString();
@@ -397,19 +443,21 @@ export const useBoardStore = defineStore("board", {
 
         this.boardList = response.data.result.list;
         this.totalPages = response.data.result.totalPages;
+        this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
-        if(response.data.result.list.length === 0 && response.data.result.totalCnt === 0) {
+        if (this.totalCnt === 0) {
           this.isBoardExist = false;
+        } else {
+          this.isBoardExist = true;
         }
       } catch (e) {
         console.log(e);
+      } finally {
+        this.isLoading = false;
       }
     },
-    setPreviousPath(path) {
-      this.previousPath = path;
-    },
-
+    
     async deleteBoardCategory(boardCategoryIdx) {
       try {
         await axios.delete(backend + "/admin/board/delete/" + boardCategoryIdx);

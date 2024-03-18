@@ -44,9 +44,9 @@
                   <div class="css-1tttep5">
                     <div class="css-1pbcmmt-001">
                       <div class="css-5ala5m-001">
-                        <router-link to="/board/new">
-                          <div class="css-nmdn6a-001">작성하기</div>
-                        </router-link>
+                          <div class="css-nmdn6a-001" @click="goBack()">
+                            돌아가기
+                          </div>
                       </div>
                     </div>
                   </div>
@@ -268,9 +268,12 @@ export default {
   },
   mounted() {
     this.loadBoardList(1);
-    this.boardTagStore.getHotTagList();
+    // this.boardTagStore.getHotTagList();
   },
   methods: {
+    goBack() {
+      this.$router.go(-1);
+    },
     updateSortType() {
       switch (this.selectedSortType) {
         case "최신순":
@@ -322,7 +325,7 @@ export default {
       }
     },
     sendSearchData() {
-      this.loadBoardList(); // 검색 실행 시 첫 페이지로 돌아감.
+      this.loadBoardList(1); // 검색 실행 시 첫 페이지로 돌아감.
     },
     changePage(page) {
       this.loadBoardList(page);

@@ -140,9 +140,11 @@ public class ReviewController {
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
     @RequestMapping(method = RequestMethod.PATCH, value = "/update")
-    public ResponseEntity<BaseRes> updateReview(@RequestBody @Valid PatchUpdateReviewReq patchUpdateReviewReq) {
+    public ResponseEntity<BaseRes> updateReview(
+            @RequestPart(value = "review") @Valid PatchUpdateReviewReq patchUpdateReviewReq,
+            @RequestPart(value = "reviewImage", required = false) MultipartFile reviewImage){
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        BaseRes baseRes = reviewService.updateReview(user, patchUpdateReviewReq);
+        BaseRes baseRes = reviewService.updateReview(user, patchUpdateReviewReq, reviewImage);
 
         return ResponseEntity.ok().body(baseRes);
     }
@@ -195,6 +197,21 @@ public class ReviewController {
             @PageableDefault(size = 9) Pageable pageable
     ) {
         BaseRes baseRes = reviewService.searchHotReview(reviewCategoryIdx, sortType, searchTerm, pageable);
+
+        return ResponseEntity.ok().body(baseRes);
+    }
+    @Operation(summary = "Review 본인 후기글 수정을 위한 상세 조회",
+            description = "본인이 작성한 후기글을 수정하기 위해 작성한 후기글을 불러오는 API입니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
+    @GetMapping("/mywrite/{reviewIdx}")
+    public ResponseEntity<BaseRes> findReviewDetailByUserIdx(
+            @PathVariable Integer reviewIdx
+    ) {
+
+        User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        BaseRes baseRes = reviewService.findReviewDetailByUserIdx(reviewIdx, user);
 
         return ResponseEntity.ok().body(baseRes);
     }
