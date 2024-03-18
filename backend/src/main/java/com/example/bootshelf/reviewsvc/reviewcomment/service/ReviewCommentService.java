@@ -56,7 +56,6 @@ public class ReviewCommentService {
         }
 
         Review review = findReview.get();
-
         ReviewComment reviewComment = ReviewComment.builder()
                 .review(review)
                 .user(user)
@@ -114,6 +113,7 @@ public class ReviewCommentService {
                 .userNickName(reviewComment.getUser().getNickName())
                 .userImg(reviewComment.getUser().getProfileImage())
                 .reviewCommnetContent(reviewComment.getReviewCommentContent())
+                .status(reviewComment.getStatus())
                 .createAt(reviewComment.getCreatedAt())
                 .updateAt(reviewComment.getUpdatedAt())
                 .build();
@@ -177,9 +177,10 @@ public class ReviewCommentService {
         return null;
     }
 
+
     // 댓글/대댓글 삭제
     @Transactional(readOnly = false)
-    public BaseRes deleteComment(Integer idx, User user) {
+    public BaseRes deleteComment(User user, Integer idx) {
         Optional<ReviewComment> result = reviewCommentRepository.findByIdxAndUserIdx(idx, user.getIdx());
 
         // 삭제하고자 하는 댓글을 찾지 못할 때
@@ -202,7 +203,8 @@ public class ReviewCommentService {
             deleteChildrenComments(reviewComment.getChildren());
         }
 
-        reviewCommentRepository.delete(reviewComment);
+        reviewComment.setStatus(false);
+        reviewCommentRepository.save(reviewComment);
 
         review.decreaseCommentUpCnt();
         reviewRepository.save(review);
@@ -219,11 +221,13 @@ public class ReviewCommentService {
             for (ReviewComment childComment : children) {
                 // 재귀적으로 하위 댓글 삭제
                 deleteChildrenComments(childComment.getChildren());
-                reviewCommentRepository.delete(childComment);
+                childComment.setStatus(false);
+                reviewCommentRepository.save(childComment);
 
             }
         }
     }
+
 
     // 대댓글 작성
     @Transactional(readOnly = false)
