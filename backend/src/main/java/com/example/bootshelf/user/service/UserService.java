@@ -100,7 +100,15 @@ public class UserService {
         if (postSignUpUserReq.getProgramName() == null) {
             User user = saveUser(postSignUpUserReq, profileImage);
 
-            BaseRes baseRes = BaseRes.builder().isSuccess(true).message("회원가입에 성공하였습니다.").result(PostSignUpUserRes.builder().userEmail(user.getEmail()).userName(user.getName()).build()).build();
+            BaseRes baseRes = BaseRes.builder()
+                    .isSuccess(true)
+                    .message("회원가입에 성공하였습니다.")
+                    .result(
+                    PostSignUpUserRes.builder()
+                            .userEmail(user.getEmail())
+                            .userName(user.getName())
+                            .build())
+                    .build();
 
             return baseRes;
         } else {
@@ -171,7 +179,7 @@ public class UserService {
                 .profileImage(user.getProfileImage())
                 .build();
 
-        if(user.getAuthority().equals("ROLE_AUTHUSER")) {
+        if (user.getAuthority().equals("ROLE_AUTHUSER")) {
             getListUserRes.setCourseName(user.getCertification().getCourse().getProgramName());
         }
 
