@@ -37,6 +37,28 @@ export const useTagStore = defineStore("tag", {
         console.error(e);
         throw e;
       }
-    }
+    },
+
+    async updateTag(tagIdx, newCategoryName) {
+      try {
+        await axios.patch(backend + "/admin/tag/update/", {
+          tagIdx: tagIdx,
+          tagName: newCategoryName
+        })
+      } catch(e) {
+        console.error(e);
+        throw e;
+      }
+    },
+
+    async deleteTag(tagIdx) {
+      try {
+        let response = await axios.delete(backend + "/admin/tag/delete/" + tagIdx);
+        return response;
+      } catch (e) {
+        console.error(e);
+        throw e;
+      }
+    },
   },
 });
