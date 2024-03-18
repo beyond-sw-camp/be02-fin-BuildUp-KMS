@@ -297,12 +297,10 @@ export default {
       buttonOpacity: 1,
       
       review: {
-        reviewCategoryIdx: null,
+        reviewIdx: 0,
         reviewTitle: "",
         reviewContent: "",
-        courseName: "",
         courseEvaluation: null,
-        reviewIdx: 0,
       },
       // user: {
       //   idx: null,
@@ -314,17 +312,13 @@ export default {
   async mounted() {
     const reviewIdx = this.$route.params.reviewIdx;
 
-    this.reviewIdx = reviewIdx;
+    this.review.reviewIdx = reviewIdx;
     
     // this.reviewDetail = await this.reviewStore.updateReview(review, reviewImage);
     this.reviewDetail = await this.reviewStore.findReviewDetailByUserIdx(reviewIdx);
     this.review.reviewContent = this.reviewDetail.reviewContent
     this.review.reviewTitle = this.reviewDetail.reviewTitle
-    this.review.reviewIdx = this.reviewDetail.reviewIdx
   },
-  // mounted() {
-  //   this.reviewStore.findReviewDetailByUserIdx();
-  // },
   methods: {
     async updateReview() {
       await this.reviewStore.updateReview(this.review, this.reviewImage);
