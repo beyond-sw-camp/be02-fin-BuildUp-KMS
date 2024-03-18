@@ -1,36 +1,104 @@
 <template>
-  <div class="css-f7no94" v-for="comment in commentList" :key="comment.idx">
-    <!-- <div class="css-f7no94"> -->
-    <div class="css-3o2y5e">
-      <div width="36px" height="36px" class="css-jg5tbe">
-        <img alt="나의얼굴" width="34px" height="34px"
-          :src="comment.profileImage" />
+    <div v-for="comment in filteredBoardComments" :key="comment.idx">
+  <!-- <div class="css-f7no94" v-for="comment in commentList" :key="comment.idx"> -->
+    <div class="css-f7no94" v-if="comment.status">
+      <div class="css-3o2y5e">
+        <div width="36px" height="36px" class="css-jg5tbe">
+          <img alt="나의얼굴" width="34px" height="34px" :src="comment.profileImage" />
+        </div>
       </div>
-    </div>
-    <div class="css-14f8kx2">
-      <div class="css-1psklmw">
-        <div class="css-dyzp2y">
-          <div class="css-wqf8ry">{{ comment.nickName }}</div>
-          <div class="css-emxp16"></div>
-          <div class="css-emxp16">{{ comment.createAt }}</div>
-        </div>
-        <div class="css-dyzp2y-001">
-          <div class="css-emxp17" @click="toggleEditMode(comment)">수정</div>
-          <div class="css-emxp17" @click="deleteComment(comment.idx)">삭제</div>
-        </div>
-        <div @click="toggleRecommendation(comment)">
+      <div class="css-14f8kx2">
+        <div class="css-1psklmw">
+          <div class="css-dyzp2y">
+            <div class="css-wqf8ry">{{ comment.nickName }}</div>
+            <div class="css-emxp16"></div>
+            <div class="css-emxp16">{{ comment.createAt }}</div>
+          </div>
+          <div class="css-dyzp2y-001" v-if="showBtn(comment.userIdx)">
+            <div class="css-emxp17" @click="toggleEditMode(comment)">수정</div>
+            <div class="css-emxp17" @click="deleteComment(comment.idx, comment.userIdx)">삭제</div>
+          </div>
+          <!-- 댓글 추천 -->
+          <!-- <div @click="toggleRecommendation(comment)">
           <img width="20px" height="20px"
             :src="isCommentRecommended ? require('../assets/img/up_ok.png') : require('../assets/img/up.png')"
             alt="facebook-like"/>
           <p style="font-size: 10px; text-align: center">{{ comment.upCnt }}</p>
+        </div> -->
+        <!-- / 댓글 추천 -->
+        </div>
+        <div class="editedCommentContent">
+          <input class="css-comment" type="text" v-model="updateComment" 
+          :placeholder="comment.boardCommnetContent" :readonly="!comment.editMode">
+        </div>
+        <div clas="css-btn">
+          <p class="css-reply" @click="toggleReplyForm(comment)"
+          v-if="!comment.editMode && !comment.showReplyForm">대댓글쓰기</p>
+          <p class="css-reply" @click="toggleReplyForm(comment)" 
+          v-if="!comment.editMode && comment.showReplyForm">닫기</p>
+          <button class="css-update" v-if="comment.editMode" @click="saveComment(comment.idx)">저장</button>
         </div>
       </div>
-      <div class="editedCommentContent">
-        <input class="css-comment" type="text" v-model="updateComment" :placeholder="comment.boardCommnetContent" :readonly="!comment.editMode">
+    </div>
+
+    <!-- 대댓글 쓰기 -->
+    <div>
+      <div class="css-f7no94-reply" v-if="comment.showReplyForm">
+        <div class="css-3o2y5e">
+          <div width="36px" height="36px" class="css-jg5tbe">
+            <img alt="나의얼굴" width="34px" height="34px" :src="userStore.user.profileImage">
+          </div>
+        </div>
+        <div class="css-14f8kx2-0318">
+          <div class="editedCommentContent">
+            <input class="css-comment-0318" type="text" placeholder="댓글을 남겨주세요" v-model="boardReply">
+          </div>
+          <div clas="css-btn">
+            <button class="css-update" @click="saveReply(comment.idx)">저장</button>
+          </div>
+        </div>
       </div>
-      <div clas="css-btn">
-        <p class="css-reply"  v-if="!comment.editMode">대댓글쓰기</p>
-        <button class="css-update"  v-if="comment.editMode" @click="saveComment(comment.idx)">저장</button>
+    </div>
+
+    <!-- 대댓글 출력 -->
+    <div v-if="comment.children && comment.children.length > 0">
+      <div v-for="childComment in comment.children" :key="childComment.idx">
+        <div class="css-f7no94-reply" v-if="childComment.status">
+          <div class="css-3o2y5e">
+            <div width="36px" height="36px" class="css-jg5tbe">
+              <img alt="나의얼굴" width="34px" height="34px" :src="childComment.profileImage">
+            </div>
+          </div>
+          <div class="css-14f8kx2-001">
+            <div class="css-1psklmw">
+              <div class="css-dyzp2y">
+                <div class="css-wqf8ry-001">{{ childComment.nickName }}</div>
+                <div class="css-emxp16-001"></div>
+                <div class="css-emxp16-001">{{ childComment.createAt }}</div>
+              </div>
+              <div class="css-dyzp2y-002" v-if="showBtn(childComment.userIdx)">
+                <div class="css-emxp17-001" @click="toggleEditMode(childComment)">수정</div>
+                <div class="css-emxp17-001" @click="deleteComment(childComment.idx, childComment.userIdx)">삭제</div>
+              </div>
+
+              <!-- 대댓글 추천 -->
+              <!-- <div class="css-emxp17">
+                <img width="18" height="18" src="https://img.icons8.com/sf-regular/48/facebook-like.png"
+                  alt="facebook-like" @click="reviewRecommend(childComment.idx)" />
+                <img width="18" height="18" src="https://img.icons8.com/sf-regular-filled/48/facebook-like.png"
+                  alt="facebook-like" @click="cancelReviewComment(childComment.idx)" />
+              </div> -->
+              <!-- /대댓글 추천 -->
+            </div>
+            <div class="editedCommentContent">
+              <input class="css-comment" type="text" v-model="updateComment"
+                :placeholder="childComment.boardCommnetContent" :readonly="!childComment.editMode">
+            </div>
+            <div clas="css-btn">
+              <button class="css-update" v-if="childComment.editMode" @click="saveComment(childComment.idx)">저장</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -40,12 +108,19 @@
 import { mapStores } from "pinia";
 import { useBoardCommentStore } from '@/stores/useBoardCommentStore';
 import { useBoardStore } from '@/stores/useBoardStore';
+import { useUserStore } from '../stores/useUserStore';
 import VueJwtDecode from "vue-jwt-decode";
 
 export default {
   name: "CommentComponent",
   computed: {
-    ...mapStores(useBoardCommentStore, useBoardStore),
+    ...mapStores(useBoardCommentStore, useBoardStore, useUserStore),
+    filteredBoardComments() {
+  if (!this.boardCommentStore.commentList) {
+    return []; 
+  }
+  return this.boardCommentStore.commentList.filter(comment => comment.status);
+}
   },
   props: {
     commentList: {
@@ -60,12 +135,12 @@ export default {
   data() {
     return {
       editable: false,
-      updateComment: '',
+      // updateComment: '',
     }
   },
 
   created() {
-    this.checkBoardCommentUp();
+    // this.checkBoardCommentUp();
   },
 
   methods: {
@@ -73,15 +148,24 @@ export default {
       try {
         await this.boardCommentStore.updateBoardComment(this.updateComment, commentIdx, this.boardIdx);
       } catch (error) {
-        console.error('댓글 작성 실패:', error);
+        console.error('댓글 수정 실패:', error);
       }
     },
 
-    async deleteComment(commentIdx) {
+    async deleteComment(commentIdx, userIdx) {
       try {
-        await this.boardCommentStore.deleteBoardComment(commentIdx, this.boardIdx);
+        await this.boardCommentStore.deleteBoardComment(commentIdx, this.boardIdx, userIdx);
       } catch (error) {
         console.error('댓글 삭제 실패:', error);
+      }
+    },
+
+    async saveReply(commentIdx) {
+      try {
+        await this.boardCommentStore.createBoardReply(this.boardReply, commentIdx, this.boardIdx);
+        // 댓글 생성 후 필요한 작업 작성
+      } catch (error) {
+        console.error('댓글 작성 실패:', error);
       }
     },
 
@@ -93,22 +177,28 @@ export default {
     },
 
     toggleEditMode(comment) {
-      // 수정 모드를 전환
       comment.editMode = !comment.editMode;
-      // 수정 모드가 활성화되면 편집 상자에 원래 댓글 내용을 설정
       if (comment.editMode) {
-        comment.updatedContent = comment.boardCommnetContent;
+        comment.updateComment = comment.boardCommnetContent;
       }
     },
 
-    async toggleRecommendation(comment) {
-    try {
-      await this.createBoardCommentUp(comment.idx);
-      console.log('댓글이 성공적으로 추천되었습니다.');
-    } catch (error) {
-      console.error('댓글 추천 실패:', error);
-    }
-  },
+    toggleReplyForm(comment) {
+      if (comment.showReplyForm) {
+        comment.showReplyForm = false; // 닫기 버튼을 클릭하여 대댓글 입력 폼을 닫음
+      } else {
+        comment.showReplyForm = true; // 대댓글쓰기 버튼을 클릭하여 대댓글 입력 폼을 엶
+      }
+    },
+
+    // async toggleRecommendation(comment) {
+    //   try {
+    //     await this.createBoardCommentUp(comment.idx);
+    //     console.log('댓글이 성공적으로 추천되었습니다.');
+    //   } catch (error) {
+    //     console.error('댓글 추천 실패:', error);
+    //   }
+    // },
 
     // async createBoardCommentUp(comment) {
     //   let token = window.localStorage.getItem("token");
@@ -139,30 +229,30 @@ export default {
     //   }
     // },
 
-    async createBoardCommentUp(commentIdx) {
-      try {
-        await this.boardCommentStore.createBoardCommentUp(commentIdx);
-      } catch (error) {
-        console.error('댓글 삭제 실패:', error);
-      }
-    },
+    // async createBoardCommentUp(commentIdx) {
+    //   try {
+    //     await this.boardCommentStore.createBoardCommentUp(commentIdx);
+    //   } catch (error) {
+    //     console.error('댓글 삭제 실패:', error);
+    //   }
+    // },
 
-    async checkBoardCommentUp(comment) {
-      try {
-        let token = window.localStorage.getItem("token");
-        let response = await this.boardCommentStore.checkBoardCommentUp(token, comment.idx);
-        console.log(response);
+    // async checkBoardCommentUp(comment) {
+    //   try {
+    //     let token = window.localStorage.getItem("token");
+    //     let response = await this.boardCommentStore.checkBoardCommentUp(token, comment.idx);
+    //     console.log(response);
 
-        if (response.data && response.data.result.status === true) {
-          this.isCommentRecommended = true;
-          this.boardCommentIdx = response.data.result.boardCommentIdx;
-        } else {
-          this.isCommentRecommended = false;
-        }
-      } catch (e) {
-        console.error(e);
-      }
-    }
+    //     if (response.data && response.data.result.status === true) {
+    //       this.isCommentRecommended = true;
+    //       this.boardCommentIdx = response.data.result.boardCommentIdx;
+    //     } else {
+    //       this.isCommentRecommended = false;
+    //     }
+    //   } catch (e) {
+    //     console.error(e);
+    //   }
+    // }
 
   },
 };
@@ -170,7 +260,56 @@ export default {
 
 
 <style scoped>
-input{
+.css-14f8kx2-0318 {
+  width: 100%;
+  max-width: 545px;
+  padding: 15px;
+  border-radius: 12px;
+  background-color: #fff;
+  border: 2px solid #f4f5f6;
+}
+
+.css-comment-0318 {
+  font-size: 14px;
+  width: 100%;
+  background-color: #fff;
+  font-family: Pretendard;
+}
+
+.css-14f8kx2-001 {
+  width: 100%;
+  max-width: 545px;
+  padding: 15px;
+  border-radius: 12px;
+  background-color: #f4f5f6;
+  font-size: 10px;
+}
+
+.css-wqf8ry-001 {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.5;
+  text-align: left;
+  color: #1c1d1e;
+}
+
+.css-emxp17-001 {
+  font-size: 12px;
+  line-height: 1.3;
+  text-align: left;
+  color: #838689;
+  cursor: pointer;
+}
+
+.css-dyzp2y-002 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin-left: 200px; /* 수정된 부분 */
+}
+
+input {
   border: none;
   background-color: #f4f5f6;
   outline: none;
@@ -189,6 +328,12 @@ input{
   cursor: pointer;
   font-family: Pretendard;
   border: none;
+}
+
+.css-emxp16-001 {
+  line-height: 1.3;
+  text-align: left;
+  color: #9da7ae;
 }
 
 .css-btn {
@@ -238,11 +383,22 @@ html {
 }
 
 .css-f7no94 {
+  gap: 16px;
+  width: 100%;
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  font-family: Pretendard;
+}
+
+.css-f7no94-reply {
   display: flex;
   flex-direction: row;
-  width: 100%;
+  width: 92%;
   gap: 16px;
   font-family: Pretendard;
+  margin-top: 11px;
+  margin-left: 42px;
 }
 
 .css-3o2y5e {
@@ -260,9 +416,10 @@ html {
 }
 
 .css-14f8kx2 {
-  width: 100%;
+  font-family: Pretendard;
+  width: 500px;
   max-width: 545px;
-  padding: 20px;
+  padding: 15px;
   border-radius: 12px;
   background-color: #f4f5f6;
 }
@@ -317,7 +474,9 @@ html {
 }
 
 .css-comment {
+  font-family: Pretendard;
   font-size: 14px;
+  width: 100%;
 }
 
 .css-reply {
@@ -360,3 +519,4 @@ html {
   border: none;
 }
 </style>
+

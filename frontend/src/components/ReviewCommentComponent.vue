@@ -17,13 +17,14 @@
             <div class="css-emxp17" @click="toggleEditMode(reviewComment)">수정</div>
             <div class="css-emxp17" @click="deleteComment(reviewComment.idx, reviewComment.userIdx)">삭제</div>
           </div>
-          <div class="css-emxp17">
-            <!-- 댓글 추천 -->
+          <!-- 댓글 추천 -->
+          <!-- <div class="css-emxp17">
             <img width="18" height="18" src="https://img.icons8.com/sf-regular/48/facebook-like.png" alt="facebook-like"
               @click="reviewRecommend(reviewComment.idx)" />
             <img width="18" height="18" src="https://img.icons8.com/sf-regular-filled/48/facebook-like.png"
               alt="facebook-like" @click="cancelReviewComment(reviewComment.idx)" />
-          </div>
+          </div> -->
+          <!-- /댓글 추천 -->
         </div>
         <div class="editedCommentContent">
           <input class="css-comment" type="text" v-model="updateReviewComment"
@@ -81,12 +82,12 @@
               </div>
 
               <!-- 대댓글 추천 -->
-              <div class="css-emxp17">
+              <!-- <div class="css-emxp17">
                 <img width="18" height="18" src="https://img.icons8.com/sf-regular/48/facebook-like.png"
                   alt="facebook-like" @click="reviewRecommend(childComment.idx)" />
                 <img width="18" height="18" src="https://img.icons8.com/sf-regular-filled/48/facebook-like.png"
                   alt="facebook-like" @click="cancelReviewComment(childComment.idx)" />
-              </div>
+              </div> -->
               <!-- /대댓글 추천 -->
             </div>
             <div class="editedCommentContent">
@@ -163,23 +164,23 @@ export default {
       }
     },
 
-    // 댓글 추천 기능
-    async reviewRecommend(reviewCommentIdx) {
-      try {
-        await this.reviewCommentStore.reviewRecommend(reviewCommentIdx);
-      }
-      catch (error) {
-        console.error("ERROR : ", error);
-      }
-    },
+    // // 댓글 추천 기능
+    // async reviewRecommend(reviewCommentIdx) {
+    //   try {
+    //     await this.reviewCommentStore.reviewRecommend(reviewCommentIdx);
+    //   }
+    //   catch (error) {
+    //     console.error("ERROR : ", error);
+    //   }
+    // },
 
-    async cancelReviewComment(reviewCommentIdx) {
-      try {
-        await this.reviewCommentStore.cancelReviewComment(reviewCommentIdx);
-      } catch (error) {
-        console.error("ERROR : ", error);
-      }
-    },
+    // async cancelReviewComment(reviewCommentIdx) {
+    //   try {
+    //     await this.reviewCommentStore.cancelReviewComment(reviewCommentIdx);
+    //   } catch (error) {
+    //     console.error("ERROR : ", error);
+    //   }
+    // },
 
     // 버튼 관련
     showBtn(commentUserIdx) {

@@ -70,13 +70,13 @@ export const useBoardCommentStore = defineStore({
       window.location.href = `http://localhost:8081/board/${boardIdx}`;
 
     } catch (error) {
-      console.error("수정 실패 : ", error);
+      console.error("댓글 수정 실패 : ", error);
     }
   },
 
   /** -------------------댓글 삭제--------------------- **/
 
-  async deleteBoardComment(commentIdx, boardIdx) {
+  async deleteBoardComment(commentIdx, boardIdx, userIdx) {
     try {
       if (!token) {
         throw new Error(
@@ -84,13 +84,14 @@ export const useBoardCommentStore = defineStore({
         );
       }
 
-      const response = await axios.delete(`${backend}/board/${boardIdx}/delete/${commentIdx}`,
+      const response = await axios.patch(`${backend}/board/${boardIdx}/delete/${commentIdx}`,
+        {userIdx : userIdx},
         {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-        }
+        } 
       );
 
       console.log(response);
@@ -123,6 +124,27 @@ export const useBoardCommentStore = defineStore({
       }
     },
 
+        //  대댓글 작성
+        async createBoardReply(boardReplyContent,commentIdx, boardIdx, ) {
+          try {
+            const response = await axios.post(
+              backend + `/board/${boardIdx}/comment/create/${commentIdx}`,
+              { boardReplyContent: boardReplyContent },
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+            console.log(response);
+            console.log("게시판 대댓글 작성 성공");
+            window.location.href = `http://localhost:8081/board/${boardIdx}`;
+          } catch (error) {
+            console.error("ERROR : ", error);
+          }
+        },
+
     // async createBoardCommentUp(token, requestBody) {
     //   try {
     //     let response = await axios.post(backend + "/boardcomment/up/create", requestBody, {
@@ -139,54 +161,54 @@ export const useBoardCommentStore = defineStore({
     //   }
     // },
 
-    async createBoardCommentUp(commentIdx) {
-      try {
-        let response = await axios.post(backend + "/boardcomment/up/create", 
-        { boardCommentIdx: commentIdx }, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          }
-        })
-        return response;
+    // async createBoardCommentUp(commentIdx) {
+    //   try {
+    //     let response = await axios.post(backend + "/boardcomment/up/create", 
+    //     { boardCommentIdx: commentIdx }, {
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //         Authorization: `Bearer ${token}`,
+    //       }
+    //     })
+    //     return response;
 
-      } catch (e) {
-        console.error("게시글 댓글 추천 실패", e);
-        throw e;
-      }
-    },
+    //   } catch (e) {
+    //     console.error("게시글 댓글 추천 실패", e);
+    //     throw e;
+    //   }
+    // },
 
-    async checkBoardCommentUp(token, boardCommentIdx) {
-      try {
-        let response = await axios.get(`${backend}/boardcomment/check/${boardCommentIdx}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        console.log(response);
+    // async checkBoardCommentUp(token, boardCommentIdx) {
+    //   try {
+    //     let response = await axios.get(`${backend}/boardcomment/check/${boardCommentIdx}`, {
+    //       headers: {
+    //         Authorization: `Bearer ${token}`,
+    //       },
+    //     });
+    //     console.log(response);
 
-        this.isCommentRecommend = response.data.result.status;
+    //     this.isCommentRecommend = response.data.result.status;
 
-        return response;
-      } catch (e) {
-        console.error(e);
-        throw e;
-      }
-    },
+    //     return response;
+    //   } catch (e) {
+    //     console.error(e);
+    //     throw e;
+    //   }
+    // },
 
-    async cancelBoardCommentUp(token, boardCommentIdx) {
-      try {
-        let response = await axios.patch(`${backend}/boardcomment/delete/${boardCommentIdx}`, {}, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json"
-          },
-        });
-        console.log(response);
-      } catch (e) {
-        console.error(e);
-        throw e;
-      }
-    }
+    // async cancelBoardCommentUp(token, boardCommentIdx) {
+    //   try {
+    //     let response = await axios.patch(`${backend}/boardcomment/delete/${boardCommentIdx}`, {}, {
+    //       headers: {
+    //         Authorization: `Bearer ${token}`,
+    //         "Content-Type": "application/json"
+    //       },
+    //     });
+    //     console.log(response);
+    //   } catch (e) {
+    //     console.error(e);
+    //     throw e;
+    //   }
+    // }
   },
 });
