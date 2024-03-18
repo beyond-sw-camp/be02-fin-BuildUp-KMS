@@ -20,6 +20,7 @@
                     </div>
                     <div class="css-sebsp7"></div>
                   </div>
+                  
                   <div class="css-bt1qy">
                     <div class="css-1hqtm5a">
                       <div @click="createBoardUp()">
@@ -71,6 +72,7 @@
                 <div class="css-99cwur">
                   <div class="css-1fhge30">
                     <div class="css-aw18wm">
+                     
                       <span
                         style="
                           box-sizing: border-box;
@@ -108,6 +110,7 @@
                           "
                       /></span>
                     </div>
+                    
                     <div class="css-5zcuov">
                       <div class="css-1sika4i">
                         {{ boardStore.boardDetail.nickName }}
@@ -127,6 +130,7 @@
                         {{ boardStore.boardDetail.updatedAt }}
                       </div>
                     </div>
+                    <button class="chat-button" @click="startChat()">채팅하기</button>
                   </div>
                 </div>
                 <div class="css-z2xt5y"></div>
@@ -137,21 +141,11 @@
                 <p class="css-content">
                   {{ boardStore.boardDetail.boardContent }}
                 </p>
-                <!-- <div
-                  v-if="
-                    boardStore.board.boardImageList &&
-                    boardStore.board.boardImageList.length > 0
-                  "
-                >
-                  <img
-                    v-for="(image, index) in boardStore.board.boardImageList"
-                    :key="image.boardImageIdx"
-                    :alt="`이미지 ${index + 1}`"
-                    :src="image.boardImage"
-                  />
-                </div> -->
+               <!-- <div v-for="(image, index) in boardDetail.boardImageList" :key="index">
+                  <img alt="게시판 이미지" :data-src="image" />
+                </div>
               </div>
-              <div class="css-iqys2n">
+              <div class="css-iqys2n"> -->
                 <!-- 태그 컴포넌트 자리-->
                 <TagComponent></TagComponent>
               </div>
@@ -287,6 +281,9 @@ export default {
         console.error("댓글 작성 실패:", error);
       }
     },
+  //  startChat() {
+      
+  //   },
     async createBoardUp() {
       let token = window.localStorage.getItem("token");
       let requestBody = {
@@ -397,6 +394,7 @@ export default {
   },
 };
 </script>
+
 <style scoped>
 body {
   height: 100%;
@@ -1068,132 +1066,40 @@ a {
 }
 
 .css-board-back {
-  cursor: pointer;
-  width: 80px;
-  height: 50px;
-  padding: 15px 0;
-  border-radius: 10px;
-  /* background-color: #9378FF; */
-  background-color: rgb(84, 29, 112);
-  font-size: 13px;
-  display: flex;
-  /* align-items: center; */
-  justify-content: center;
-  gap: 6px;
-  color: #ffffff;
+    cursor: pointer;
+    width: 80px;
+    height: 40px;
+    padding: 10px 0;
+    border-radius: 10px;
+    background-color: #541d70;
+    font-size: 13px;
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    color: #fff;
+    font-family: Pretendard;
 }
 
 .css-back-div {
   text-align: center;
   margin-top: 50px;
 }
-
-/* 채팅 버튼 */
-.channel-talk__redirect-button {
-  position: fixed;
-  z-index: 9999;
-  bottom: 72px;
-  right: 18px;
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: center;
-  width: 56px;
-  height: 56px;
-  cursor: pointer;
-  visibility: visible;
-  border-radius: 24px;
-  transition: visibility 0.4s ease 0s;
-  background-color: rgb(84, 29, 112);
-  box-shadow: inset 0 0 0 1px hsla(0, 0%, 100%, 0.2),
-    0 4px 6px rgba(0, 0, 0, 0.1), 0 8px 30px rgba(0, 0, 0, 0.15);
-  -webkit-backdrop-filter: blur(30px);
-  backdrop-filter: blur(30px);
-  will-change: transform, opacity;
-}
-a {
-  color: currentColor;
-  text-decoration: none;
-  cursor: pointer;
-}
-a {
-  color: #1dc078;
+/* 채팅 */
+.chat-button {
+    width: 65px;
+    padding: 2px 0;
+    border-radius: 40px;
+    background-color: rgb(84, 29, 112);
+    color: #fff;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
 }
 
-* {
-  box-sizing: border-box;
-}
+    .chat-button:hover {
+      background-color: #541d70;
+    }
 
-*,
-::before,
-::after {
-  box-sizing: border-box;
-}
-*,
-:after,
-:before {
-  box-sizing: inherit;
-}
-
-a:-webkit-any-link {
-  color: -webkit-link;
-  cursor: pointer;
-  text-decoration: underline;
-}
-
-.ql-editor {
-  box-sizing: border-box;
-  line-height: 1.42;
-  outline: none;
-  padding: 12px 0;
-  tab-size: 4;
-  -moz-tab-size: 4;
-  text-align: left;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-}
-
-.ql-editor {
-  color: #6b6e72;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.3;
-  letter-spacing: normal;
-  font-weight: 500;
-  min-height: 200px;
-  width: 100%;
-  margin: auto;
-  padding: 24px 20px !important;
-  resize: none;
-  border: none;
-}
-
-.ql-editor {
-  height: 100%;
-  overflow-y: auto;
-  padding: 12px 15px;
-}
-.quill > .ql-container > .ql-editor.ql-blank:before {
-  color: #c7c9cb;
-  font-style: normal;
-  font-size: 14px;
-  white-space: pre-wrap;
-  line-height: 1.5;
-  padding: 5px;
-}
-
-.ql-editor.ql-blank:before {
-  color: rgba(0, 0, 0, 0.6);
-  content: attr(data-placeholder);
-  font-style: italic;
-  left: 20px;
-  pointer-events: none;
-  position: absolute;
-  right: 15px;
-  font-weight: 350;
-}
-
-.ql-editor.ql-blank:before {
-  left: 15px;
-}
 </style>

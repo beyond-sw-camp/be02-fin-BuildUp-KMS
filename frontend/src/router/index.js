@@ -23,6 +23,7 @@ import BoardUpdatePage from "@/pages/BoardUpdatePage.vue";
 import StudyDetailPage from "@/pages/StudyDetailPage.vue";
 import HotListPage from "@/pages/HotListPage.vue";
 import TagBoardListPage from "@/pages/TagBoardListPage.vue";
+import ReviewUpdatePage from "@/pages/ReviewUpdatePage.vue";
 
 import AdminMainPage from "@/pages/AdminMainPage.vue";
 import AdminWithdrawPage from "@/pages/AdminWithdrawPage.vue";
@@ -163,6 +164,7 @@ const routes = [
   { path: "/admin/user", component: AdminUserListPage, beforeEnter: requireAdminAuth() },
   { path: "/admin/signup", component: AdminSignUpPage },
   { path: "/admin/login", component: AdminLoginPage },
+  { path: "/review/mywrite/:reviewIdx", component: ReviewUpdatePage},
 ];
 
 const router = createRouter({

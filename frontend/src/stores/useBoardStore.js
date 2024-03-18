@@ -291,10 +291,11 @@ export const useBoardStore = defineStore("board", {
       }
     },
 
-    // 자신이 쓴 글 불러오기
-    async findBoardDetailByUserIdx() {
+    async findBoardDetailByUserIdx(boardIdx) {
       try {
-        let response = await axios.get(backend + "/board/mywrite/2", {
+        let response = await axios.get(
+          `${backend}/board/mywrite/${boardIdx}`,
+          {
           headers: {
             Authorization: `Bearer ${storedToken}`,
           },
@@ -316,26 +317,25 @@ export const useBoardStore = defineStore("board", {
 
       try {
         let response = await axios.patch(
-          backend + "/board/update/2",
+          `${backend}/board/update`,
           formData,
           {
             headers: {
               Authorization: `Bearer ${storedToken}`,
-              // "Content-Type": "multipart/form-data",
-              "Content-Type": "application/json",
+              "Content-Type": "multipart/form-data",
+              // "Content-Type": "application/json",
             },
           }
         );
         if (response.data.isSuccess === true) {
           this.isSuccess = true;
           alert("게시글이 수정되었습니다.");
-          window.location.href = "/board/" + response.data.result.boardIdx;
+          window.location.href = "/board/update" + response.data.result.boardIdx;
         }
       } catch (e) {
         console.log(e);
       }
     },
-    // 스터디 글 불러오기
     async getStudyDetail() {
       try {
         let response = await axios.get(backend + "/board/2");
