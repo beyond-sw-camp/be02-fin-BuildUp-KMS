@@ -17,6 +17,7 @@ export const useBoardStore = defineStore("board", {
     previousPath: "",
     isBoardExist: true,
     isLoading: false,
+    fromEdit: false
   }),
 
   actions: {
@@ -35,9 +36,9 @@ export const useBoardStore = defineStore("board", {
           },
         });
         if (response.data.isSuccess === true) {
-          this.isSuccess = true;
           alert("게시글이 등록되었습니다.");
           window.location.href = "/board/" + response.data.result.boardIdx;
+          this.fromEdit = true;
         }
       } catch (e) {
         if (e.response && e.response.data) {
@@ -361,12 +362,8 @@ export const useBoardStore = defineStore("board", {
           }
         );
         if (response.data.isSuccess === true) {
-          this.isSuccess = true;
           alert("게시글이 수정되었습니다.");
-          window.location.href = "/board/update" + response.data.result.boardIdx;
-        } else {
-    
-          alert("변경 사항이 없습니다."); 
+          window.location.href = "/board/" + board.boardIdx;
         }
       } catch (e) {
         console.log(e);

@@ -279,10 +279,12 @@ export const useReviewStore = defineStore("review", {
         throw e;
       }
     },
-    
+
     async deleteReviewCategory(reviewCategoryIdx) {
       try {
-        await axios.delete(backend + "/admin/review/delete" + reviewCategoryIdx);
+        await axios.delete(
+          backend + "/admin/review/delete" + reviewCategoryIdx
+        );
       } catch (e) {
         console.error(e);
         throw e;
@@ -291,10 +293,13 @@ export const useReviewStore = defineStore("review", {
 
     async updateReviewCategory(reviewCategoryIdx, newCategoryName) {
       try {
-        await axios.patch(backend + "/admin/review/update/" + reviewCategoryIdx, {
-          categoryName: newCategoryName
-        })
-      } catch(e) {
+        await axios.patch(
+          backend + "/admin/review/update/" + reviewCategoryIdx,
+          {
+            categoryName: newCategoryName,
+          }
+        );
+      } catch (e) {
         console.error(e);
         throw e;
       }
@@ -326,27 +331,27 @@ export const useReviewStore = defineStore("review", {
       formData.append("reviewImage", reviewImage);
 
       try {
-        let response = await axios.patch(
-          `${backend}/review/update`,
-          formData,
-          {
-            headers: {
-              Authorization: `Bearer ${storedToken}`,
-              "Content-Type": "multipart/form-data",
-              // "Content-Type": "application/json",
-            },
-          }
-        );
+        let response = await axios.patch(`${backend}/review/update`, formData, {
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+            "Content-Type": "multipart/form-data",
+          },
+        });
         if (response.data.isSuccess === true) {
-          this.isSuccess = true;
-          alert("후기글이 수정되었습니다.");
-          window.location.href = "/review/update" + response.data.result.reviewIdx;
-        } else {
-          // 변경 사항이 없는 경우 처리
-          alert("변경 사항이 없습니다."); 
+          alert("후기글을 수정하였습니다.");
+          window.location.href = "/review/" + review.reviewIdx;
         }
       } catch (e) {
-        console.log(e);
+        if (e.response && e.response.data) {
+          console.log(e.response.data);
+          if (e.response.data.code === "REVIEW-002") {
+            alert(
+              "후기글 제목이 이미 등록되어 있는 제목입니다. 제목을 변경해주세요."
+            );
+          } else if(e.response.data.code === "REVIEW-001") {
+            alert("수정하고자 하는 후기글을 찾을 수 없습니다.")
+          }
+        }
       }
     },
   },

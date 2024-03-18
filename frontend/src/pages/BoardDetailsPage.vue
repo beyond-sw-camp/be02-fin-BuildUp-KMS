@@ -303,7 +303,12 @@ export default {
   },
   methods: {
     goBack() {
+      if(this.boardStore.fromEdit) {
+        this.boardStore.fromEdit = false;
+        this.$router.push("/board/knowledge");
+      } else {
         this.$router.go(-1);
+      }
     },
     async submitComment() {
       let isAuthenticated = this.userStore.isAuthenticated;
