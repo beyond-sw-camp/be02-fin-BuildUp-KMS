@@ -312,7 +312,7 @@ public class ReviewService {
 
     // 후기글 수정
     @Transactional(readOnly = false)
-    public BaseRes updateReview(User user, PatchUpdateReviewReq patchUpdateReviewReq) {
+    public BaseRes updateReview(User user, PatchUpdateReviewReq patchUpdateReviewReq, MultipartFile reviewImage) {
 
         Optional<Review> result = reviewRepository.findByIdxAndUserIdx(patchUpdateReviewReq.getReviewIdx(), user.getIdx());
 
@@ -330,6 +330,10 @@ public class ReviewService {
 
         Review review = result.get();
         review.update(patchUpdateReviewReq);
+
+        if (reviewImage != null && reviewImage.equals("")) {
+            reviewImageService.updateReviewImage(review, reviewImage);
+        }
         review.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
         reviewRepository.save(review);
 

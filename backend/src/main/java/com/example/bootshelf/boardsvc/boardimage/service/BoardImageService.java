@@ -5,6 +5,8 @@ import com.example.bootshelf.boardsvc.board.model.entity.Board;
 import com.example.bootshelf.boardsvc.boardimage.model.entity.BoardImage;
 import com.example.bootshelf.boardsvc.boardimage.repository.BoardImageRepository;
 import com.example.bootshelf.config.aws.ImageUtils;
+import com.example.bootshelf.reviewsvc.review.model.entity.Review;
+import com.example.bootshelf.reviewsvc.reviewimage.model.ReviewImage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,26 +18,39 @@ import org.springframework.web.multipart.MultipartFile;
 public class BoardImageService {
 
     @Value("${cloud.aws.s3.board-bucket}")
-    private String boradBucket;
+    private String boardBucket;
 
     private final S3Service s3Service;
 
     private final BoardImageRepository boardImageRepository;
 
     @Transactional(readOnly = false)
-    public void createBoardImage(Integer id, MultipartFile[] images) {
+    public void createBoardImage(Integer id, MultipartFile[] boardImages) {
 
-        for (MultipartFile image : images) {
-            if(!image.isEmpty()){
-                String savePath = ImageUtils.makeBoardImagePath(image.getOriginalFilename());
-                savePath = s3Service.uploadBoardFile(boradBucket, image, savePath);
+        for (MultipartFile boardImage : boardImages) {
 
-                boardImageRepository.save(BoardImage.builder()
-                        .boardImage(savePath)
-                        .board(Board.builder().idx(id).build())
-                        .status(true)
-                        .build());
-            }
+            String savePath = ImageUtils.makeBoardImagePath(boardImage.getOriginalFilename());
+            savePath = s3Service.uploadBoardFile(boardBucket, boardImage, savePath);
+
+            boardImageRepository.save(BoardImage.builder()
+                    .boardImage(savePath)
+                    .board(Board.builder().idx(id).build())
+                    .status(true)
+                    .build());
         }
     }
+
+    @Transactional(readOnly = false)
+    public void updateBoardImage(Board board, MultipartFile boardImage) {
+
+        String savePath = ImageUtils.makeBoardImagePath(boardImage.getOriginalFilename());
+        savePath = s3Service.uploadBoardFile(boardBucket, boardImage, savePath);
+
+        boardImageRepository.save(BoardImage.builder()
+                .board(board)
+                .boardImage(savePath)
+                .status(true)
+                .build());
+    }
 }
+

@@ -108,13 +108,13 @@ public class ReviewController {
             description = "후기 게시글을 검색어(키워드)로 조회하는 API입니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
-            @ApiResponse(responseCode = "500",description = "서버 내부 오류")})
-    @GetMapping ("/search")
-    public ResponseEntity<BaseRes> searchReviewListByQuery (
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
+    @GetMapping("/search")
+    public ResponseEntity<BaseRes> searchReviewListByQuery(
             @RequestParam String query,
             @RequestParam Integer searchType,
             @PageableDefault(size = 9) Pageable pageable
-    ){
+    ) {
         return ResponseEntity.ok().body(reviewService.searchReviewListByQuery(query, searchType, pageable));
     }
 
@@ -144,7 +144,7 @@ public class ReviewController {
             @RequestPart(value = "review") @Valid PatchUpdateReviewReq patchUpdateReviewReq,
             @RequestPart(value = "reviewImage", required = false) MultipartFile reviewImage){
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        BaseRes baseRes = reviewService.updateReview(user, patchUpdateReviewReq);
+        BaseRes baseRes = reviewService.updateReview(user, patchUpdateReviewReq, reviewImage);
 
         return ResponseEntity.ok().body(baseRes);
     }
@@ -165,6 +165,7 @@ public class ReviewController {
         return ResponseEntity.ok().body(baseRes);
     }
 
+
     @Operation(summary = "Review 본인 후기글 수정을 위한 상세 조회",
             description = "본인이 작성한 후기글을 수정하기 위해 작성한 후기글을 불러오는 API입니다.")
     @ApiResponses({
@@ -180,5 +181,4 @@ public class ReviewController {
 
         return ResponseEntity.ok().body(baseRes);
     }
-
 }

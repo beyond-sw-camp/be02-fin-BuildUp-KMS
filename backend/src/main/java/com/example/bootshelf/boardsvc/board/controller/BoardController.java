@@ -5,6 +5,7 @@ import com.example.bootshelf.boardsvc.board.model.request.PostCreateBoardReq;
 import com.example.bootshelf.boardsvc.board.model.response.PostCreateBoardRes;
 import com.example.bootshelf.boardsvc.board.service.BoardService;
 import com.example.bootshelf.common.BaseRes;
+import com.example.bootshelf.reviewsvc.review.model.request.PatchUpdateReviewReq;
 import com.example.bootshelf.user.model.entity.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
@@ -183,13 +184,13 @@ public class BoardController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
-    @RequestMapping(method = RequestMethod.PATCH, value = "/update/{boardIdx}")
+    @RequestMapping(method = RequestMethod.PATCH, value = "/update")
     public ResponseEntity<BaseRes> updateBoard(
-            @Valid @RequestBody PatchUpdateBoardReq patchUpdateBoardReq,
-            @PathVariable(value = "boardIdx") Integer boardIdx
-    ) {
+            @RequestPart(value = "board") @Valid PatchUpdateBoardReq patchUpdateBoardReq,
+            @RequestPart(value = "boardImage", required = false) MultipartFile boardImage)
+    {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        BaseRes baseRes = boardService.updateBoard(user, patchUpdateBoardReq, boardIdx);
+        BaseRes baseRes = boardService.updateBoard(user, patchUpdateBoardReq, boardImage);
         return ResponseEntity.ok().body(baseRes);
     }
 

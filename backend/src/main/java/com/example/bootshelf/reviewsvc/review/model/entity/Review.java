@@ -121,5 +121,6 @@ public class Review {
         if (patchUpdateReviewReq.getCourseEvaluation() != null) {
             this.courseEvaluation = patchUpdateReviewReq.getCourseEvaluation();
         }
+
     }
 }

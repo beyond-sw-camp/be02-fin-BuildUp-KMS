@@ -10,6 +10,8 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class PatchUpdateBoardReq {
+
+    private Integer boardIdx;
     private String boardTitle;
 
     private String boardContent;

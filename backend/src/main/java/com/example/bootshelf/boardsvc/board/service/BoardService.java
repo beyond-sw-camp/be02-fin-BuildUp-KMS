@@ -519,24 +519,33 @@ public class BoardService {
                 .build();
     }
 
-    public BaseRes updateBoard(User user, PatchUpdateBoardReq patchUpdateBoardReq, Integer boardIdx) {
-        Optional<Board> result = boardRepository.findByIdxAndUserIdx(boardIdx, user.getIdx());
+    public BaseRes updateBoard(User user, PatchUpdateBoardReq patchUpdateBoardReq, MultipartFile boardImage) {
+        Optional<Board> result = boardRepository.findByIdxAndUserIdx(patchUpdateBoardReq.getBoardIdx(), user.getIdx());
 
         if (!result.isPresent()) {
-            throw new BoardException(ErrorCode.BOARD_NOT_EXISTS, String.format("Board Idx [ %s ] is not exists.", boardIdx));
+            throw new BoardException(ErrorCode.BOARD_NOT_EXISTS, String.format("Board Idx [ %s ] is not exists.", patchUpdateBoardReq.getBoardIdx()));
         }
-        Optional<Board> resultTitle = boardRepository.findByBoardTitle(patchUpdateBoardReq.getBoardTitle());
-
-        if (resultTitle.isPresent()) {
-            throw new BoardException(ErrorCode.DUPICATED_BOARD_TITLE, String.format("Board Title [ %s ] is duplicated.", patchUpdateBoardReq.getBoardTitle()));
-        }
-        boardTagService.updateBoardTag(patchUpdateBoardReq.getTagList(), boardIdx);
         Board board = result.get();
+
+        if(!board.getBoardTitle().equals(patchUpdateBoardReq.getBoardTitle())) {
+            Optional<Board> resultTitle = boardRepository.findByBoardTitle(patchUpdateBoardReq.getBoardTitle());
+
+            if (resultTitle.isPresent()) {
+                throw new BoardException(ErrorCode.DUPICATED_BOARD_TITLE, String.format("Board Title [ %s ] is duplicated.", patchUpdateBoardReq.getBoardTitle()));
+            }
+        }
+
+        boardTagService.updateBoardTag(patchUpdateBoardReq.getTagList(), patchUpdateBoardReq.getBoardIdx());
+
+        if (boardImage != null && boardImage.equals("")) {
+            boardImageService.updateBoardImage(board, boardImage);
+        }
 
         board.setBoardTitle(patchUpdateBoardReq.getBoardTitle());
         board.setBoardContent(patchUpdateBoardReq.getBoardContent());
         board.setBoardCategory(BoardCategory.builder().idx(patchUpdateBoardReq.getBoardCategoryIdx()).build());
         board.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+
         boardRepository.save(board);
 
         BaseRes baseRes = BaseRes.builder()

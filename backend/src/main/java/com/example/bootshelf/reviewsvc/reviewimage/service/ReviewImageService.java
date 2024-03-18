@@ -48,4 +48,16 @@ public class ReviewImageService {
                     .build());
         }
     }
+    @Transactional(readOnly = false)
+    public void updateReviewImage(Review review, MultipartFile reviewImage) {
+
+        String savePath = ImageUtils.makeBoardImagePath(reviewImage.getOriginalFilename());
+        savePath = s3Service.uploadBoardFile(reviewBucket, reviewImage, savePath);
+
+        reviewImageRepository.save(ReviewImage.builder()
+                .review(review)
+                .reviewImage(savePath)
+                .status(true)
+                .build());
+    }
 }
