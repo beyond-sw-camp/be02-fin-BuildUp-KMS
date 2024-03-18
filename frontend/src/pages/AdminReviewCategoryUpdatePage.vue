@@ -54,7 +54,7 @@ import { useRouter, useRoute } from 'vue-router';
 import { useReviewStore } from "@/stores/useReviewStore";
 
 export default {
-    name: "AdminCategoryRegisterPage",
+    name: "AdminReviewCategoryUpdatePage",
     components: {
         AdminMenuComponent,
     },
