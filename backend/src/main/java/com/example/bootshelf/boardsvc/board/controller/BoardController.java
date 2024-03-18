@@ -200,15 +200,16 @@ public class BoardController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
-    @RequestMapping(method = RequestMethod.PATCH, value = "/update/{boardIdx}")
+    @RequestMapping(method = RequestMethod.PATCH, value = "/update")
     public ResponseEntity<BaseRes> updateBoard(
-            @Valid @RequestBody PatchUpdateBoardReq patchUpdateBoardReq,
-            @PathVariable(value = "boardIdx") Integer boardIdx
-    ) {
+            @RequestPart(value = "board") @Valid PatchUpdateBoardReq patchUpdateBoardReq,
+            @RequestPart(value = "boardImage", required = false) MultipartFile boardImage)
+    {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        BaseRes baseRes = boardService.updateBoard(user, patchUpdateBoardReq, boardIdx);
+        BaseRes baseRes = boardService.updateBoard(user, patchUpdateBoardReq, boardImage);
         return ResponseEntity.ok().body(baseRes);
     }
+
 
     @Operation(summary = "Board 게시글 삭제 기능",
             description = "게시판의 게시글을 삭제하는 API 입니다.")

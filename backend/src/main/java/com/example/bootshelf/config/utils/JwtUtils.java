@@ -45,7 +45,7 @@ public class JwtUtils {
                 throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("User [%s] is not exists.", certificationRepository.findById(user.getIdx())));
             }
             Certification certification = result.get();
-//            claims.put("courseName", certification.getCourse().getProgramName());
+            claims.put("courseName", certification.getCourse().getProgramName());
         }
 
         byte[] secretBytes = secretKey.getBytes();
