@@ -80,7 +80,7 @@
                     :key="index"
                     class="css-170uj16"
                   >
-                    <div class="css-dcsj63">{{ tag }}</div>
+                    <div class="css-dcsj63"># {{ tag }}</div>
                     <svg
                       @click="removeTag(index)"
                       width="16"
@@ -107,7 +107,7 @@
                 <input
                   v-model="inputValue"
                   @focus="onFocus"
-                  placeholder="# 태그를 입력해주세요. (최대 3개)"
+                  placeholder="# 태그를 입력해주세요(최대 3개)"
                   class="css-ih6wu3"
                   @keyup.enter="addTag"
                 />
@@ -244,7 +244,6 @@ export default {
       imageUrl: null,
       boardImage: null,
       tags: [],
-      tagList: [],
       inputValue: "",
       board: {
         boardCategoryIdx: null,
@@ -319,17 +318,15 @@ export default {
         this.inputValue.length > 1 &&
         this.tags.length < 3
       ) {
-        this.tags.push(this.inputValue);
-        this.tagList.push(this.inputValue.slice(1).trim());
+        this.tags.push(this.inputValue.slice(1).trim());
         this.inputValue = "";
 
-        console.log(this.tagList);
+        console.log(this.tags);
       }
     },
     removeTag(index) {
       this.tags.splice(index, 1);
-      this.tagList.splice(index, 1);
-      console.log(this.tagList);
+      console.log(this.tags);
     },
     onFocus() {
       if (!this.inputValue) {
@@ -337,8 +334,9 @@ export default {
       }
     },
     async createBoard() {
+      this.boardStore.fromEdit = true;
 
-      this.board.tagList = this.tagList;
+      this.board.tagList = this.tags;
       await this.boardStore.createBoard(this.board, this.boardImage);
     },
     cancelCreateReview() {

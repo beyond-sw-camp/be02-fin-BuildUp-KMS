@@ -19,7 +19,7 @@
         </div>
         <div class="css-agejl7">
           <div class="css-r8q25b">
-            <p>{{ reviewStore.reviewDetail.reviewCategoryName }} 작성하기</p>
+            <p>{{ reviewStore.reviewDetail.reviewCategoryName }} 수정하기</p>
           </div>
           <div class="css-1iyoj2o">
             <div class="css-1odc90o">
@@ -101,21 +101,21 @@
                   </p> -->
                       <!-- <img alt="게시판 이미지" :data-src="image" /> -->
                     </div>
-                     <!-----이미지 들어가는 곳----->
-                  <div class="css-image" style="text-align: center">
-                    <div
-                      class="image-container"
-                      style="max-width: 100%; display: inline-block"
-                    >
-                      <img
-                        v-if="imageUrl"
-                        :src="imageUrl"
-                        alt="Uploaded Image"
-                        style="max-width: 70%; height: auto"
-                      />
+                    <!-----이미지 들어가는 곳----->
+                    <div class="css-image" style="text-align: center">
+                      <div
+                        class="image-container"
+                        style="max-width: 100%; display: inline-block"
+                      >
+                        <img
+                          v-if="imageUrl"
+                          :src="imageUrl"
+                          alt="Uploaded Image"
+                          style="max-width: 70%; height: auto"
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <!-----이미지 들어가는 곳----->
+                    <!-----이미지 들어가는 곳----->
                     <textarea
                       class="ql-editor ql-blank"
                       v-model="review.reviewContent"
@@ -144,30 +144,6 @@
               </div>
               <div id="toolbar" class="ql-toolbar ql-snow">
                 <span class="ql-formats"
-                  ><button
-                    content="코드 블록"
-                    class="ql-code-block css-1qhzcav"
-                    type="button"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 20 20"
-                      fill="none"
-                    >
-                      <path
-                        d="M4.381 13.95a.875.875 0 1 0 1.238-1.237L4.38 13.951zM1.667 10l-.62-.619a.875.875 0 0 0 .001 1.237L1.667 10zm3.952-2.715A.875.875 0 1 0 4.38 6.047L5.62 7.284zm0 5.43L2.285 9.38l-1.237 1.237 3.333 3.334 1.238-1.238zm-3.334-2.097L5.62 7.284 4.38 6.047 1.048 9.38l1.237 1.237zM15.619 6.05a.875.875 0 1 0-1.238 1.237l1.238-1.238zM18.333 10l.62.619a.875.875 0 0 0 0-1.237l-.62.618zm-3.952 2.715a.875.875 0 0 0 1.238 1.237l-1.238-1.237zm0-5.43 3.334 3.334 1.237-1.237-3.333-3.334-1.238 1.238zm3.334 2.097-3.334 3.333 1.238 1.237 3.333-3.333-1.237-1.237z"
-                        fill="#505254"
-                      ></path>
-                      <path
-                        d="m12.5 4.168-5 11.667"
-                        stroke="#505254"
-                        stroke-width="1.75"
-                        stroke-linecap="round"
-                      ></path>
-                    </svg></button></span
-                ><span class="ql-formats"
                   ><button
                     content="이미지 첨부"
                     class="ql-image css-1qhzcav"
@@ -207,44 +183,7 @@
                         fill="#505254"
                       ></rect>
                     </svg></button></span
-                ><span class="ql-formats"
-                  ><button content="파일 첨부" class="attachments css-1qhzcav">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 20 20"
-                      fill="none"
-                    >
-                      <path
-                        d="M5 9.478v3.02a5 5 0 0 0 5 5v0a5 5 0 0 0 5-5V5.833"
-                        stroke="#505254"
-                        stroke-width="1.75"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></path>
-                      <path
-                        d="M11.667 7.5V5.833A3.333 3.333 0 0 0 8.333 2.5v0A3.333 3.333 0 0 0 5 5.833V12.5"
-                        stroke="#505254"
-                        stroke-width="1.75"
-                        stroke-linecap="round"
-                      ></path>
-                      <path
-                        d="M8.336 5.832v6.667c0 .92.746 1.666 1.667 1.666v0c.92 0 1.666-.746 1.666-1.666v-5"
-                        stroke="#505254"
-                        stroke-width="1.75"
-                        stroke-linecap="round"
-                      ></path>
-                      <rect
-                        x="5.836"
-                        y="5.832"
-                        width="2.5"
-                        height="2.5"
-                        rx="1.25"
-                        fill="#505254"
-                      ></rect>
-                    </svg></button
-                ></span>
+                >
               </div>
             </div>
             <input
@@ -254,12 +193,15 @@
               style="display: none"
               @change="handleImageUpload"
             />
-            <div class="css-lycl0a">
-              <button class="css-9ns22y" @click="cancel()">취소</button>
-              <button class="css-1c8gn7d" @click="updateReview()">
-                수정하기
-              </button>
-            </div>
+          </div>
+          <div class="css-lycl0a">
+            <button class="css-9ns22y" @click="cancel()">취소</button>
+            <button
+              class="css-1c8gn7d"
+              @click="updateReview()"
+            >
+              수정하기
+            </button>
           </div>
         </div>
       </div>
@@ -295,29 +237,33 @@ export default {
       reviewImage: null,
       imageUrl: null,
       buttonOpacity: 1,
-      
+
       review: {
         reviewIdx: 0,
         reviewTitle: "",
         reviewContent: "",
         courseEvaluation: null,
       },
-      // user: {
-      //   idx: null,
-      //   boardTitle: "",
-      //   boardContent: "",
-      // },
     };
   },
   async mounted() {
     const reviewIdx = this.$route.params.reviewIdx;
 
     this.review.reviewIdx = reviewIdx;
-    
-    // this.reviewDetail = await this.reviewStore.updateReview(review, reviewImage);
-    this.reviewDetail = await this.reviewStore.findReviewDetailByUserIdx(reviewIdx);
-    this.review.reviewContent = this.reviewDetail.reviewContent
-    this.review.reviewTitle = this.reviewDetail.reviewTitle
+
+    this.reviewDetail = await this.reviewStore.findReviewDetailByUserIdx(
+      reviewIdx
+    );
+    this.review.reviewContent = this.reviewDetail.reviewContent;
+    this.review.reviewTitle = this.reviewDetail.reviewTitle;
+    this.imageUrl = this.reviewDetail.reviewImageList[0].reviewImage;
+
+    const loadedEvaluation = this.reviewDetail.courseEvaluation;
+    this.Evaluations.forEach((evaluation) => {
+      evaluation.selected = evaluation.name === loadedEvaluation;
+    });
+
+    this.selectedEvaluation = loadedEvaluation + "점";
   },
   methods: {
     async updateReview() {

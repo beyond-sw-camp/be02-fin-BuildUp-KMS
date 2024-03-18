@@ -20,7 +20,7 @@
         <div class="css-agejl7">
           <div class="css-r8q25b">
             <p>
-              {{ boardStore.boardDetail.boardCategoryName }} 게시글 작성하기
+              {{ boardStore.boardDetail.boardCategoryName }} 게시글 수정하기
             </p>
           </div>
           <div class="css-1iyoj2o">
@@ -39,7 +39,6 @@
                   class="css-16kqrm"
                   style="overflow: hidden; resize: none"
                   v-model="board.boardTitle"
-                  @input="handleChange"
                 ></textarea>
               </div>
 
@@ -51,7 +50,7 @@
                     :key="index"
                     class="css-170uj16"
                   >
-                    <div class="css-dcsj63">{{ tag }}</div>
+                    <div class="css-dcsj63"># {{ tag }}</div>
                     <svg
                       @click="removeTag(index)"
                       width="16"
@@ -76,49 +75,40 @@
                   </div>
                 </div>
                 <input
-                  v-model="board.tagList"
+                  v-model="inputValue"
                   @focus="onFocus"
-                  placeholder="# 태그를 입력해주세요. (최대 3개)"
+                  placeholder="# 태그를 입력해주세요(최대 3개)"
                   class="css-ih6wu3"
                   @keyup.enter="addTag"
-                  @input="handleChange"
                 />
               </div>
             </div>
           </div>
           <br />
-          <!-- <textarea
-              class="css-9y3tf9"
-              rows="1"
-              style="overflow: hidden; resize: none"
-              readonly
-              
-            ></textarea>
-            <div v-for="(tag, index) in tags" :key="index">{{ tag }}</div>
-            <input
-              placeholder="#태그를 입력해주세요. (최대 3개)"
-              class="css-9y3tf9"
-              v-model="board.tagList"
-            />
-            <TagComponent></TagComponent>
-          </div>
-          <br /> -->
           <div class="css-17wj0zk">
             <div class="">
               <div class="quill">
                 <div class="ql-container ql-snow">
                   <div class="d-flex justify-content-center py-0 py-md-4">
-                    <div class="css-luqgif">
-                      <!-- <div class="editedQ_QContent" v-for="(image, index) in boardDetail.boardImageList" :key="index"> -->
-                      <!-- <p class="css-content">
-                  {{ boardDetail.boardContent }}
-                </p> -->
-                      <!-- <img alt="게시판 이미지" :data-src="image" /> -->
+                    <div class="css-luqgif"></div>
+                    <!-----이미지 들어가는 곳----->
+                    <div class="css-image" style="text-align: center">
+                      <div
+                        class="image-container"
+                        style="max-width: 100%; display: inline-block"
+                      >
+                        <img
+                          v-if="imageUrl"
+                          :src="imageUrl"
+                          alt="Uploaded Image"
+                          style="max-width: 70%; height: auto"
+                        />
+                      </div>
                     </div>
+                    <!-----이미지 들어가는 곳----->
                     <textarea
                       class="ql-editor ql-blank"
                       v-model="board.boardContent"
-                      @input="handleChange"
                     ></textarea>
                     <div
                       class="ql-clipboard"
@@ -144,30 +134,6 @@
               </div>
               <div id="toolbar" class="ql-toolbar ql-snow">
                 <span class="ql-formats"
-                  ><button
-                    content="코드 블록"
-                    class="ql-code-block css-1qhzcav"
-                    type="button"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 20 20"
-                      fill="none"
-                    >
-                      <path
-                        d="M4.381 13.95a.875.875 0 1 0 1.238-1.237L4.38 13.951zM1.667 10l-.62-.619a.875.875 0 0 0 .001 1.237L1.667 10zm3.952-2.715A.875.875 0 1 0 4.38 6.047L5.62 7.284zm0 5.43L2.285 9.38l-1.237 1.237 3.333 3.334 1.238-1.238zm-3.334-2.097L5.62 7.284 4.38 6.047 1.048 9.38l1.237 1.237zM15.619 6.05a.875.875 0 1 0-1.238 1.237l1.238-1.238zM18.333 10l.62.619a.875.875 0 0 0 0-1.237l-.62.618zm-3.952 2.715a.875.875 0 0 0 1.238 1.237l-1.238-1.237zm0-5.43 3.334 3.334 1.237-1.237-3.333-3.334-1.238 1.238zm3.334 2.097-3.334 3.333 1.238 1.237 3.333-3.333-1.237-1.237z"
-                        fill="#505254"
-                      ></path>
-                      <path
-                        d="m12.5 4.168-5 11.667"
-                        stroke="#505254"
-                        stroke-width="1.75"
-                        stroke-linecap="round"
-                      ></path>
-                    </svg></button></span
-                ><span class="ql-formats"
                   ><button
                     content="이미지 첨부"
                     class="ql-image css-1qhzcav"
@@ -206,43 +172,6 @@
                         rx="1.25"
                         fill="#505254"
                       ></rect>
-                    </svg></button></span
-                ><span class="ql-formats"
-                  ><button content="파일 첨부" class="attachments css-1qhzcav">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 20 20"
-                      fill="none"
-                    >
-                      <path
-                        d="M5 9.478v3.02a5 5 0 0 0 5 5v0a5 5 0 0 0 5-5V5.833"
-                        stroke="#505254"
-                        stroke-width="1.75"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></path>
-                      <path
-                        d="M11.667 7.5V5.833A3.333 3.333 0 0 0 8.333 2.5v0A3.333 3.333 0 0 0 5 5.833V12.5"
-                        stroke="#505254"
-                        stroke-width="1.75"
-                        stroke-linecap="round"
-                      ></path>
-                      <path
-                        d="M8.336 5.832v6.667c0 .92.746 1.666 1.667 1.666v0c.92 0 1.666-.746 1.666-1.666v-5"
-                        stroke="#505254"
-                        stroke-width="1.75"
-                        stroke-linecap="round"
-                      ></path>
-                      <rect
-                        x="5.836"
-                        y="5.832"
-                        width="2.5"
-                        height="2.5"
-                        rx="1.25"
-                        fill="#505254"
-                      ></rect>
                     </svg></button
                 ></span>
               </div>
@@ -254,12 +183,10 @@
               style="display: none"
               @change="handleImageUpload"
             />
-            <div class="css-lycl0a">
-              <button class="css-9ns22y" @click="cancel()">취소</button>
-              <button class="css-1c8gn7d" @click="updateBoard()">
-                수정하기
-              </button>
-            </div>
+          </div>
+          <div class="css-lycl0a">
+            <button class="css-9ns22y" @click="cancel()">취소</button>
+            <button class="css-1c8gn7d" @click="updateBoard()">수정하기</button>
           </div>
         </div>
       </div>
@@ -270,17 +197,19 @@
 <script>
 import { mapStores } from "pinia";
 import { useBoardStore } from "../stores/useBoardStore";
-// import { useUserStore } from "../stores/useUserStore";
-// import TagComponent from "../components/TagComponent.vue";
 
 export default {
   name: "BoardUpdatePage",
   computed: {
     ...mapStores(useBoardStore),
   },
-  // components: {
-  //   TagComponent,
-  // },
+  watch: {
+    inputValue(newValue) {
+      if (newValue && !newValue.startsWith("#")) {
+        this.inputValue = "# " + newValue.trim();
+      }
+    },
+  },
   data() {
     return {
       tags: [],
@@ -290,55 +219,62 @@ export default {
       buttonOpacity: 1,
 
       board: {
-        boardCategoryIdx: 0,
         boardTitle: "",
         boardContent: "",
         boardIdx: 0,
-        originalContent: ''
+        originalContent: "",
+        tagList: [],
       },
-      isContentChanged: false // 내용이 변경되었는지 여부를 저장하는 변수
-      // user: {
-      //   idx: null,
-      //   boardTitle: "",
-      //   boardContent: "",
-      // },
     };
   },
-
   async mounted() {
     const boardIdx = this.$route.params.boardIdx;
 
-    this.boardIdx = boardIdx;
+    this.board.boardIdx = boardIdx;
 
     // this.reviewDetail = await this.reviewStore.updateReview(review, reviewImage);
     this.boardDetail = await this.boardStore.findBoardDetailByUserIdx(boardIdx);
     this.board.boardContent = this.boardDetail.boardContent;
     this.board.boardTitle = this.boardDetail.boardTitle;
-    this.board.boardIdx = this.boardDetail.idx;
-    this.board.boardCategoryIdx = this.boardDetail.boardCategoryIdx;
-    this.board.tagList = this.boardDetail.tagList;
-    this.board.originalContent = this.board.boardContent;
-  },
-  methods: {
-    handleChange() {
-      // 내용이 변경되었음을 표시
-      this.isContentChanged = true;
-    },
-    async updateBoard() {
-      this.board.tagList = this.tagList;
-      await this.boardStore.updateBoard(this.board, this.boardImage);
-      if (!this.isContentChanged) {
-        alert('변경된 내용이 없습니다.');
-        return;
-  }
-  try {
-        // 여기서 서버로 데이터 전송 등의 작업을 수행합니다.
-      } catch (error) {
-        console.error('게시글 수정에 실패했습니다:', error);
-      }
+    this.imageUrl = this.boardDetail.boardImageList[0].boardImage;
+
+    if (this.boardDetail.tagList && this.boardDetail.tagList.length > 0) {
+      this.tags = this.boardDetail.tagList;
+      console.log(this.tags);
+      // this.tagList = this.boardDetail.tagList;
     }
   },
-  
+  methods: {
+    async updateBoard() {
+      this.board.tagList = this.tags;
+      await this.boardStore.updateBoard(this.board, this.boardImage);
+    },
+    // 태그 추가
+    addTag() {
+      if (this.tags.length >= 3) {
+        alert("태그는 최대 3개까지 추가할 수 있습니다.");
+        return;
+      }
+
+      if (
+        this.inputValue.startsWith("#") &&
+        this.inputValue.length > 1 &&
+        this.tags.length < 3
+      ) {
+        this.tags.push(this.inputValue.slice(1).trim());
+        this.inputValue = "";
+        console.log(this.tags);
+      }
+    },
+    removeTag(index) {
+      this.tags.splice(index, 1);
+      console.log(this.tags);
+    },
+    onFocus() {
+      if (!this.inputValue) {
+        this.inputValue = "# ";
+      }
+    },
     // 이미지 업로드
     uploadImage() {
       const input = document.getElementById("input_file");
@@ -358,7 +294,7 @@ export default {
     },
     cancel() {
       window.location.href = "/board";
-    
+    },
   },
 };
 </script>
@@ -500,7 +436,6 @@ element.style {
 
 .css-1iqxhyo {
   width: 100%;
-  margin-bottom: 12px;
 }
 
 .css-17wj0zk {
@@ -881,7 +816,10 @@ input {
   opacity: 0.3;
   margin-right: 14px;
 }
-
+.css-1c8gn7d:hover {
+  opacity: 1;
+  background-color: #541d7a;
+}
 .css-agejl7 {
   max-width: 980px;
   width: 100%;
@@ -977,5 +915,85 @@ input {
 
 .css-lycl0a {
   width: 400px;
+}
+.css-1vitttd {
+  display: flex;
+  flex-flow: wrap;
+  gap: 8px;
+  -webkit-box-align: center;
+  align-items: center;
+}
+.css-170uj16 {
+  height: 26px;
+  padding: 0px 8px;
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: row;
+  gap: 4px;
+  -webkit-box-align: center;
+  align-items: center;
+  border-radius: 4px;
+  background-color: rgb(242, 246, 248);
+}
+.css-dcsj63 {
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 150%;
+  color: rgb(129, 137, 143);
+}
+.css-170uj16 svg {
+  width: 12px;
+  height: 12px;
+}
+.css-ih6wu3 {
+  width: unset;
+  border: none;
+  outline: none;
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 150%;
+  color: rgb(95, 102, 107);
+  margin-left: 8px;
+}
+
+/*-------------태크------------------*/
+
+.css-1vitttd {
+  display: flex;
+  flex-flow: wrap;
+  gap: 8px;
+  -webkit-box-align: center;
+  align-items: center;
+}
+.css-170uj16 {
+  height: 26px;
+  padding: 0px 8px;
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: row;
+  gap: 4px;
+  -webkit-box-align: center;
+  align-items: center;
+  border-radius: 4px;
+  background-color: rgb(242, 246, 248);
+}
+.css-dcsj63 {
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 150%;
+  color: rgb(129, 137, 143);
+}
+.css-170uj16 svg {
+  width: 12px;
+  height: 12px;
+}
+.css-image {
+  margin-top: 20px;
 }
 </style>
