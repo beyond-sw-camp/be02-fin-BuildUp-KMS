@@ -328,19 +328,24 @@ public class ReviewService {
             throw new ReviewException(ErrorCode.REVIEW_NOT_EXISTS, String.format("Review Idx [ %s ] is not exists.", patchUpdateReviewReq.getReviewIdx()));
         }
 
-        Optional<Review> resultTitle = reviewRepository.findByReviewTitle(patchUpdateReviewReq.getReviewTitle());
+        Review review = result.get();
+        if(!review.getReviewTitle().equals(patchUpdateReviewReq.getReviewTitle())) {
+            // 수정 후기글 제목 중복에 대한 예외 처리
+            Optional<Review> resultTitle = reviewRepository.findByReviewTitle(patchUpdateReviewReq.getReviewTitle());
 
-        // 수정 후기글 제목 중복에 대한 예외 처리
-        if (resultTitle.isPresent()) {
-            throw new ReviewException(ErrorCode.DUPLICATE_REVIEW_TITLE, String.format("Review Title [ %s ] is duplicated.", patchUpdateReviewReq.getReviewTitle()));
+            if (resultTitle.isPresent()) {
+                throw new ReviewException(ErrorCode.DUPLICATE_REVIEW_TITLE, String.format("Review Title [ %s ] is duplicated.", patchUpdateReviewReq.getReviewTitle()));
+            }
         }
 
-        Review review = result.get();
         review.update(patchUpdateReviewReq);
 
-        if (reviewImage != null && reviewImage.equals("")) {
+        if (reviewImage != null && !reviewImage.equals("")) {
             reviewImageService.updateReviewImage(review, reviewImage);
+        } else {
+
         }
+
         review.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
         reviewRepository.save(review);
 
@@ -555,13 +560,19 @@ public class ReviewService {
 
         Review review = result.get();
 
-//        List<GetListImageReviewRes> reviewImages = new ArrayList<>();
+        List<GetListImageReviewRes> reviewImages = new ArrayList<>();
 
-//        if (!review.getReviewImageList().isEmpty()) {
-//            for (ReviewImage reviewImage : review.getReviewImageList()) {
-//                reviewImages.add(reviewImage.getReviewImage());
-//            }
-//        }
+        if (!review.getReviewImageList().isEmpty()) {
+            for (ReviewImage reviewImage : review.getReviewImageList()) {
+
+                GetListImageReviewRes getListImageReviewRes = GetListImageReviewRes.builder()
+                        .reviewImageIdx(reviewImage.getIdx())
+                        .reviewImage(reviewImage.getReviewImage())
+                        .build();
+
+                reviewImages.add(getListImageReviewRes);
+            }
+        }
 
         GetReadReviewRes getReadReviewRes = GetReadReviewRes.builder()
                 .reviewIdx(review.getIdx())
@@ -569,8 +580,9 @@ public class ReviewService {
                 .reviewCategoryIdx(review.getReviewCategory().getIdx())
                 .reviewTitle(review.getReviewTitle())
                 .reviewContent(review.getReviewContent())
-//                .reviewImageList(reviewImages)
+                .reviewImageList(reviewImages)
                 .courseName(review.getCourseName())
+                .courseEvaluation(review.getCourseEvaluation())
                 .build();
 
         BaseRes baseRes = BaseRes.builder()
