@@ -11,7 +11,8 @@ export const useReviewStore = defineStore("review", {
     currentPage: 0,
     totalPages: 0,
     totalCnt: 0,
-    isReviewExist: true
+    isReviewExist: true,
+    isLoading: false,
   }),
   actions: {
     async createReview(review, reviewImage) {
@@ -47,6 +48,8 @@ export const useReviewStore = defineStore("review", {
 
     async getReviewList(reviewCategoryIdx, sortType, page = 1) {
       try {
+        this.isLoading = true;
+
         const params = new URLSearchParams({
           page: page - 1,
         }).toString();
@@ -65,11 +68,15 @@ export const useReviewStore = defineStore("review", {
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
-        if(response.data.result.list.length === 0 && response.data.result.totalCnt === 0) {
+        if (this.totalCnt === 0) {
           this.isReviewExist = false;
+        } else {
+          this.isReviewExist = true;
         }
       } catch (e) {
         console.log(e);
+      } finally {
+        this.isLoading = false;
       }
     },
 
@@ -80,15 +87,17 @@ export const useReviewStore = defineStore("review", {
       page = 1
     ) {
       try {
+        this.isLoading = true;
+
         const params = new URLSearchParams({
           page: page - 1,
         }).toString();
 
         let response = await axios.get(
           backend +
-          `/review/${reviewCategoryIdx}/${sortType}/search?searchTerm=${encodeURIComponent(
-            searchTerm
-          )}&${params}`,
+            `/review/${reviewCategoryIdx}/${sortType}/search?searchTerm=${encodeURIComponent(
+              searchTerm
+            )}&${params}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -101,11 +110,15 @@ export const useReviewStore = defineStore("review", {
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
-        if(response.data.result.list.length === 0 && response.data.result.totalCnt === 0) {
+        if (this.totalCnt === 0) {
           this.isReviewExist = false;
+        } else {
+          this.isReviewExist = true;
         }
       } catch (e) {
         console.log(e);
+      } finally {
+        this.isLoading = false;
       }
     },
 
@@ -122,9 +135,7 @@ export const useReviewStore = defineStore("review", {
         if (e.response && e.response.data) {
           console.log(e.response.data);
           if (e.response.data.code === "REVIEW-001") {
-            alert(
-              "해당하는 후기글을 찾을 수 없습니다."
-            );
+            alert("해당하는 후기글을 찾을 수 없습니다.");
           }
         }
       }
@@ -132,12 +143,16 @@ export const useReviewStore = defineStore("review", {
 
     async createReviewUp(token, requestBody) {
       try {
-        let response = await axios.post(backend + "/reviewup/create", requestBody, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+        let response = await axios.post(
+          backend + "/reviewup/create",
+          requestBody,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
           }
-        })
+        );
 
         return response;
       } catch (e) {
@@ -148,12 +163,16 @@ export const useReviewStore = defineStore("review", {
 
     async createReviewScrap(token, requestBody) {
       try {
-        let response = await axios.post(backend + "/reviewscrap/create", requestBody, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+        let response = await axios.post(
+          backend + "/reviewscrap/create",
+          requestBody,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
           }
-        })
+        );
 
         return response;
       } catch (e) {
@@ -164,11 +183,14 @@ export const useReviewStore = defineStore("review", {
 
     async checkReviewUp(token, reviewIdx) {
       try {
-        let response = await axios.get(`${backend}/reviewup/check/${reviewIdx}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        let response = await axios.get(
+          `${backend}/reviewup/check/${reviewIdx}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         console.log(response);
 
         this.isRecommended = response.data.result.status;
@@ -182,11 +204,14 @@ export const useReviewStore = defineStore("review", {
 
     async checkReviewScrap(token, reviewIdx) {
       try {
-        let response = await axios.get(`${backend}/reviewscrap/check/${reviewIdx}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        let response = await axios.get(
+          `${backend}/reviewscrap/check/${reviewIdx}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         console.log(response);
 
         this.isScrapped = response.data.result.status;
@@ -200,12 +225,16 @@ export const useReviewStore = defineStore("review", {
 
     async cancelReviewUp(token, reviewUpIdx) {
       try {
-        let response = await axios.patch(`${backend}/reviewup/delete/${reviewUpIdx}`, {}, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json"
-          },
-        });
+        let response = await axios.patch(
+          `${backend}/reviewup/delete/${reviewUpIdx}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
         console.log(response);
       } catch (e) {
         console.error(e);
@@ -215,12 +244,16 @@ export const useReviewStore = defineStore("review", {
 
     async cancelReviewScrap(token, reviewScrapIdx) {
       try {
-        let response = await axios.patch(`${backend}/reviewscrap/delete/${reviewScrapIdx}`, {}, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json"
-          },
-        });
+        let response = await axios.patch(
+          `${backend}/reviewscrap/delete/${reviewScrapIdx}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
         console.log(response);
       } catch (e) {
         console.error(e);
@@ -230,15 +263,19 @@ export const useReviewStore = defineStore("review", {
 
     async createReviewCategory(categoryName) {
       try {
-        await axios.post(backend + "/admin/review/create", { categoryName: categoryName }, {
-          headers: {
-            "Content-Type": "application/json",
+        await axios.post(
+          backend + "/admin/review/create",
+          { categoryName: categoryName },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
           }
-        });
+        );
       } catch (e) {
         console.error(e);
         throw e;
       }
-    }
+    },
   },
 });
