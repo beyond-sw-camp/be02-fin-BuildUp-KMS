@@ -37,7 +37,6 @@ import AdminSignUpPage from "@/pages/AdminSignUpPage.vue";
 import AdminLoginPage from "@/pages/AdminLoginPage.vue";
 import AdminReviewCategoryUpdatePage from "@/pages/AdminReviewCategoryUpdatePage";
 import AdminBoardCategoryUpdatePage from "@/pages/AdminBoardCategoryUpdatePage";
-import AdminTagUpdatePage from "@/pages/AdminTagUpdatePage";
 
 const requireAuth = () => (from, to, next) => {
   const storedToken = window.localStorage.getItem("token");
@@ -120,12 +119,6 @@ const routes = [
     component: AdminBoardCategoryUpdatePage,
     props: true
   },
-  {
-    path: '/admin/tag/update/:categoryIdx',
-    name: 'AdminBoardCategoryUpdate',
-    component: AdminTagUpdatePage,
-    props: true
-  },
   { path: "/auth/signup", component: AuthSignupPage },
   { path: "/KakaoLogIn", component: KakaoLogIn },
   { path: "/signup", component: SignupPage },
@@ -157,7 +150,6 @@ const routes = [
   { path: "/admin/review/category/register", component: AdminReviewCategoryRegisterPage, beforeEnter: requireAdminAuth() },
   { path: "/admin/board/category/update", component: AdminBoardCategoryUpdatePage, beforeEnter: requireAdminAuth() },
   { path: "/admin/review/category/update", component: AdminReviewCategoryUpdatePage, beforeEnter: requireAdminAuth() },
-  { path: "/admin/tag/update", component: AdminTagUpdatePage, beforeEnter: requireAdminAuth() },
   { path: "/admin/tag/register", component: AdminTagRegisterPage, beforeEnter: requireAdminAuth() },
   { path: "/admin/board/category", component: AdminBoardCategoryListPage, beforeEnter: requireAdminAuth() },
   { path: "/admin/review/category", component: AdminReviewCategoryListPage, beforeEnter: requireAdminAuth() },

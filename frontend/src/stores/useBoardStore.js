@@ -390,5 +390,25 @@ export const useBoardStore = defineStore("board", {
     setPreviousPath(path) {
       this.previousPath = path;
     },
+
+    async deleteBoardCategory(boardCategoryIdx) {
+      try {
+        await axios.delete(backend + "/admin/board/delete/" + boardCategoryIdx);
+      } catch (e) {
+        console.error(e);
+        throw e;
+      }
+    },
+
+    async updateBoardCategory(boardCategoryIdx, newCategoryName) {
+      try {
+        await axios.patch(backend + "/admin/board/update/" + boardCategoryIdx, {
+          categoryName: newCategoryName
+        })
+      } catch(e) {
+        console.error(e);
+        throw e;
+      }
+    }
   },
 });
