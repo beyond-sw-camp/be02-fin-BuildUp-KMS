@@ -12,6 +12,8 @@ export const useReviewStore = defineStore("review", {
     totalPages: 0,
     totalCnt: 0,
     isReviewExist: true,
+    reviewIdx: 0
+    reviewDetail: [],
     isLoading: false,
   }),
   actions: {
@@ -296,6 +298,53 @@ export const useReviewStore = defineStore("review", {
         console.error(e);
         throw e;
       }
-    }
+    },
+    async findReviewDetailByUserIdx(reviewIdx) {
+      try {
+        let response = await axios.get(
+          `${backend}/review/mywrite/${reviewIdx}`,
+          {
+            headers: {
+              Authorization: `Bearer ${storedToken}`,
+            },
+          }
+        );
+        this.reviewDetail = response.data.result;
+
+        console.log(response);
+        return this.reviewDetail;
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    async updateReview(review, reviewImage) {
+      const formData = new FormData();
+
+      let json = JSON.stringify(review);
+      formData.append("review", new Blob([json], { type: "application/json" }));
+      formData.append("reviewImage", reviewImage);
+
+      try {
+        let response = await axios.patch(
+          `${backend}/review/update`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${storedToken}`,
+              "Content-Type": "multipart/form-data",
+              // "Content-Type": "application/json",
+            },
+          }
+        );
+        if (response.data.isSuccess === true) {
+          this.isSuccess = true;
+          alert("후기글이 수정되었습니다.");
+          window.location.href = "/review/update" + response.data.result.reviewIdx;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
   },
 });
