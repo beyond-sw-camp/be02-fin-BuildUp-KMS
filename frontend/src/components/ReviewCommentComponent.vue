@@ -17,13 +17,12 @@
             <div class="css-emxp17" @click="toggleEditMode(reviewComment)">수정</div>
             <div class="css-emxp17" @click="deleteComment(reviewComment.idx)">삭제</div>
           </div>
-          <div class="css-emxp17">
+          <div class="css-emxp17" @click="handleRecommendClick(reviewComment.idx)">
             <!-- 댓글 추천 -->
-            <img width="18" height="18"
-              src="https://img.icons8.com/sf-regular/48/facebook-like.png" alt="facebook-like"
-              @click="reviewRecommend(reviewComment.idx)" />
-            <img  width="18" height="18" src="https://img.icons8.com/sf-regular-filled/48/facebook-like.png"
-              alt="facebook-like" @click="cancelReviewComment(reviewComment.idx)" />
+            <img width="23px" height="23px" :src="reviewComment.isReviewCommentRecommended
+    ? require('../assets/img/up_ok.png')
+    : require('../assets/img/up.png')
+    " alt="facebook-like" />
           </div>
         </div>
         <div class="editedCommentContent">
@@ -45,8 +44,7 @@
       <div class="css-f7no94-reply" v-if="reviewComment.showReplyForm">
         <div class="css-3o2y5e">
           <div width="36px" height="36px" class="css-jg5tbe">
-            <img alt="나의얼굴" width="34px" height="34px"
-            :src="reviewStore.review.profileImage">
+            <img alt="나의얼굴" width="34px" height="34px" :src="reviewStore.review.profileImage">
           </div>
         </div>
         <div class="css-14f8kx2">
@@ -66,8 +64,7 @@
       <div class="css-f7no94-reply" v-for="childComment in reviewComment.children" :key="childComment.idx">
         <div class="css-3o2y5e">
           <div width="36px" height="36px" class="css-jg5tbe">
-            <img alt="나의얼굴" width="34px" height="34px"
-            :src="childComment.userImg">
+            <img alt="나의얼굴" width="34px" height="34px" :src="childComment.userImg">
           </div>
         </div>
         <div class="css-14f8kx2-001">
@@ -83,12 +80,11 @@
             </div>
 
             <!-- 대댓글 추천 -->
-            <div class="css-emxp17">
-              <img width="18" height="18"
-              src="https://img.icons8.com/sf-regular/48/facebook-like.png" alt="facebook-like"
-              @click="reviewRecommend(childComment.idx)" />
-            <img  width="18" height="18" src="https://img.icons8.com/sf-regular-filled/48/facebook-like.png"
-              alt="facebook-like" @click="cancelReviewComment(childComment.idx)" />
+            <div class="css-emxp17" @click="handleRecommendClick(reviewComment.idx)">
+              <img width="23px" height="23px" :src="childComment.isReviewCommentRecommended
+    ? require('../assets/img/up_ok.png')
+    : require('../assets/img/up.png')
+    " alt="facebook-like" />
             </div>
           </div>
           <div class="editedCommentContent">
@@ -127,7 +123,9 @@ export default {
       required: true
     },
   },
-
+  async mounted() {
+    await this.reviewCommentStore.updateCommentRecommendationStatus();
+  },
   methods: {
     //  댓글 수정 후 저장
     async saveComment(reviewCommentIdx) {
@@ -165,17 +163,17 @@ export default {
     // 댓글 추천 기능
     async reviewRecommend(reviewCommentIdx) {
       try {
-          await this.reviewCommentStore.reviewRecommend(reviewCommentIdx);
-        } 
-       catch (error) {
+        await this.reviewCommentStore.reviewRecommend(reviewCommentIdx);
+      }
+      catch (error) {
         console.error("ERROR : ", error);
       }
     },
 
-    async cancelReviewComment(reviewCommentIdx){
-      try{
+    async cancelReviewComment(reviewCommentIdx) {
+      try {
         await this.reviewCommentStore.cancelReviewComment(reviewCommentIdx);
-      }       catch (error) {
+      } catch (error) {
         console.error("ERROR : ", error);
       }
     },
@@ -204,6 +202,52 @@ export default {
       }
     },
 
+    async handleRecommendClick(idx) {
+      if (!idx) {
+        console.error('No idx provided for handleRecommendClick');
+        return;
+      }
+
+      const commentOrReply = this.findCommentOrReply(idx);
+      if (!commentOrReply) {
+        console.error(`Comment or reply with idx ${idx} not found.`);
+        return;
+      }
+
+      try {
+        // Check if the comment or reply is already recommended
+        if (commentOrReply.isReviewCommentRecommended) {
+          // If yes, attempt to cancel the recommendation
+          await this.reviewCommentStore.cancelReviewComment(idx);
+        } else {
+          // If not, attempt to add a recommendation
+          await this.reviewCommentStore.reviewRecommend(idx);
+        }
+        // Update the local isReviewCommentRecommended status
+        commentOrReply.isReviewCommentRecommended = !commentOrReply.isReviewCommentRecommended;
+      } catch (error) {
+        console.error(`Error handling recommendation click for idx ${idx}:`, error);
+        // Optionally, refresh the recommendation status from the server
+        // This can be helpful if the error occurred due to out-of-sync client-server states
+        await this.reviewCommentStore.updateCommentRecommendationStatus();
+      }
+    },
+
+
+
+    findCommentOrReply(idx) {
+      // Find comment or reply by idx
+      for (const comment of this.reviewCommentStore.reviewCommentList) {
+        if (comment.idx === idx) {
+          return comment;
+        }
+        const foundReply = comment.children?.find(reply => reply.idx === idx);
+        if (foundReply) {
+          return foundReply;
+        }
+      }
+      return null; // Item not found
+    },
   },
 
 };
