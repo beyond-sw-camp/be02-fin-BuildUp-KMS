@@ -12,7 +12,7 @@ export const useReviewStore = defineStore("review", {
     totalPages: 0,
     totalCnt: 0,
     isReviewExist: true,
-    reviewIdx: 0
+    reviewIdx: 0,
     reviewDetail: [],
     isLoading: false,
   }),
