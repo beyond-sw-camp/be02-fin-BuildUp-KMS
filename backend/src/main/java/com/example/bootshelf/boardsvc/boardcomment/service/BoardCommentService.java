@@ -109,6 +109,7 @@ public class BoardCommentService {
                 .nickName(boardComment.getUser().getNickName())
                 .profileImage(boardComment.getUser().getProfileImage())
                 .boardCommnetContent(boardComment.getCommentContent())
+                .status(boardComment.getStatus())
                 .upCnt(boardComment.getUpCnt())
                 .createAt(boardComment.getCreatedAt())
                 .updateAt(boardComment.getUpdatedAt())
@@ -197,7 +198,8 @@ public class BoardCommentService {
             deleteChildrenComments(boardComment.getChildren());
         }
 
-        boardCommentRepository.delete(boardComment);
+        boardComment.setStatus(false);
+        boardCommentRepository.save(boardComment);
 
         board.decreaseCommentUpCnt();
         boardRepository.save(board);
@@ -214,7 +216,8 @@ public class BoardCommentService {
             for (BoardComment childComment : children) {
                 // 재귀적으로 하위 댓글 삭제
                 deleteChildrenComments(childComment.getChildren());
-                boardCommentRepository.delete(childComment);
+                childComment.setStatus(false);
+                boardCommentRepository.save(childComment);
             }
         }
     }
