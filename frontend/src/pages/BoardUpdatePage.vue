@@ -39,6 +39,7 @@
                   class="css-16kqrm"
                   style="overflow: hidden; resize: none"
                   v-model="board.boardTitle"
+                  @input="handleChange"
                 ></textarea>
               </div>
 
@@ -80,6 +81,7 @@
                   placeholder="# 태그를 입력해주세요. (최대 3개)"
                   class="css-ih6wu3"
                   @keyup.enter="addTag"
+                  @input="handleChange"
                 />
               </div>
             </div>
@@ -116,6 +118,7 @@
                     <textarea
                       class="ql-editor ql-blank"
                       v-model="board.boardContent"
+                      @input="handleChange"
                     ></textarea>
                     <div
                       class="ql-clipboard"
@@ -291,7 +294,9 @@ export default {
         boardTitle: "",
         boardContent: "",
         boardIdx: 0,
+        originalContent: ''
       },
+      isContentChanged: false // 내용이 변경되었는지 여부를 저장하는 변수
       // user: {
       //   idx: null,
       //   boardTitle: "",
@@ -312,12 +317,28 @@ export default {
     this.board.boardIdx = this.boardDetail.idx;
     this.board.boardCategoryIdx = this.boardDetail.boardCategoryIdx;
     this.board.tagList = this.boardDetail.tagList;
+    this.board.originalContent = this.board.boardContent;
   },
   methods: {
+    handleChange() {
+      // 내용이 변경되었음을 표시
+      this.isContentChanged = true;
+    },
     async updateBoard() {
       this.board.tagList = this.tagList;
       await this.boardStore.updateBoard(this.board, this.boardImage);
-    },
+      if (!this.isContentChanged) {
+        alert('변경된 내용이 없습니다.');
+        return;
+  }
+  try {
+        // 여기서 서버로 데이터 전송 등의 작업을 수행합니다.
+      } catch (error) {
+        console.error('게시글 수정에 실패했습니다:', error);
+      }
+    }
+  },
+  
     // 이미지 업로드
     uploadImage() {
       const input = document.getElementById("input_file");
@@ -337,7 +358,7 @@ export default {
     },
     cancel() {
       window.location.href = "/board";
-    },
+    
   },
 };
 </script>

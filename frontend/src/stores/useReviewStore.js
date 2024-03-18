@@ -341,6 +341,9 @@ export const useReviewStore = defineStore("review", {
           this.isSuccess = true;
           alert("후기글이 수정되었습니다.");
           window.location.href = "/review/update" + response.data.result.reviewIdx;
+        } else {
+          // 변경 사항이 없는 경우 처리
+          alert("변경 사항이 없습니다."); 
         }
       } catch (e) {
         console.log(e);
