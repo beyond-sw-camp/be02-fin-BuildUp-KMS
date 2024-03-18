@@ -62,7 +62,6 @@ export default {
                 visible: false,
                 submenu: [
                     { name: '관리자 회원 가입', path: '/admin/signup' },
-                    { name: '관리자 회원 탈퇴', path: '/admin/withdraw' },
                     { name: '관리자 로그 아웃', action: 'logout' }
                 ],
             },
