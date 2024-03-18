@@ -41,7 +41,6 @@
                         </p>
                       </div>
                     </div>
-
                     <div class="css-1hqtm5a">
                       <div @click="createReviewScrap()">
                         <img
@@ -1069,4 +1068,5 @@ img {
   line-height: 18px;
   color: rgb(58, 62, 65);
 }
+
 </style>
