@@ -81,31 +81,32 @@ export const useReviewCommentStore = defineStore("reviewComment", {
     },
 
     // 댓글 삭제
-    async deleteReviewComment(commentIdx, reviewIdx) {
-      try {
-        if (!token) {
-          throw new Error(
-            "토큰이 없습니다. 사용자가 로그인되었는지 확인하세요."
-          );
-        }
-
-        const response = await axios.delete(
-          `${backend}/review/${reviewIdx}/delete/${commentIdx}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
+      async deleteReviewComment(commentIdx, reviewIdx, userIdx) {
+        try {
+          if (!token) {
+            throw new Error(
+              "토큰이 없습니다. 사용자가 로그인되었는지 확인하세요."
+            );
           }
-        );
 
-        console.log(response);
-        console.log("게시판 댓글 삭제");
-        window.location.href = `http://localhost:8081/review/${reviewIdx}`;
-      } catch (error) {
-        console.error("삭제 실패 : ", error);
-      }
-    },
+          const response = await axios.patch(
+            `${backend}/review/${reviewIdx}/delete/${commentIdx}`,
+            {userIdx : userIdx},
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          console.log(response);
+          console.log("게시판 댓글 삭제");
+          window.location.href = `http://localhost:8081/review/${reviewIdx}`;
+        } catch (error) {
+          console.error("삭제 실패 : ", error);
+        }
+      },
 
     //  대댓글 작성
     async createReviewReply(reviewReplyContent, reviewIdx, reviewCommentIdx) {
