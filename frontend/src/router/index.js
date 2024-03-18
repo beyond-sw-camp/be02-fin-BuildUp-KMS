@@ -4,7 +4,7 @@ import VueJwtDecode from "vue-jwt-decode";
 import MainPage from "@/pages/MainPage.vue";
 import AuthSignupPage from "@/pages/AuthSignupPage.vue";
 import SignupPage from "@/pages/SignupPage.vue";
-import MyActivePage from "@/pages/MyActivePage.vue";
+import MyPage from "@/pages/MyPage.vue";
 import MyProfilePage from "@/pages/MyProfilePage.vue";
 import SearchResultPage from "@/pages/SearchResultPage.vue";
 import BoardWritePage from "@/pages/BoardWritePage.vue";
@@ -71,7 +71,7 @@ const routes = [
   { path: "/KakaoLogIn", component: KakaoLogIn },
   { path: "/signup", component: SignupPage },
   { path: "/profile", component: MyProfilePage, beforeEnter: requireAuth() },
-  { path: "/mypage", component: MyActivePage, beforeEnter: requireAuth() },
+  { path: "/mypage", component: MyPage, beforeEnter: requireAuth() },
   { path: "/result", component: SearchResultPage },
   { path: "/board/new", component: BoardWritePage, beforeEnter: requireAuth() },
   { path: "/review/new", component: ReviewWritePage, beforeEnter: requireAuth() },

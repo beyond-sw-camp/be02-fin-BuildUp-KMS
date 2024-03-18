@@ -6,6 +6,7 @@ import com.example.bootshelf.boardsvc.boardscrap.model.entity.BoardScrap;
 import com.example.bootshelf.boardsvc.boardscrap.model.request.PostCreateBoardScrapReq;
 import com.example.bootshelf.boardsvc.boardscrap.model.response.GetCheckBoardScrapRes;
 import com.example.bootshelf.boardsvc.boardscrap.model.response.GetFindBoardScrapRes;
+import com.example.bootshelf.boardsvc.boardscrap.model.response.GetFindBoardScrapResResult;
 import com.example.bootshelf.boardsvc.boardscrap.model.response.PostCreateBoardScrapRes;
 import com.example.bootshelf.boardsvc.boardscrap.repository.BoardScrapRepository;
 import com.example.bootshelf.common.BaseRes;
@@ -99,6 +100,41 @@ public class BoardScrapService {
                 .build();
     }
 
+    @Transactional(readOnly = true)
+    public BaseRes findBoardScrapListByCategory(User user, Integer boardCategoryIdx, Integer sortType, Pageable pageable) {
+        Page<BoardScrap> boardScrapList = boardScrapRepository.findBoardScrapListByCategory(user, boardCategoryIdx, sortType, pageable);
+//        if (boardScrapList.isEmpty())
+//            throw new BoardScrapException(ErrorCode.BOARD_SCRAP_IS_EMPTY, "스크랩한 게시글이 존재하지 않습니다.");
+
+        List<GetFindBoardScrapRes> resultList = new ArrayList<>();
+        for (BoardScrap boardScrap : boardScrapList.getContent()) {
+            GetFindBoardScrapRes res = GetFindBoardScrapRes.builder()
+                    .boardScrapIdx(boardScrap.getIdx())
+                    .boardIdx(boardScrap.getBoard().getIdx())
+                    .boardCategoryIdx(boardScrap.getBoard().getBoardCategory().getIdx())
+                    .createdAt(boardScrap.getCreatedAt())
+                    .updatedAt(boardScrap.getUpdatedAt())
+                    .build();
+
+            resultList.add(res);
+        }
+        Long totoalCnt = boardScrapList.getTotalElements();
+        Integer totalPages = boardScrapList.getTotalPages();
+
+        GetFindBoardScrapResResult result = GetFindBoardScrapResResult.builder()
+                .totalCnt(totoalCnt)
+                .totalPages(totalPages)
+                .list(resultList)
+                .build();
+
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("카테고리별 게시글 스크랩 목록 조회 성공")
+                .result(result)
+                .build();
+
+        return baseRes;
+    }
 
     public BaseRes checkBoardScrap(User user, Integer boardIdx) {
         BoardScrap boardScrapResult = boardScrapRepository.findByUserIdxAndBoardIdx(user.getIdx(), boardIdx);

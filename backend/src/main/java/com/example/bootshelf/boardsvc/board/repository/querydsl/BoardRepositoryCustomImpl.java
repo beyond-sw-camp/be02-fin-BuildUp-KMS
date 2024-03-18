@@ -43,16 +43,15 @@ public class BoardRepositoryCustomImpl extends QuerydslRepositorySupport impleme
         QBoard board = new QBoard("board");
 
         OrderSpecifier[] orderSpecifiers = createOrderSpecifier(sortIdx, board);
-        List<Board> result = from(board)
+        JPQLQuery<Board> result = from(board)
                 .leftJoin(board.boardCategory)
                 .where(board.user.idx.eq(userIdx).and(board.status.eq(true)).and(board.boardCategory.idx.eq(categoryIdx)))
-                .orderBy(orderSpecifiers)
-                .distinct()
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch().stream().distinct().collect(Collectors.toList());
+                .orderBy(orderSpecifiers);
 
-        return new PageImpl<>(result, pageable, result.size());
+        JPQLQuery<Board> pageableQuery = getQuerydsl().applyPagination(pageable, result);
+        List<Board> boardList = pageableQuery.fetch();
+
+        return new PageImpl<>(boardList, pageable, pageableQuery.fetchCount());
     }
 
     @Override

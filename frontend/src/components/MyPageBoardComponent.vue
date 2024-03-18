@@ -1,50 +1,65 @@
 <template>
-  <div class="css-aw1sgr">
-    <div class="css-1728m7d">
-      <span> QnA </span>
-    </div>
-    <div class="css-amlmv6">
-      <div class="css-1254q6y">답변 대기중</div>
-    </div>
-    <div class="css-kem115">
-      <div class="css-12i5occ">
-        <div class="css-1jibmi3">
-          <div class="css-cp47oo">
-            코딩 교육생을 넘어 개발자까지 맥북 m3에어 or m3 프로??
-          </div>
-          <div class="css-14bssip">
-            제목 그대로 코딩 교육생을 넘어서 개발자로써 활용하기에 m3 에어기
-            낫나요 m3 프로가 낫나요??
+  <a :href="'/board/' + boards.boardIdx">
+    <div class="css-aw1sgr">
+      <div class="css-amlmv6">
+        <div class="css-1254q6y">답변 대기중</div>
+      </div>
+      <div class="css-kem115">
+        <div class="css-12i5occ">
+          <div class="css-1jibmi3">
+            <div class="css-cp47oo">
+              {{ boards.boardTitle }}
+            </div>
+            <div class="css-14bssip">
+              {{ boards.boardContent }}
+            </div>
           </div>
           <!--태그 컴포넌트 자리-->
-          <div class="css-99cwur">
-            <div class="css-1ry6usa">2024년 3월 5일 오전 10:30</div>
-            <div class="css-o01lup">
-              <div class="css-ts29it">
-                <div class="css-1ry6usa">댓글</div>
-                <div class="css-1ry6usa">1</div>
-              </div>
-              <div class="css-1yw6m61-1"></div>
-              <div class="css-ts29it">
-                <div class="css-1ry6usa">추천</div>
-                <div class="css-1ry6usa">2</div>
-              </div>
-              <div class="css-1yw6m61-1"></div>
-              <div class="css-ts29it">
-                <div class="css-1ry6usa">조회수</div>
-                <div class="css-1ry6usa">8</div>
-              </div>
-            </div>
+          <TagComponent :tagNameList="boards.tagNameList" />
+        </div>
+        <router-link to="/board/new">
+          <button class="updateboardgms">수정</button>
+        </router-link>
+        <button class="deleteboardgms">삭제</button>
+        <!--사진-->
+      </div>
+      <div class="css-99cwur">
+        <div class="css-1ry6usa">{{ boards.createdAt }}</div>
+        <div class="css-o01lup">
+          <div class="css-ts29it">
+            <div class="css-1ry6usa">댓글</div>
+            <div class="css-1ry6usa">{{ boards.commentCnt }}</div>
+          </div>
+          <div class="css-1yw6m61-1"></div>
+          <div class="css-ts29it">
+            <div class="css-1ry6usa">추천</div>
+            <div class="css-1ry6usa">{{ boards.upCnt }}</div>
+          </div>
+          <div class="css-1yw6m61-1"></div>
+          <div class="css-ts29it">
+            <div class="css-1ry6usa">조회수</div>
+            <div class="css-1ry6usa">{{ boards.viewCnt }}</div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </a>
 </template>
 
 <script>
+import { mapStores } from "pinia";
+import { useBoardStore } from "@/stores/useBoardStore";
+import TagComponent from "@/components/TagComponent.vue";
+
 export default {
   name: "MyPageBoardComponent",
+  props: ["boards"],
+  computed: {
+    ...mapStores(useBoardStore, ["tagNameList"]),
+  },
+  components: {
+    TagComponent,
+  },
 };
 </script>
 
@@ -67,9 +82,9 @@ export default {
 }
 .css-1728m7d {
   font-family: Pretendard;
-  font-style: normal;
+  font-style: bold;
   font-weight: 400;
-  font-size: 12px;
+  font-size: 10px;
   line-height: 18px;
   display: flex;
   gap: 4px;
@@ -114,7 +129,7 @@ export default {
   justify-content: space-between;
   -webkit-box-align: center;
   align-items: center;
-  gap: 16px;
+  gap: 8px;
 }
 .css-12i5occ {
   display: flex;
@@ -167,6 +182,7 @@ export default {
 .css-14bssip {
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-bottom: 10px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -251,5 +267,38 @@ export default {
   gap: 10px;
   font-weight: 500;
   color: rgb(255, 255, 255) !important;
+}
+.updateboardgms {
+  font-family: Pretendard;
+  cursor: pointer;
+  width: 45px;
+  padding: 3px 8px;
+  margin-left: 10px;
+  border-radius: 5px;
+  border-color: rgba(0, 0, 0, 0);
+  background-color: rgba(84, 29, 112, 0.148);
+  font-size: 11px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  color: #000000cf;
+}
+.deleteboardgms {
+  font-family: Pretendard;
+  cursor: pointer;
+  width: 45px;
+  padding: 3px 8px;
+  border-radius: 5px;
+  border-color: rgba(0, 0, 0, 0);
+  background-color: rgba(255, 0, 0, 0.185);
+  font-size: 11px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  color: #000000cf;
 }
 </style>

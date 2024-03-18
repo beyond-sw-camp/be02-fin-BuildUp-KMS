@@ -249,10 +249,19 @@ public class BoardService {
 
             getListBoardResList.add(getListBoardRes);
         }
+        Long totalCnt = boardList.getTotalElements();
+        Integer totalPages = boardList.getTotalPages();
+
+        GetBoardListResResult result = GetBoardListResResult.builder()
+                .totalCnt(totalCnt)
+                .totalPages(totalPages)
+                .list(getListBoardResList)
+                .build();
+
         BaseRes baseRes = BaseRes.builder()
                 .isSuccess(true)
                 .message("인증회원 본인 후기글 목록 조회 요청 성공")
-                .result(getListBoardResList)
+                .result(result)
                 .build();
 
         return baseRes;

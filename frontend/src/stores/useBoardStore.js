@@ -227,5 +227,51 @@ export const useBoardStore = defineStore("board", {
         console.error(error);
       }
     },
+    async findMyBoardListByCategory(boardCategoryIdx, option, page = 1){
+      try {
+        let response = await axios.get(
+          backend + 
+          "/board/mylist/" + 
+          boardCategoryIdx + "/" +
+          option + 
+          "?page=" + (page-1), {
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+            "Content-Type": "application/json"
+          },
+        });
+        this.boardList = response.data.result.list;
+        this.totalPages = response.data.result.totalPages;
+        this.currentPage = page;
+        this.totalCnt = response.data.result.totalCnt;
+
+        console.log(response);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async findBoardScrapListByCategory(boardCategoryIdx, option, page = 1){
+      try {
+        let response = await axios.get(
+          backend + 
+          "/boardscrap/list/" + 
+          boardCategoryIdx + "/" +
+          option + 
+          "?page=" + (page-1), {
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+            "Content-Type": "application/json"
+          },
+        });
+        this.boardList = response.data.result.list;
+        this.totalPages = response.data.result.totalPages;
+        this.currentPage = page;
+        this.totalCnt = response.data.result.totalCnt;
+
+        console.log(response);
+      } catch (error) {
+        console.error(error);
+      }
+    }
   },
 });

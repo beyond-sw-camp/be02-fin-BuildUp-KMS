@@ -179,7 +179,6 @@ public class BoardController {
         return ResponseEntity.ok().body(boardService.searchResultListByQueryV2(query, searchType, pageable));
     }
 
-
     @Operation(summary = "Board 게시글 수정 기능",
             description = "게시판의 게시글을 수정하는 API 입니다.")
     @ApiResponses({

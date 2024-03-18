@@ -8,4 +8,6 @@ import org.springframework.data.domain.Pageable;
 public interface BoardScrapRepositoryCustom {
     Page<BoardScrap> findByUser(User user, Pageable pageable);
     BoardScrap findByUserIdxAndBoardIdx(Integer userIdx, Integer boardIdx);
+
+    Page<BoardScrap> findBoardScrapListByCategory (User user, Integer boardCategoryIdx, Integer sortType, Pageable pageable);
 }
