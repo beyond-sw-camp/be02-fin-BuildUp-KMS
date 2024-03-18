@@ -331,6 +331,9 @@ export const useBoardStore = defineStore("board", {
           this.isSuccess = true;
           alert("게시글이 수정되었습니다.");
           window.location.href = "/board/update" + response.data.result.boardIdx;
+        } else {
+    
+          alert("변경 사항이 없습니다."); 
         }
       } catch (e) {
         console.log(e);
