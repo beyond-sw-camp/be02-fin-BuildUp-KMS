@@ -3,10 +3,10 @@
     <div class="css-mbwamd">
       <div class="css-1b9to7p">
         <!-- 여기는 왼쪽 사이드바-->
+        <!-- HOT TAG 컴포넌트 -->
         <div class="css-vsssfb">
           <div class="css-110bgim">
-            <div class="css-28nsux">
-              <!-- HOT TAG 컴포넌트 -->
+            <!-- <div class="css-28nsux">
               <div class="css-nw8p9d">
                 <div class="css-19831his"># 인기태그</div>
               </div>
@@ -17,7 +17,7 @@
               >
                 <HotTagComponent :hotTags="hotTags" />
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
         <!--여기서부터는 게시판 쪽-->
@@ -25,11 +25,11 @@
           <div class="css-17t7asl">
             <div class="css-1jibmi3">
               <div class="css-1mpmq0i">
-                <div class="css-18vdxik">스터디 모집 게시판</div>
+                <div class="css-18vdxik">[ # {{ this.boardStore.tagName }} ] 게시판 </div>
               </div>
               <!--부제-->
               <div class="css-1qzbd5x">
-                스터디 모집 등 자유롭게 이야기해보세요!
+                인기 태그에 해당하는 게시글을 확인해보세요!
               </div>
             </div>
           </div>
@@ -88,27 +88,120 @@
                   </div>
                 </div>
               </div>
+              <div class="css-6ylcwl">
+                <div class="css-1o94c7r">
+                  <div class="css-1kb98ja">
+                    <svg
+                      width="4"
+                      height="4"
+                      viewBox="0 0 4 4"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle
+                        cx="2"
+                        cy="2"
+                        r="2"
+                        :fill="
+                          selectedBoardType === 'knowledge'
+                            ? '#e8344e'
+                            : '#B4BFC6'
+                        "
+                      ></circle>
+                    </svg>
+                    <!-- <div class="css-1619ajl">과정 후기</div> -->
+                    <div
+                      :class="
+                        selectedBoardType === 'knowledge'
+                          ? 'css-1619ajl'
+                          : 'css-1j5hzn7'
+                      "
+                      @click="selectBoardType('knowledge')"
+                    >
+                      지식 공유
+                    </div>
+                  </div>
+                  <div class="css-bewb21">
+                    <svg
+                      width="4"
+                      height="4"
+                      viewBox="0 0 4 4"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle
+                        cx="2"
+                        cy="2"
+                        r="2"
+                        :fill="
+                          selectedBoardType === 'qna' ? '#e8344e' : '#B4BFC6'
+                        "
+                      ></circle>
+                    </svg>
+                    <!-- <div class="css-1j5hzn7">강사 후기</div> -->
+                    <div
+                      :class="
+                        selectedBoardType === 'qna'
+                          ? 'css-1619ajl'
+                          : 'css-1j5hzn7'
+                      "
+                      @click="selectBoardType('qna')"
+                    >
+                      QnA
+                    </div>
+                  </div>
+                  <div class="css-bewb21">
+                    <svg
+                      width="4"
+                      height="4"
+                      viewBox="0 0 4 4"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle
+                        cx="2"
+                        cy="2"
+                        r="2"
+                        :fill="
+                          selectedBoardType === 'study' ? '#e8344e' : '#B4BFC6'
+                        "
+                      ></circle>
+                    </svg>
+                    <!-- <div class="css-1j5hzn7">강사 후기</div> -->
+                    <div
+                      :class="
+                        selectedBoardType === 'study'
+                          ? 'css-1619ajl'
+                          : 'css-1j5hzn7'
+                      "
+                      @click="selectBoardType('study')"
+                    >
+                      스터디
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <!--여기서 본격 글 리스트-->
             <div class="css-1csvk83">
               <ul class="css-10c0kk0 e15eiqsa1">
-                <li
-                  class="css-li-001"
+                <div
+                  class="css-k59gj9"
                   v-for="boards in boardStore.boardList"
                   :key="boards.boardIdx"
                 >
-                  <StudyBoardComponent :boards="boards" />
-                </li>
+                  <CategoryBoardComponent :boards="boards" />
+                </div>
               </ul>
-              <div class="d-flex justify-content-center py-0 py-md-4">
-                <PaginationComponent
-                  :current-page="boardStore.currentPage"
-                  :total-pages="boardStore.totalPages"
-                  @change-page="changePage"
-                />
-              </div>
             </div>
             <!-- /본격 글 리스트 -->
+          </div>
+          <div class="d-flex justify-content-center py-0 py-md-4">
+            <PaginationComponent
+              :current-page="boardStore.currentPage"
+              :total-pages="boardStore.totalPages"
+              @change-page="changePage"
+            />
           </div>
         </div>
       </div>
@@ -118,24 +211,19 @@
 
 <script>
 import { mapStores } from "pinia";
-import { useBoardStore } from "@/stores/useBoardStore";
+import { useBoardStore } from "@/stores/useBoardStore.js";
 import { useBoardTagStore } from "../stores/useBoardTagStore";
-import HotTagComponent from "../components/HotTagComponent.vue";
-import StudyBoardComponent from "../components/StudyBoardComponent.vue";
-import PaginationComponent from "../components/PaginationComponent.vue";
-
+import CategoryBoardComponent from "@/components/CategoryBoardComponent.vue";
+// import HotTagComponent from "@/components/HotTagComponent.vue";
+import PaginationComponent from "@/components/PaginationComponent.vue";
 export default {
-  name: "StudyBoardListPage",
-  components: {
-    HotTagComponent,
-    StudyBoardComponent,
-    PaginationComponent,
-  },
+  name: "TagBoardistPage",
   data() {
     return {
       selectedSortType: "최신순",
       sortType: 1,
-      boardCategoryIdx: 3,
+      boardCategoryIdx: "1",
+      selectedBoardType: "knowledge",
       searchTerm: "",
     };
   },
@@ -158,6 +246,11 @@ export default {
       }
       return pages;
     },
+  },
+  components: {
+    CategoryBoardComponent,
+    // HotTagComponent,
+    PaginationComponent,
   },
   mounted() {
     this.loadBoardList(1);
@@ -186,10 +279,20 @@ export default {
       }
       this.loadBoardList(this.boardStore.currentPage);
     },
+    selectBoardType(type) {
+      this.selectedBoardType = type;
+      const boardTypeToIdx = {
+        knowledge: "1",
+        qna: "2",
+        study: "3",
+      };
+      this.boardCategoryIdx = boardTypeToIdx[type] || "1";
+      this.loadBoardList(1);
+    },
     loadBoardList(page) {
       // 검색어가 있는 경우
       if (this.searchTerm) {
-        this.boardStore.getCategoryBoardListByQuery(
+        this.boardStore.getSearchTagBoardList(
           this.boardCategoryIdx,
           this.searchTerm,
           this.sortType,
@@ -197,7 +300,7 @@ export default {
         );
       } else {
         // 검색어가 없는 경우
-        this.boardStore.findListByCategory(
+        this.boardStore.getTagBoardList(
           this.boardCategoryIdx,
           this.sortType,
           page
@@ -205,7 +308,7 @@ export default {
       }
     },
     sendSearchData() {
-      this.loadBoardList();
+      this.loadBoardList(); // 검색 실행 시 첫 페이지로 돌아감.
     },
     changePage(page) {
       this.loadBoardList(page);
@@ -294,7 +397,6 @@ div {
   gap: 8px;
   width: 100%;
 }
-
 .css-19831hi {
   width: 100%;
   border-radius: 8px;
@@ -471,6 +573,13 @@ div {
   align-items: center;
   position: relative;
 }
+.css-ogh6wd {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  overflow-x: auto;
+  white-space: nowrap;
+}
 .css-1tttep5 {
   position: relative;
   display: flex;
@@ -619,12 +728,10 @@ svg:not(:root) {
   flex-direction: column;
   gap: 4px;
   background-color: rgb(246, 249, 250);
-  padding-top: 20px;
 }
 @media (min-width: 820px) {
   .css-1csvk83 {
     background-color: rgb(255, 255, 255);
-    padding-top: 20px;
   }
 }
 .css-k59gj9 {
@@ -1007,6 +1114,17 @@ ul {
   list-style: none;
 }
 
+.css-10c0kk0 {
+  width: 100%;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(3, minmax(15rem, 1fr));
+  grid-auto-flow: dense row;
+  align-items: center;
+  justify-content: space-around;
+  position: relative;
+  padding-left: 0px;
+}
+
 .css-1myomkm {
   display: flex;
   flex-direction: column;
@@ -1340,221 +1458,5 @@ a {
   .py-md-4 {
     padding-bottom: 1.5rem !important;
   }
-}
-
-/* 스터디 포스트잇 */
-ol,
-ul {
-  list-style: none;
-}
-
-@media only screen and (max-width: 61.9375rem) {
-  .css-10c0kk0 {
-    grid-template-columns: repeat(1, minmax(16.6875rem, 1fr));
-  }
-}
-
-@media only screen and (max-width: 74.9375rem) {
-  .css-10c0kk0 {
-    grid-template-columns: repeat(2, minmax(16.6875rem, 1fr));
-  }
-}
-
-.css-10c0kk0 {
-  width: 100%;
-  display: grid;
-  grid-gap: 2rem;
-  grid-template-columns: repeat(3, minmax(15rem, 1fr));
-  grid-auto-flow: dense row;
-  align-items: center;
-  justify-content: space-around;
-  position: relative;
-  padding-left: 0px;
-  margin-bottom: 50px;
-}
-
-.css-1myomkm {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 100px;
-  background-color: #fff;
-  border-radius: 20px;
-  gap: 0.5rem;
-  padding: 12px;
-  /* border: 2px solid rgb(84, 29, 112, 0.3); */
-  background-color: rgb(84, 29, 112, 0.1);
-}
-
-a {
-  cursor: pointer;
-  text-decoration: none;
-  font-family: Pretendard;
-}
-
-.css-1myomkm h4 {
-  font-family: Pretendard;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: rgb(255, 158, 45);
-  margin-bottom: 0.25rem;
-}
-
-.css-1myomkm h2 {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  justify-content: flex-start;
-  color: rgb(0, 0, 0);
-  font-family: Pretendard;
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 8px;
-  opacity: 1;
-  display: -webkit-box;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  min-height: 2.5rem;
-  word-break: keep-all;
-}
-
-.css-1myomkm h3 {
-  color: #777777;
-  font-family: Pretendard;
-  font-weight: 400;
-  line-height: 140%;
-  opacity: 1;
-  display: -webkit-box;
-  font-size: 13px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  word-break: keep-all;
-  height: 70px;
-}
-
-.css-k57yxr {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 0.5rem 0px;
-}
-
-.css-k57yxr img {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background-color: white;
-  overflow: hidden;
-  object-fit: contain;
-  flex-shrink: 0;
-}
-
-.css-k57yxr > p {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  gap: 0.125rem;
-  width: calc(100% - 2.25rem);
-}
-
-.css-1bf50wt {
-  display: -webkit-box;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  color: rgb(0, 0, 0);
-  font-family: Pretendard;
-  font-size: 0.89rem;
-  font-weight: 400;
-  line-height: 120%;
-  font-size: 11px;
-  opacity: 1;
-  width: 100%;
-}
-
-.css-1mmbkao {
-  color: rgb(119, 119, 119);
-  font-family: Pretendard;
-  font-size: 10px;
-  font-weight: 400;
-  line-height: 120%;
-  opacity: 1;
-}
-
-.css-k57yxr > p {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  gap: 0.125rem;
-  width: calc(100% - 2.25rem);
-}
-
-.css-k57yxr {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 0.5rem 0px;
-}
-
-.css-1k3qs23 {
-  display: flex;
-  justify-content: flex-start;
-  gap: 0.5rem;
-  padding-left: 0px;
-  align-items: center;
-  justify-content: baseline;
-}
-
-.css-17j46fn {
-  display: flex;
-  justify-content: flex-start;
-  /* color: rgb(38, 55, 71); */
-  color: #a3a3a3;
-  font-family: Pretendard;
-  font-size: 10px;
-  font-weight: 400;
-  line-height: 120%;
-  opacity: 1;
-  align-items: center;
-  gap: 0.2rem;
-}
-
-/* li{
-    letter-spacing: -0.009em;
-    font-family: Pretendard;
-    line-height: 1.6;
-    list-style: none;
-} */
-
-.css-li-001 {
-  letter-spacing: -0.009em;
-  font-family: Pretendard;
-  line-height: 1.6;
-  list-style: none;
-}
-
-.css-li-001:hover {
-  border: 2px solid rgb(84, 29, 112, 0.3);
-  border-radius: 20px;
-}
-/* 스터디 포스트잇 끝 */
-
-/* 정렬 순서 셀렉터 */
-.css-select001 {
-  padding-left: 10px;
-  width: 95px;
-  font-size: 14px;
-  height: 35px;
-  font-family: Pretendard;
-  border-radius: 5px;
-  border: 1px solid rgb(227, 227, 227);
-  letter-spacing: 2px; /* 글자 간격 추가 */
-}
-
-/* 정렬 순서 끝 */
-body {
-  background-color: white;
 }
 </style>

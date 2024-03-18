@@ -8,7 +8,7 @@ export const useReviewCommentStore = defineStore("reviewComment", {
   state: () => ({
     reviewCommentList: [],
     reviewReplyList: [],
-    reviewCommentUpList:[]
+    reviewCommentUpList:[],
   }),
   actions: {
     // 댓글 조회
@@ -107,12 +107,12 @@ export const useReviewCommentStore = defineStore("reviewComment", {
       }
     },
 
-    // 댓글 추천
-    async reviewRecommend(commentIdx) {
+    //  대댓글 작성
+    async createReviewReply(reviewReplyContent,reviewIdx, reviewCommentIdx) {
       try {
         const response = await axios.post(
-          backend + "/reviewcomment/up/create",
-          { reviewCommentIdx: commentIdx },
+          backend + `/review/${reviewIdx}/comment/create/${reviewCommentIdx}`,
+          { reviewReplyContent: reviewReplyContent },
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -121,31 +121,57 @@ export const useReviewCommentStore = defineStore("reviewComment", {
           }
         );
         console.log(response);
-        console.log("댓글 추천 성공");
-        window.location.reload();
+        console.log("게시판 대댓글 작성 성공");
+        window.location.href = `http://localhost:8081/review/${reviewIdx}`;
       } catch (error) {
         console.error("ERROR : ", error);
       }
     },
 
-    // 댓글 추천 삭제
-    async cancelReviewComment(commentIdx) {
-      try {
-        let response = await axios.patch(
-          `${backend}/reviewcomment/delete/${commentIdx}`,
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        console.log(response);
-      } catch (e) {
-        console.error(e);
-        throw e;
-      }
+
+      // 댓글 추천
+      async reviewRecommend(commentIdx) {
+        try {
+          await axios.post(
+            backend + "/reviewcomment/up/create",
+            { reviewCommentIdx: commentIdx },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          console.log("댓글 추천 성공");
+          window.location.reload();
+        } catch (error) {
+          console.log(commentIdx);
+          console.error("에러 : ", error);
+        }
+      },
+
+      // 댓글 추천 삭제
+      async cancelReviewComment(commentIdx) {
+        try {
+          await axios.patch(
+            backend + `/reviewcomment/up/delete/${commentIdx}`,
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          console.log("댓글 추천 취소 성공");
+          window.location.reload();
+        } catch (e) {
+          console.log(commentIdx);
+          console.error(e);
+          throw e;
+        }
+      },
     },
-  },
+
+
 });

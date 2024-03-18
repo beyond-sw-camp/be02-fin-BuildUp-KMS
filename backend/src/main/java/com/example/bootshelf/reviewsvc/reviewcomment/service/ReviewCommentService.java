@@ -1,6 +1,7 @@
 package com.example.bootshelf.reviewsvc.reviewcomment.service;
 
 import com.example.bootshelf.boardsvc.board.model.entity.Board;
+import com.example.bootshelf.boardsvc.board.repository.BoardRepository;
 import com.example.bootshelf.boardsvc.boardcomment.model.entity.BoardComment;
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.common.error.ErrorCode;
@@ -18,6 +19,8 @@ import com.example.bootshelf.reviewsvc.reviewcomment.model.response.PatchUpdateR
 import com.example.bootshelf.reviewsvc.reviewcomment.model.response.PostCreateReviewCommentRes;
 import com.example.bootshelf.reviewsvc.reviewcomment.model.response.PostCreateReviewReplyRes;
 import com.example.bootshelf.reviewsvc.reviewcomment.repository.ReviewCommentRepository;
+import com.example.bootshelf.reviewsvc.reviewcommentup.model.entity.ReviewCommentUp;
+import com.example.bootshelf.reviewsvc.reviewcommentup.repository.ReviewCommentUpRepository;
 import com.example.bootshelf.user.model.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,6 +37,7 @@ import java.util.Optional;
 public class ReviewCommentService {
     private final ReviewCommentRepository reviewCommentRepository;
     private final ReviewRepository reviewRepository;
+    private final ReviewCommentUpRepository reviewCommentUpRepository;
 
     // 댓글 작성
     @Transactional(readOnly = false)
@@ -108,6 +112,7 @@ public class ReviewCommentService {
                 .reviewIdx(reviewComment.getReview().getIdx())
                 .userIdx(reviewComment.getUser().getIdx())
                 .userNickName(reviewComment.getUser().getNickName())
+                .userImg(reviewComment.getUser().getProfileImage())
                 .reviewCommnetContent(reviewComment.getReviewCommentContent())
                 .createAt(reviewComment.getCreatedAt())
                 .updateAt(reviewComment.getUpdatedAt())
@@ -185,6 +190,13 @@ public class ReviewCommentService {
         ReviewComment reviewComment = result.get();
         Review review = reviewComment.getReview();
 
+        List<ReviewCommentUp> reviewCommentUps = reviewCommentUpRepository.findByReviewCommentIdx(idx);
+        for (ReviewCommentUp reviewCommentUp : reviewCommentUps) {
+            reviewCommentUp.setReviewComment(null);
+            reviewCommentUp.setStatus(false);
+            reviewCommentUpRepository.save(reviewCommentUp);
+        }
+
         if (reviewComment.getParent() == null) {
             // 하위 댓글들도 함께 삭제
             deleteChildrenComments(reviewComment.getChildren());
@@ -208,6 +220,7 @@ public class ReviewCommentService {
                 // 재귀적으로 하위 댓글 삭제
                 deleteChildrenComments(childComment.getChildren());
                 reviewCommentRepository.delete(childComment);
+
             }
         }
     }
@@ -217,6 +230,7 @@ public class ReviewCommentService {
     public BaseRes createReviewReply(User user, Integer reviewIdx, Integer parentIdx, PostCreateReviewReplyReq postCreateReviewReplyReq) {
 
         Optional<ReviewComment> parentReviewComment = reviewCommentRepository.findById(parentIdx);
+        Optional<Review> findReviw = reviewRepository.findByIdx(reviewIdx);
 
         // 상위댓글이 없을 때
         if (parentReviewComment.equals(0)) {
@@ -228,6 +242,7 @@ public class ReviewCommentService {
             throw new ReviewCommentException(ErrorCode.INVALID_INPUT_VALUE, String.format("Content is empty."));
         }
 
+        Review review = findReviw.get();
         ReviewComment childrenReviewComment = ReviewComment.builder()
                 .review(Review.builder().idx(reviewIdx).build())
                 .user(user)
@@ -239,8 +254,10 @@ public class ReviewCommentService {
                 .build();
 
         parentReviewComment.get().getChildren().add(childrenReviewComment);
-
         reviewCommentRepository.save(childrenReviewComment);
+
+        review.increaseCommentUpCnt();
+        reviewRepository.save(review);
 
         PostCreateReviewReplyRes postCreateReviewReplyRes = PostCreateReviewReplyRes.builder()
                 .parentIdx(childrenReviewComment.getParent().getIdx())
