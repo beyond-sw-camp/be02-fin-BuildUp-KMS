@@ -13,6 +13,7 @@ public class GetListReviewCommentRes {
     private Integer idx;
     private Integer reviewIdx;
     private Integer userIdx;
+    private String userImg;
     private String userNickName;
     private String reviewCommnetContent;
     private String createAt;

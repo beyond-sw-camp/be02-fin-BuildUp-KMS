@@ -7,7 +7,16 @@
           <div class="css-110bgim">
             <div class="css-28nsux">
               <!-- HOT TAG 컴포넌트 -->
-              <HotTagComponent></HotTagComponent>
+              <div class="css-nw8p9d">
+                <div class="css-19831his"># 인기태그</div>
+              </div>
+              <div
+                class="css-nw8p9d"
+                v-for="hotTags in boardTagStore.hotTagList"
+                :key="hotTags.tagIdx"
+              >
+                <HotTagComponent :hotTags="hotTags" />
+              </div>
             </div>
           </div>
         </div>
@@ -91,6 +100,18 @@
                   <CategoryBoardComponent :boards="boards" />
                 </div>
               </ul>
+              <!---검색결과 없을 때-->
+              <div class="css-6g4q8b" v-show="!boardStore.isBoardExist">
+                <div class="css-aa80it">
+                  <img src="@/assets/img/002.png" class="css-1baht8c" />
+                  <div class="css-dhqp8i">
+                    <div class="css-c7zvxr">검색 결과가 없습니다.</div>
+                    <div class="css-1mcux1f">
+                      질문을 직접 남겨서 궁금증을 해결해 보세요!
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <!-- /본격 글 리스트 -->
           </div>
@@ -110,6 +131,7 @@
 <script>
 import { mapStores } from "pinia";
 import { useBoardStore } from "@/stores/useBoardStore.js";
+import { useBoardTagStore } from "../stores/useBoardTagStore";
 import CategoryBoardComponent from "@/components/CategoryBoardComponent.vue";
 import HotTagComponent from "@/components/HotTagComponent.vue";
 import PaginationComponent from "@/components/PaginationComponent.vue";
@@ -125,7 +147,7 @@ export default {
     };
   },
   computed: {
-    ...mapStores(useBoardStore),
+    ...mapStores(useBoardStore, useBoardTagStore),
     visiblePages() {
       // 최대 5개의 페이지 번호만 보이도록 계산
       let pages = [];
@@ -151,6 +173,7 @@ export default {
   },
   mounted() {
     this.loadBoardList(1);
+    this.boardTagStore.getHotTagList();
   },
   methods: {
     updateSortType() {
@@ -275,6 +298,7 @@ div {
   gap: 16px;
   background-color: rgb(255, 255, 255);
   flex-shrink: 0;
+  margin-top: 100px;
 }
 .css-28nsux {
   display: flex;
@@ -282,12 +306,30 @@ div {
   gap: 8px;
   width: 100%;
 }
+
 .css-19831hi {
   width: 100%;
   border-radius: 8px;
   padding: 0px 16px;
   /* 클릭하면 배경이 아래 색상으로 변경됨 */
+  background-color: white;
+  height: 48px;
+  font-family: Pretendard;
+  font-style: normal;
+  font-size: 16px;
+  line-height: 48px;
+  font-weight: 400;
+  color: rgb(157, 167, 174);
+  cursor: pointer;
+}
+.css-19831hi:hover {
   background-color: rgb(242, 246, 248);
+}
+.css-19831his {
+  width: 100%;
+  padding: 0px 16px;
+  /* 클릭하면 배경이 아래 색상으로 변경됨 */
+  background-color: white;
   height: 48px;
   font-family: Pretendard;
   font-style: normal;
@@ -296,11 +338,12 @@ div {
   font-weight: 700;
   color: rgb(20, 22, 23);
   cursor: pointer;
+  border-bottom: 1px solid rgb(228, 235, 240);
 }
 .css-nw8p9d {
   width: 100%;
   border-radius: 8px;
-  padding: 0px 16px;
+  padding: 0px 6px;
   background-color: rgb(255, 255, 255);
   height: 48px;
   font-family: Pretendard;
@@ -1318,5 +1361,65 @@ a {
   .py-md-4 {
     padding-bottom: 1.5rem !important;
   }
+}
+/* 검색 결과 없을 떄 */
+
+.css-6g4q8b {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  min-height: 400px;
+  background-color: white;
+  margin-bottom: 50px;
+}
+.css-aa80it {
+  display: flex;
+  flex-direction: column;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  gap: 16px;
+}
+img {
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  -ms-interpolation-mode: nearest-neighbor;
+}
+.css-1baht8c {
+  width: 160px;
+  height: 88px;
+}
+.css-dhqp8i {
+  display: flex;
+  flex-direction: column;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  gap: 6px;
+  text-align: center;
+}
+.css-c7zvxr {
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  color: rgb(28, 29, 30);
+}
+.css-1mcux1f {
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 20px;
+  color: rgb(131, 134, 137);
+  white-space: pre-wrap;
 }
 </style>

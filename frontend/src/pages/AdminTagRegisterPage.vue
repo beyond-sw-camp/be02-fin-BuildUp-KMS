@@ -4,10 +4,9 @@
             <!-- Menu and Navbar components are inserted here, ensuring proper layout structure -->
             <AdminMenuComponent />
             <div class="layout-page">
-                <AdminNavComponent />
                 <div class="content-wrapper">
                     <!-- Content -->
-                    <AdminRegisterComponent />
+                    <AdminRegisterComponent category-name="태그" :submit-action="createTag" />
                     <div class="content-backdrop fade"></div>
                 </div>
             </div>
@@ -17,18 +16,38 @@
 
 <script>
 import AdminMenuComponent from "@/components/AdminMenuComponent.vue";
-import AdminNavComponent from "@/components/AdminNavComponent.vue";
 import AdminRegisterComponent from "@/components/AdminRegisterComponent.vue";
+import { mapStores } from "pinia";
+import { useTagStore } from "@/stores/useTagStore";
+import { useRouter } from 'vue-router';
 
 export default {
     name: "AdminTagRegisterPage",
     components: {
         AdminMenuComponent,
-        AdminNavComponent,
         AdminRegisterComponent
     },
     mounted() {
         this.$root.hideHeaderAndFooter = true;
+    },
+    computed: {
+        ...mapStores(useTagStore),
+    },
+    setup() {
+        const tagStore = useTagStore();
+        const router = useRouter();
+
+        const createTag = async (tagName) => {
+            try {
+                await tagStore.createTag(tagName);
+                alert(`${tagName} 생성 완료!`);
+                router.push("/admin/tag");
+            } catch (e) {
+                console.error(e);
+                throw e;
+            }
+        };
+        return { createTag };
     },
 };
 </script>
@@ -319,8 +338,6 @@ html:not(.layout-footer-fixed) .content-wrapper {
     --bs-btn-font-size: 0.9375rem;
     --bs-btn-font-weight: 400;
     --bs-btn-line-height: 1.53;
-    --bs-btn-color: var(--bs-body-color);
-    --bs-btn-bg: transparent;
     --bs-btn-border-width: var(--bs-border-width);
     --bs-btn-border-color: transparent;
     --bs-btn-border-radius: var(--bs-border-radius);
@@ -341,8 +358,8 @@ html:not(.layout-footer-fixed) .content-wrapper {
     user-select: none;
     border: var(--bs-btn-border-width) solid var(--bs-btn-border-color);
     border-radius: var(--bs-btn-border-radius);
-    background-color: var(--bs-btn-bg);
     transition: all 0.2s ease-in-out;
+
 }
 
 button,

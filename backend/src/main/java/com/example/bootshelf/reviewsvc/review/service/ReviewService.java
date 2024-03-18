@@ -93,7 +93,7 @@ public class ReviewService {
 
         Page<Review> reviewList = reviewRepository.findMyReviewList(user.getIdx(), pageable);
 
-        List<GetMyListReviewRes> getListReviewResMyList = new ArrayList<>();
+        List<GetMyListReviewRes> getMyListReviewResList = new ArrayList<>();
 
         for (Review review : reviewList) {
 
@@ -117,13 +117,22 @@ public class ReviewService {
                 String image = reviewImage.getReviewImage();
                 getMyListReviewRes.setReviewImage(image);
             }
-            getListReviewResMyList.add(getMyListReviewRes);
+            getMyListReviewResList.add(getMyListReviewRes);
         }
+
+        Long totalCnt = reviewList.getTotalElements();
+        Integer totalPages = reviewList.getTotalPages();
+
+        GetMyListReviewResResult result = GetMyListReviewResResult.builder()
+                .totalCnt(totalCnt)
+                .totalPages(totalPages)
+                .list(getMyListReviewResList)
+                .build();
 
         BaseRes baseRes = BaseRes.builder()
                 .isSuccess(true)
                 .message("인증회원 본인 후기글 목록 조회 요청 성공")
-                .result(getListReviewResMyList)
+                .result(result)
                 .build();
 
         return baseRes;
@@ -198,13 +207,13 @@ public class ReviewService {
         reviewRepository.save(review);
 
         // 댓글 조회
-        List<GetListCommentReviewRes> getListCommentResListReview = new ArrayList<>();
+        List<GetListCommentReviewRes> getListCommentReviewResList = new ArrayList<>();
 
         for (ReviewComment reviewComment : review.getReviewCommentList()) {
 
             // 댓글이 최상위 댓글일 때만 처리
             if (reviewComment.getParent() == null) {
-                getListCommentResListReview.add(convertToCommentReviewRes(reviewComment));
+                getListCommentReviewResList.add(convertToCommentReviewRes(reviewComment));
             }
         }
 
@@ -237,12 +246,12 @@ public class ReviewService {
                 .commentCnt(review.getCommentCnt())
                 .updatedAt(review.getUpdatedAt())
                 .reviewImageList(getListImageReviewResList)
-                .reviewCommentList(getListCommentResListReview)
+                .reviewCommentList(getListCommentReviewResList)
                 .build();
 
         BaseRes baseRes = BaseRes.builder()
                 .isSuccess(true)
-                .message("후기글 목록 조회 요청 성공")
+                .message("후기글 상세 조회 요청 성공")
                 .result(getReadReviewRes)
                 .build();
 
@@ -385,6 +394,7 @@ public class ReviewService {
                     .reviewTitle(review.getReviewTitle())
                     .reviewContent(review.getReviewContent())
                     .courseName(review.getCourseName())
+                    .courseEvaluation(review.getCourseEvaluation())
                     .viewCnt(review.getViewCnt())
                     .upCnt(review.getUpCnt())
                     .scrapCnt(review.getScrapCnt())
@@ -414,6 +424,117 @@ public class ReviewService {
         BaseRes baseRes = BaseRes.builder()
                 .isSuccess(true)
                 .message("후기글 제목으로 검색결과 조회 요청 성공")
+                .result(result)
+                .build();
+
+        return baseRes;
+    }
+
+    // Hot 인기 게시글 조회
+    @Transactional(readOnly = true)
+    public BaseRes listHotReview(Integer reviewCategoryIdx, Integer sortType, Pageable pageable) {
+
+        Page<Review> reviewList = reviewRepository.findReviewList(reviewCategoryIdx, sortType, pageable);
+
+        List<GetListHotReviewRes> getListHotReviewResList = new ArrayList<>();
+
+        for (Review review : reviewList) {
+
+            GetListHotReviewRes getListHotReviewRes = GetListHotReviewRes.builder()
+                    .idx(review.getIdx())
+                    .userIdx(review.getUser().getIdx())
+                    .nickName(review.getUser().getNickName())
+                    .profileImage(review.getUser().getProfileImage())
+                    .title(review.getReviewTitle())
+                    .content(review.getReviewContent())
+                    .courseName(review.getCourseName())
+                    .courseEvaluation(review.getCourseEvaluation())
+                    .viewCnt(review.getViewCnt())
+                    .upCnt(review.getUpCnt())
+                    .scrapCnt(review.getScrapCnt())
+                    .commentCnt(review.getCommentCnt())
+                    .createdAt(review.getCreatedAt())
+                    .updatedAt(review.getUpdatedAt())
+                    .type("review")
+                    .build();
+
+            List<ReviewImage> reviewImageList = review.getReviewImageList();
+            if (!reviewImageList.isEmpty()) {
+                ReviewImage reviewImage = reviewImageList.get(0);
+                String image = reviewImage.getReviewImage();
+                getListHotReviewRes.setImage(image);
+            }
+
+            getListHotReviewResList.add(getListHotReviewRes);
+        }
+
+        Long totalCnt = reviewList.getTotalElements();
+        Integer totalPages = reviewList.getTotalPages();
+
+        GetListHotReviewResResult result = GetListHotReviewResResult.builder()
+                .totalCnt(totalCnt)
+                .totalPages(totalPages)
+                .list(getListHotReviewResList)
+                .build();
+
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("인기 후기글 카테고리별 목록 조회 요청 성공")
+                .result(result)
+                .build();
+
+        return baseRes;
+    }
+
+    @Transactional(readOnly = true)
+    public BaseRes searchHotReview(Integer reviewCategoryIdx, Integer sortType, String searchTerm, Pageable pageable) {
+
+        Page<Review> reviewList = reviewRepository.findReviewsBySearchTerm(reviewCategoryIdx, sortType, searchTerm, pageable);
+
+        List<GetListHotReviewRes> getListHotReviewResList = new ArrayList<>();
+
+        for (Review review : reviewList) {
+
+            GetListHotReviewRes getListHotReviewRes = GetListHotReviewRes.builder()
+                    .idx(review.getIdx())
+                    .userIdx(review.getUser().getIdx())
+                    .nickName(review.getUser().getNickName())
+                    .profileImage(review.getUser().getProfileImage())
+                    .title(review.getReviewTitle())
+                    .content(review.getReviewContent())
+                    .courseName(review.getCourseName())
+                    .courseEvaluation(review.getCourseEvaluation())
+                    .viewCnt(review.getViewCnt())
+                    .upCnt(review.getUpCnt())
+                    .scrapCnt(review.getScrapCnt())
+                    .commentCnt(review.getCommentCnt())
+                    .createdAt(review.getCreatedAt())
+                    .updatedAt(review.getUpdatedAt())
+                    .type("review")
+                    .build();
+
+            List<ReviewImage> reviewImageList = review.getReviewImageList();
+            if (!reviewImageList.isEmpty()) {
+                ReviewImage reviewImage = reviewImageList.get(0);
+                String image = reviewImage.getReviewImage();
+                getListHotReviewRes.setImage(image);
+            }
+
+            getListHotReviewResList.add(getListHotReviewRes);
+        }
+
+        Long totalCnt = reviewList.getTotalElements();
+        Integer totalPages = reviewList.getTotalPages();
+
+        GetListHotReviewResResult result = GetListHotReviewResResult.builder()
+                .totalCnt(totalCnt)
+                .totalPages(totalPages)
+                .list(getListHotReviewResList)
+                .build();
+
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("인기 후기글 검색어별 목록 조회 요청 성공")
                 .result(result)
                 .build();
 

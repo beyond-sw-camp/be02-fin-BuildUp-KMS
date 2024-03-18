@@ -108,13 +108,13 @@ public class ReviewController {
             description = "후기 게시글을 검색어(키워드)로 조회하는 API입니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
-            @ApiResponse(responseCode = "500",description = "서버 내부 오류")})
-    @GetMapping ("/search")
-    public ResponseEntity<BaseRes> searchReviewListByQuery (
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
+    @GetMapping("/search")
+    public ResponseEntity<BaseRes> searchReviewListByQuery(
             @RequestParam String query,
             @RequestParam Integer searchType,
             @PageableDefault(size = 9) Pageable pageable
-    ){
+    ) {
         return ResponseEntity.ok().body(reviewService.searchReviewListByQuery(query, searchType, pageable));
     }
 
@@ -159,6 +159,42 @@ public class ReviewController {
     ) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         BaseRes baseRes = reviewService.deleteReview(user, reviewIdx);
+
+        return ResponseEntity.ok().body(baseRes);
+    }
+
+    // 인기 게시글 용 조회 API
+    @Operation(summary = "카테고리 별, 조건( 조회수, 추천수, 스크랩수, 댓글수) 별 인기 후기글 목록 조회",
+            description = "모든 사용자가 카테고리 별, 조건 별 인기 후기글 목록을 조회할 수 있다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+    })
+    @RequestMapping(method = RequestMethod.GET, value = "/hotlist/{reviewCategoryIdx}/{sortType}")
+    public ResponseEntity<BaseRes> listHotReview(
+            @PathVariable @NotNull(message = "후기 카테고리 IDX는 필수 입력 항목입니다.") @Positive(message = "후기 카테고리 IDX는 1이상의 양수입니다.") Integer reviewCategoryIdx,
+            @PathVariable @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") @ApiParam(value = "정렬유형 : 1 (최신순), 2 (추천수 순), 3 (조회수 순), 4 (스크랩수 순), 5 (댓글수 순)") Integer sortType,
+            @PageableDefault(size = 9) Pageable pageable
+    ) {
+        BaseRes baseRes = reviewService.listHotReview(reviewCategoryIdx, sortType, pageable);
+
+        return ResponseEntity.ok().body(baseRes);
+    }
+
+    @Operation(summary = "검색어 별 인기 후기글 목록 조회",
+            description = "모든 사용자가 검색어를 입력하여 검색어에 해당하는 인기 후기글 목록을 조회할 수 있다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+    })
+    @RequestMapping(method = RequestMethod.GET, value = "/hotlist/{reviewCategoryIdx}/{sortType}/search")
+    public ResponseEntity<BaseRes> searchHotReview(
+            @PathVariable @NotNull(message = "후기 카테고리 IDX는 필수 입력 항목입니다.") @Positive(message = "후기 카테고리 IDX는 1이상의 양수입니다.") Integer reviewCategoryIdx,
+            @PathVariable @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") @ApiParam(value = "정렬유형 : 1 (최신순), 2 (추천수 순), 3 (조회수 순), 4 (스크랩수 순), 5 (댓글수 순)") Integer sortType,
+            @RequestParam String searchTerm,
+            @PageableDefault(size = 9) Pageable pageable
+    ) {
+        BaseRes baseRes = reviewService.searchHotReview(reviewCategoryIdx, sortType, searchTerm, pageable);
 
         return ResponseEntity.ok().body(baseRes);
     }

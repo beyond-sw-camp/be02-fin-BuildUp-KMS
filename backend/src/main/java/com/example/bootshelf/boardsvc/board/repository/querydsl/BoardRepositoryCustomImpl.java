@@ -2,6 +2,7 @@ package com.example.bootshelf.boardsvc.board.repository.querydsl;
 
 import com.example.bootshelf.boardsvc.board.model.entity.Board;
 import com.example.bootshelf.boardsvc.board.model.entity.QBoard;
+import com.example.bootshelf.boardsvc.boardcategory.model.entity.QBoardCategory;
 import com.example.bootshelf.boardsvc.boardtag.model.entity.QBoardTag;
 import com.example.bootshelf.tag.model.entity.QTag;
 import com.querydsl.core.types.OrderSpecifier;
@@ -71,7 +72,7 @@ public class BoardRepositoryCustomImpl extends QuerydslRepositorySupport impleme
     }
 
     @Override
-    public Page<Board> findBoardListByTag(Pageable pageable, Integer tagIdx, Integer sortIdx) {
+    public Page<Board> findBoardListByTag(Pageable pageable, Integer tagIdx, Integer boardCategoryIdx, Integer sortIdx) {
         QBoard board = new QBoard("board");
         QBoardTag boardTag = new QBoardTag("boardTag");
 
@@ -79,7 +80,27 @@ public class BoardRepositoryCustomImpl extends QuerydslRepositorySupport impleme
         JPQLQuery<Board> result = from(board)
                 .leftJoin(boardTag)
                 .on(boardTag.board.idx.eq(board.idx))
-                .where(board.status.eq(true).and(boardTag.tag.idx.eq(tagIdx)))
+                .where(board.status.eq(true).and(boardTag.tag.idx.eq(tagIdx).and(board.boardCategory.idx.eq(boardCategoryIdx))))
+                .orderBy(orderSpecifiers);
+
+        JPQLQuery<Board> pageableQuery = getQuerydsl().applyPagination(pageable, result);
+        List<Board> boardList = pageableQuery.fetch();
+
+        return new PageImpl<>(boardList, pageable, pageableQuery.fetchCount());
+    }
+
+    @Override
+    public Page<Board> findBoardSearchListByTag(Pageable pageable, Integer tagIdx, Integer boardCategoryIdx, String searchTerm, Integer sortIdx) {
+        QBoard board = new QBoard("board");
+        QBoardTag boardTag = new QBoardTag("boardTag");
+
+        BooleanExpression searchCondition = titleContains(searchTerm).or(contentContains(searchTerm));
+
+        OrderSpecifier[] orderSpecifiers = createOrderSpecifier(sortIdx, board);
+        JPQLQuery<Board> result = from(board)
+                .leftJoin(boardTag)
+                .on(boardTag.board.idx.eq(board.idx))
+                .where(searchCondition.and(board.status.eq(true).and(boardTag.tag.idx.eq(tagIdx).and(board.boardCategory.idx.eq(boardCategoryIdx)))))
                 .orderBy(orderSpecifiers);
 
         JPQLQuery<Board> pageableQuery = getQuerydsl().applyPagination(pageable, result);

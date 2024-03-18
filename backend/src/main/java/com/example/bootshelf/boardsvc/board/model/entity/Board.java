@@ -79,6 +79,10 @@ public class Board {
     @Column(nullable = false)
     private String updatedAt;
 
+    public void increaseViewCnt() {
+        this.viewCnt += 1;
+    }
+
     public void increaseScrapCnt() {
         this.scrapCnt += 1;
     }

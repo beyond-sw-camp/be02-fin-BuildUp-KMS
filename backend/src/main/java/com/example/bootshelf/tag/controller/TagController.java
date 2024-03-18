@@ -60,7 +60,7 @@ public class TagController {
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
     @RequestMapping(method = RequestMethod.GET, value = "/list")
-    public ResponseEntity<BaseRes> listTag(@PageableDefault(size = 10) Pageable pageable) {
+    public ResponseEntity<BaseRes> listTag(@PageableDefault(size = 20) Pageable pageable) {
 
         BaseRes baseRes = tagService.listTag(pageable);
 

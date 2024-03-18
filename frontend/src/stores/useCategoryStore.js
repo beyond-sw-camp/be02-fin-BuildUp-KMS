@@ -2,7 +2,6 @@ import { defineStore } from "pinia";
 import axios from "axios";
 
 const backend = "http://localhost:8080";
-const storedToken = localStorage.getItem("token");
 
 export const useCategoryStore = defineStore("category", {
   state: () => ({
@@ -14,12 +13,7 @@ export const useCategoryStore = defineStore("category", {
       try {
 
         let response = await axios.get(
-          backend + `/admin/board/list`,
-          {
-            headers: {
-              Authorization: `Bearer ${storedToken}`,
-            },
-          }
+          backend + "/admin/board/list"
         );
 
         this.boardCategoryList = response.data.result;
@@ -32,12 +26,7 @@ export const useCategoryStore = defineStore("category", {
         try {
   
           let response = await axios.get(
-            backend + `/admin/review/list`,
-            {
-              headers: {
-                Authorization: `Bearer ${storedToken}`,
-              },
-            }
+            backend + "/admin/review/list"
           );
   
           this.reviewCategoryList = response.data.result;

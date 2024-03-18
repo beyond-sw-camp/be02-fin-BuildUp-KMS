@@ -1,18 +1,19 @@
 <template>
     <div class="container-xxl flex-grow-1 container-p-y">
-        <h3 class="py-3 mb-4"><span class="text-muted fw-light"> /</span> 등록</h3>
+        <h3 class="py-3 mb-4"><span class="text-muted fw-light">{{ categoryName }} /</span> 등록</h3>
 
         <!-- Basic Layout -->
         <div class="row">
             <div class="col-xl">
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">카테고리</h5>
+                        <h5 class="mb-0">이름</h5>
                     </div>
                     <div class="card-body">
-                        <form>
+                        <form @submit.prevent="submitForm">
                             <div class="mb-3 flex-end-container">
-                                <input type="text" class="form-control" id="basic-default-fullname" placeholder="백엔드" />
+                                <input type="text" class="form-control" id="itemName" v-model="itemName"
+                                    :placeholder="`${categoryName}`" />
                                 <div style="margin-right: 30px;">
                                     <button type="submit" class="btn btn-primary">저장</button>
                                 </div>
@@ -26,10 +27,30 @@
 </template>
 
 <script>
+import { ref } from 'vue';
+
 export default {
     name: "AdminRegisterComponent",
-    components: {
+    props: {
+        categoryName: String,
+        submitAction: Function,
     },
+    setup(props) {
+        const itemName = ref('');
+
+        const submitForm = async () => {
+            if (!itemName.value) {
+                alert(`${props.categoryName} 이름을 입력해주세요.`);
+                return;
+            }
+
+            await props.submitAction(itemName.value);
+            alert(`${props.categoryName}가 성공적으로 생성되었습니다.`);
+            itemName.value = '';
+        };
+
+        return { itemName, submitForm };
+    }
 };
 </script>
 

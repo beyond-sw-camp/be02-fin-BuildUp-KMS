@@ -4,10 +4,40 @@
             <!-- Menu and Navbar components are inserted here, ensuring proper layout structure -->
             <AdminMenuComponent />
             <div class="layout-page">
-                <AdminNavComponent />
                 <div class="content-wrapper">
                     <!-- Content -->
-                    <AdminRegisterComponent />
+                    <div class="container-xxl flex-grow-1 container-p-y">
+                        <h3 class="py-3 mb-4"><span class="text-muted fw-light">후기 카테고리 /</span> 수정</h3>
+
+                        <!-- Basic Layout -->
+                        <div class="row">
+                            <div class="col-xl">
+                                <div class="card mb-4">
+                                    <!-- <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0">기존 카테고리명</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <input type="text" class="form-control" id="basic-default-fullname"
+                                                v-model="currentCategoryName" disabled />
+                                        </div>
+                                    </div> -->
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0">새 카테고리명</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <form>
+                                            <div class="mb-3">
+                                                <input type="text" class="form-control" id="newCategoryName"
+                                                    placeholder="프론트엔드" v-model="newCategoryName" />
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary" @click="updateCategory">저장</button>
+                            </div>
+                        </div>
+                    </div>
                     <div class="content-backdrop fade"></div>
                 </div>
             </div>
@@ -17,18 +47,54 @@
 
 <script>
 import AdminMenuComponent from "@/components/AdminMenuComponent.vue";
-import AdminNavComponent from "@/components/AdminNavComponent.vue";
-import AdminRegisterComponent from "@/components/AdminRegisterComponent.vue";
+import { mapStores } from "pinia";
+import { useAdminStore } from "/src/stores/useAdminStore";
+import { ref } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { useReviewStore } from "@/stores/useReviewStore";
 
 export default {
     name: "AdminCategoryRegisterPage",
     components: {
         AdminMenuComponent,
-        AdminNavComponent,
-        AdminRegisterComponent
+    },
+    props: {
+        categoryIdx: Number,
+        categoryName: String
     },
     mounted() {
         this.$root.hideHeaderAndFooter = true;
+    },
+    computed: {
+        ...mapStores(useAdminStore, useReviewStore),
+    },
+    setup() {
+        const router = useRouter();
+        const route = useRoute();
+        const reviewStore = useReviewStore();
+
+        const categoryIdx = ref(route.params.categoryIdx);
+        const currentCategoryName = ref(route.params.categoryName);
+        console.log(currentCategoryName);
+        const newCategoryName = ref('');
+
+        const updateCategory = async () => {
+            if (!newCategoryName.value.trim()) {
+                alert("Please enter a category name.");
+                return;
+            }
+
+            try {
+                await reviewStore.updateReviewCategory(categoryIdx.value, newCategoryName.value);
+                alert("후기 카테고리 수정 완료!");
+                router.push("/admin/review/category");
+            } catch (error) {
+                console.error("후기 카테고리 수정 에러:", error);
+                alert("후기 카테고리 수정 실패");
+            }
+        };
+
+        return { currentCategoryName, newCategoryName, updateCategory };
     },
 };
 </script>

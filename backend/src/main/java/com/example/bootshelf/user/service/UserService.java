@@ -157,16 +157,25 @@ public class UserService {
     public BaseRes read(String email) {
         Optional<User> result = userRepository.findUser(email);
 
-        if (result.isPresent()) {
-            User user = result.get();
-
-            GetListUserRes getListUserRes = GetListUserRes.builder().userIdx(user.getIdx()).email(user.getEmail()).name(user.getName()).nickName(user.getNickName())
-                    .profileImage(user.getProfileImage()).build();
-
-            return BaseRes.builder().isSuccess(true).message("요청 성공").result(getListUserRes).build();
-        } else {
+        if (!result.isPresent()) {
             throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("User email [ %s ] is not exists.", email));
         }
+
+        User user = result.get();
+
+        GetListUserRes getListUserRes = GetListUserRes.builder()
+                .userIdx(user.getIdx())
+                .email(user.getEmail())
+                .name(user.getName())
+                .nickName(user.getNickName())
+                .profileImage(user.getProfileImage())
+                .build();
+
+        if(user.getAuthority().equals("ROLE_AUTHUSER")) {
+            getListUserRes.setCourseName(user.getCertification().getCourse().getProgramName());
+        }
+
+        return BaseRes.builder().isSuccess(true).message("요청 성공").result(getListUserRes).build();
     }
 
     // 회원 로그인

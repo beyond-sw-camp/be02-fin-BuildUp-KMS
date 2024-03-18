@@ -79,11 +79,11 @@ public class ReviewCommentUpController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
-    @PatchMapping("/delete/{reviewCommentUpIdx}")
+    @PatchMapping("/delete/{reviewCommentIdx}")
     public ResponseEntity<BaseRes> deleteReviewCommentUp(
             @AuthenticationPrincipal User user,
-            @PathVariable Integer reviewCommentUpIdx
+            @PathVariable Integer reviewCommentIdx
     ) {
-        return ResponseEntity.ok().body(reviewCommentUpService.deleteReviewCommentUp(user, reviewCommentUpIdx));
+        return ResponseEntity.ok().body(reviewCommentUpService.deleteReviewCommentUp(user, reviewCommentIdx));
     }
 }

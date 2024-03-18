@@ -9,8 +9,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class GetBoardListResResult {
+public class GetListHotBoardResResult {
     private Long totalCnt;
     private Integer totalPages;
-    private List<GetListBoardRes> list;
+    private List<GetListHotBoardRes> list;
 }

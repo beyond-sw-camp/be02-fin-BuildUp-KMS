@@ -7,11 +7,11 @@ const storedToken = localStorage.getItem("token");
 export const useReviewStore = defineStore("review", {
   state: () => ({
     reviewList: [],
-    isOrderExist: true,
     review: "",
     currentPage: 0,
     totalPages: 0,
     totalCnt: 0,
+    isReviewExist: true
   }),
   actions: {
     async createReview(review, reviewImage) {
@@ -65,7 +65,7 @@ export const useReviewStore = defineStore("review", {
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
-        if (response.data.result.length !== 0) {
+        if(response.data.result.list.length === 0 && response.data.result.totalCnt === 0) {
           this.isReviewExist = false;
         }
       } catch (e) {
@@ -101,7 +101,7 @@ export const useReviewStore = defineStore("review", {
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
-        if (response.data.result.length !== 0) {
+        if(response.data.result.list.length === 0 && response.data.result.totalCnt === 0) {
           this.isReviewExist = false;
         }
       } catch (e) {
@@ -223,6 +223,39 @@ export const useReviewStore = defineStore("review", {
         });
         console.log(response);
       } catch (e) {
+        console.error(e);
+        throw e;
+      }
+    },
+
+    async createReviewCategory(categoryName) {
+      try {
+        await axios.post(backend + "/admin/review/create", { categoryName: categoryName }, {
+          headers: {
+            "Content-Type": "application/json",
+          }
+        });
+      } catch (e) {
+        console.error(e);
+        throw e;
+      }
+    },
+
+    async deleteReviewCategory(reviewCategoryIdx) {
+      try {
+        await axios.delete(backend + "/admin/review/delete" + reviewCategoryIdx);
+      } catch (e) {
+        console.error(e);
+        throw e;
+      }
+    },
+
+    async updateReviewCategory(reviewCategoryIdx, newCategoryName) {
+      try {
+        await axios.patch(backend + "/admin/review/update/" + reviewCategoryIdx, {
+          categoryName: newCategoryName
+        })
+      } catch(e) {
         console.error(e);
         throw e;
       }

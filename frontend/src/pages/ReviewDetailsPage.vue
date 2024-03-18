@@ -26,31 +26,68 @@
                   <div class="css-bt1qy">
                     <div class="css-1hqtm5a">
                       <div @click="createReviewUp()">
-                        <img width="23px" height="23px"
-                          :src="isRecommended ? require('../assets/img/up_ok.png') : require('../assets/img/up.png')"
-                          alt="facebook-like" />
-                        <p style="font-size: 10px; text-align: center">{{ reviewStore.review.upCnt }}</p>
+                        <img
+                          width="23px"
+                          height="23px"
+                          :src="
+                            isRecommended
+                              ? require('../assets/img/up_ok.png')
+                              : require('../assets/img/up.png')
+                          "
+                          alt="facebook-like"
+                        />
+                        <p style="font-size: 10px; text-align: center">
+                          {{ reviewStore.review.upCnt }}
+                        </p>
                       </div>
                     </div>
 
                     <div class="css-1hqtm5a">
                       <div @click="createReviewScrap()">
-                        <img width="23px" height="23px"
-                          :src="isScrapped ? require('../assets/img/scrap_ok.png') : require('../assets/img/scrap.png')"
-                          alt="bookmark-ribbon--v1" />
-                        <p class="css-scrap" style="font-size: 10px; text-align: center">
+                        <img
+                          width="23px"
+                          height="23px"
+                          :src="
+                            isScrapped
+                              ? require('../assets/img/scrap_ok.png')
+                              : require('../assets/img/scrap.png')
+                          "
+                          alt="bookmark-ribbon--v1"
+                        />
+                        <p
+                          class="css-scrap"
+                          style="font-size: 10px; text-align: center"
+                        >
                           {{ reviewStore.review.scrapCnt }}
                         </p>
                       </div>
                     </div>
                   </div>
                 </div>
-                <ConfirmDialogComponent v-if="showMyPageConfirmDialog" :isVisible="showMyPageConfirmDialog"
-                  message="마이페이지로 이동하시겠습니까?" :onConfirm="moveMyPage" :onCancel="dontMoveMyPage" />
+                <ConfirmDialogComponent
+                  v-if="showMyPageConfirmDialog"
+                  :isVisible="showMyPageConfirmDialog"
+                  message="마이페이지로 이동하시겠습니까?"
+                  :onConfirm="moveMyPage"
+                  :onCancel="dontMoveMyPage"
+                />
+                <div class="css-z2xt5y">
+                  <div class="css-5zcuovs">
+                    <div class="css-1sika4is">
+                      {{ reviewStore.review.courseName }}
+                    </div>
+                  </div>
+                  <div class="css-5zcuovss">
+                    <div class="css-1sika4iss">
+                      평점 : {{ reviewStore.review.courseEvaluation }} 점
+                    </div>
+                  </div>
+                </div>
                 <div class="css-99cwur">
                   <div class="css-1fhge30">
                     <div class="css-aw18wm">
-                      <span style="
+                      <span
+                        style="
                           box-sizing: border-box;
                           display: block;
                           overflow: hidden;
@@ -63,7 +100,12 @@
                           padding: 0px;
                           position: absolute;
                           inset: 0px;
-                        "><img sizes="100vw" :src="reviewStore.review.profileImage" decoding="async" data-nimg="fill"
+                        "
+                        ><img
+                          sizes="100vw"
+                          :src="reviewStore.review.profileImage"
+                          decoding="async"
+                          data-nimg="fill"
                           style="
                             position: absolute;
                             inset: 0px;
@@ -78,14 +120,21 @@
                             max-width: 100%;
                             min-height: 100%;
                             max-height: 100%;
-                          " /></span>
+                          "
+                      /></span>
                     </div>
                     <div class="css-5zcuov">
                       <div class="css-1sika4i">
                         {{ reviewStore.review.userNickName }}
                       </div>
                       <div class="css-1tify6w">
-                        <svg width="2" height="2" viewBox="0 0 2 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg
+                          width="2"
+                          height="2"
+                          viewBox="0 0 2 2"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
                           <circle cx="1" cy="1" r="1" fill="#9DA7AE"></circle>
                         </svg>
                       </div>
@@ -95,7 +144,18 @@
                     </div>
                   </div>
                 </div>
-                <div class="css-z2xt5y"></div>
+                <!-- <div class="css-z2xt5y">
+                  <div class="css-5zcuovs">
+                    <div class="css-1sika4is">
+                      {{ reviewStore.review.courseName }}
+                    </div>
+                  </div>
+                  <div class="css-5zcuovss">
+                    <div class="css-1sika4iss">
+                      평점 : {{ reviewStore.review.courseEvaluation }} 점
+                    </div>
+                  </div>
+                </div> -->
               </div>
             </div>
             <div class="css-luqgif">
@@ -103,11 +163,18 @@
                 <p class="css-content">
                   {{ reviewStore.review.reviewContent }}
                 </p>
-                <div v-if="reviewStore.review.reviewImageList &&
+                <div
+                  v-if="
+                    reviewStore.review.reviewImageList &&
                     reviewStore.review.reviewImageList.length > 0
-                    ">
-                  <img v-for="(image, index) in reviewStore.review.reviewImageList" :key="image.reviewImageIdx"
-                    :alt="`이미지 ${index + 1}`" :src="image.reviewImage" />
+                  "
+                >
+                  <img
+                    v-for="(image, index) in reviewStore.review.reviewImageList"
+                    :key="image.reviewImageIdx"
+                    :alt="`이미지 ${index + 1}`"
+                    :src="image.reviewImage"
+                  />
                 </div>
               </div>
               <div class="css-iqys2n"></div>
@@ -115,40 +182,62 @@
             <div class="css-1k90lkz">
               <div class="css-lua631">
                 <div class="css-13ku1qm">
-                  <div style="
+                  <div
+                    style="
                       display: inline-block;
                       width: 24px;
                       height: 24px;
                       text-align: center;
-                    ">
-                    <img width="16px" height="16px" src="https://img.icons8.com/tiny-glyph/32/000000/comments.png"
-                      alt="comments" />
+                    "
+                  >
+                    <img
+                      width="16px"
+                      height="16px"
+                      src="https://img.icons8.com/tiny-glyph/32/000000/comments.png"
+                      alt="comments"
+                    />
                   </div>
                   댓글 {{ reviewStore.review.commentCnt }}
                 </div>
               </div>
               <div class="css-qzobjv">
                 <!-- 댓글 컴포넌트 -->
-                <CommentComponent></CommentComponent>
+                <ReviewCommentComponent
+                  :reviewCommentStore="reviewCommentStore"
+                ></ReviewCommentComponent>
                 <div class="css-jpe6jj">
                   <div class="css-3o2y5e">
                     <div width="36px" height="36px" class="css-jg5tbe">
-                      <img alt="프로필 이미지" width="34px" height="34px" :src="userProfileImage" />
+                      <img
+                        alt="프로필 이미지"
+                        width="34px"
+                        height="34px"
+                        :src="userProfileImage"
+                      />
                     </div>
                   </div>
                   <div class="css-13ljjbe">
                     <div class="commentEditor">
-                      <input class="css-001" type="text" placeholder="댓글을 남겨주세요" />
+                      <input
+                        class="css-001"
+                        type="text"
+                        placeholder="댓글을 남겨주세요"
+                        v-model="reviewCommentContent"
+                      />
                     </div>
                     <div class="css-btn-div">
-                      <button class="css-btn">저장</button>
+                      <button class="css-btn" @click="submitComment()">
+                        저장
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
               <!-- 목록으로 돌아가기 버튼 -->
               <div class="css-back-div">
-                <button class="css-board-back">목록가기</button>
+                <router-link to="/review">
+                  <button class="css-board-back">목록가기</button>
+                </router-link>
               </div>
               <!-- 돌아가기 버튼 끝 -->
             </div>
@@ -163,13 +252,14 @@
 import { mapStores } from "pinia";
 import { useReviewStore } from "../stores/useReviewStore";
 import { useUserStore } from "../stores/useUserStore";
-import CommentComponent from "../components/CommentComponent.vue";
+import { useReviewCommentStore } from "../stores/useReviewCommentStore";
+import ReviewCommentComponent from "../components/ReviewCommentComponent.vue";
 import ConfirmDialogComponent from "/src/components/ConfirmDialogComponent.vue";
 
 export default {
   name: "ReviewDetailsPage",
   components: {
-    CommentComponent,
+    ReviewCommentComponent,
     ConfirmDialogComponent,
   },
   data() {
@@ -179,11 +269,14 @@ export default {
       isRecommended: false,
       isScrapped: false,
       reviewUpIdx: null,
-      reviewScrapIdx: null
+      reviewScrapIdx: null,
     };
   },
   computed: {
-    ...mapStores(useReviewStore, useUserStore),
+    ...mapStores(useReviewStore, useUserStore, useReviewCommentStore),
+    isLoggedIn() {
+      return !!localStorage.getItem("token");
+    },
     userProfileImage() {
       // 사용자 정보 로딩 후 사용자 프로필 이미지 반환
       if (this.userStore.user && this.userStore.user.profileImage) {
@@ -197,6 +290,11 @@ export default {
   created() {
     const reviewIdx = this.$route.params.idx;
     this.reviewStore.getReviewDetail(reviewIdx);
+    this.reviewCommentStore.getReviewCommentList(reviewIdx);
+    if (this.isLoggedIn) {
+      this.userStore.getUserInfo();
+    }
+
     this.reviewIdx = reviewIdx;
   },
   async mounted() {
@@ -204,10 +302,21 @@ export default {
     await this.checkReviewScrap();
   },
   methods: {
+    async submitComment() {
+      const reviewIdx = this.$route.params.idx;
+      try {
+        await this.reviewCommentStore.createReviewComment(
+          this.reviewCommentContent,
+          reviewIdx
+        );
+      } catch (error) {
+        console.error("댓글 작성 실패:", error);
+      }
+    },
     async createReviewUp() {
       let token = window.localStorage.getItem("token");
       let requestBody = {
-        reviewIdx: this.reviewIdx
+        reviewIdx: this.reviewIdx,
       };
 
       try {
@@ -218,7 +327,10 @@ export default {
 
           window.location.reload();
         } else {
-          const response = await this.reviewStore.createReviewUp(token, requestBody);
+          const response = await this.reviewStore.createReviewUp(
+            token,
+            requestBody
+          );
 
           if (response.status === 200 && response.data) {
             console.log("후기 추천 성공!");
@@ -237,7 +349,7 @@ export default {
     async createReviewScrap() {
       let token = window.localStorage.getItem("token");
       let requestBody = {
-        reviewIdx: this.reviewIdx
+        reviewIdx: this.reviewIdx,
       };
 
       try {
@@ -245,10 +357,13 @@ export default {
           await this.reviewStore.cancelReviewScrap(token, this.reviewScrapIdx);
           console.log("후기 스크랩 취소 성공");
           this.isScrapped = false;
-          
+
           window.location.reload();
         } else {
-          const response = await this.reviewStore.createReviewScrap(token, requestBody);
+          const response = await this.reviewStore.createReviewScrap(
+            token,
+            requestBody
+          );
 
           if (response.status === 200 && response.data) {
             console.log("후기 스크랩 성공!");
@@ -277,7 +392,10 @@ export default {
     async checkReviewUp() {
       try {
         let token = window.localStorage.getItem("token");
-        let response = await this.reviewStore.checkReviewUp(token, this.reviewIdx);
+        let response = await this.reviewStore.checkReviewUp(
+          token,
+          this.reviewIdx
+        );
         console.log(response);
 
         if (response.data && response.data.result.status === true) {
@@ -294,7 +412,10 @@ export default {
     async checkReviewScrap() {
       try {
         let token = window.localStorage.getItem("token");
-        let response = await this.reviewStore.checkReviewScrap(token, this.reviewIdx);
+        let response = await this.reviewStore.checkReviewScrap(
+          token,
+          this.reviewIdx
+        );
         console.log(response);
 
         if (response.data && response.data.result.status === true) {
@@ -307,7 +428,7 @@ export default {
         console.error(e);
       }
     },
-  }
+  },
 };
 </script>
 
@@ -679,8 +800,8 @@ img {
 }
 
 .css-jg5tbe {
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   border: solid 1px #adb5bd;
   background-color: #f1f1f1;
   border-radius: 100px;
@@ -891,5 +1012,61 @@ img {
 
 .css-scrap {
   margin-left: 4px;
+}
+.css-5zcuovs {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  gap: 4px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin-left: 0px;
+  font-family: Pretendard;
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: rgba(84, 29, 112, 0.218);
+  padding: 3px 10px;
+}
+.css-5zcuovss {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  gap: 4px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin-left: 20px;
+  font-family: Pretendard;
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: rgb(0 64 255 / 22%);
+  padding: 3px 10px;
+}
+.css-1sika4is {
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 18px;
+  color: rgb(58, 62, 65);
+}
+.css-1sika4iss {
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 18px;
+  color: rgb(58, 62, 65);
 }
 </style>

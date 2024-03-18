@@ -19,28 +19,36 @@ import NoticeBoardListPage from "@/pages/NoticeBoardListPage.vue";
 import KakaoLogIn from "@/pages/KakaoLogIn.vue";
 import KnowledgeBoardListPage from "@/pages/KnowledgeBoardListPage.vue";
 import QnABoardListPage from "@/pages/QnABoardListPage.vue";
+import BoardUpdatePage from "@/pages/BoardUpdatePage.vue";
+import StudyDetailPage from "@/pages/StudyDetailPage.vue";
+import HotListPage from "@/pages/HotListPage.vue";
+import TagBoardListPage from "@/pages/TagBoardListPage.vue";
 
 import AdminMainPage from "@/pages/AdminMainPage.vue";
 import AdminWithdrawPage from "@/pages/AdminWithdrawPage.vue";
-import AdminCategoryRegisterPage from "@/pages/AdminCategoryRegisterPage.vue";
+import AdminBoardCategoryRegisterPage from "@/pages/AdminBoardCategoryRegisterPage.vue";
+import AdminReviewCategoryRegisterPage from "@/pages/AdminReviewCategoryRegisterPage.vue";
 import AdminTagRegisterPage from "@/pages/AdminTagRegisterPage.vue";
 import AdminBoardCategoryListPage from "@/pages/AdminBoardCategoryListPage.vue";
 import AdminReviewCategoryListPage from "@/pages/AdminReviewCategoryListPage.vue";
 import AdminTagListPage from "@/pages/AdminTagListPage.vue";
 import AdminUserListPage from "@/pages/AdminUserListPage.vue";
-
+import AdminSignUpPage from "@/pages/AdminSignUpPage.vue";
+import AdminLoginPage from "@/pages/AdminLoginPage.vue";
+import AdminReviewCategoryUpdatePage from "@/pages/AdminReviewCategoryUpdatePage";
+import AdminBoardCategoryUpdatePage from "@/pages/AdminBoardCategoryUpdatePage";
 
 const requireAuth = () => (from, to, next) => {
-  const storedToken = localStorage.getItem("token");
+  const storedToken = window.localStorage.getItem("token");
   if (storedToken === null) {
-    alert("로그인 후 이용할 수 있습니다.")
+    alert("로그인 후 이용할 수 있습니다.");
     next("/");
   } else {
     const tokenData = VueJwtDecode.decode(storedToken);
-
     const currentTime = Math.floor(Date.now() / 1000);
+
     if (tokenData.exp < currentTime) {
-      alert("로그인 유지시간이 만료되었습니다. 다시 로그인해주세요.")
+      alert("로그인 유지시간이 만료되었습니다. 다시 로그인해주세요.");
       localStorage.removeItem("token");
       next("/");
     } else {
@@ -49,15 +57,47 @@ const requireAuth = () => (from, to, next) => {
   }
 };
 
-/*
-const requireAdminAuth = () => (from, to, next) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    return next();
+const requireUserAuth = () => (from, to, next) => {
+  const storedToken = window.localStorage.getItem("token");
+
+  if (storedToken === null) {
+    alert("로그인 후 이용할 수 있습니다.");
+    next("/");
+  } else {
+    const tokenData = VueJwtDecode.decode(storedToken);
+    const currentTime = Math.floor(Date.now() / 1000);
+
+    if (tokenData.exp < currentTime) {
+      alert("로그인 유지시간이 만료되었습니다. 다시 로그인해주세요.");
+      localStorage.removeItem("token");
+      next("/");
+    } else if (tokenData.ROLE !== "ROLE_AUTHUSER") {
+      alert("인증회원만 후기글을 작성할 수 있습니다.");
+      next("/review");
+    } else {
+      next();
+    }
   }
-  next("/admin");
-}
-*/
+};
+
+const requireAdminAuth = () => (from, to, next) => {
+  const token = window.localStorage.getItem("a_token");
+  if (token === null) {
+    alert("로그인 후 이용할 수 있습니다.");
+    next("/admin/login");
+  } else {
+    const tokenData = VueJwtDecode.decode(token);
+    const currentTime = Math.floor(Date.now() / 1000);
+
+    if (tokenData.exp < currentTime) {
+      alert("로그인 유지시간이 만료되었습니다. 다시 로그인해주세요.");
+      localStorage.removeItem("a_token");
+      next("/admin/login");
+    } else {
+      next();
+    }
+  }
+};
 
 const routes = [
   { path: "/", component: MainPage },
@@ -67,6 +107,24 @@ const routes = [
     component: () => import("@/pages/KakaoLogIn.vue"),
     props: true,
   },
+  {
+    path: '/admin/review/category/update/:categoryIdx',
+    name: 'AdminReviewCategoryUpdate',
+    component: AdminReviewCategoryUpdatePage,
+    props: true
+  },
+  {
+    path: '/admin/board/category/update/:categoryIdx',
+    name: 'AdminBoardCategoryUpdate',
+    component: AdminBoardCategoryUpdatePage,
+    props: true
+  },
+  // {
+  //   path: '/admin/tags/update/:categoryIdx',
+  //   name: 'AdminTagUpdate',
+  //   component: AdminTagUpdatePage,
+  //   props: true  
+  // },  
   { path: "/auth/signup", component: AuthSignupPage },
   { path: "/KakaoLogIn", component: KakaoLogIn },
   { path: "/signup", component: SignupPage },
@@ -74,24 +132,37 @@ const routes = [
   { path: "/mypage", component: MyPage, beforeEnter: requireAuth() },
   { path: "/result", component: SearchResultPage },
   { path: "/board/new", component: BoardWritePage, beforeEnter: requireAuth() },
-  { path: "/review/new", component: ReviewWritePage, beforeEnter: requireAuth() },
+  {
+    path: "/review/new",
+    component: ReviewWritePage,
+    beforeEnter: requireUserAuth(),
+  },
   { path: "/study", component: StudyBoardListPage },
   { path: "/board/:boardIdx", component: BoardDetailsPage },
   { path: "/review/:idx", component: ReviewDetailsPage },
   { path: "/board/knowledge", component: KnowledgeBoardListPage },
+  { path: "/board/tag", component: TagBoardListPage },
   { path: "/board/qna", component: QnABoardListPage },
   { path: "/review", component: ReviewListPage },
+  { path: "/hot", component: HotListPage },
   { path: "/select/signup", component: SelectSignupPage },
   { path: "/email/verify", component: EmailValidationPage },
   { path: "/notice", component: NoticeBoardListPage },
-  { path: "/admin", component: AdminMainPage, },
-  { path: "/admin/withdraw", component: AdminWithdrawPage },
-  { path: "/admin/category/register", component: AdminCategoryRegisterPage },
-  { path: "/admin/tag/register", component: AdminTagRegisterPage },
-  { path: "/admin/board/category", component: AdminBoardCategoryListPage },
-  { path: "/admin/review/category", component: AdminReviewCategoryListPage },
-  { path: "/admin/tag", component: AdminTagListPage },
-  { path: "/admin/user", component: AdminUserListPage },
+  { path: "/board/mywrite/:boardIdx", component: BoardUpdatePage },
+  { path: "/study/detail/:boardIdx", component: StudyDetailPage },
+  { path: "/admin", component: AdminMainPage, beforeEnter: requireAdminAuth() },
+  { path: "/admin/withdraw", component: AdminWithdrawPage, beforeEnter: requireAdminAuth() },
+  { path: "/admin/board/category/register", component: AdminBoardCategoryRegisterPage, beforeEnter: requireAdminAuth() },
+  { path: "/admin/review/category/register", component: AdminReviewCategoryRegisterPage, beforeEnter: requireAdminAuth() },
+  { path: "/admin/board/category/update", component: AdminBoardCategoryUpdatePage, beforeEnter: requireAdminAuth() },
+  { path: "/admin/review/category/update", component: AdminReviewCategoryUpdatePage, beforeEnter: requireAdminAuth() },
+  { path: "/admin/tag/register", component: AdminTagRegisterPage, beforeEnter: requireAdminAuth() },
+  { path: "/admin/board/category", component: AdminBoardCategoryListPage, beforeEnter: requireAdminAuth() },
+  { path: "/admin/review/category", component: AdminReviewCategoryListPage, beforeEnter: requireAdminAuth() },
+  { path: "/admin/tag", component: AdminTagListPage, beforeEnter: requireAdminAuth() },
+  { path: "/admin/user", component: AdminUserListPage, beforeEnter: requireAdminAuth() },
+  { path: "/admin/signup", component: AdminSignUpPage },
+  { path: "/admin/login", component: AdminLoginPage },
 ];
 
 const router = createRouter({
