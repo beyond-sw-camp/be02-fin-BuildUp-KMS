@@ -50,7 +50,9 @@ public class BoardService {
     private final BoardImageService boardImageService;
     private final ReviewRepository reviewRepository;
 
-    public BaseRes createBoard(User user, PostCreateBoardReq request, MultipartFile[] uploadFiles) {
+
+    @Transactional(readOnly = false)
+    public BaseRes createBoard(User user, PostCreateBoardReq request, MultipartFile[] boardImages) {
 
         Optional<Board> result = boardRepository.findByBoardTitle(request.getBoardTitle());
 
@@ -74,7 +76,9 @@ public class BoardService {
 
         board = boardRepository.save(board);
 
-        boardImageService.createBoardImage(board.getIdx(), uploadFiles);
+        if (boardImages != null && boardImages.length > 0) {
+            boardImageService.createBoardImage(board.getIdx(), boardImages);
+        }
 
         if (request.getTagList() != null) {
             boardTagService.saveBoardTag(request.getTagList(), board.getIdx());
@@ -655,7 +659,6 @@ public class BoardService {
 
         board.setBoardTitle(patchUpdateBoardReq.getBoardTitle());
         board.setBoardContent(patchUpdateBoardReq.getBoardContent());
-        board.setBoardCategory(BoardCategory.builder().idx(patchUpdateBoardReq.getBoardCategoryIdx()).build());
         board.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
 
         boardRepository.save(board);

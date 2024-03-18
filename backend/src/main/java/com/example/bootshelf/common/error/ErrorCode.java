@@ -88,6 +88,8 @@ public enum ErrorCode {
     TAG_NOT_EXISTS(HttpStatus.NOT_FOUND, "TAG-001", "해당 태그 IDX가 존재하지 않는 경우"),
     DUPLICATED_TAG_NAME(HttpStatus.BAD_REQUEST, "TAG-002", "태그명이 중복되는 경우"),
 
+    // 게시판 태그
+    BOARD_TAG_NOT_EXISTS(HttpStatus.NOT_FOUND, "BOARD_TAG-001", "해당 게시판 태그 IDX가 존재하지 않는 경우"),
 
     // 게시판 추천
     DUPLICATED_BOARD_UP(HttpStatus.CONFLICT, "BOARDUP-001", "이미 추천한 게시판입니다."),

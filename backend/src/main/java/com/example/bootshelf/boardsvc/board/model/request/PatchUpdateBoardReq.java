@@ -17,7 +17,5 @@ public class PatchUpdateBoardReq {
 
     private String boardContent;
 
-    private Integer boardCategoryIdx;
-
     private List<String> tagList;
 }

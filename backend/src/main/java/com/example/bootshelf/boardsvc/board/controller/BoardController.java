@@ -45,9 +45,9 @@ public class BoardController {
     public ResponseEntity<BaseRes> createBoard(
             @AuthenticationPrincipal User user,
             @RequestPart(value = "board") PostCreateBoardReq postCreateBoardReq,
-            @RequestPart(value = "boardImage", required = false) MultipartFile[] uploadFiles
+            @RequestPart(value = "boardImage", required = false) MultipartFile[] boardImages
     ) {
-        BaseRes baseRes = boardService.createBoard(user, postCreateBoardReq, uploadFiles);
+        BaseRes baseRes = boardService.createBoard(user, postCreateBoardReq, boardImages);
         return ResponseEntity.ok().body(baseRes);
     }
 
