@@ -59,12 +59,14 @@ public class ReviewController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
-    @RequestMapping(method = RequestMethod.GET, value = "/myList")
-    public ResponseEntity<BaseRes> list(
-            @PageableDefault(size = 9) Pageable pageable
+    @RequestMapping(method = RequestMethod.GET, value = "/mylist/{reviewCategoryIdx}/{sortType}")
+    public ResponseEntity<BaseRes> myList(
+            @PageableDefault(size = 5) Pageable pageable,
+            @PathVariable Integer reviewCategoryIdx,
+            @PathVariable @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") @ApiParam(value = "정렬유형 : 1 (최신순), 2 (추천수 순), 3 (조회수 순), 4 (스크랩수 순), 5 (댓글수 순)") Integer sortType
     ) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        BaseRes baseRes = reviewService.myList(user, pageable);
+        BaseRes baseRes = reviewService.myList(user, pageable, reviewCategoryIdx, sortType);
 
         return ResponseEntity.ok().body(baseRes);
     }

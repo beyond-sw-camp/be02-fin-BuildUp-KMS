@@ -35,6 +35,10 @@ public class GetListBoardResByScrap {
 
     private Integer commentCnt;
 
+    private String type;  // review, board
+
+    private String boardType;  // write, scrap
+
     private String createdAt;
 
     private String updatedAt;

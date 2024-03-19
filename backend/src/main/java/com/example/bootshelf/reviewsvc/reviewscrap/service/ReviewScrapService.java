@@ -120,6 +120,8 @@ public class ReviewScrapService {
                     .commentCnt(reviewScrap.getReview().getCommentCnt())
                     .viewCnt(reviewScrap.getReview().getViewCnt())
                     .updatedAt(reviewScrap.getUpdatedAt())
+                    .type("review")
+                    .boardType("scrap")
                     .build();
 
             resultList.add(res);

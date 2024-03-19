@@ -89,25 +89,27 @@ public class ReviewService {
 
     // 인증회원 본인이 작성한 후기글 목록 조회
     @Transactional(readOnly = true)
-    public BaseRes myList(User user, Pageable pageable) {
+    public BaseRes myList(User user, Pageable pageable, Integer reviewCategoryIdx, Integer sortType) {
 
-        Page<Review> reviewList = reviewRepository.findMyReviewList(user.getIdx(), pageable);
+        Page<Review> reviewList = reviewRepository.findMyReviewList(user.getIdx(), pageable, reviewCategoryIdx, sortType);
 
         List<GetMyListReviewRes> getMyListReviewResList = new ArrayList<>();
 
         for (Review review : reviewList) {
 
             GetMyListReviewRes getMyListReviewRes = GetMyListReviewRes.builder()
-                    .reviewIdx(review.getIdx())
+                    .idx(review.getIdx())
                     .reviewCategoryIdx(review.getReviewCategory().getIdx())
-                    .reviewTitle(review.getReviewTitle())
-                    .reviewContent(review.getReviewContent())
+                    .title(review.getReviewTitle())
+                    .content(review.getReviewContent())
                     .courseName(review.getCourseName())
                     .courseEvaluation(review.getCourseEvaluation())
                     .viewCnt(review.getViewCnt())
                     .upCnt(review.getUpCnt())
                     .scrapCnt(review.getScrapCnt())
                     .commentCnt(review.getCommentCnt())
+                    .type("review")
+                    .boardType("write")
                     .updatedAt(review.getUpdatedAt())
                     .build();
 

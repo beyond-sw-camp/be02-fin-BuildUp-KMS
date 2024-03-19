@@ -57,7 +57,7 @@ public class BoardScrapController {
     @GetMapping("/list")
     public ResponseEntity<BaseRes> findBoardScrapList(
             @AuthenticationPrincipal User user,
-            @PageableDefault(size = 10) Pageable pageable
+            @PageableDefault(size = 5) Pageable pageable
     ) {
         return ResponseEntity.ok().body(boardScrapService.findBoardScrapList(user, pageable));
     }
