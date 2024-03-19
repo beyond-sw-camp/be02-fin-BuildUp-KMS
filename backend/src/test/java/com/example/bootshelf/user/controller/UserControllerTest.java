@@ -14,6 +14,7 @@ import com.example.bootshelf.user.exception.security.CustomAuthenticationEntryPo
 import com.example.bootshelf.user.model.request.PatchUpdateUserReq;
 import com.example.bootshelf.user.model.request.PostLoginUserReq;
 import com.example.bootshelf.user.model.request.PostSignUpUserReq;
+import com.example.bootshelf.user.model.response.GetListUserRes;
 import com.example.bootshelf.user.model.response.PostLoginUserRes;
 import com.example.bootshelf.user.model.response.PostSignUpUserRes;
 import com.example.bootshelf.user.repository.UserRepository;
@@ -221,6 +222,73 @@ class UserControllerTest {
                 .andExpect(status().isUnauthorized())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("ACCOUNT-001"))
 //                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("User Password [ Qwer1234@ ] is different."))
+                .andDo(print());
+    }
+    @DisplayName("회원목록 조회 성공")
+    @WithMockUser
+    @Test
+    void userController_list_success() throws Exception{
+
+        GetListUserRes getListUserRes = GetListUserRes.builder()
+                .userIdx(1)
+                .email("test01@test.com")
+                .name("userName")
+                .nickName("userNickName")
+//                .profileImage(user.getProfileImage())
+                .status("활성").build();
+
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("회원 목록 조회에 성공하였습니다.")
+                .result(getListUserRes)
+                .build();
+
+        // given
+        ObjectMapper mapper = new ObjectMapper();
+
+        given(userService.list(any()))
+                .willReturn(baseRes);
+
+        // when & then
+        mvc.perform(get("/user/list")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.isSuccess").value(true))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("회원 목록 조회에 성공하였습니다."))
+                .andDo(print());
+    }
+
+    // 401 에러 뜸
+    @DisplayName("회원정보 수정 성공")
+    @WithMockUser
+    @Test
+    void userController_update_success() throws Exception{
+
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("회원정보 수정 성공")
+                .result("요청 성공")
+                .build();
+        // given
+        ObjectMapper mapper = new ObjectMapper();
+
+        PatchUpdateUserReq patchUpdateUserReq = PatchUpdateUserReq.builder()
+                .nickName("userNickName")
+                .password("Qwer1234!")
+                .checkPassword("Qwer1234!")
+                .build();
+
+        given(userService.update(any(), any(PatchUpdateUserReq.class)))
+                .willReturn(baseRes);
+
+        // when & then
+
+        mvc.perform(patch("/user/update")
+                        .content(mapper.writeValueAsBytes(patchUpdateUserReq))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.isSuccess").value(true))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("회원정보 수정 성공"))
                 .andDo(print());
     }
 }
