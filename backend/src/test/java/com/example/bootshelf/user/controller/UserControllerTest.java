@@ -11,6 +11,7 @@ import com.example.bootshelf.config.handler.OAuth2AuthenticationSuccessHandler;
 import com.example.bootshelf.config.utils.JwtUtils;
 import com.example.bootshelf.user.exception.security.CustomAccessDeniedHandler;
 import com.example.bootshelf.user.exception.security.CustomAuthenticationEntryPoint;
+import com.example.bootshelf.user.model.request.PatchUpdateUserReq;
 import com.example.bootshelf.user.model.request.PostLoginUserReq;
 import com.example.bootshelf.user.model.request.PostSignUpUserReq;
 import com.example.bootshelf.user.model.response.PostLoginUserRes;
@@ -32,8 +33,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.mock.web.MockPart;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -52,8 +57,7 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -109,7 +113,7 @@ class UserControllerTest {
     @DisplayName("일반회원 회원가입 성공")
     @WithMockUser
     @Test
-    void userController_signUp_success() throws Exception{
+    void userController_signUp_success() throws Exception {
 
         PostSignUpUserRes mockResponse = PostSignUpUserRes.builder()
                 .userEmail("test01@gmail.com")
@@ -163,7 +167,7 @@ class UserControllerTest {
     @DisplayName("로그인 성공")
     @WithMockUser
     @Test
-    void userController_login_success() throws Exception{
+    void userController_login_success() throws Exception {
         PostLoginUserRes postLoginUserRes = PostLoginUserRes.builder()
                 .token("eyJhbGciOiJIUzI1NiJ9.eyJpZHgiOjcsImVtYWlsIjoidGVzdDAyQGdtYWlsLmNvbSIsIm5hbWUiOiLthYzsiqTthLAwMiIsIm5pY2tOYW1lIjoi7YWM7Iqk7YSwMDIiLCJST0xFIjoiUk9MRV9BVVRIVVNFUiIsImlhdCI6MTcxMDc3NDYzOCwiZXhwIjoxNzEwNzc3NjM4fQ.gUPQMylRgrzJE_21EUCaNZI9N9DyvN8sCVvpFtXXRZI")
                 .build();
@@ -197,7 +201,7 @@ class UserControllerTest {
 
     @DisplayName("로그인 실패 - 비밀번호 불일치")
     @Test
-    void userController_login_fail_wrongPassword() throws Exception{
+    void userController_login_fail_wrongPassword() throws Exception {
 
         // given
         ObjectMapper mapper = new ObjectMapper();

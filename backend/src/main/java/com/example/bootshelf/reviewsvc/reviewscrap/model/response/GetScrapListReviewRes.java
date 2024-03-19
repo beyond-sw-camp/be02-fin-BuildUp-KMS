@@ -20,6 +20,8 @@ public class GetScrapListReviewRes {
     private Integer upCnt;
     private Integer scrapCnt;
     private Integer commentCnt;
+    private String type;   // review, board
+    private String boardType;  // write, scrap
     private String updatedAt;
 
 }

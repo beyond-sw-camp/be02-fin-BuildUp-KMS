@@ -195,6 +195,8 @@ public class BoardScrapService {
                     .upCnt(boardScrap.getBoard().getUpCnt())
                     .scrapCnt(boardScrap.getBoard().getScrapCnt())
                     .commentCnt(boardScrap.getBoard().getCommentCnt())
+                    .type("board")
+                    .boardType("scrap")
                     .createdAt(boardScrap.getBoard().getCreatedAt())
                     .updatedAt(boardScrap.getBoard().getUpdatedAt())
                     .build();

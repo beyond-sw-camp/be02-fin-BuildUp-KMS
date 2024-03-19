@@ -277,6 +277,8 @@ public class BoardService {
                     .upCnt(board.getUpCnt())
                     .scrapCnt(board.getScrapCnt())
                     .commentCnt(board.getCommentCnt())
+                    .type("Board")
+                    .boardType("write")
                     .createdAt(board.getCreatedAt())
                     .updatedAt(board.getUpdatedAt())
                     .build();
