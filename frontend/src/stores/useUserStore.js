@@ -299,5 +299,14 @@ export const useUserStore = defineStore("user", {
         console.log(e);
       }
     },
+
+    async deleteUser(userIdx) {
+      try {
+        await axios.delete(backend + "/user/delete/" + userIdx);
+      } catch (e) {
+        console.error(e);
+        throw e;
+      }
+    },
   },
 });

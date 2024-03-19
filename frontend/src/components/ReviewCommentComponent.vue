@@ -129,7 +129,9 @@ export default {
       required: true
     },
   },
-
+  async mounted() {
+    await this.reviewCommentStore.updateCommentRecommendationStatus();
+  },
   methods: {
     //  댓글 수정 후 저장
     async saveComment(reviewCommentIdx) {
@@ -206,6 +208,52 @@ export default {
       }
     },
 
+    async handleRecommendClick(idx) {
+      if (!idx) {
+        console.error('No idx provided for handleRecommendClick');
+        return;
+      }
+
+      const commentOrReply = this.findCommentOrReply(idx);
+      if (!commentOrReply) {
+        console.error(`Comment or reply with idx ${idx} not found.`);
+        return;
+      }
+
+      try {
+        // Check if the comment or reply is already recommended
+        if (commentOrReply.isReviewCommentRecommended) {
+          // If yes, attempt to cancel the recommendation
+          await this.reviewCommentStore.cancelReviewComment(idx);
+        } else {
+          // If not, attempt to add a recommendation
+          await this.reviewCommentStore.reviewRecommend(idx);
+        }
+        // Update the local isReviewCommentRecommended status
+        commentOrReply.isReviewCommentRecommended = !commentOrReply.isReviewCommentRecommended;
+      } catch (error) {
+        console.error(`Error handling recommendation click for idx ${idx}:`, error);
+        // Optionally, refresh the recommendation status from the server
+        // This can be helpful if the error occurred due to out-of-sync client-server states
+        await this.reviewCommentStore.updateCommentRecommendationStatus();
+      }
+    },
+
+
+
+    findCommentOrReply(idx) {
+      // Find comment or reply by idx
+      for (const comment of this.reviewCommentStore.reviewCommentList) {
+        if (comment.idx === idx) {
+          return comment;
+        }
+        const foundReply = comment.children?.find(reply => reply.idx === idx);
+        if (foundReply) {
+          return foundReply;
+        }
+      }
+      return null; // Item not found
+    },
   },
 
 };

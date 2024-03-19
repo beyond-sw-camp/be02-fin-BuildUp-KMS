@@ -19,68 +19,72 @@
         </div>
         <div class="css-agejl7">
           <div class="css-r8q25b">
-            <p>
-              {{ boardStore.boardDetail.boardCategoryName }} 게시글 수정하기
-            </p>
+            <p>{{ reviewStore.reviewDetail.reviewCategoryName }} 수정하기</p>
           </div>
           <div class="css-1iyoj2o">
             <div class="css-1odc90o">
               <textarea
                 class="css-16kqrm"
                 rows="1"
-                :placeholder="boardStore.boardDetail.boardCategoryName"
+                :placeholder="reviewStore.reviewDetail.reviewCategoryName"
                 style="overflow: hidden; resize: none"
                 readonly
               ></textarea>
+              <!-- </div> -->
+              <!-- 과정명 들어갈 곳 -->
+              <div class="css-1iqxhyo">
+                <textarea
+                  rows="1"
+                  :placeholder="reviewStore.reviewDetail.courseName"
+                  class="css-16kqrm"
+                  style="overflow: hidden; resize: none"
+                  readonly
+                ></textarea>
+              </div>
               <div class="css-1iqxhyo">
                 <!-- 제목 -->
                 <textarea
                   rows="1"
                   class="css-16kqrm"
                   style="overflow: hidden; resize: none"
-                  v-model="board.boardTitle"
+                  v-model="review.reviewTitle"
                 ></textarea>
               </div>
-
-              <div class="css-1yfg4fi">
-                <div class="css-1vitttd">
-                  <!-- 태그 표시 영역 -->
-                  <div
-                    v-for="(tag, index) in tags"
+              <div class="css-1t5srfes">
+                <button
+                  :class="selectedEvaluation ? 'css-1w5123ms' : 'css-pfhqzms'"
+                  @click="showEvaluation()"
+                >
+                  {{ selectedEvaluation || "별점 선택"
+                  }}<img
+                    src="@/assets/img/9042707_nav_arrow_down_icon.svg"
+                    :class="{
+                      'css-1bhrqo4s': !isEvaluationClicked,
+                      'css-yewqags': isEvaluationClicked,
+                    }"
+                  />
+                </button>
+                <ul class="css-l2t941s" v-show="isEvaluationClicked">
+                  <li
+                    v-for="(Evaluation, index) in Evaluations"
                     :key="index"
-                    class="css-170uj16"
+                    @click="selectEvaluation(Evaluation)"
+                    :class="{
+                      'css-nyb6vks': !Evaluation.selected,
+                      'css-16uk8ors': Evaluation.selected,
+                    }"
                   >
-                    <div class="css-dcsj63"># {{ tag }}</div>
-                    <svg
-                      @click="removeTag(index)"
-                      width="16"
-                      height="16"
-                      viewBox="0 0 16 16"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M3.33435 3.33435L12.6677 12.6677"
-                        stroke="#9DA7AE"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                      ></path>
-                      <path
-                        d="M12.6656 3.33435L3.33232 12.6677"
-                        stroke="#9DA7AE"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                      ></path>
-                    </svg>
-                  </div>
-                </div>
-                <input
-                  v-model="inputValue"
-                  @focus="onFocus"
-                  placeholder="# 태그를 입력해주세요(최대 3개)"
-                  class="css-ih6wu3"
-                  @keyup.enter="addTag"
-                />
+                    {{ Evaluation.name }}
+                    <div v-if="Evaluation.selected">
+                      <img
+                        alt="체크"
+                        width="16px"
+                        height="16px"
+                        src="https://static.spartacodingclub.kr/TeamSparta-Inc/scc-frontend/assets/images/icon-check-red.png"
+                      />
+                    </div>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
@@ -90,7 +94,13 @@
               <div class="quill">
                 <div class="ql-container ql-snow">
                   <div class="d-flex justify-content-center py-0 py-md-4">
-                    <div class="css-luqgif"></div>
+                    <div class="css-luqgif">
+                      <!-- <div class="editedQ_QContent" v-for="(image, index) in boardDetail.boardImageList" :key="index"> -->
+                      <!-- <p class="css-content">
+                    {{ boardDetail.boardContent }}
+                  </p> -->
+                      <!-- <img alt="게시판 이미지" :data-src="image" /> -->
+                    </div>
                     <!-----이미지 들어가는 곳----->
                     <div class="css-image" style="text-align: center">
                       <div
@@ -108,7 +118,7 @@
                     <!-----이미지 들어가는 곳----->
                     <textarea
                       class="ql-editor ql-blank"
-                      v-model="board.boardContent"
+                      v-model="review.reviewContent"
                     ></textarea>
                     <div
                       class="ql-clipboard"
@@ -172,8 +182,8 @@
                         rx="1.25"
                         fill="#505254"
                       ></rect>
-                    </svg></button
-                ></span>
+                    </svg></button></span
+                >
               </div>
             </div>
             <input
@@ -186,7 +196,12 @@
           </div>
           <div class="css-lycl0a">
             <button class="css-9ns22y" @click="cancel()">취소</button>
-            <button class="css-1c8gn7d" @click="updateBoard()">수정하기</button>
+            <button
+              class="css-1c8gn7d"
+              @click="updateReview()"
+            >
+              수정하기
+            </button>
           </div>
         </div>
       </div>
@@ -196,84 +211,63 @@
 
 <script>
 import { mapStores } from "pinia";
-import { useBoardStore } from "../stores/useBoardStore";
+import { useReviewStore } from "../stores/useReviewStore";
+// import { useUserStore } from "../stores/useUserStore";
 
 export default {
-  name: "BoardUpdatePage",
+  name: "ReviewUpdatePage",
   computed: {
-    ...mapStores(useBoardStore),
-  },
-  watch: {
-    inputValue(newValue) {
-      if (newValue && !newValue.startsWith("#")) {
-        this.inputValue = "# " + newValue.trim();
-      }
+    ...mapStores(useReviewStore),
+    courseEvaluation() {
+      return this.getEvaluation(this.selectedEvaluation);
     },
   },
   data() {
     return {
-      tags: [],
+      isEvaluationClicked: false,
+      selectedEvaluation: "",
+      Evaluations: [
+        { name: "1점", selected: false },
+        { name: "2점", selected: false },
+        { name: "3점", selected: false },
+        { name: "4점", selected: false },
+        { name: "5점", selected: false },
+      ],
       inputValue: "",
-      boardImage: null,
+      reviewImage: null,
       imageUrl: null,
       buttonOpacity: 1,
 
-      board: {
-        boardTitle: "",
-        boardContent: "",
-        boardIdx: 0,
-        originalContent: "",
-        tagList: [],
+      review: {
+        reviewIdx: 0,
+        reviewTitle: "",
+        reviewContent: "",
+        courseEvaluation: null,
       },
     };
   },
   async mounted() {
-    const boardIdx = this.$route.params.boardIdx;
+    const reviewIdx = this.$route.params.reviewIdx;
 
-    this.board.boardIdx = boardIdx;
+    this.review.reviewIdx = reviewIdx;
 
-    // this.reviewDetail = await this.reviewStore.updateReview(review, reviewImage);
-    this.boardDetail = await this.boardStore.findBoardDetailByUserIdx(boardIdx);
-    this.board.boardContent = this.boardDetail.boardContent;
-    this.board.boardTitle = this.boardDetail.boardTitle;
-    this.imageUrl = this.boardDetail.boardImageList[0].boardImage;
+    this.reviewDetail = await this.reviewStore.findReviewDetailByUserIdx(
+      reviewIdx
+    );
+    this.review.reviewContent = this.reviewDetail.reviewContent;
+    this.review.reviewTitle = this.reviewDetail.reviewTitle;
+    this.imageUrl = this.reviewDetail.reviewImageList[0].reviewImage;
 
-    if (this.boardDetail.tagList && this.boardDetail.tagList.length > 0) {
-      this.tags = this.boardDetail.tagList;
-      console.log(this.tags);
-      // this.tagList = this.boardDetail.tagList;
-    }
+    const loadedEvaluation = this.reviewDetail.courseEvaluation;
+    this.Evaluations.forEach((evaluation) => {
+      evaluation.selected = evaluation.name === loadedEvaluation;
+    });
+
+    this.selectedEvaluation = loadedEvaluation + "점";
   },
   methods: {
-    async updateBoard() {
-      this.board.tagList = this.tags;
-      await this.boardStore.updateBoard(this.board, this.boardImage);
-    },
-    // 태그 추가
-    addTag() {
-      if (this.tags.length >= 3) {
-        alert("태그는 최대 3개까지 추가할 수 있습니다.");
-        return;
-      }
-
-      if (
-        this.inputValue.startsWith("#") &&
-        this.inputValue.length > 1 &&
-        this.tags.length < 3
-      ) {
-        this.tags.push(this.inputValue.slice(1).trim());
-        this.inputValue = "";
-        console.log(this.tags);
-      }
-    },
-    removeTag(index) {
-      this.tags.splice(index, 1);
-      console.log(this.tags);
-    },
-    onFocus() {
-      if (!this.inputValue) {
-        this.inputValue = "# ";
-      }
+    async updateReview() {
+      await this.reviewStore.updateReview(this.review, this.reviewImage);
     },
     // 이미지 업로드
     uploadImage() {
@@ -284,7 +278,7 @@ export default {
       const file = event.target.files[0];
       if (!file) return;
 
-      this.boardImage = file;
+      this.reviewImage = file;
 
       const reader = new FileReader();
       reader.onload = () => {
@@ -293,7 +287,35 @@ export default {
       reader.readAsDataURL(file);
     },
     cancel() {
-      window.location.href = "/board";
+      window.location.href = "/review";
+    },
+    showEvaluation() {
+      this.isEvaluationClicked = !this.isEvaluationClicked;
+    },
+    selectEvaluation(Evaluation) {
+      this.Evaluations.forEach((cat) => {
+        cat.selected = false;
+      });
+      Evaluation.selected = true;
+      this.selectedEvaluation = Evaluation.name;
+      this.isEvaluationClicked = false;
+
+      this.review.courseEvaluation = this.getEvaluation(
+        this.selectedEvaluation
+      );
+    },
+    getEvaluation(selectedEvaluation) {
+      return selectedEvaluation === "1점"
+        ? 1
+        : selectedEvaluation === "2점"
+        ? 2
+        : selectedEvaluation === "3점"
+        ? 3
+        : selectedEvaluation === "4점"
+        ? 4
+        : selectedEvaluation === "5점"
+        ? 5
+        : null;
     },
   },
 };
@@ -766,13 +788,51 @@ button {
   margin-top: 3px;
 }
 
-.css-1vitttd {
+/*-------------태크------------------*/
+/* .css-1vitttd {
   display: flex;
   flex-flow: wrap;
   gap: 8px;
   -webkit-box-align: center;
   align-items: center;
 }
+.css-170uj16 {
+  height: 26px;
+  padding: 4px 8px;
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: row;
+  gap: 4px;
+  -webkit-box-align: center;
+  align-items: center;
+  border-radius: 4px;
+  background-color: rgb(242, 246, 248);
+}
+.css-dcsj63 {
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 150%;
+  color: rgb(129, 137, 143);
+}
+.css-170uj16 svg {
+  width: 12px;
+  height: 12px;
+}
+.css-ih6wu3 {
+  width: unset;
+  border: none;
+  outline: none;
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 150%;
+  color: rgb(95, 102, 107);
+} */
+
+/*-------------태크------------------*/
 
 .css-9y3tf9 {
   width: 100%;
@@ -820,6 +880,7 @@ input {
   opacity: 1;
   background-color: #541d7a;
 }
+
 .css-agejl7 {
   max-width: 980px;
   width: 100%;
@@ -827,7 +888,6 @@ input {
   position: relative;
   border-radius: 20px;
   margin-top: 0px;
-  margin-bottom: 60px;
   padding: 48px 20px;
   background-color: rgb(255, 255, 255);
   z-index: 22;
@@ -865,12 +925,175 @@ input {
   background: transparent;
   cursor: pointer;
 }
+.css-pfhqzms {
+  font-family: Pretendard;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  width: 100%;
+  height: inherit;
+  color: rgb(199, 201, 203);
+  border: 0px none;
+  outline: none 0px;
+  padding-left: 20px;
+  padding-right: 20px;
+  background: transparent;
+  cursor: pointer;
+}
+.css-1w5123m {
+  font-family: Pretendard;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  width: 100%;
+  height: inherit;
+  color: rgb(0, 0, 0);
+  border: 0px none;
+  outline: none 0px;
+  padding-left: 20px;
+  padding-right: 20px;
+  background: transparent;
+  cursor: pointer;
+}
+.css-1w5123ms {
+  font-family: Pretendard;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  width: 100%;
+  height: inherit;
+  color: rgb(0, 0, 0);
+  border: 0px none;
+  outline: none 0px;
+  padding-left: 20px;
+  padding-right: 20px;
+  background: transparent;
+  cursor: pointer;
+}
+/* 카테고리 선택 */
+ul {
+  margin-block-start: 0;
+  margin-block-end: 0;
+  -webkit-padding-start: 0;
+  padding-inline-start: 0;
+}
+.css-l2t941 {
+  position: absolute;
+  top: 63px;
+  padding: 8px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgb(234, 235, 237);
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 8px 20px 0px;
+  z-index: 30;
+  left: 0px;
+  width: 100%;
+  background: rgb(255, 255, 255);
+  color: black;
+  list-style-type: none;
+  transition: all 0.3s ease-in 0s;
+}
+.css-l2t941s {
+  position: absolute;
+  top: 63px;
+  padding: 8px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgb(234, 235, 237);
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 8px 20px 0px;
+  z-index: 30;
+  left: 0px;
+  width: 100%;
+  background: rgb(255, 255, 255);
+  color: black;
+  list-style-type: none;
+  transition: all 0.3s ease-in 0s;
+}
 
+.css-nyb6vk {
+  padding: 14.5px 20px;
+  height: 50px;
+  flex-direction: row;
+  gap: 10px;
+  transition: all 0.1s ease 0s;
+  display: flex;
+  border-radius: 8px;
+  font-weight: 500;
+  color: rgb(80, 82, 84);
+  background-color: rgb(255, 255, 255);
+  cursor: pointer;
+}
+.css-nyb6vks {
+  padding: 14.5px 20px;
+  height: 50px;
+  flex-direction: row;
+  gap: 10px;
+  transition: all 0.1s ease 0s;
+  display: flex;
+  border-radius: 8px;
+  font-weight: 500;
+  color: rgb(80, 82, 84);
+  background-color: rgb(255, 255, 255);
+  cursor: pointer;
+}
+
+.css-nyb6vk:hover {
+  background-color: rgb(255, 241, 244);
+  background-size: 100px 100%;
+}
+.css-nyb6vks:hover {
+  background-color: rgb(255, 241, 244);
+  background-size: 100px 100%;
+}
+.css-16uk8or {
+  padding: 14.5px 20px;
+  height: 50px;
+  flex-direction: row;
+  gap: 10px;
+  transition: all 0.1s ease 0s;
+  display: flex;
+  border-radius: 8px;
+  font-weight: 700;
+  color: rgb(232, 52, 78);
+  background-color: rgb(255, 255, 255);
+  cursor: pointer;
+}
+.css-16uk8ors {
+  padding: 14.5px 20px;
+  height: 50px;
+  flex-direction: row;
+  gap: 10px;
+  transition: all 0.1s ease 0s;
+  display: flex;
+  border-radius: 8px;
+  font-weight: 700;
+  color: rgb(232, 52, 78);
+  background-color: rgb(255, 255, 255);
+  cursor: pointer;
+}
+/* 카테고리 선택 */
 .css-1bhrqo4 {
   transform: none;
   transition-duration: 0.5s;
 }
-
+.css-1bhrqo4s {
+  transform: none;
+  transition-duration: 0.5s;
+}
+.css-yewqag {
+  transform: rotate(180deg);
+  transition-duration: 0.5s;
+}
+.css-yewqags {
+  transform: rotate(180deg);
+  transition-duration: 0.5s;
+}
 .css-1q8adtw {
   display: flex;
   flex-direction: row;
@@ -900,6 +1123,18 @@ input {
   background-size: 20px;
   cursor: pointer;
 }
+.css-1t5srfes {
+  font-family: Pretendard;
+  box-sizing: border-box;
+  position: relative;
+  width: 100%;
+  height: 56px;
+  border-radius: 12px;
+  border: 1px solid rgb(234, 235, 237);
+  background-color: rgb(255, 255, 255);
+  background-size: 20px;
+  cursor: pointer;
+}
 
 .css-9ns22y {
   border: 1px solid rgb(219, 221, 224);
@@ -916,84 +1151,12 @@ input {
 .css-lycl0a {
   width: 400px;
 }
-.css-1vitttd {
-  display: flex;
-  flex-flow: wrap;
-  gap: 8px;
-  -webkit-box-align: center;
-  align-items: center;
-}
-.css-170uj16 {
-  height: 26px;
-  padding: 0px 8px;
-  display: flex;
-  flex-shrink: 0;
-  flex-direction: row;
-  gap: 4px;
-  -webkit-box-align: center;
-  align-items: center;
-  border-radius: 4px;
-  background-color: rgb(242, 246, 248);
-}
-.css-dcsj63 {
-  font-family: Pretendard;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 150%;
-  color: rgb(129, 137, 143);
-}
-.css-170uj16 svg {
-  width: 12px;
-  height: 12px;
-}
-.css-ih6wu3 {
-  width: unset;
-  border: none;
-  outline: none;
-  font-family: Pretendard;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 150%;
-  color: rgb(95, 102, 107);
-  margin-left: 8px;
-}
 
-/*-------------태크------------------*/
-
-.css-1vitttd {
-  display: flex;
-  flex-flow: wrap;
-  gap: 8px;
-  -webkit-box-align: center;
-  align-items: center;
-}
-.css-170uj16 {
-  height: 26px;
-  padding: 0px 8px;
-  display: flex;
-  flex-shrink: 0;
-  flex-direction: row;
-  gap: 4px;
-  -webkit-box-align: center;
-  align-items: center;
-  border-radius: 4px;
-  background-color: rgb(242, 246, 248);
-}
-.css-dcsj63 {
-  font-family: Pretendard;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 150%;
-  color: rgb(129, 137, 143);
-}
-.css-170uj16 svg {
-  width: 12px;
-  height: 12px;
-}
 .css-image {
   margin-top: 20px;
+}
+
+.css-16kqrm:focus-visible {
+  outline: 2px solid rgb(58, 62, 65);
 }
 </style>

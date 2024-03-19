@@ -37,16 +37,8 @@ public class JwtUtils {
         claims.put("idx", user.getIdx());
         claims.put("email", user.getEmail());
         claims.put("name", user.getName());
+        claims.put("nickName", user.getNickName());
         claims.put("ROLE", user.getAuthority());
-
-        if (user.getAuthority().equals("ROLE_AUTHUSER")) {
-            Optional<Certification> result = certificationRepository.findByUser_Idx(user.getIdx());
-            if (result.isEmpty()) {
-                throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("User [%s] is not exists.", certificationRepository.findById(user.getIdx())));
-            }
-            Certification certification = result.get();
-//            claims.put("courseName", certification.getCourse().getProgramName());
-        }
 
         byte[] secretBytes = secretKey.getBytes();
 
@@ -69,6 +61,7 @@ public class JwtUtils {
         claims.put("idx", user.getIdx());
         claims.put("email", user.getEmail());
         claims.put("name", user.getName());
+        claims.put("nickName", user.getNickName());
         claims.put("ROLE", user.getAuthority());
 
         byte[] secretBytes = secretKey.getBytes();

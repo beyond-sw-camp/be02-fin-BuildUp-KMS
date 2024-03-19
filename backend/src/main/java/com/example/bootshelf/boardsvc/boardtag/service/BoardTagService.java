@@ -6,11 +6,14 @@ import com.example.bootshelf.boardsvc.boardtag.model.response.GetListHotTagRes;
 import com.example.bootshelf.boardsvc.boardtag.model.response.GetListHotTagResResult;
 import com.example.bootshelf.boardsvc.boardtag.repository.BoardTagRepository;
 import com.example.bootshelf.common.BaseRes;
+import com.example.bootshelf.common.error.ErrorCode;
+import com.example.bootshelf.common.error.entityexception.BoardTagException;
 import com.example.bootshelf.tag.model.entity.Tag;
 import com.example.bootshelf.tag.repository.TagRepository;
 import com.example.bootshelf.tag.service.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -55,13 +58,14 @@ public class BoardTagService {
         }
     }
 
+    @Transactional(readOnly = false)
     public void updateBoardTag(List<String> reqTagList, Integer idx) {
-        List<BoardTag> results = boardTagRepository.findAllByIdx(idx);
-        for (BoardTag boardTag : results) {
-            boardTagRepository.delete(boardTag);
-        }
-        if (reqTagList == null) {
-            return;
+
+
+        Integer result = boardTagRepository.deleteAllByBoard_Idx(idx);
+
+        if(result.equals(0)) {
+            throw new BoardTagException(ErrorCode.BOARD_TAG_NOT_EXISTS, String.format("Board [ %s ] does not have BoardTag", idx));
         }
         saveBoardTag(reqTagList, idx);
     }

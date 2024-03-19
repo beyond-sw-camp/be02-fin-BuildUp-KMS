@@ -18,6 +18,7 @@ public class GetListReviewCommentRes {
     private String reviewCommnetContent;
     private String createAt;
     private String updateAt;
+    private Boolean status;
     private List<GetListReviewCommentRes> children; // 자식 댓글 목록
 
 }

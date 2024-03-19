@@ -1,21 +1,29 @@
 <template>
+  <!-- 내 코드 -->
   <div class="css-1hnxdb7">
     <div class="css-130kwtj">
-      <div class="css-1hwcs2h"></div>
+      <div class="css-1hwcs2h">
+        <!-- <div class="css-xbcdvo">자유게시판</div>
+          <div class="css-s5p19z">학습 질문</div>
+          <div class="css-s5p19z">개발일지</div>
+          <div class="css-s5p19z">나의 활동</div> -->
+      </div>
     </div>
     <div height="120px" class="css-jbj5u0"></div>
-    <div class="css-1g39gls">
+    <div class="css-1g39gls" v-if="boardDetail">
       <div class="css-1qjp6uf">
         <div class="css-axl4y">
           <div class="css-1yuvfju">
             <div class="css-k59gj9">
               <div class="css-hmpurq">
-                <div class="css-category">스터디</div>
+                <div class="css-category">
+                  {{ boardDetail.boardCategoryName }}
+                </div>
                 <div class="css-kem115">
                   <div class="css-12i5occ">
                     <div class="css-1jibmi3">
                       <div class="css-n7izk0">
-                        {{ boardStore.boardDetail.boardTitle }}
+                        {{ boardDetail.boardTitle }}
                       </div>
                     </div>
                     <div class="css-sebsp7"></div>
@@ -34,7 +42,7 @@
                           alt="facebook-like"
                         />
                         <p style="font-size: 10px; text-align: center">
-                          {{ boardStore.boardDetail.upCnt }}
+                          {{ boardDetail.upCnt }}
                         </p>
                       </div>
                     </div>
@@ -55,7 +63,7 @@
                           class="css-scrap"
                           style="font-size: 10px; text-align: center"
                         >
-                          {{ boardStore.boardDetail.scrapCnt }}
+                          {{ boardDetail.scrapCnt }}
                         </p>
                       </div>
                     </div>
@@ -88,7 +96,7 @@
                         "
                         ><img
                           sizes="100vw"
-                          src="https://blog.kakaocdn.net/dn/5UYz8/btq4diRXkGE/HkHufR4G8X4bIX3h3lNjck/img.jpg"
+                          :src="boardDetail.userProfileImage"
                           decoding="async"
                           data-nimg="fill"
                           style="
@@ -109,9 +117,7 @@
                       /></span>
                     </div>
                     <div class="css-5zcuov">
-                      <div class="css-1sika4i">
-                        {{ boardStore.boardDetail.nickName }}
-                      </div>
+                      <div class="css-1sika4i">{{ boardDetail.nickName }}</div>
                       <div class="css-1tify6w">
                         <svg
                           width="2"
@@ -123,9 +129,7 @@
                           <circle cx="1" cy="1" r="1" fill="#9DA7AE"></circle>
                         </svg>
                       </div>
-                      <div class="css-1ry6usa">
-                        {{ boardStore.boardDetail.updatedAt }}
-                      </div>
+                      <div class="css-1ry6usa">{{ boardDetail.updatedAt }}</div>
                     </div>
                   </div>
                 </div>
@@ -135,25 +139,25 @@
             <div class="css-luqgif">
               <div class="editedQ_QContent">
                 <p class="css-content">
-                  {{ boardStore.boardDetail.boardContent }}
+                  {{ boardDetail.boardContent }}
                 </p>
-                <!-- <div
+                <div
                   v-if="
-                    boardStore.board.boardImageList &&
-                    boardStore.board.boardImageList.length > 0
+                    boardDetail.boardImageList &&
+                    boardDetail.boardImageList.length > 0
                   "
                 >
                   <img
-                    v-for="(image, index) in boardStore.board.boardImageList"
+                    v-for="(image, index) in boardDetail.boardImageList"
                     :key="image.boardImageIdx"
                     :alt="`이미지 ${index + 1}`"
                     :src="image.boardImage"
                   />
-                </div> -->
+                </div>
               </div>
               <div class="css-iqys2n">
                 <!-- 태그 컴포넌트 자리-->
-                <TagComponent></TagComponent>
+                <TagComponent :tagNameList="boardDetail.tagList" />
               </div>
             </div>
             <div class="css-1k90lkz">
@@ -174,13 +178,14 @@
                       alt="comments"
                     />
                   </div>
-                  댓글 {{ boardStore.boardDetail.commentCnt }}
+                  댓글 {{ boardDetail.commentCnt }}
                 </div>
               </div>
               <div class="css-qzobjv">
                 <!-- 댓글 컴포넌트 -->
                 <BoardCommentComponent
                   :commentList="commentList"
+                  :boardIdx="boardIdx"
                   :isCommentRecommended="isCommentRecommended"
                   :boardCommentIdx="boardCommentIdx"
                 />
@@ -188,10 +193,10 @@
                   <div class="css-3o2y5e">
                     <div width="36px" height="36px" class="css-jg5tbe">
                       <img
-                        alt="나의얼굴"
+                        alt="프로필 이미지"
                         width="34px"
                         height="34px"
-                        src="https://www.fitpetmall.com/wp-content/uploads/2023/10/image-14.png"
+                        :src="userProfileImage"
                       />
                     </div>
                   </div>
@@ -214,9 +219,11 @@
               </div>
               <!-- 목록으로 돌아가기 버튼 -->
               <div class="css-back-div">
-                <button class="css-board-back">목록가기</button>
+                <button class="css-board-back" @click="goBack()">
+                  목록가기
+                </button>
               </div>
-              <!-- 버튼 끝 -->
+              <!-- 돌아가기 버튼 끝 -->
             </div>
           </div>
         </div>
@@ -227,7 +234,7 @@
 
 <script>
 import BoardCommentComponent from "@/components/BoardCommentComponent.vue";
-import TagComponent from "@/components/TagComponent.vue";
+import TagComponent from "../components/TagComponent.vue";
 import { useBoardCommentStore } from "../stores/useBoardCommentStore";
 import { useBoardStore } from "@/stores/useBoardStore";
 import { useUserStore } from "@/stores/useUserStore";
@@ -235,14 +242,11 @@ import { mapStores } from "pinia";
 import ConfirmDialogComponent from "/src/components/ConfirmDialogComponent.vue";
 
 export default {
-  name: "StudyDetailPage",
+  name: "StudyDetailsPage",
   components: {
     BoardCommentComponent,
     TagComponent,
     ConfirmDialogComponent,
-  },
-  computed: {
-    ...mapStores(useBoardStore, useUserStore, useBoardCommentStore),
   },
   data() {
     return {
@@ -258,8 +262,27 @@ export default {
       boardScrapIdx: null,
     };
   },
+  computed: {
+    ...mapStores(useBoardStore, useBoardCommentStore, useUserStore, ["tagList"]),
+    isLoggedIn() {
+      return !!localStorage.getItem("token");
+    },
+    userProfileImage() {
+      // 사용자 정보 로딩 후 사용자 프로필 이미지 반환
+      if (this.userStore.user && this.userStore.user.profileImage) {
+        return this.userStore.user.profileImage;
+      } else {
+        // 기본 이미지 반환. 실제 경로로 변환 필요.
+        return require("@/assets/img/profile.jpg");
+      }
+    },
+  },
+  created() {
+    if (this.isLoggedIn) {
+      this.userStore.getUserInfo();
+    }
+  },
   async mounted() {
-    this.boardStore.getStudyDetail();
     const boardIdx = this.$route.params.boardIdx;
 
     this.boardIdx = boardIdx;
@@ -272,8 +295,16 @@ export default {
     // 게시글 추천 및 스크랩 상태 확인
     await this.checkBoardUp();
     await this.checkBoardScrap();
+
+    const previousPath = localStorage.getItem("previousPath");
+    if (previousPath) {
+      this.boardStore.setPreviousPath(previousPath);
+    }
   },
   methods: {
+    goBack() {
+        this.$router.go(-1);
+    },
     async submitComment() {
       let isAuthenticated = this.userStore.isAuthenticated;
       try {
@@ -397,6 +428,7 @@ export default {
   },
 };
 </script>
+
 <style scoped>
 body {
   height: 100%;
@@ -404,6 +436,7 @@ body {
   overflow-x: hidden;
   font-size: 1.4rem;
   box-sizing: border-box;
+  background-color: #fff;
 }
 
 * {
@@ -435,23 +468,27 @@ a {
   cursor: pointer;
 }
 
+.css-1hnxdb7 {
+  background-color: #fff;
+}
+
 .css-icon {
   font-size: 18px;
   color: #9da7ae;
 }
+
 .css-category {
-  /* cursor: pointer; */
   width: 65px;
   padding: 2px 0;
   border-radius: 40px;
-  /* border: solid 1px #dbdde0; */
-  background-color: rgb(84, 29, 112);
+  background-color: #541d70;
   color: #fff;
   font-size: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
+  font-family: Pretendard;
 }
 
 @media (min-width: 820px) {
@@ -466,26 +503,21 @@ a {
   }
 }
 
+.css-1g39gls {
+  background-color: #fff;
+}
+
 @media (min-width: 820px) {
   .css-1qjp6uf {
     max-width: 680px;
     border-radius: 8px;
     border: 1px solid #e4ebf0;
-    background-color: #ffffff;
+    background-color: #fff;
     padding: 40px;
     width: 100%;
     margin: auto;
   }
 }
-
-/* .css-axl4y{
-    background-color: #f4f5f6;
-    padding: 0 0 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-top: none;
-} */
 
 .css-1yuvfju {
   margin: auto;
@@ -506,40 +538,13 @@ a {
     gap: 14px;
   }
 }
+
 .css-hmpurq {
   display: flex;
   flex-direction: column;
   width: 100%;
-  background-color: #ffffff;
+  background-color: #fff;
 }
-
-@media ((min-width: 820px)) {
-  .css-amlmv6 {
-    display: none;
-  }
-}
-.css-amlmv6 {
-  width: 100%;
-  justify-content: start;
-  align-items: center;
-  gap: 8px;
-}
-
-/* .css-1254q6y{
-    margin-left: 8px;
-    align-items: center;
-    gap: 4px;
-    padding: 2px 12px 0;
-    border-radius: 40px;
-    height: 28px;
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 1;
-    color: #3a3e41;
-    background-color: #eef3f6;
-    display: inline-flex;
-    justify-content: start;
-} */
 
 .css-kem115 {
   display: flex;
@@ -575,6 +580,7 @@ a {
     max-width: 83%;
     font-size: 20px;
     font-weight: 700;
+    font-family: Pretendard;
   }
 }
 
@@ -661,36 +667,11 @@ a {
 }
 
 .css-1ry6usa {
-  /* font-family: Pretendard; */
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
   line-height: 18px;
   color: #9da7ae;
-}
-
-.css-o01lup {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 2px;
-}
-
-.css-ts29it {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 4px;
-}
-
-.css-dbc8ke {
-  font-family: Pretendard;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 18px;
-  color: #9da7ae;
-  margin: 0 4px;
 }
 
 @media (min-width: 820px) {
@@ -715,10 +696,38 @@ a {
   min-height: 180px;
 }
 
+img {
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  -ms-interpolation-mode: nearest-neighbor;
+}
+
+.editedQ_QContent * {
+  font-stretch: normal;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: normal;
+}
+
+.editedQ_QContent img {
+  margin-top: 20px;
+  max-width: 89vw;
+}
+
+@media (min-width: 1024px) {
+  .editedQ_QContent img {
+    margin-top: 20px;
+    max-width: 400px;
+  }
+}
+
 .css-content {
   line-height: 30px;
   font-size: 14px;
+  font-family: Pretendard;
 }
+
 .css-iqys2n {
   display: flex;
   align-items: center;
@@ -733,7 +742,6 @@ a {
   width: 100px;
   padding: 7px 0;
   border-radius: 40px;
-  /* border: solid 1px #dbdde0; */
   background-color: #eaeaea;
   font-size: 12px;
   font-weight: 600;
@@ -741,25 +749,6 @@ a {
   align-items: center;
   justify-content: center;
   gap: 6px;
-}
-
-.css-151tj95 {
-  position: relative;
-  cursor: pointer !important;
-  width: 120px;
-  padding: 12px 0;
-  border-radius: 40px;
-  border: solid 1px #dbdde0;
-  background-color: #fff;
-  font-family: Pretendard;
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  color: #1c1d1e !important;
 }
 
 .css-1k90lkz {
@@ -779,22 +768,13 @@ a {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-family: Pretendard, -apple-system, “system-ui”, "Malgun Gothic",
-    "맑은 고딕", sans-serif;
+  font-family: Pretendard;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 700;
   line-height: 1.5;
   text-align: left;
   color: #1c1d1e;
 }
-
-/* 댓글 알림 부분 : html 192번 라인 
-.css-x2zrdg{
-    display: none;
-    flex-direction: row;
-    gap: 8px;
-    align-items: center;
-} */
 
 .css-qzobjv {
   display: flex;
@@ -830,7 +810,7 @@ a {
   max-width: 545px;
   padding: 20px;
   border-radius: 12px;
-  background-color: rgb(244, 245, 246);
+  background-color: #f4f5f6;
 }
 
 .css-1psklmw {
@@ -860,7 +840,7 @@ a {
   font-weight: 700;
   line-height: 1.5;
   text-align: left;
-  color: rgb(28, 29, 30);
+  color: #1c1d1e;
 }
 
 .css-khzu4u {
@@ -869,13 +849,13 @@ a {
   align-items: center;
   padding: 2px 6px;
   border-radius: 4px;
-  background-color: rgb(28, 29, 30);
+  background-color: #1c1d1e;
   font-family: Pretendard, -apple-system, “system-ui”, "Malgun Gothic",
     "맑은 고딕", sans-serif;
   font-size: 10px;
-  font-weight: bold;
+  font-weight: 700;
   line-height: 1.5;
-  color: rgb(255, 255, 255);
+  color: #fff;
 }
 
 .css-emxp16 {
@@ -883,7 +863,7 @@ a {
   font-weight: 500;
   line-height: 1.3;
   text-align: left;
-  color: rgb(131, 134, 137);
+  color: #838689;
 }
 
 .css-emxp17 {
@@ -891,23 +871,8 @@ a {
   font-weight: 500;
   line-height: 1.3;
   text-align: left;
-  color: rgb(131, 134, 137);
+  color: #838689;
   cursor: pointer;
-}
-
-/* html 221라인 */
-.editedCommentContent {
-}
-
-.css-comment {
-  font-size: 14px;
-}
-
-.css-reply {
-  font-size: 12px;
-  margin-top: 15px;
-  cursor: pointer;
-  color: #9da7ae;
 }
 
 .css-f7no94 {
@@ -920,13 +885,6 @@ a {
 .css-3o2y5e {
   margin-top: 10px;
   display: block;
-}
-
-.css-1ln580g {
-  width: 36px;
-  height: 36px;
-  overflow: hidden;
-  background-color: rgb(255, 255, 255);
 }
 
 .css-1psklmw {
@@ -958,17 +916,6 @@ a {
   height: 90px;
 }
 
-/* .commentEditor{
-    height: 50px;
-}
-
-.css-001{
-    width: 80%;
-    margin: 10px;
-    border: none;
-    outline: none;
-} */
-
 .commentEditor {
   display: flex;
   align-items: baseline;
@@ -977,9 +924,10 @@ a {
 
 .css-001 {
   flex: 1;
-  margin: 10px; /* 텍스트 입력란과 버튼 사이의 간격 조절 */
-  outline: none;
+  margin: 10px;
+  outline: 0;
   border: none;
+  font-family: Pretendard;
 }
 
 .css-btn-div {
@@ -991,7 +939,7 @@ a {
 .css-btn {
   background-color: rgb(52, 152, 219, 0.2);
   font-size: 12px;
-  color: black;
+  color: #000;
   font-weight: 700;
   width: 70px;
   height: 25px;
@@ -999,29 +947,7 @@ a {
   float: right;
   margin-right: 10px;
   cursor: pointer;
-}
-
-.css-j12xmk {
-  display: flex;
-  flex-direction: row;
-  padding: 12px 10px;
-  height: 60px;
-  justify-content: space-between;
-  width: 100%;
-  background-color: rgb(255, 255, 255);
-  box-shadow: rgba(0, 0, 0, 0.08) 0px -4px 20px;
-  position: fixed;
-  bottom: 0px;
-}
-
-.css-170m71t {
-  display: flex;
-  gap: 8px;
-  line-height: 36px;
-  align-items: center;
-  font-size: 14px;
-  color: rgb(47, 48, 49);
-  font-weight: 700;
+  font-family: Pretendard;
 }
 
 .css-5zcuov {
@@ -1034,12 +960,6 @@ a {
 .css-n4f4vi {
   width: 20px;
   height: 20px;
-}
-
-.css-zajkhg {
-  padding: 20px 0;
-  display: none;
-  background-color: #f4f5f6;
 }
 
 .css-n8w3ba {
@@ -1070,17 +990,16 @@ a {
 .css-board-back {
   cursor: pointer;
   width: 80px;
-  height: 50px;
-  padding: 15px 0;
+  height: 40px;
+  padding: 10px 0;
   border-radius: 10px;
-  /* background-color: #9378FF; */
-  background-color: rgb(84, 29, 112);
+  background-color: #541d70;
   font-size: 13px;
   display: flex;
-  /* align-items: center; */
   justify-content: center;
   gap: 6px;
-  color: #ffffff;
+  color: #fff;
+  font-family: Pretendard;
 }
 
 .css-back-div {
@@ -1088,112 +1007,7 @@ a {
   margin-top: 50px;
 }
 
-/* 채팅 버튼 */
-.channel-talk__redirect-button {
-  position: fixed;
-  z-index: 9999;
-  bottom: 72px;
-  right: 18px;
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: center;
-  width: 56px;
-  height: 56px;
-  cursor: pointer;
-  visibility: visible;
-  border-radius: 24px;
-  transition: visibility 0.4s ease 0s;
-  background-color: rgb(84, 29, 112);
-  box-shadow: inset 0 0 0 1px hsla(0, 0%, 100%, 0.2),
-    0 4px 6px rgba(0, 0, 0, 0.1), 0 8px 30px rgba(0, 0, 0, 0.15);
-  -webkit-backdrop-filter: blur(30px);
-  backdrop-filter: blur(30px);
-  will-change: transform, opacity;
-}
-a {
-  color: currentColor;
-  text-decoration: none;
-  cursor: pointer;
-}
-a {
-  color: #1dc078;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-*,
-::before,
-::after {
-  box-sizing: border-box;
-}
-*,
-:after,
-:before {
-  box-sizing: inherit;
-}
-
-a:-webkit-any-link {
-  color: -webkit-link;
-  cursor: pointer;
-  text-decoration: underline;
-}
-
-.ql-editor {
-  box-sizing: border-box;
-  line-height: 1.42;
-  outline: none;
-  padding: 12px 0;
-  tab-size: 4;
-  -moz-tab-size: 4;
-  text-align: left;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-}
-
-.ql-editor {
-  color: #6b6e72;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.3;
-  letter-spacing: normal;
-  font-weight: 500;
-  min-height: 200px;
-  width: 100%;
-  margin: auto;
-  padding: 24px 20px !important;
-  resize: none;
-  border: none;
-}
-
-.ql-editor {
-  height: 100%;
-  overflow-y: auto;
-  padding: 12px 15px;
-}
-.quill > .ql-container > .ql-editor.ql-blank:before {
-  color: #c7c9cb;
-  font-style: normal;
-  font-size: 14px;
-  white-space: pre-wrap;
-  line-height: 1.5;
-  padding: 5px;
-}
-
-.ql-editor.ql-blank:before {
-  color: rgba(0, 0, 0, 0.6);
-  content: attr(data-placeholder);
-  font-style: italic;
-  left: 20px;
-  pointer-events: none;
-  position: absolute;
-  right: 15px;
-  font-weight: 350;
-}
-
-.ql-editor.ql-blank:before {
-  left: 15px;
+.css-scrap {
+  margin-left: 4px;
 }
 </style>

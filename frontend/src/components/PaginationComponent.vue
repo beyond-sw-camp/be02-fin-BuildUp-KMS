@@ -1,7 +1,7 @@
 <template>
-  <nav aria-label="Pagination">
+  <nav aria-label="Pagination" v-if="totalPages > 0">
     <ul class="pagination">
-      <!-- 이전 페이지 버튼 -->
+      <!-- 이전 페이지 버튼 (currentPage가 1보다 큰 경우에만 활성화) -->
       <li class="page-item" :class="{ disabled: currentPage <= 1 }">
         <button @click.prevent="currentPage > 1 && $emit('change-page', currentPage - 1)" class="page-link">
           <!-- 이전 아이콘 -->
@@ -13,8 +13,8 @@
         </button>
       </li>
 
-      <!-- 첫 페이지 번호 -->
-      <li class="page-item" :class="{ active: currentPage === 1 }">
+      <!-- 조건부 렌더링으로 1페이지와 마지막 페이지 번호를 처리 -->
+      <li class="page-item" :class="{ active: currentPage === 1 }" v-if="totalPages > 1">
         <button @click.prevent="$emit('change-page', 1)" class="page-link">1</button>
       </li>
 
@@ -34,7 +34,7 @@
       </li>
 
       <!-- 마지막 페이지 번호 -->
-      <li class="page-item" :class="{ active: currentPage === totalPages }">
+      <li class="page-item" :class="{ active: currentPage === totalPages }" v-if="totalPages > 1">
         <button @click.prevent="$emit('change-page', totalPages)" class="page-link">{{ totalPages }}</button>
       </li>
 

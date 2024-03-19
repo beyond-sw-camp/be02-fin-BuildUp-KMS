@@ -20,6 +20,9 @@ public class ReviewImage {
     @JoinColumn(name = "Review_idx")
     private Review review;
 
+    @Column(nullable = false, length = 200)
     private String reviewImage;
+
+    @Column(nullable = false)
     private Boolean status;
 }

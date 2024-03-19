@@ -80,7 +80,7 @@ public class BoardCommentController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
-    @RequestMapping(method = RequestMethod.DELETE, value = "/{boardIdx}/delete/{idx}")
+    @RequestMapping(method = RequestMethod.PATCH, value = "/{boardIdx}/delete/{idx}")
     public ResponseEntity deleteBoardComment(
             @AuthenticationPrincipal User user,
             @PathVariable @NotNull @Positive Integer idx) {
@@ -90,7 +90,7 @@ public class BoardCommentController {
     }
 
 
-    @Operation(summary = "게시판 대댓글 등록", description = "회원은 후기 게시판에 작성되어 있는 게시글에 대댓글을 작성할 수 있다.")
+    @Operation(summary = "게시판 대댓글 등록", description = "회원은  게시판에 작성되어 있는 게시글에 대댓글을 작성할 수 있다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")

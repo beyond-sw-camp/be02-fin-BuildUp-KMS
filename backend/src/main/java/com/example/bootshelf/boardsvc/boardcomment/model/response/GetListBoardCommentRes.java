@@ -19,6 +19,7 @@ public class GetListBoardCommentRes {
     private Integer upCnt;
     private String createAt;
     private String updateAt;
+    private Boolean status;
     private List<GetListBoardCommentRes> children; // 자식 댓글 목록
 
 }

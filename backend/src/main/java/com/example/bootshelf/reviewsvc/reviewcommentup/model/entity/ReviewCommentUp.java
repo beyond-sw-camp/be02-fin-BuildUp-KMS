@@ -32,6 +32,7 @@ public class ReviewCommentUp {
         return ReviewCommentUp.builder()
                 .user(User.builder().idx(user.getIdx()).build())
                 .reviewComment(ReviewComment.builder().idx(req.getReviewCommentIdx()).build())
+                .status(true)
                 .build();
     }
 }
