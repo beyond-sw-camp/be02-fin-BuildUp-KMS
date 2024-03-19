@@ -20,9 +20,9 @@ import KakaoLogIn from "@/pages/KakaoLogIn.vue";
 import KnowledgeBoardListPage from "@/pages/KnowledgeBoardListPage.vue";
 import QnABoardListPage from "@/pages/QnABoardListPage.vue";
 import BoardUpdatePage from "@/pages/BoardUpdatePage.vue";
-import StudyDetailPage from "@/pages/StudyDetailPage.vue";
 import HotListPage from "@/pages/HotListPage.vue";
 import TagBoardListPage from "@/pages/TagBoardListPage.vue";
+import ReviewUpdatePage from "@/pages/ReviewUpdatePage.vue";
 
 import AdminMainPage from "@/pages/AdminMainPage.vue";
 import AdminWithdrawPage from "@/pages/AdminWithdrawPage.vue";
@@ -37,6 +37,7 @@ import AdminSignUpPage from "@/pages/AdminSignUpPage.vue";
 import AdminLoginPage from "@/pages/AdminLoginPage.vue";
 import AdminReviewCategoryUpdatePage from "@/pages/AdminReviewCategoryUpdatePage";
 import AdminBoardCategoryUpdatePage from "@/pages/AdminBoardCategoryUpdatePage";
+import AdminTagUpdatePage from "@/pages/AdminTagUpdatePage";
 
 const requireAuth = () => (from, to, next) => {
   const storedToken = window.localStorage.getItem("token");
@@ -119,12 +120,12 @@ const routes = [
     component: AdminBoardCategoryUpdatePage,
     props: true
   },
-  // {
-  //   path: '/admin/tags/update/:categoryIdx',
-  //   name: 'AdminTagUpdate',
-  //   component: AdminTagUpdatePage,
-  //   props: true  
-  // },  
+  {
+    path: '/admin/tags/update/:categoryIdx',
+    name: 'AdminTagUpdate',
+    component: AdminTagUpdatePage,
+    props: true
+  },
   { path: "/auth/signup", component: AuthSignupPage },
   { path: "/KakaoLogIn", component: KakaoLogIn },
   { path: "/signup", component: SignupPage },
@@ -137,25 +138,26 @@ const routes = [
     component: ReviewWritePage,
     beforeEnter: requireUserAuth(),
   },
-  { path: "/study", component: StudyBoardListPage },
-  { path: "/board/:boardIdx", component: BoardDetailsPage },
+  { path: "/board/:idx", component: BoardDetailsPage },
   { path: "/review/:idx", component: ReviewDetailsPage },
   { path: "/board/knowledge", component: KnowledgeBoardListPage },
   { path: "/board/tag", component: TagBoardListPage },
   { path: "/board/qna", component: QnABoardListPage },
+  { path: "/study", component: StudyBoardListPage },
   { path: "/review", component: ReviewListPage },
   { path: "/hot", component: HotListPage },
   { path: "/select/signup", component: SelectSignupPage },
   { path: "/email/verify", component: EmailValidationPage },
   { path: "/notice", component: NoticeBoardListPage },
   { path: "/board/mywrite/:boardIdx", component: BoardUpdatePage },
-  { path: "/study/detail/:boardIdx", component: StudyDetailPage },
+  { path: "/review/mywrite/:reviewIdx", component: ReviewUpdatePage},
   { path: "/admin", component: AdminMainPage, beforeEnter: requireAdminAuth() },
   { path: "/admin/withdraw", component: AdminWithdrawPage, beforeEnter: requireAdminAuth() },
   { path: "/admin/board/category/register", component: AdminBoardCategoryRegisterPage, beforeEnter: requireAdminAuth() },
   { path: "/admin/review/category/register", component: AdminReviewCategoryRegisterPage, beforeEnter: requireAdminAuth() },
   { path: "/admin/board/category/update", component: AdminBoardCategoryUpdatePage, beforeEnter: requireAdminAuth() },
   { path: "/admin/review/category/update", component: AdminReviewCategoryUpdatePage, beforeEnter: requireAdminAuth() },
+  { path: "/admin/tag/update", component: AdminTagUpdatePage, beforeEnter: requireAdminAuth() },
   { path: "/admin/tag/register", component: AdminTagRegisterPage, beforeEnter: requireAdminAuth() },
   { path: "/admin/board/category", component: AdminBoardCategoryListPage, beforeEnter: requireAdminAuth() },
   { path: "/admin/review/category", component: AdminReviewCategoryListPage, beforeEnter: requireAdminAuth() },
@@ -163,6 +165,8 @@ const routes = [
   { path: "/admin/user", component: AdminUserListPage, beforeEnter: requireAdminAuth() },
   { path: "/admin/signup", component: AdminSignUpPage },
   { path: "/admin/login", component: AdminLoginPage },
+  { path: "/review/mywrite/:reviewIdx", component: ReviewUpdatePage },
+
 ];
 
 const router = createRouter({

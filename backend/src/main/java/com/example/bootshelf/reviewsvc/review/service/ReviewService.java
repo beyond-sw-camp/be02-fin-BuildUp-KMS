@@ -89,25 +89,27 @@ public class ReviewService {
 
     // 인증회원 본인이 작성한 후기글 목록 조회
     @Transactional(readOnly = true)
-    public BaseRes myList(User user, Pageable pageable) {
+    public BaseRes myList(User user, Pageable pageable, Integer reviewCategoryIdx, Integer sortType) {
 
-        Page<Review> reviewList = reviewRepository.findMyReviewList(user.getIdx(), pageable);
+        Page<Review> reviewList = reviewRepository.findMyReviewList(user.getIdx(), pageable, reviewCategoryIdx, sortType);
 
         List<GetMyListReviewRes> getMyListReviewResList = new ArrayList<>();
 
         for (Review review : reviewList) {
 
             GetMyListReviewRes getMyListReviewRes = GetMyListReviewRes.builder()
-                    .reviewIdx(review.getIdx())
+                    .idx(review.getIdx())
                     .reviewCategoryIdx(review.getReviewCategory().getIdx())
-                    .reviewTitle(review.getReviewTitle())
-                    .reviewContent(review.getReviewContent())
+                    .title(review.getReviewTitle())
+                    .content(review.getReviewContent())
                     .courseName(review.getCourseName())
                     .courseEvaluation(review.getCourseEvaluation())
                     .viewCnt(review.getViewCnt())
                     .upCnt(review.getUpCnt())
                     .scrapCnt(review.getScrapCnt())
                     .commentCnt(review.getCommentCnt())
+                    .type("review")
+                    .boardType("write")
                     .updatedAt(review.getUpdatedAt())
                     .build();
 
@@ -319,7 +321,7 @@ public class ReviewService {
 
     // 후기글 수정
     @Transactional(readOnly = false)
-    public BaseRes updateReview(User user, PatchUpdateReviewReq patchUpdateReviewReq) {
+    public BaseRes updateReview(User user, PatchUpdateReviewReq patchUpdateReviewReq, MultipartFile reviewImage) {
 
         Optional<Review> result = reviewRepository.findByIdxAndUserIdx(patchUpdateReviewReq.getReviewIdx(), user.getIdx());
 
@@ -328,15 +330,24 @@ public class ReviewService {
             throw new ReviewException(ErrorCode.REVIEW_NOT_EXISTS, String.format("Review Idx [ %s ] is not exists.", patchUpdateReviewReq.getReviewIdx()));
         }
 
-        Optional<Review> resultTitle = reviewRepository.findByReviewTitle(patchUpdateReviewReq.getReviewTitle());
+        Review review = result.get();
+        if(!review.getReviewTitle().equals(patchUpdateReviewReq.getReviewTitle())) {
+            // 수정 후기글 제목 중복에 대한 예외 처리
+            Optional<Review> resultTitle = reviewRepository.findByReviewTitle(patchUpdateReviewReq.getReviewTitle());
 
-        // 수정 후기글 제목 중복에 대한 예외 처리
-        if (resultTitle.isPresent()) {
-            throw new ReviewException(ErrorCode.DUPLICATE_REVIEW_TITLE, String.format("Review Title [ %s ] is duplicated.", patchUpdateReviewReq.getReviewTitle()));
+            if (resultTitle.isPresent()) {
+                throw new ReviewException(ErrorCode.DUPLICATE_REVIEW_TITLE, String.format("Review Title [ %s ] is duplicated.", patchUpdateReviewReq.getReviewTitle()));
+            }
         }
 
-        Review review = result.get();
         review.update(patchUpdateReviewReq);
+
+        if (reviewImage != null && !reviewImage.equals("")) {
+            reviewImageService.updateReviewImage(review, reviewImage);
+        } else {
+
+        }
+
         review.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
         reviewRepository.save(review);
 
@@ -536,6 +547,50 @@ public class ReviewService {
                 .isSuccess(true)
                 .message("인기 후기글 검색어별 목록 조회 요청 성공")
                 .result(result)
+                .build();
+
+        return baseRes;
+    }
+
+    @Transactional(readOnly = false)
+    public BaseRes findReviewDetailByUserIdx(Integer reviewIdx, User user) {
+        Optional<Review> result = reviewRepository.findByIdxAndUserIdx(reviewIdx, user.getIdx());
+
+        if (!result.isPresent()) {
+            throw new ReviewException(ErrorCode.REVIEW_NOT_EXISTS, String.format("Review Idx [ %s ] is not exists.", reviewIdx));
+        }
+
+        Review review = result.get();
+
+        List<GetListImageReviewRes> reviewImages = new ArrayList<>();
+
+        if (!review.getReviewImageList().isEmpty()) {
+            for (ReviewImage reviewImage : review.getReviewImageList()) {
+
+                GetListImageReviewRes getListImageReviewRes = GetListImageReviewRes.builder()
+                        .reviewImageIdx(reviewImage.getIdx())
+                        .reviewImage(reviewImage.getReviewImage())
+                        .build();
+
+                reviewImages.add(getListImageReviewRes);
+            }
+        }
+
+        GetReadReviewRes getReadReviewRes = GetReadReviewRes.builder()
+                .reviewIdx(review.getIdx())
+                .reviewCategoryName(review.getReviewCategory().getCategoryName())
+                .reviewCategoryIdx(review.getReviewCategory().getIdx())
+                .reviewTitle(review.getReviewTitle())
+                .reviewContent(review.getReviewContent())
+                .reviewImageList(reviewImages)
+                .courseName(review.getCourseName())
+                .courseEvaluation(review.getCourseEvaluation())
+                .build();
+
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("본인 작성 후기글 상세 조회 성공")
+                .result(getReadReviewRes)
                 .build();
 
         return baseRes;

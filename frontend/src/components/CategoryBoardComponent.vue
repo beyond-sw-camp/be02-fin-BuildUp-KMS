@@ -1,5 +1,5 @@
 <template>
-  <a :href="'/board/' + boards.boardIdx">
+  <a :href="'/board/' + boards.idx">
     <div class="css-k59gj9">
       <div class="css-aw1sgr">
         <div class="css-amlmv6">

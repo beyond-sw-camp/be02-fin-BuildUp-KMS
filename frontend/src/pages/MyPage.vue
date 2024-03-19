@@ -288,8 +288,6 @@ import { mapStores } from "pinia";
 import { useUserStore } from "@/stores/useUserStore";
 import { useBoardStore } from "@/stores/useBoardStore";
 import { useTotalStore } from "../stores/useTotalStore";
-// import { ref, watchEffect } from "vue";
-// import router from "@/router";
 import MyPageBoardComponent from "@/components/MyPageBoardComponent.vue";
 import PaginationComponent from "@/components/PaginationComponent.vue";
 export default {
@@ -298,7 +296,8 @@ export default {
     return {
       selectedSortType: "최신순",
       sortType: 1,
-      selectedTotalType: "knowledge",
+      selectedTotalType: "course",
+      totalCategoryIdx: "1",
       user: {},
       currentTab: "작성글",
     };
@@ -334,6 +333,7 @@ export default {
   methods: {
     async changeTab(tab) {
       this.currentTab = tab;
+      this.loadTotalList(1);
     },
     
     updateSortType() {
@@ -361,14 +361,14 @@ export default {
     selectTotalType(type) {
       this.selectedTotalType = type;
       const totalTypeToIdx = {
-        course: 1,
-        instructor: 2,
-        knowledge: 1,
-        qna: 2,
-        study: 3,
+        course: "1",
+        instructor: "2",
+        knowledge: "1",
+        qna: "2",
+        study: "3",
       };
       // 전달된 타입에 해당하는 값을 가져와서 selectedTotalType에 할당합니다.
-      this.totalCategoryIdx = totalTypeToIdx[type];
+      this.totalCategoryIdx = totalTypeToIdx[type] || "1";
       this.loadTotalList(1); // 선택된 타입에 따라 리스트를 로드합니다.
     },
 
@@ -378,7 +378,7 @@ export default {
           this.selectedTotalType === "course" ||
           this.selectedTotalType === "instructor"
         ) {
-          this.totalStore.getReviewList(
+          this.totalStore.getMyReviewList(
             this.totalCategoryIdx,
             this.sortType,
             page
@@ -828,5 +828,66 @@ img {
   color: rgb(131, 134, 137);
   white-space: pre-wrap;
 }
+.css-1619ajl {
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 18px;
+  color: rgb(20, 22, 23);
+  border-bottom: 1px solid black;
+}
 
+@media (min-width: 820px) {
+  .css-1619ajl {
+    font-family: Pretendard;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 19.5px;
+    color: rgb(20, 22, 23);
+    border-bottom: 1px solid black;
+  }
+}
+.css-1j5hzn7 {
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 18px;
+  color: #141617;
+  line-height: 18px;
+  color: #81898f;
+}
+
+@media (min-width: 820px) {
+  .css-1j5hzn7 {
+    font-family: Pretendard;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    color: #141617;
+    line-height: 19.5px;
+    color: #81898f;
+  }
+}
+.d-flex {
+  display: flex !important;
+}
+.justify-content-center {
+  justify-content: center !important;
+}
+@media (min-width: 768px) {
+  .pt-md-4,
+  .py-md-4 {
+    padding-top: 1.5rem !important;
+  }
+}
+@media (min-width: 768px) {
+  .pb-md-4,
+  .py-md-4 {
+    padding-bottom: 1.5rem !important;
+  }
+}
 </style>

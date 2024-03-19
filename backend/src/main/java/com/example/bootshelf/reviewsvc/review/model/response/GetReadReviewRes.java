@@ -12,6 +12,7 @@ import java.util.List;
 public class GetReadReviewRes {
 
     private Integer reviewIdx;
+    private Integer reviewCategoryIdx;
     private String reviewCategoryName;
     private Integer userIdx;
     private String userNickName;

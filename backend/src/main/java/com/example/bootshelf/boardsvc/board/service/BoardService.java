@@ -52,7 +52,9 @@ public class BoardService {
     private final BoardImageService boardImageService;
     private final ReviewRepository reviewRepository;
 
-    public BaseRes createBoard(User user, PostCreateBoardReq request, MultipartFile[] uploadFiles) {
+
+    @Transactional(readOnly = false)
+    public BaseRes createBoard(User user, PostCreateBoardReq request, MultipartFile[] boardImages) {
 
         Optional<Board> result = boardRepository.findByBoardTitle(request.getBoardTitle());
 
@@ -76,7 +78,9 @@ public class BoardService {
 
         board = boardRepository.save(board);
 
-        boardImageService.createBoardImage(board.getIdx(), uploadFiles);
+        if (boardImages != null && boardImages.length > 0) {
+            boardImageService.createBoardImage(board.getIdx(), boardImages);
+        }
 
         if (request.getTagList() != null) {
             boardTagService.saveBoardTag(request.getTagList(), board.getIdx());
@@ -273,6 +277,8 @@ public class BoardService {
                     .upCnt(board.getUpCnt())
                     .scrapCnt(board.getScrapCnt())
                     .commentCnt(board.getCommentCnt())
+                    .type("Board")
+                    .boardType("write")
                     .createdAt(board.getCreatedAt())
                     .updatedAt(board.getUpdatedAt())
                     .build();
@@ -642,24 +648,32 @@ public class BoardService {
                 .build();
     }
 
-    public BaseRes updateBoard(User user, PatchUpdateBoardReq patchUpdateBoardReq, Integer boardIdx) {
-        Optional<Board> result = boardRepository.findByIdxAndUserIdx(boardIdx, user.getIdx());
+    public BaseRes updateBoard(User user, PatchUpdateBoardReq patchUpdateBoardReq, MultipartFile boardImage) {
+        Optional<Board> result = boardRepository.findByIdxAndUserIdx(patchUpdateBoardReq.getBoardIdx(), user.getIdx());
 
         if (!result.isPresent()) {
-            throw new BoardException(ErrorCode.BOARD_NOT_EXISTS, String.format("Board Idx [ %s ] is not exists.", boardIdx));
+            throw new BoardException(ErrorCode.BOARD_NOT_EXISTS, String.format("Board Idx [ %s ] is not exists.", patchUpdateBoardReq.getBoardIdx()));
         }
-        Optional<Board> resultTitle = boardRepository.findByBoardTitle(patchUpdateBoardReq.getBoardTitle());
-
-        if (resultTitle.isPresent()) {
-            throw new BoardException(ErrorCode.DUPICATED_BOARD_TITLE, String.format("Board Title [ %s ] is duplicated.", patchUpdateBoardReq.getBoardTitle()));
-        }
-        boardTagService.updateBoardTag(patchUpdateBoardReq.getTagList(), boardIdx);
         Board board = result.get();
+
+        if(!board.getBoardTitle().equals(patchUpdateBoardReq.getBoardTitle())) {
+            Optional<Board> resultTitle = boardRepository.findByBoardTitle(patchUpdateBoardReq.getBoardTitle());
+
+            if (resultTitle.isPresent()) {
+                throw new BoardException(ErrorCode.DUPICATED_BOARD_TITLE, String.format("Board Title [ %s ] is duplicated.", patchUpdateBoardReq.getBoardTitle()));
+            }
+        }
+
+        boardTagService.updateBoardTag(patchUpdateBoardReq.getTagList(), patchUpdateBoardReq.getBoardIdx());
+
+        if (boardImage != null && boardImage.equals("")) {
+            boardImageService.updateBoardImage(board, boardImage);
+        }
 
         board.setBoardTitle(patchUpdateBoardReq.getBoardTitle());
         board.setBoardContent(patchUpdateBoardReq.getBoardContent());
-        board.setBoardCategory(BoardCategory.builder().idx(patchUpdateBoardReq.getBoardCategoryIdx()).build());
         board.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+
         boardRepository.save(board);
 
         BaseRes baseRes = BaseRes.builder()

@@ -35,6 +35,10 @@ public class GetListBoardRes {
 
     private Integer commentCnt;
 
+    private String type;
+
+    private String boardType;
+
     private String createdAt;
 
     private String updatedAt;

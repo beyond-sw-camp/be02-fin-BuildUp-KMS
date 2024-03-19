@@ -1,13 +1,13 @@
 <template>
   <!-- 스터디 게시글 컴포넌트 -->
-    <a class="css-1myomkm epbh2v50"  :href="'/board/' + boards.boardIdx">
+    <a class="css-1myomkm epbh2v50"  :href="'/board/' + boards.idx">
       <h2 aria-description="글 제목">
         <span
-          >{{ boards.boardTitle }}
+          >{{ boards.title }}
         </span>
       </h2>
       <h3 aria-description="글 내용">
-        {{ boards.boardContent }}
+        {{ boards.content }}
       </h3>
       <TagComponent :tagNameList="boards.tagNameList" />
       <div class="css-k57yxr epbh2v51">

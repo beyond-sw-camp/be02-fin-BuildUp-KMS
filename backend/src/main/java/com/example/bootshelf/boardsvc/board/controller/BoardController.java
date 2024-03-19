@@ -45,9 +45,9 @@ public class BoardController {
     public ResponseEntity<BaseRes> createBoard(
             @AuthenticationPrincipal User user,
             @RequestPart(value = "board") PostCreateBoardReq postCreateBoardReq,
-            @RequestPart(value = "boardImage", required = false) MultipartFile[] uploadFiles
+            @RequestPart(value = "boardImage", required = false) MultipartFile[] boardImages
     ) {
-        BaseRes baseRes = boardService.createBoard(user, postCreateBoardReq, uploadFiles);
+        BaseRes baseRes = boardService.createBoard(user, postCreateBoardReq, boardImages);
         return ResponseEntity.ok().body(baseRes);
     }
 
@@ -74,7 +74,7 @@ public class BoardController {
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
     @RequestMapping(method = RequestMethod.GET, value = "/mylist/{boardCategoryIdx}/{sortType}")
     public ResponseEntity<BaseRes> myListByCategory(
-            @PageableDefault(size = 9) Pageable pageable,
+            @PageableDefault(size = 5) Pageable pageable,
             @PathVariable(value = "boardCategoryIdx") Integer boardCategoryIdx,
             @PathVariable @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") @ApiParam(value = "정렬유형 : 1 (최신순), 2 (추천수 순), 3 (조회수 순), 4 (스크랩수 순), 5 (댓글수 순)") Integer sortType
     ) {
@@ -200,15 +200,16 @@ public class BoardController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
-    @RequestMapping(method = RequestMethod.PATCH, value = "/update/{boardIdx}")
+    @RequestMapping(method = RequestMethod.PATCH, value = "/update")
     public ResponseEntity<BaseRes> updateBoard(
-            @Valid @RequestBody PatchUpdateBoardReq patchUpdateBoardReq,
-            @PathVariable(value = "boardIdx") Integer boardIdx
-    ) {
+            @RequestPart(value = "board") @Valid PatchUpdateBoardReq patchUpdateBoardReq,
+            @RequestPart(value = "boardImage", required = false) MultipartFile boardImage)
+    {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        BaseRes baseRes = boardService.updateBoard(user, patchUpdateBoardReq, boardIdx);
+        BaseRes baseRes = boardService.updateBoard(user, patchUpdateBoardReq, boardImage);
         return ResponseEntity.ok().body(baseRes);
     }
+
 
     @Operation(summary = "Board 게시글 삭제 기능",
             description = "게시판의 게시글을 삭제하는 API 입니다.")

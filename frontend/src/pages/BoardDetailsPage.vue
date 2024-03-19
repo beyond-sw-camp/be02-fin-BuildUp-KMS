@@ -283,7 +283,7 @@ export default {
     }
   },
   async mounted() {
-    const boardIdx = this.$route.params.boardIdx;
+    const boardIdx = this.$route.params.idx;
 
     this.boardIdx = boardIdx;
 
@@ -303,7 +303,13 @@ export default {
   },
   methods: {
     goBack() {
-        this.$router.go(-1);
+      if(this.boardDetail.boardCategoryName === "지식 공유") {
+        window.location.href="/board/knowledge";
+      } else if(this.boardDetail.boardCategoryName === "QnA") {
+        window.location.href="/board/qna";
+      } else if(this.boardDetail.boardCategoryName === "스터디") {
+        window.location.href="/study";
+      }
     },
     async submitComment() {
       let isAuthenticated = this.userStore.isAuthenticated;

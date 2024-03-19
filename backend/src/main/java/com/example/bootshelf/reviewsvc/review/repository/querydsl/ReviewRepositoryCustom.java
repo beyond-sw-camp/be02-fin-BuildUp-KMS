@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ReviewRepositoryCustom {
 
-    Page<Review> findMyReviewList(Integer userIdx, Pageable pageable);
+    Page<Review> findMyReviewList(Integer userIdx, Pageable pageable, Integer reviewCategoryIdx, Integer sortType);
 
     Page<Review> findReviewList(Integer reviewCategoryIdx, Integer sortType, Pageable pageable);
 

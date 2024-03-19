@@ -9,10 +9,10 @@ import lombok.*;
 @Builder
 public class GetMyListReviewRes {
 
-    private Integer reviewIdx;
+    private Integer idx;
     private Integer reviewCategoryIdx;
-    private String reviewTitle;
-    private String reviewContent;
+    private String title;
+    private String content;
     private String reviewImage;
     private String courseName;
     private Integer courseEvaluation;
@@ -20,6 +20,8 @@ public class GetMyListReviewRes {
     private Integer upCnt;
     private Integer scrapCnt;
     private Integer commentCnt;
+    private String type;
+    private String boardType;
     private String updatedAt;
 
 }

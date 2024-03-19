@@ -85,13 +85,13 @@ public class ReviewCommentController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
-    @RequestMapping(method = RequestMethod.DELETE, value = "/{reviewIdx}/delete/{idx}")
+    @RequestMapping(method = RequestMethod.PATCH, value = "/{reviewIdx}/delete/{idx}")
     public ResponseEntity deleteReview(
             @AuthenticationPrincipal User user,
             @PathVariable @NotNull @Positive Integer idx) {
-        BaseRes baseRes =  reviewCommentService.deleteComment(idx, user);
+        BaseRes baseRes =  reviewCommentService.deleteComment(user, idx);
 
-        return ResponseEntity.ok().body(baseRes);
+            return ResponseEntity.ok().body(baseRes);
     }
 
     @Operation(summary = "후기 게시판 대댓글 등록", description = "회원은 대댓글을 등록할 수 있다.")

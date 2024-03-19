@@ -56,7 +56,7 @@ public class ReviewScrapController {
     @GetMapping("/list")
     public ResponseEntity<BaseRes> findReviewScrapList(
             @AuthenticationPrincipal User user,
-            @PageableDefault(size = 10) Pageable pageable
+            @PageableDefault(size = 5) Pageable pageable
     ) {
         return ResponseEntity.ok().body(reviewScrapService.findReviewScrapList(user, pageable));
     }
