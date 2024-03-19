@@ -15,6 +15,7 @@ export const useReviewStore = defineStore("review", {
     reviewIdx: 0,
     reviewDetail: [],
     isLoading: false,
+    isPageExist: true
   }),
   actions: {
     async createReview(review, reviewImage) {
@@ -70,10 +71,12 @@ export const useReviewStore = defineStore("review", {
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
-        if (this.totalCnt === 0) {
+        if (this.reviewList.length === 0) {
           this.isReviewExist = false;
+          this.isPageExist = false;
         } else {
           this.isReviewExist = true;
+          this.isPageExist = true;
         }
       } catch (e) {
         console.log(e);
@@ -112,10 +115,12 @@ export const useReviewStore = defineStore("review", {
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
-        if (this.totalCnt === 0) {
+        if (this.reviewList.length === 0) {
           this.isReviewExist = false;
+          this.isPageExist = false;
         } else {
           this.isReviewExist = true;
+          this.isPageExist = true;
         }
       } catch (e) {
         console.log(e);

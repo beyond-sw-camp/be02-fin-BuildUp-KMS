@@ -20,7 +20,6 @@ export const useTagStore = defineStore("tag", {
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
-        console.log(response);
       } catch (e) {
         console.log(e);
       }

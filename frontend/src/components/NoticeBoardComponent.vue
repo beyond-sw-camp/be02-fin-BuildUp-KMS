@@ -2,7 +2,7 @@
   <div class="css-1agvh3p" @click="showContent()">
     <div class="css-1x8gxrp">
       <div :class="{ 'css-s3qw6k': !isClicked, 'css-1b9opqm': isClicked }">
-        <span class="css-0">{{ notice.boardTitle }}</span
+        <span class="css-0">{{ notice.title }}</span
         ><span class="css-1wp0bsh"></span><span class="css-1hkyyfd">N</span>
       </div>
     </div>
@@ -27,7 +27,7 @@
     </div>
   </div>
   <div :class="{ 'css-173r1bj': !isClicked, 'css-gx45j9': isClicked }">
-    {{ notice.boardContent }}
+    {{ notice.content }}
   </div>
 </template>
 <script>

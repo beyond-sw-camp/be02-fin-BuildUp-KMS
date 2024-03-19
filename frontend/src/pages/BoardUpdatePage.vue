@@ -236,7 +236,10 @@ export default {
     this.boardDetail = await this.boardStore.findBoardDetailByUserIdx(boardIdx);
     this.board.boardContent = this.boardDetail.boardContent;
     this.board.boardTitle = this.boardDetail.boardTitle;
-    this.imageUrl = this.boardDetail.boardImageList[0].boardImage;
+
+    if (this.boardDetail.boardImageList.length > 0) {
+      this.imageUrl = this.boardDetail.boardImageList[0].boardImage;
+    }
 
     if (this.boardDetail.tagList && this.boardDetail.tagList.length > 0) {
       this.tags = this.boardDetail.tagList;
@@ -293,7 +296,7 @@ export default {
       reader.readAsDataURL(file);
     },
     cancel() {
-      window.location.href = "/board";
+      window.location.href = "/mypage";
     },
   },
 };

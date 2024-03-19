@@ -256,7 +256,10 @@ export default {
     );
     this.review.reviewContent = this.reviewDetail.reviewContent;
     this.review.reviewTitle = this.reviewDetail.reviewTitle;
-    this.imageUrl = this.reviewDetail.reviewImageList[0].reviewImage;
+
+    if (this.reviewDetail.reviewImageList.length > 0) {
+      this.imageUrl = this.reviewDetail.reviewImageList[0].reviewImage;
+    }
 
     const loadedEvaluation = this.reviewDetail.courseEvaluation;
     this.Evaluations.forEach((evaluation) => {
@@ -287,7 +290,7 @@ export default {
       reader.readAsDataURL(file);
     },
     cancel() {
-      window.location.href = "/review";
+      window.location.href = "/mypage";
     },
     showEvaluation() {
       this.isEvaluationClicked = !this.isEvaluationClicked;
