@@ -85,15 +85,13 @@ class BoardControllerTest {
         mockRequest.setBoardCategoryIdx(1);
         mockRequest.setTagList(Arrays.asList("tag1", "tag2"));
 
-        // Mock MultipartFile[]
         MultipartFile[] mockFiles = new MultipartFile[1];
         mockFiles[0] = new MockMultipartFile("file", "test.jpg", "image/jpeg", "test image content".getBytes());
 
-        // Mock Response
         BaseRes mockResponse = BaseRes.builder()
                 .isSuccess(true)
                 .message("게시글 등록 성공")
-                .result(new Object()) // Assume your actual result object here
+                .result(new Object())
                 .build();
 
         when(boardService.createBoard(any(User.class), any(PostCreateBoardReq.class), any(MultipartFile[].class)))
