@@ -47,7 +47,7 @@
 
 <script>
 import { mapStores } from "pinia";
-import { useAdminStore } from "/src/stores/useAdminStore";
+import { useAdminStore } from "@/stores/useAdminStore";
 
 export default {
     name: "AdminLoginPage",

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="3" failures="0" errors="0" time="0.487">
+  <testsuite name="AdminLoginPage" errors="0" failures="0" skipped="0" timestamp="2024-03-19T10:16:14" time="0.287" tests="3">
+    <testcase classname="AdminLoginPage sets hideHeaderAndFooter to true on mount" name="AdminLoginPage sets hideHeaderAndFooter to true on mount" time="0.014">
+    </testcase>
+    <testcase classname="AdminLoginPage calls adminLogin with email and password on form submit" name="AdminLoginPage calls adminLogin with email and password on form submit" time="0.006">
+    </testcase>
+    <testcase classname="AdminLoginPage navigates to /admin/tag/register on successful login" name="AdminLoginPage navigates to /admin/tag/register on successful login" time="0.004">
+    </testcase>
+  </testsuite>
+</testsuites>
