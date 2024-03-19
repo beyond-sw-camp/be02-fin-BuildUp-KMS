@@ -12,6 +12,7 @@ export const useTotalStore = defineStore("total", {
     totalCnt: 0,
     isBoardExist: true,
     isLoading: false,
+    isPageExist: true,
   }),
   actions: {
     async getHotReviewList(reviewCategoryIdx, sortType, page = 1) {
@@ -31,10 +32,12 @@ export const useTotalStore = defineStore("total", {
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
-        if (this.totalCnt === 0) {
+        if (this.totalList.length === 0) {
           this.isBoardExist = false;
+          this.isPageExist = false;
         } else {
           this.isBoardExist = true;
+          this.isPageExist = true;
         }
       } catch (e) {
         console.log(e);
@@ -68,10 +71,12 @@ export const useTotalStore = defineStore("total", {
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
-        if (this.totalCnt === 0) {
+        if (this.totalList.length === 0) {
           this.isBoardExist = false;
+          this.isPageExist = false;
         } else {
           this.isBoardExist = true;
+          this.isPageExist = true;
         }
       } catch (e) {
         console.log(e);
@@ -99,10 +104,12 @@ export const useTotalStore = defineStore("total", {
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
-        if (this.totalCnt === 0) {
+        if (this.totalList.length === 0) {
           this.isBoardExist = false;
+          this.isPageExist = false;
         } else {
           this.isBoardExist = true;
+          this.isPageExist = true;
         }
 
         console.log(response);
@@ -138,10 +145,12 @@ export const useTotalStore = defineStore("total", {
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
-        if (this.totalCnt === 0) {
+        if (this.totalList.length === 0) {
           this.isBoardExist = false;
+          this.isPageExist = false;
         } else {
           this.isBoardExist = true;
+          this.isPageExist = true;
         }
       } catch (e) {
         console.log(e);
@@ -171,13 +180,13 @@ export const useTotalStore = defineStore("total", {
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
-        if (this.totalCnt === 0) {
+        if (this.totalList.length === 0) {
           this.isBoardExist = false;
+          this.isPageExist = false;
         } else {
           this.isBoardExist = true;
+          this.isPageExist = true;
         }
-
-        console.log(response);
       } catch (error) {
         console.error(error);
       }
@@ -205,30 +214,15 @@ export const useTotalStore = defineStore("total", {
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
-        if (this.totalCnt === 0) {
+        if (this.totalList.length === 0) {
           this.isBoardExist = false;
+          this.isPageExist = false;
         } else {
           this.isBoardExist = true;
+          this.isPageExist = true;
         }
 
         console.log(response);
-      } catch (error) {
-        console.error(error);
-      }
-    },
-
-    async deleteBoard(idx) {
-      try {
-        let response = await axios.delete(backend + "/board/delete/" + idx, {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-            "Content-Type": "application/json",
-          },
-        });
-
-        console.log(response);
-
-        return response.data;
       } catch (error) {
         console.error(error);
       }
@@ -254,10 +248,12 @@ export const useTotalStore = defineStore("total", {
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
-        if (this.totalCnt === 0) {
+        if (this.totalList.length === 0) {
           this.isBoardExist = false;
+          this.isPageExist = false;
         } else {
           this.isBoardExist = true;
+          this.isPageExist = true;
         }
       } catch (e) {
         console.log(e);
@@ -271,7 +267,8 @@ export const useTotalStore = defineStore("total", {
         }).toString();
 
         let response = await axios.get(
-          backend + `/reviewscrap/list/${reviewCategoryIdx}/${option}?${params}`,
+          backend +
+            `/reviewscrap/list/${reviewCategoryIdx}/${option}?${params}`,
           {
             headers: {
               Authorization: `Bearer ${storedToken}`,
@@ -284,19 +281,55 @@ export const useTotalStore = defineStore("total", {
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
-        if (this.totalCnt === 0) {
+        if (this.totalList.length === 0) {
           this.isBoardExist = false;
+          this.isPageExist = false;
         } else {
           this.isBoardExist = true;
+          this.isPageExist = true;
         }
       } catch (error) {
         console.error(error);
       }
     },
-    async cancelBoardScrap(boardScrapIdx) {
+    async deleteBoard(idx) {
+      try {
+        let response = await axios.delete(backend + "/board/delete/" + idx, {
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.data.isSuccess === true) {
+          alert("게시글이 삭제되었습니다.");
+          window.location.href = "/mypage";
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async deleteReview(idx) {
+      try {
+        let response = await axios.delete(backend + "/review/delete/" + idx, {
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.data.isSuccess === true) {
+          alert("후기글이 삭제되었습니다.");
+          window.location.href = "/mypage";
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async deleteBoardScrap(boardScrapIdx) {
       try {
         let response = await axios.patch(
-          `${backend}/boardscrap/delete/${boardScrapIdx}`,
+          backend + `/boardscrap/delete/${boardScrapIdx}`,
           {},
           {
             headers: {
@@ -305,7 +338,33 @@ export const useTotalStore = defineStore("total", {
             },
           }
         );
-        console.log(response);
+
+        if (response.data.isSuccess === true) {
+          alert("게시글 스크랩을 취소하였습니다.");
+          window.location.href = "/mypage";
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
+    async deletReviewScrap(reviewScrapIdx) {
+      try {
+        let response = await axios.patch(
+          backend + `/reviewscrap/delete/${reviewScrapIdx}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${storedToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (response.data.isSuccess === true) {
+          alert("후기글 스크랩을 취소하였습니다.");
+          window.location.href = "/mypage";
+        }
       } catch (e) {
         console.error(e);
         throw e;

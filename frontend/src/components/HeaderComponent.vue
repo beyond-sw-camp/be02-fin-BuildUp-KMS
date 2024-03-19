@@ -388,8 +388,10 @@ export default {
     },
     openEmailLoginModal() {
       this.isEmailLogin = true;
+      this.isLogin = false;
     },
     closeEmailLoginModal() {
+      this.isLogin = true;
       this.isEmailLogin = false;
     },
     closeAllLoginModal() {
@@ -406,6 +408,8 @@ export default {
       store.decodedToken = {};
       this.isDropdownOpen = false;
       this.$router.push("/");
+      this.email = ""
+      this.password = ""
     },
     decodeToken(token) {
       const base64Url = token.split(".")[1];
@@ -416,7 +420,6 @@ export default {
           .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
           .join("")
       );
-
       return JSON.parse(jsonPayload);
     },
     async onLoginFormSubmit() {

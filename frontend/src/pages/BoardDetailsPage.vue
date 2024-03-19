@@ -69,13 +69,43 @@
                     </div>
                   </div>
                 </div>
-                <ConfirmDialogComponent
+                <!-- <ConfirmDialogComponent
                   v-if="showMyPageConfirmDialog"
                   :isVisible="showMyPageConfirmDialog"
                   message="마이페이지로 이동하시겠습니까?"
                   :onConfirm="moveMyPage"
                   :onCancel="dontMoveMyPage"
-                />
+                /> -->
+                <div
+                  v-show="isActive"
+                  class="layer pop_product pop_shopping_bag"
+                >
+                  <div
+                    class="layer_cont"
+                    style="margin: -140.5px 0px 0px -225px"
+                  >
+                    <p>
+                      마이페이지로 이동하시겠습니까?
+                    </p>
+                    <div class="btn_wrap">
+                      <button
+                        type="button"
+                        class="btn gray small"
+                        @click="dontMoveMyPage"
+                      >
+                        머무르기
+                      </button>
+                      <button
+                        type="button"
+                        class="btn black small"
+                        @click="moveMyPage"
+                      >
+                        이동하기
+                      </button>
+                    </div>
+                  </div>
+                  <span></span>
+                </div>
                 <div class="css-99cwur">
                   <div class="css-1fhge30">
                     <div class="css-aw18wm">
@@ -239,14 +269,14 @@ import { useBoardCommentStore } from "../stores/useBoardCommentStore";
 import { useBoardStore } from "@/stores/useBoardStore";
 import { useUserStore } from "@/stores/useUserStore";
 import { mapStores } from "pinia";
-import ConfirmDialogComponent from "/src/components/ConfirmDialogComponent.vue";
+// import ConfirmDialogComponent from "/src/components/ConfirmDialogComponent.vue";
 
 export default {
   name: "BoardDetailsPage",
   components: {
     BoardCommentComponent,
     TagComponent,
-    ConfirmDialogComponent,
+    // ConfirmDialogComponent,
   },
   data() {
     return {
@@ -260,10 +290,13 @@ export default {
       isScrapped: false,
       boardUpIdx: null,
       boardScrapIdx: null,
+      isActive: false,
     };
   },
   computed: {
-    ...mapStores(useBoardStore, useBoardCommentStore, useUserStore, ["tagList"]),
+    ...mapStores(useBoardStore, useBoardCommentStore, useUserStore, [
+      "tagList",
+    ]),
     isLoggedIn() {
       return !!localStorage.getItem("token");
     },
@@ -302,13 +335,19 @@ export default {
     }
   },
   methods: {
+    openModal() {
+      this.isActive = true;
+    },
+    closeModal() {
+      this.isActive = false;
+    },
     goBack() {
-      if(this.boardDetail.boardCategoryName === "지식 공유") {
-        window.location.href="/board/knowledge";
-      } else if(this.boardDetail.boardCategoryName === "QnA") {
-        window.location.href="/board/qna";
-      } else if(this.boardDetail.boardCategoryName === "스터디") {
-        window.location.href="/study";
+      if (this.boardDetail.boardCategoryName === "지식 공유") {
+        window.location.href = "/board/knowledge";
+      } else if (this.boardDetail.boardCategoryName === "QnA") {
+        window.location.href = "/board/qna";
+      } else if (this.boardDetail.boardCategoryName === "스터디") {
+        window.location.href = "/study";
       }
     },
     async submitComment() {
@@ -346,7 +385,7 @@ export default {
           if (response.status === 200 && response.data) {
             console.log("게시글 추천 성공!");
             this.isRecommended = true;
-            this.showMyPageConfirmDialog = true;
+            window.location.reload();
           } else {
             console.error("게시글 추천 실패");
             alert("게시글 추천 실패");
@@ -378,7 +417,7 @@ export default {
           if (response.status === 200 && response.data) {
             console.log("게시글 스크랩 성공!");
             this.isScrapped = true;
-            this.showMyPageConfirmDialog = true;
+            this.isActive = true;
           } else {
             console.error("게시글 스크랩 실패");
             alert("게시글 스크랩 실패");
@@ -389,11 +428,11 @@ export default {
       }
     },
     moveMyPage() {
-      this.showMyPageConfirmDialog = false;
+      this.isActive = false;
       this.$router.push("/mypage");
     },
     dontMoveMyPage() {
-      this.showMyPageConfirmDialog = false;
+      this.isActive = false;
       window.location.reload();
     },
     async checkBoardUp() {
@@ -1015,5 +1054,158 @@ img {
 
 .css-scrap {
   margin-left: 4px;
+}
+
+/*------------확인 모달창-------------*/
+.layer.active,
+.layer_ov_ly.actve {
+  display: block;
+}
+.layer *,
+.layer_ov_ly * {
+  font-family: "ProximaNova-Regular", "Apple SD Gothic Neo", "Noto Sans KR",
+    "Malgun Gothic", "맑은 고딕", sans-serif;
+}
+.layer_cont {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 110;
+  min-width: 480px;
+  overflow: hidden;
+  padding: 40px 40px 50px;
+  border: 1px solid #000;
+  background: #fff;
+}
+.layer.pop_shopping_bag .layer_cont {
+  min-width: 330px;
+  border-radius: 15px;
+  border-color: white;
+}
+.layer.pop_shopping_bag p {
+  padding: 40px 0 15px;
+  font-family: "Pretendard";
+  font-size: 16px;
+  font-weight: 500px;
+  line-height: 1.9;
+  text-align: center;
+}
+.layer.pop_product .btn_wrap {
+  margin-top: 15px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.layer_cont {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 110;
+  min-width: 480px;
+  overflow: hidden;
+  padding: 10px 20px 10px;
+  border: 1px solid #000;
+  background: #fff;
+}
+.layer.pop_shopping_bag .layer_cont {
+  min-width: 330px;
+}
+a.btn,
+button.btn,
+input.btn,
+span.btn {
+  display: inline-block;
+  min-width: 180px;
+  padding: 0 20px;
+  height: 50px;
+  text-align: center;
+  line-height: 48px;
+  border: 1px solid #333;
+  background-color: #fff;
+  color: #000;
+  font-family: "ProximaNova-Semibold", "Apple SD Gothic Neo",
+    "NotoSansKR-Medium", "Malgun Gothic", "맑은 고딕", sans-serif;
+  font-size: 14px;
+}
+a.btn.gray,
+button.btn.gray,
+input.btn.gray,
+span.btn.gray {
+  border-color: #7d7d7d;
+  background-color: #7d7d7d;
+  color: #fff;
+}
+a.btn.small,
+button.btn.small,
+input.btn.small,
+span.btn.small {
+  height: 35px;
+  font-size: 12px;
+  line-height: 30px;
+}
+.layer.pop_product .btn_wrap .btn {
+  min-width: 100px;
+  margin: 0 8px;
+}
+a.btn.black,
+button.btn.black,
+input.btn.black,
+span.btn.black {
+  border-color: #000;
+  background-color: #000;
+  color: #fff;
+}
+.layer_cont .btn_close,
+.layer_cont .pop_in_pop_close {
+  overflow: hidden;
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  width: 53px;
+  height: 53px;
+  padding: 15px;
+  line-height: 99em;
+  vertical-align: top;
+  background-color: white;
+  border-color: white;
+}
+.layer_cont .btn_close:before,
+.layer_cont .pop_in_pop_close:before {
+  display: block;
+  width: 12px;
+  height: 12px;
+  background: url(//static.wconcept.co.kr/web/images/common/layer_close_23.png)
+    no-repeat;
+  background-size: 100%;
+  content: "";
+}
+.layer > span,
+.layer_ov_ly > span {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 101;
+  background: #0e0e0e;
+  opacity: 0.4;
+  filter: alpha(opacity=40);
+  content: "";
+  display: block;
+}
+
+.css-myjkxi {
+    position: absolute;
+    top: 18px;
+    right: 16px;
+    font-family: Pretendard;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 26px;
+    color: rgb(58, 62, 65);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
 }
 </style>

@@ -26,32 +26,34 @@
           v-if="totals.tagNameList && totals.tagNameList.length > 0"
         />
       </div>
-      <router-link :to="'/board/mywrite/' + totals.idx">
-        <button class="updateboardgms" v-show="totals.boardType === 'write'">
-          ⚙ 수정
-        </button>
-      </router-link>
+      <button
+        class="updateboardgms"
+        v-show="totals.boardType === 'write'"
+        @click="moveToUpdate()"
+      >
+        ⚙ 수정
+      </button>
       <button
         class="deleteboardgms"
-        @click="deleteB"
+        @click="deleteBoard()"
         v-show="totals.boardType === 'write'"
       >
         삭제
       </button>
       <button
         class="deleteboardgms"
-        @click="deleteB"
+        @click="deleteScrap()"
         v-show="totals.boardType === 'scrap'"
       >
         취소
       </button>
-      <ConfirmDialogComponent
+      <!-- <ConfirmDialogComponent
         v-if="showMyPageConfirmDialog"
         :isVisible="showMyPageConfirmDialog"
         message="For real?"
-        :onConfirm="moveMyPage"
-        :onCancel="dontMoveMyPage"
-      />
+        :onConfirm="checkDelete"
+        :onCancel="cancelDelete"
+      /> -->
       <!--사진-->
     </div>
     <div class="css-99cwur">
@@ -74,13 +76,56 @@
       </div>
     </div>
   </div>
+  <div v-show="isActive" class="layer pop_product pop_shopping_bag">
+    <div class="layer_cont" style="margin: -140.5px 0px 0px -225px">
+      <p>
+        게시글을 정말로 삭제하시겠습니까?
+        <br />
+        삭제한 게시글은 되돌릴 수 없습니다.
+      </p>
+      <div class="btn_wrap">
+        <button type="button" class="btn gray small" @click="cancelDelete">
+          취소하기
+        </button>
+        <button type="button" class="btn black small" @click="checkDelete">
+          삭제하기
+        </button>
+      </div>
+      <div data-v-5c833af0="" class="css-myjkxi" @click="closeModal">
+        <svg
+          data-v-5c833af0=""
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            data-v-5c833af0=""
+            d="M4.16663 4.16669L15.8333 15.8334"
+            stroke="#3A3E41"
+            stroke-width="1.75"
+            stroke-linecap="round"
+          ></path>
+          <path
+            data-v-5c833af0=""
+            d="M15.8334 4.16669L4.16671 15.8334"
+            stroke="#3A3E41"
+            stroke-width="1.75"
+            stroke-linecap="round"
+          ></path>
+        </svg>
+      </div>
+    </div>
+    <span></span>
+  </div>
 </template>
 
 <script>
 import { mapStores } from "pinia";
 import { useTotalStore } from "@/stores/useTotalStore";
 import TagComponent from "@/components/TagComponent.vue";
-import ConfirmDialogComponent from "./ConfirmDialogComponent.vue";
+// import ConfirmDialogComponent from "./ConfirmDialogComponent.vue";
 
 export default {
   name: "MyPageBoardComponent",
@@ -90,55 +135,51 @@ export default {
       showMyPageConfirmDialog: false,
       isModalOpen: false,
       totalStore: useTotalStore(), // totalStore 객체 초기화
+      isActive: false,
     };
   },
   computed: {
     ...mapStores(useTotalStore, ["tagNameList"]), // mapStores 함수 사용 수정
   },
   methods: {
-    async moveMyPage() {
-      this.showMyPageConfirmDialog = false;
-      try {
-        let response;
-        if (this.boardType === "scrap") {
-          response = await this.boardStore.cancelBoardScrap(this.totals.idx);
-        } else {
-          response = await this.totalStore.deleteBoard(this.totals.idx);
-        }
-
-        if (response) {
-          console.log("Operation successful:", response);
-          window.location.reload();
-          return { success: true, message: "Operation successful", response };
-
-        } else {
-          console.error("Operation failed: No response data");
-
-          return {
-            success: false,
-            message: "Operation failed: No response data",
-          };
-        }
-        
-      } catch (error) {
-        console.error("An error occurred while deleting:", error);
-        return {
-          success: false,
-          message: "An error occurred while deleting: " + error.message,
-        };
+    openModal() {
+      this.isActive = true;
+    },
+    closeModal() {
+      this.isActive = false;
+    },
+    moveToUpdate() {
+      if (this.totals.type === "review") {
+        this.$router.push("/review/mywrite/" + this.totals.idx);
+      } else {
+        this.$router.push("/board/mywrite/" + this.totals.idx);
       }
     },
-    dontMoveMyPage() {
+    async checkDelete() {
+      if (this.totals.type === "board") {
+        await this.totalStore.deleteBoard(this.totals.idx);
+      } else {
+        await this.totalStore.deleteReview(this.totals.idx);
+      }
       this.showMyPageConfirmDialog = false;
-      window.location.reload();
     },
-    deleteB() {
-      this.showMyPageConfirmDialog = true;
+    cancelDelete() {
+      this.isActive = false;
+    },
+    deleteBoard() {
+      this.isActive = true;
+    },
+    async deleteScrap() {
+      if (this.totals.type === "board") {
+        await this.totalStore.deleteBoardScrap(this.totals.idx);
+      } else {
+        await this.totalStore.deletReviewScrap(this.totals.idx);
+      }
     },
   },
   components: {
     TagComponent,
-    ConfirmDialogComponent,
+    // ConfirmDialogComponent,
   },
 };
 </script>
@@ -354,7 +395,7 @@ export default {
 .updateboardgms {
   font-family: Pretendard;
   cursor: pointer;
-  width: 52px;
+  width: 60px;
   padding: 3px 1px;
   margin-left: 5px;
   border-radius: 5px;
@@ -404,5 +445,158 @@ export default {
 
 a {
   text-decoration: none;
+}
+
+/*------------확인 모달창-------------*/
+.layer.active,
+.layer_ov_ly.actve {
+  display: block;
+}
+.layer *,
+.layer_ov_ly * {
+  font-family: "ProximaNova-Regular", "Apple SD Gothic Neo", "Noto Sans KR",
+    "Malgun Gothic", "맑은 고딕", sans-serif;
+}
+.layer_cont {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 110;
+  min-width: 480px;
+  overflow: hidden;
+  padding: 40px 40px 50px;
+  border: 1px solid #000;
+  background: #fff;
+}
+.layer.pop_shopping_bag .layer_cont {
+  min-width: 330px;
+  border-radius: 15px;
+  border-color: white;
+}
+.layer.pop_shopping_bag p {
+  padding: 40px 0 15px;
+  font-family: "Pretendard";
+  font-size: 16px;
+  font-weight: 500px;
+  line-height: 1.9;
+  text-align: center;
+}
+.layer.pop_product .btn_wrap {
+  margin-top: 0px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.layer_cont {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 110;
+  min-width: 480px;
+  overflow: hidden;
+  padding: 10px 20px 10px;
+  border: 1px solid #000;
+  background: #fff;
+}
+.layer.pop_shopping_bag .layer_cont {
+  min-width: 330px;
+}
+a.btn,
+button.btn,
+input.btn,
+span.btn {
+  display: inline-block;
+  min-width: 180px;
+  padding: 0 20px;
+  height: 50px;
+  text-align: center;
+  line-height: 48px;
+  border: 1px solid #333;
+  background-color: #fff;
+  color: #000;
+  font-family: "ProximaNova-Semibold", "Apple SD Gothic Neo",
+    "NotoSansKR-Medium", "Malgun Gothic", "맑은 고딕", sans-serif;
+  font-size: 14px;
+}
+a.btn.gray,
+button.btn.gray,
+input.btn.gray,
+span.btn.gray {
+  border-color: #7d7d7d;
+  background-color: #7d7d7d;
+  color: #fff;
+}
+a.btn.small,
+button.btn.small,
+input.btn.small,
+span.btn.small {
+  height: 40px;
+  font-size: 12px;
+  line-height: 38px;
+}
+.layer.pop_product .btn_wrap .btn {
+  min-width: 100px;
+  margin: 0 8px;
+}
+a.btn.black,
+button.btn.black,
+input.btn.black,
+span.btn.black {
+  border-color: #000;
+  background-color: #000;
+  color: #fff;
+}
+.layer_cont .btn_close,
+.layer_cont .pop_in_pop_close {
+  overflow: hidden;
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  width: 53px;
+  height: 53px;
+  padding: 15px;
+  line-height: 99em;
+  vertical-align: top;
+  background-color: white;
+  border-color: white;
+}
+.layer_cont .btn_close:before,
+.layer_cont .pop_in_pop_close:before {
+  display: block;
+  width: 12px;
+  height: 12px;
+  background: url(//static.wconcept.co.kr/web/images/common/layer_close_23.png)
+    no-repeat;
+  background-size: 100%;
+  content: "";
+}
+.layer > span,
+.layer_ov_ly > span {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 101;
+  background: #0e0e0e;
+  opacity: 0.4;
+  filter: alpha(opacity=40);
+  content: "";
+  display: block;
+}
+
+.css-myjkxi {
+    position: absolute;
+    top: 18px;
+    right: 16px;
+    font-family: Pretendard;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 26px;
+    color: rgb(58, 62, 65);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
 }
 </style>
