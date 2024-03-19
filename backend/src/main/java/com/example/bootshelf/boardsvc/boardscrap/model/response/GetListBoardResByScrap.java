@@ -1,4 +1,4 @@
-package com.example.bootshelf.boardsvc.board.model.response;
+package com.example.bootshelf.boardsvc.boardscrap.model.response;
 
 import lombok.*;
 
@@ -9,7 +9,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class GetListBoardRes {
+public class GetListBoardResByScrap {
 
     private Integer idx;
 

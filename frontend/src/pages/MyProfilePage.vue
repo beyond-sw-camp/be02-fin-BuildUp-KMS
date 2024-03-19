@@ -8,7 +8,7 @@
               <div class="css-28nsux">
                 <div class="css-titlegms">계정 설정</div>
                 <div class="css-19831hi">프로필</div>
-                <a class="new" href="/active">
+                <a class="new" href="/mypage">
                   <div class="css-nw8p9d">나의 활동</div>
                 </a>
               </div>

@@ -5,6 +5,7 @@ import com.example.bootshelf.boardsvc.boardscrap.service.BoardScrapService;
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.user.model.entity.User;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -16,6 +17,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 @Tag(name = "게시판", description = "게시판 CRUD")
 @Api(tags = "게시판 스크랩")
@@ -58,7 +62,6 @@ public class BoardScrapController {
         return ResponseEntity.ok().body(boardScrapService.findBoardScrapList(user, pageable));
     }
 
-
     @Operation(summary = "BoardScrap 여부 조회",
             description = "게시글을 스크랩 여부를 확인하는 API입니다.")
     @ApiResponses({
@@ -86,5 +89,21 @@ public class BoardScrapController {
             @PathVariable Integer boardScrapIdx
     ) {
         return ResponseEntity.ok().body(boardScrapService.deleteBoardScrap(user, boardScrapIdx));
+    }
+
+    @Operation(summary = "BoardScrap 목록 카테고리별 조회",
+            description = "스크랩한 게시판 게시글 목록을 카테고리별로 조회하는 API입니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+    })
+    @GetMapping("/list/{boardCategoryIdx}/{sortType}")
+    public ResponseEntity<BaseRes> findBoardScrapListByCategory(
+            @AuthenticationPrincipal User user,
+            @PageableDefault(size = 10) Pageable pageable,
+            @PathVariable(value = "boardCategoryIdx") Integer boardCategoryIdx,
+            @PathVariable @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") @ApiParam(value = "정렬유형 : 1 (최신순), 2 (추천수 순), 3 (조회수 순), 4 (스크랩수 순), 5 (댓글수 순)") Integer sortType
+    ) {
+        return ResponseEntity.ok().body(boardScrapService.findBoardScrapListByCategory(user, boardCategoryIdx, sortType, pageable));
     }
 }
