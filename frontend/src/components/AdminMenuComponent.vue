@@ -49,7 +49,7 @@
 
 <script>
 import { reactive, ref, onMounted } from 'vue';
-import { useAdminStore } from "/src/stores/useAdminStore";
+import { useAdminStore } from "@/stores/useAdminStore";
 import { mapStores } from "pinia";
 
 export default {
