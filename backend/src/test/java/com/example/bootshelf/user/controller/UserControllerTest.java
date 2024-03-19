@@ -196,7 +196,6 @@ class UserControllerTest {
     }
 
     @DisplayName("로그인 실패 - 비밀번호 불일치")
-    @WithMockUser
     @Test
     void userController_login_fail_wrongPassword() throws Exception{
 
