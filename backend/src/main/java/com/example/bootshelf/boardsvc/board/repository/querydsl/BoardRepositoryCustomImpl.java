@@ -146,7 +146,7 @@ public class BoardRepositoryCustomImpl extends QuerydslRepositorySupport impleme
         JPQLQuery<Board> querySQL = from(qBoard)
                 .leftJoin(qBoard.user).fetchJoin()
                 .leftJoin(qBoard.boardCategory).fetchJoin()
-                .where(searchCondition.and(qBoard.boardCategory.idx.eq(boardCategoryIdx)))
+                .where(searchCondition.and(qBoard.boardCategory.idx.eq(boardCategoryIdx)).and(qBoard.status.eq(true)))
                 .orderBy(orderSpecifiers);
 
         // pagination 적용
@@ -168,7 +168,7 @@ public class BoardRepositoryCustomImpl extends QuerydslRepositorySupport impleme
         JPQLQuery<Board> querySQL = from(qBoard)
                 .leftJoin(qBoard.user).fetchJoin()
                 .leftJoin(qBoard.boardCategory).fetchJoin()
-                .where(searchCondition)
+                .where(searchCondition.and(qBoard.status.eq(true)))
                 .orderBy(qBoard.createdAt.desc());
 
         // pagination 적용
@@ -205,7 +205,7 @@ public class BoardRepositoryCustomImpl extends QuerydslRepositorySupport impleme
         JPQLQuery<Board> querySQL = from(qBoard)
                 .leftJoin(qBoard.user).fetchJoin()
                 .leftJoin(qBoard.boardCategory).fetchJoin()
-                .where(searchCondition)
+                .where(searchCondition.and(qBoard.status.eq(true)))
                 .orderBy(qBoard.createdAt.desc());
 
         // pagination 적용

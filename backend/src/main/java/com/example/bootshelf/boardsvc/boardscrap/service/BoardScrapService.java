@@ -30,7 +30,7 @@ public class BoardScrapService {
     private final BoardScrapRepository boardScrapRepository;
     private final BoardRepository boardRepository;
 
-    @Transactional
+    @Transactional(readOnly = false)
     public BaseRes createBoardScrap(User user, PostCreateBoardScrapReq req) {
         Board board = boardRepository.findByIdx(req.getBoardIdx())
                 .orElseThrow(() -> new BoardException(ErrorCode.BOARD_NOT_EXISTS, String.format("Board [ %s ] is not exists.", req.getBoardIdx())));
@@ -80,6 +80,11 @@ public class BoardScrapService {
 
         List<GetFindBoardScrapRes> resultList = new ArrayList<>();
         for (BoardScrap boardScrap : boardScrapList.getContent()) {
+
+            if(boardScrap.getStatus() == false) {
+                continue;
+            }
+
             GetFindBoardScrapRes res = GetFindBoardScrapRes.builder()
                     .boardScrapIdx(boardScrap.getIdx())
                     .boardIdx(boardScrap.getBoard().getIdx())
@@ -141,7 +146,7 @@ public class BoardScrapService {
     }
 
 
-@Transactional
+    @Transactional(readOnly = false)
     public BaseRes deleteBoardScrap(User user, Integer boardScrapIdx) {
         Optional<BoardScrap> result = boardScrapRepository.findByIdx(boardScrapIdx);
         if (result.isPresent()) {
@@ -184,7 +189,7 @@ public class BoardScrapService {
             }
 
             GetListBoardResByScrap res = GetListBoardResByScrap.builder()
-                    .idx(boardScrap.getBoard().getIdx())
+                    .idx(boardScrap.getIdx())
                     .nickName(boardScrap.getBoard().getUser().getNickName())
                     .userProfileImage(user.getProfileImage())
                     .title(boardScrap.getBoard().getBoardTitle())
