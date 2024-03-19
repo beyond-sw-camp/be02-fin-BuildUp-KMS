@@ -26,11 +26,25 @@
           v-if="totals.tagNameList && totals.tagNameList.length > 0"
         />
       </div>
-      <router-link to="/board/new">
-        <button class="updateboardgms" v-show="totals.boardType === 'write'">⚙ 수정</button>
+      <router-link :to="'/board/mywrite/' + totals.idx">
+        <button class="updateboardgms" v-show="totals.boardType === 'write'">
+          ⚙ 수정
+        </button>
       </router-link>
-      <button class="deleteboardgms" @click="deleteB" v-show="totals.boardType === 'write'">삭제</button>
-      <button class="deleteboardgms" @click="deleteB" v-show="totals.boardType === 'scrap'">취소</button>
+      <button
+        class="deleteboardgms"
+        @click="deleteB"
+        v-show="totals.boardType === 'write'"
+      >
+        삭제
+      </button>
+      <button
+        class="deleteboardgms"
+        @click="deleteB"
+        v-show="totals.boardType === 'scrap'"
+      >
+        취소
+      </button>
       <ConfirmDialogComponent
         v-if="showMyPageConfirmDialog"
         :isVisible="showMyPageConfirmDialog"
@@ -85,15 +99,33 @@ export default {
     async moveMyPage() {
       this.showMyPageConfirmDialog = false;
       try {
-        let response = await this.totalStore.deleteBoard(this.totals.idx);
-        if (response) {
-          console.log("Board deleted successfully:", response);
-          window.location.reload();
+        let response;
+        if (this.boardType === "scrap") {
+          response = await this.boardStore.cancelBoardScrap(this.totals.idx);
         } else {
-          console.error("Delete request failed: No response data");
+          response = await this.totalStore.deleteBoard(this.totals.idx);
         }
+
+        if (response) {
+          console.log("Operation successful:", response);
+          window.location.reload();
+          return { success: true, message: "Operation successful", response };
+
+        } else {
+          console.error("Operation failed: No response data");
+
+          return {
+            success: false,
+            message: "Operation failed: No response data",
+          };
+        }
+        
       } catch (error) {
         console.error("An error occurred while deleting:", error);
+        return {
+          success: false,
+          message: "An error occurred while deleting: " + error.message,
+        };
       }
     },
     dontMoveMyPage() {

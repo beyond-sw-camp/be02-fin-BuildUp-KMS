@@ -293,5 +293,23 @@ export const useTotalStore = defineStore("total", {
         console.error(error);
       }
     },
+    async cancelBoardScrap(boardScrapIdx) {
+      try {
+        let response = await axios.patch(
+          `${backend}/boardscrap/delete/${boardScrapIdx}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${storedToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log(response);
+      } catch (e) {
+        console.error(e);
+        throw e;
+      }
+    },
   },
 });
