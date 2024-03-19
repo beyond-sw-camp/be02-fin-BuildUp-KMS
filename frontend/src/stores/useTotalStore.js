@@ -171,6 +171,12 @@ export const useTotalStore = defineStore("total", {
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
+        if (this.totalCnt === 0) {
+          this.isBoardExist = false;
+        } else {
+          this.isBoardExist = true;
+        }
+
         console.log(response);
       } catch (error) {
         console.error(error);
@@ -199,6 +205,12 @@ export const useTotalStore = defineStore("total", {
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
+        if (this.totalCnt === 0) {
+          this.isBoardExist = false;
+        } else {
+          this.isBoardExist = true;
+        }
+
         console.log(response);
       } catch (error) {
         console.error(error);
@@ -221,31 +233,31 @@ export const useTotalStore = defineStore("total", {
         console.error(error);
       }
     },
-    async getReviewList(reviewCategoryIdx, sortType, page = 1) {
+    async getMyReviewList(reviewCategoryIdx, sortType, page = 1) {
       try {
         const params = new URLSearchParams({
           page: page - 1,
         }).toString();
 
         let response = await axios.get(
-          backend + `/review/list/${reviewCategoryIdx}/${sortType}?${params}`,
+          backend + `/review/mylist/${reviewCategoryIdx}/${sortType}?${params}`,
           {
             headers: {
+              Authorization: `Bearer ${storedToken}`,
               "Content-Type": "application/json",
             },
           }
         );
 
-        this.reviewList = response.data.result.list;
+        this.totalList = response.data.result.list;
         this.totalPages = response.data.result.totalPages;
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
-        if (
-          response.data.result.list.length === 0 &&
-          response.data.result.totalCnt === 0
-        ) {
-          this.isReviewExist = false;
+        if (this.totalCnt === 0) {
+          this.isBoardExist = false;
+        } else {
+          this.isBoardExist = true;
         }
       } catch (e) {
         console.log(e);
@@ -254,14 +266,12 @@ export const useTotalStore = defineStore("total", {
 
     async findReviewScrapListByCategory(reviewCategoryIdx, option, page = 1) {
       try {
+        const params = new URLSearchParams({
+          page: page - 1,
+        }).toString();
+
         let response = await axios.get(
-          backend +
-            "/reviewscrap/list/" +
-            reviewCategoryIdx +
-            "/ " +
-            option +
-            "?page=" +
-            (page - 1),
+          backend + `/reviewscrap/list/${reviewCategoryIdx}/${option}?${params}`,
           {
             headers: {
               Authorization: `Bearer ${storedToken}`,
@@ -274,7 +284,11 @@ export const useTotalStore = defineStore("total", {
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
-        console.log(response);
+        if (this.totalCnt === 0) {
+          this.isBoardExist = false;
+        } else {
+          this.isBoardExist = true;
+        }
       } catch (error) {
         console.error(error);
       }

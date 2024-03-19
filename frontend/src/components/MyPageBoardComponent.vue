@@ -27,9 +27,10 @@
         />
       </div>
       <router-link to="/board/new">
-        <button class="updateboardgms">⚙ 수정</button>
+        <button class="updateboardgms" v-show="totals.boardType === 'write'">⚙ 수정</button>
       </router-link>
-      <button class="deleteboardgms" @click="deleteB">삭제</button>
+      <button class="deleteboardgms" @click="deleteB" v-show="totals.boardType === 'write'">삭제</button>
+      <button class="deleteboardgms" @click="deleteB" v-show="totals.boardType === 'scrap'">취소</button>
       <ConfirmDialogComponent
         v-if="showMyPageConfirmDialog"
         :isVisible="showMyPageConfirmDialog"
@@ -40,7 +41,7 @@
       <!--사진-->
     </div>
     <div class="css-99cwur">
-      <div class="css-1ry6usa">{{ totals.createdAt }}</div>
+      <div class="css-1ry6usa">{{ totals.updatedAt }}</div>
       <div class="css-o01lup">
         <div class="css-ts29it">
           <div class="css-1ry6usa">댓글</div>
@@ -126,6 +127,9 @@ export default {
     gap: 14px;
     cursor: pointer;
   }
+}
+.css-aw1sgr:hover {
+  background-color: rgb(242, 246, 248);
 }
 .css-1728m7d {
   font-family: Pretendard;
