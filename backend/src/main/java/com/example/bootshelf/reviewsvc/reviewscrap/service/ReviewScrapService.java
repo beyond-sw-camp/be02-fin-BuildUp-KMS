@@ -107,6 +107,7 @@ public class ReviewScrapService {
 
         List<GetScrapListReviewRes> resultList = new ArrayList<>();
         for (ReviewScrap reviewScrap : reviewScrapList.getContent()) {
+
             GetScrapListReviewRes res = GetScrapListReviewRes.builder()
                     .idx(reviewScrap.getIdx())
                     .userIdx(reviewScrap.getUser().getIdx())

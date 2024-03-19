@@ -39,7 +39,7 @@ public class ReviewRepositoryCustomImpl extends QuerydslRepositorySupport implem
         List<Review> result = from(review)
                 .leftJoin(review.reviewImageList, reviewImage).fetchJoin()
                 .leftJoin(review.user, user).fetchJoin()
-                .where(review.user.idx.eq(userIdx).and(review.reviewCategory.idx.eq(reviewCategoryIdx)))
+                .where(review.user.idx.eq(userIdx).and(review.reviewCategory.idx.eq(reviewCategoryIdx)).and(review.status.eq(true)))
                 .orderBy(orderSpecifiers)
                 .distinct()
                 .offset(pageable.getOffset())
@@ -50,7 +50,7 @@ public class ReviewRepositoryCustomImpl extends QuerydslRepositorySupport implem
         long total = from(review)
                 .leftJoin(review.reviewCategory, reviewCategory)
                 .leftJoin(review.user, user)
-                .where(review.reviewCategory.idx.eq(reviewCategoryIdx))
+                .where(review.user.idx.eq(userIdx).and(review.reviewCategory.idx.eq(reviewCategoryIdx)).and(review.status.eq(true)))
                 .fetchCount();
 
         return new PageImpl<>(result, pageable, total);
@@ -82,7 +82,7 @@ public class ReviewRepositoryCustomImpl extends QuerydslRepositorySupport implem
         List<Review> result = from(review)
                 .leftJoin(review.reviewImageList, reviewImage).fetchJoin()
                 .leftJoin(review.user, user).fetchJoin()
-                .where(review.reviewCategory.idx.eq(reviewCategoryIdx))
+                .where(review.reviewCategory.idx.eq(reviewCategoryIdx).and(review.status.eq(true)))
                 .orderBy(orderSpecifiers)
                 .distinct()
                 .offset(pageable.getOffset())
@@ -141,7 +141,7 @@ public class ReviewRepositoryCustomImpl extends QuerydslRepositorySupport implem
                 .leftJoin(review.reviewCategory, reviewCategory).fetchJoin()
                 .leftJoin(review.user, user).fetchJoin()
                 .where(review.reviewCategory.idx.eq(reviewCategoryIdx)
-                        .and(searchCondition))
+                        .and(searchCondition).and(review.status.eq(true)))
                 .orderBy(orderSpecifiers)
                 .distinct()
                 .offset(pageable.getOffset())
@@ -169,7 +169,7 @@ public class ReviewRepositoryCustomImpl extends QuerydslRepositorySupport implem
         JPQLQuery<Review> querySQL = from(qReview)
                 .leftJoin(qReview.user).fetchJoin()
                 .leftJoin(qReview.reviewCategory).fetchJoin()
-                .where(searchCondition)
+                .where(searchCondition.and(qReview.status.eq(true)))
                 .orderBy(qReview.createdAt.desc());
 
         // pagination 적용
@@ -206,7 +206,7 @@ public class ReviewRepositoryCustomImpl extends QuerydslRepositorySupport implem
         JPQLQuery<Review> querySQL = from(qReview)
                 .leftJoin(qReview.user).fetchJoin()
                 .leftJoin(qReview.reviewCategory).fetchJoin()
-                .where(searchCondition)
+                .where(searchCondition.and(qReview.status.eq(true)))
                 .orderBy(qReview.createdAt.desc());
 
         // pagination 적용

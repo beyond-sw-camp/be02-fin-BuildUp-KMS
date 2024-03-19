@@ -103,6 +103,8 @@ public class BoardService {
         return baseRes;
     }
 
+    // 게시글 상세 조회
+    @Transactional(readOnly = true)
     public BaseRes findBoardByIdx(Integer boardIdx) {
         Optional<Board> result = boardRepository.findByIdx(boardIdx);
 
@@ -177,6 +179,9 @@ public class BoardService {
 
         return baseRes;
     }
+
+    // 게시글 댓글 조회
+    @Transactional(readOnly = true)
     private GetListCommentBoardRes convertToCommentBoardRes(BoardComment boardComment) {
 
         List<GetListCommentBoardRes> childCommentsRes = new ArrayList<>();
@@ -198,6 +203,8 @@ public class BoardService {
                 .build();
     }
 
+
+    // 내 작성글 조회
     @Transactional(readOnly = true)
     public BaseRes findMyBoardList(User user, Pageable pageable, Integer sortIdx) {
         Page<Board> boardList = boardRepository.findMyBoardList(user.getIdx(), pageable, sortIdx);
@@ -249,6 +256,7 @@ public class BoardService {
         return baseRes;
     }
 
+    // 카테고리별 내 작성글 조회
     @Transactional(readOnly = true)
     public BaseRes findMyBoardListByCategory(User user, Pageable pageable, Integer boardCategoryIdx, Integer sortIdx) {
 
@@ -277,7 +285,7 @@ public class BoardService {
                     .upCnt(board.getUpCnt())
                     .scrapCnt(board.getScrapCnt())
                     .commentCnt(board.getCommentCnt())
-                    .type("Board")
+                    .type("board")
                     .boardType("write")
                     .createdAt(board.getCreatedAt())
                     .updatedAt(board.getUpdatedAt())
@@ -313,6 +321,8 @@ public class BoardService {
         return baseRes;
     }
 
+    // 카테고리 별 게시글 조회
+    @Transactional(readOnly = true)
     public BaseRes findListByCategory(Pageable pageable, Integer boardCategoryIdx, Integer sortIdx) {
         Page<Board> boardList = boardRepository.findBoardListByCategory(pageable, boardCategoryIdx, sortIdx);
         List<GetListBoardRes> getListBoardResList = new ArrayList<>();
@@ -374,6 +384,9 @@ public class BoardService {
         return baseRes;
     }
 
+
+    // 태그 별 게시글 조회
+    @Transactional(readOnly = false)
     public BaseRes findListByTag(Pageable pageable, Integer tagIdx, Integer boardCategoryIdx, Integer sortIdx) {
         Page<Board> boardList = boardRepository.findBoardListByTag(pageable, tagIdx, boardCategoryIdx, sortIdx);
         List<GetListBoardRes> getListBoardResList = new ArrayList<>();
@@ -435,6 +448,8 @@ public class BoardService {
         return baseRes;
     }
 
+    // 태그 검색 별 조회
+    @Transactional(readOnly = true)
     public BaseRes findSearchListByTag(Pageable pageable, Integer tagIdx, Integer boardCategoryIdx, String searchTerm, Integer sortIdx) {
 
         Page<Board> boardList = boardRepository.findBoardSearchListByTag(pageable, tagIdx, boardCategoryIdx, searchTerm, sortIdx);
@@ -497,6 +512,8 @@ public class BoardService {
         return baseRes;
     }
 
+
+    // 검색어 별 게시글 조회
     @Transactional(readOnly = true)
     public BaseRes searchBoardListByQuery(String query, Integer searchType, Pageable pageable) {
         Page<Board> boardList = boardRepository.searchBoardListByQuery(pageable, query, searchType);
@@ -504,12 +521,14 @@ public class BoardService {
         List<GetBoardListByQueryRes> getBoardListByQueryResList = new ArrayList<>();
 
         for (Board board : boardList) {
+
             GetBoardListByQueryRes getBoardListByQueryRes = GetBoardListByQueryRes.builder()
-                    .boardIdx(board.getIdx())
-                    .boardTitle(board.getBoardTitle())
-                    .boardContent(board.getBoardContent())
+                    .idx(board.getIdx())
+                    .title(board.getBoardTitle())
+                    .content(board.getBoardContent())
                     .nickName(board.getUser().getNickName())
                     .createdAt(board.getCreatedAt())
+                    .updatedAt(board.getUpdatedAt())
                     .viewCnt(board.getViewCnt())
                     .commentCnt(board.getCommentCnt())
                     .upCnt(board.getUpCnt())
@@ -534,6 +553,8 @@ public class BoardService {
                 .build();
     }
 
+
+    // 검색어, 카테고리 별 게시글 조회
     @Transactional(readOnly = true)
     public BaseRes searchBoardListByQueryAndCategory(Integer boardCategoryIdx, String query, Integer sortIdx, Pageable pageable) {
         Page<Board> boardList = boardRepository.searchBoardListByQueryAndCategory(pageable, boardCategoryIdx, query, sortIdx);
@@ -541,6 +562,7 @@ public class BoardService {
         List<GetBoardListByQueryRes> getBoardListByQueryResList = new ArrayList<>();
 
         for (Board board : boardList) {
+
             List<BoardTag> boardTagList = board.getBoardTagList();
             List<String> tagNames = new ArrayList<>();
 
@@ -550,9 +572,9 @@ public class BoardService {
             }
 
             GetBoardListByQueryRes getBoardListByQueryRes = GetBoardListByQueryRes.builder()
-                    .boardIdx(board.getIdx())
-                    .boardTitle(board.getBoardTitle())
-                    .boardContent(board.getBoardContent())
+                    .idx(board.getIdx())
+                    .title(board.getBoardTitle())
+                    .content(board.getBoardContent())
                     .nickName(board.getUser().getNickName())
                     .createdAt(board.getCreatedAt())
                     .updatedAt(board.getUpdatedAt())
@@ -648,6 +670,8 @@ public class BoardService {
                 .build();
     }
 
+    // 게시글 수정
+    @Transactional(readOnly = false)
     public BaseRes updateBoard(User user, PatchUpdateBoardReq patchUpdateBoardReq, MultipartFile boardImage) {
         Optional<Board> result = boardRepository.findByIdxAndUserIdx(patchUpdateBoardReq.getBoardIdx(), user.getIdx());
 
@@ -685,6 +709,7 @@ public class BoardService {
         return baseRes;
     }
 
+    // 게시글 삭제
     @Transactional(readOnly = false)
     public BaseRes deleteBoard(User user, Integer idx) {
 
@@ -707,6 +732,7 @@ public class BoardService {
         return baseRes;
     }
 
+    // 본인 게시글 상세 조회
     @Transactional(readOnly = false)
     public BaseRes findBoardDetailByUserIdx(Integer boardIdx, User user) {
         Optional<Board> result = boardRepository.findByIdxAndUserIdx(boardIdx, user.getIdx());
@@ -759,6 +785,7 @@ public class BoardService {
     }
 
     // Hot 인기 게시글 조회
+    @Transactional(readOnly = true)
     public BaseRes listHotBoard(Pageable pageable, Integer boardCategoryIdx, Integer sortIdx) {
         Page<Board> boardList = boardRepository.findBoardListByCategory(pageable, boardCategoryIdx, sortIdx);
         List<GetListHotBoardRes> getListResListHotBoard = new ArrayList<>();
@@ -821,6 +848,7 @@ public class BoardService {
         return baseRes;
     }
 
+    // 핫 인기 게시글 검색어 조회
     @Transactional(readOnly = true)
     public BaseRes searchHotBoard(Integer boardCategoryIdx, String query, Integer sortIdx, Pageable pageable) {
         Page<Board> boardList = boardRepository.searchBoardListByQueryAndCategory(pageable, boardCategoryIdx, query, sortIdx);

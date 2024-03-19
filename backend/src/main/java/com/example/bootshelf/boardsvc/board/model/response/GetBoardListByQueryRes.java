@@ -10,9 +10,9 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class GetBoardListByQueryRes {
-    private Integer boardIdx;
-    private String boardTitle;
-    private String boardContent;
+    private Integer idx;
+    private String title;
+    private String content;
     private String boardCategoryName;
     private String nickName;
     private String createdAt;
