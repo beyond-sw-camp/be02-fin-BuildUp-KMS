@@ -67,7 +67,7 @@ public class ReviewScrapController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
-    @GetMapping("/list/${reviewCategoryIdx}/${sortType}")
+    @GetMapping("/list/{reviewCategoryIdx}/{sortType}")
     public ResponseEntity<BaseRes> findReviewScrapListByCategory(
             @AuthenticationPrincipal User user,
             @PathVariable(value = "reviewCategoryIdx") Integer reviewCategoryIdx,
