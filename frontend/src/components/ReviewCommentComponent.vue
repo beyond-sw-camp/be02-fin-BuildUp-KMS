@@ -1,6 +1,6 @@
 <template>
-  <div v-for="reviewComment in reviewCommentStore.reviewCommentList" :key="reviewComment.idx">
-    <div class="css-f7no94">
+  <div v-for="reviewComment in filteredReviewComments" :key="reviewComment.idx">
+    <div class="css-f7no94" v-if="reviewComment.status">
       <div class="css-3o2y5e">
         <div width="36px" height="36px" class="css-jg5tbe">
           <img alt="나의얼굴" width="34px" height="34px" :src="reviewComment.userImg" />
@@ -15,16 +15,16 @@
           </div>
           <div class="css-dyzp2y-001" v-if="showBtn(reviewComment.userIdx)">
             <div class="css-emxp17" @click="toggleEditMode(reviewComment)">수정</div>
-            <div class="css-emxp17" @click="deleteComment(reviewComment.idx)">삭제</div>
+            <div class="css-emxp17" @click="deleteComment(reviewComment.idx, reviewComment.userIdx)">삭제</div>
           </div>
-          <div class="css-emxp17">
-            <!-- 댓글 추천 -->
-            <img width="18" height="18"
-              src="https://img.icons8.com/sf-regular/48/facebook-like.png" alt="facebook-like"
+          <!-- 댓글 추천 -->
+          <!-- <div class="css-emxp17">
+            <img width="18" height="18" src="https://img.icons8.com/sf-regular/48/facebook-like.png" alt="facebook-like"
               @click="reviewRecommend(reviewComment.idx)" />
-            <img  width="18" height="18" src="https://img.icons8.com/sf-regular-filled/48/facebook-like.png"
+            <img width="18" height="18" src="https://img.icons8.com/sf-regular-filled/48/facebook-like.png"
               alt="facebook-like" @click="cancelReviewComment(reviewComment.idx)" />
-          </div>
+          </div> -->
+          <!-- /댓글 추천 -->
         </div>
         <div class="editedCommentContent">
           <input class="css-comment" type="text" v-model="updateReviewComment"
@@ -32,9 +32,9 @@
         </div>
         <div clas="css-btn">
           <p class="css-reply" @click="toggleReplyForm(reviewComment)"
-            v-show="!reviewComment.editMode && !reviewComment.showReplyForm">대댓글쓰기</p>
+            v-if="!reviewComment.editMode && !reviewComment.showReplyForm">대댓글쓰기</p>
           <p class="css-reply" @click="toggleReplyForm(reviewComment)"
-            v-show="!reviewComment.editMode && reviewComment.showReplyForm">닫기</p>
+            v-if="!reviewComment.editMode && reviewComment.showReplyForm">닫기</p>
           <button class="css-update" v-if="reviewComment.editMode" @click="saveComment(reviewComment.idx)">저장</button>
         </div>
       </div>
@@ -45,13 +45,12 @@
       <div class="css-f7no94-reply" v-if="reviewComment.showReplyForm">
         <div class="css-3o2y5e">
           <div width="36px" height="36px" class="css-jg5tbe">
-            <img alt="나의얼굴" width="34px" height="34px"
-            :src="reviewStore.review.profileImage">
+            <img alt="나의얼굴" width="34px" height="34px" :src="reviewStore.review.profileImage">
           </div>
         </div>
-        <div class="css-14f8kx2">
+        <div class="css-14f8kx2-0318">
           <div class="editedCommentContent">
-            <input class="css-comment" type="text" placeholder="댓글을 남겨주세요" v-model="reviewReply">
+            <input class="css-comment-0318" type="text" placeholder="댓글을 남겨주세요" v-model="reviewReply">
           </div>
           <div clas="css-btn">
             <button class="css-update" @click="saveReply(reviewComment.idx)">저장</button>
@@ -63,45 +62,45 @@
 
     <!-- 대댓글 출력 -->
     <div v-if="reviewComment.children && reviewComment.children.length > 0">
-      <div class="css-f7no94-reply" v-for="childComment in reviewComment.children" :key="childComment.idx">
-        <div class="css-3o2y5e">
-          <div width="36px" height="36px" class="css-jg5tbe">
-            <img alt="나의얼굴" width="34px" height="34px"
-            :src="childComment.userImg">
+      <div v-for="childComment in reviewComment.children" :key="childComment.idx">
+        <div class="css-f7no94-reply" v-if="childComment.status">
+          <div class="css-3o2y5e">
+            <div width="36px" height="36px" class="css-jg5tbe">
+              <img alt="나의얼굴" width="34px" height="34px" :src="childComment.userImg">
+            </div>
           </div>
-        </div>
-        <div class="css-14f8kx2-001">
-          <div class="css-1psklmw">
-            <div class="css-dyzp2y">
-              <div class="css-wqf8ry-001">{{ childComment.userNickName }}</div>
-              <div class="css-emxp16-001"></div>
-              <div class="css-emxp16-001">2024-03-16 17:04:14</div>
-            </div>
-            <div class="css-dyzp2y-002" v-if="showBtn(childComment.userIdx)">
-              <div class="css-emxp17-001" @click="toggleEditMode(childComment)">수정</div>
-              <div class="css-emxp17-001" @click="deleteComment(childComment.idx)">삭제</div>
-            </div>
+          <div class="css-14f8kx2-001">
+            <div class="css-1psklmw">
+              <div class="css-dyzp2y">
+                <div class="css-wqf8ry-001">{{ childComment.userNickName }}</div>
+                <div class="css-emxp16-001"></div>
+                <div class="css-emxp16-001">{{ childComment.createAt }}</div>
+              </div>
+              <div class="css-dyzp2y-002" v-if="showBtn(childComment.userIdx)">
+                <div class="css-emxp17-001" @click="toggleEditMode(childComment)">수정</div>
+                <div class="css-emxp17-001" @click="deleteComment(childComment.idx, childComment.userIdx)">삭제</div>
+              </div>
 
-            <!-- 대댓글 추천 -->
-            <div class="css-emxp17">
-              <img width="18" height="18"
-              src="https://img.icons8.com/sf-regular/48/facebook-like.png" alt="facebook-like"
-              @click="reviewRecommend(childComment.idx)" />
-            <img  width="18" height="18" src="https://img.icons8.com/sf-regular-filled/48/facebook-like.png"
-              alt="facebook-like" @click="cancelReviewComment(childComment.idx)" />
+              <!-- 대댓글 추천 -->
+              <!-- <div class="css-emxp17">
+                <img width="18" height="18" src="https://img.icons8.com/sf-regular/48/facebook-like.png"
+                  alt="facebook-like" @click="reviewRecommend(childComment.idx)" />
+                <img width="18" height="18" src="https://img.icons8.com/sf-regular-filled/48/facebook-like.png"
+                  alt="facebook-like" @click="cancelReviewComment(childComment.idx)" />
+              </div> -->
+              <!-- /대댓글 추천 -->
             </div>
-          </div>
-          <div class="editedCommentContent">
-            <input class="css-comment" type="text" v-model="updateReviewComment"
-              :placeholder="childComment.reviewCommnetContent" :readonly="!reviewComment.editMode">
-          </div>
-          <div clas="css-btn">
-            <button class="css-update" v-if="reviewComment.editMode" @click="saveComment(childComment.idx)">저장</button>
+            <div class="editedCommentContent">
+              <input class="css-comment" type="text" v-model="updateReviewComment"
+                :placeholder="childComment.reviewCommnetContent" :readonly="!childComment.editMode">
+            </div>
+            <div clas="css-btn">
+              <button class="css-update" v-if="childComment.editMode" @click="saveComment(childComment.idx)">저장</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -115,6 +114,9 @@ export default {
   name: "ReviewCommentComponent",
   computed: {
     ...mapStores(useReviewCommentStore, useReviewStore),
+    filteredReviewComments() {
+      return this.reviewCommentStore.reviewCommentList.filter(comment => comment.status);
+    }
   },
   data() {
     return {
@@ -127,7 +129,9 @@ export default {
       required: true
     },
   },
-
+  async mounted() {
+    await this.reviewCommentStore.updateCommentRecommendationStatus();
+  },
   methods: {
     //  댓글 수정 후 저장
     async saveComment(reviewCommentIdx) {
@@ -141,10 +145,10 @@ export default {
     },
 
     // 댓글 삭제 
-    async deleteComment(commentIdx) {
+    async deleteComment(commentIdx, userIdx) {
       try {
         const reviewIdx = this.reviewStore.review.reviewIdx;
-        await this.reviewCommentStore.deleteReviewComment(commentIdx, reviewIdx);
+        await this.reviewCommentStore.deleteReviewComment(commentIdx, reviewIdx, userIdx);
         // 댓글 생성 후 필요한 작업 작성
       } catch (error) {
         console.error('댓글 삭제 실패:', error);
@@ -162,23 +166,23 @@ export default {
       }
     },
 
-    // 댓글 추천 기능
-    async reviewRecommend(reviewCommentIdx) {
-      try {
-          await this.reviewCommentStore.reviewRecommend(reviewCommentIdx);
-        } 
-       catch (error) {
-        console.error("ERROR : ", error);
-      }
-    },
+    // // 댓글 추천 기능
+    // async reviewRecommend(reviewCommentIdx) {
+    //   try {
+    //     await this.reviewCommentStore.reviewRecommend(reviewCommentIdx);
+    //   }
+    //   catch (error) {
+    //     console.error("ERROR : ", error);
+    //   }
+    // },
 
-    async cancelReviewComment(reviewCommentIdx){
-      try{
-        await this.reviewCommentStore.cancelReviewComment(reviewCommentIdx);
-      }       catch (error) {
-        console.error("ERROR : ", error);
-      }
-    },
+    // async cancelReviewComment(reviewCommentIdx) {
+    //   try {
+    //     await this.reviewCommentStore.cancelReviewComment(reviewCommentIdx);
+    //   } catch (error) {
+    //     console.error("ERROR : ", error);
+    //   }
+    // },
 
     // 버튼 관련
     showBtn(commentUserIdx) {
@@ -204,16 +208,78 @@ export default {
       }
     },
 
+    async handleRecommendClick(idx) {
+      if (!idx) {
+        console.error('No idx provided for handleRecommendClick');
+        return;
+      }
+
+      const commentOrReply = this.findCommentOrReply(idx);
+      if (!commentOrReply) {
+        console.error(`Comment or reply with idx ${idx} not found.`);
+        return;
+      }
+
+      try {
+        // Check if the comment or reply is already recommended
+        if (commentOrReply.isReviewCommentRecommended) {
+          // If yes, attempt to cancel the recommendation
+          await this.reviewCommentStore.cancelReviewComment(idx);
+        } else {
+          // If not, attempt to add a recommendation
+          await this.reviewCommentStore.reviewRecommend(idx);
+        }
+        // Update the local isReviewCommentRecommended status
+        commentOrReply.isReviewCommentRecommended = !commentOrReply.isReviewCommentRecommended;
+      } catch (error) {
+        console.error(`Error handling recommendation click for idx ${idx}:`, error);
+        // Optionally, refresh the recommendation status from the server
+        // This can be helpful if the error occurred due to out-of-sync client-server states
+        await this.reviewCommentStore.updateCommentRecommendationStatus();
+      }
+    },
+
+
+
+    findCommentOrReply(idx) {
+      // Find comment or reply by idx
+      for (const comment of this.reviewCommentStore.reviewCommentList) {
+        if (comment.idx === idx) {
+          return comment;
+        }
+        const foundReply = comment.children?.find(reply => reply.idx === idx);
+        if (foundReply) {
+          return foundReply;
+        }
+      }
+      return null; // Item not found
+    },
   },
 
 };
 </script>
 
 <style scoped>
+.css-14f8kx2-0318 {
+  width: 100%;
+  max-width: 545px;
+  padding: 15px;
+  border-radius: 12px;
+  background-color: #fff;
+  border: 2px solid #f4f5f6;
+}
+
+.css-comment-0318 {
+  font-size: 14px;
+  width: 100%;
+  background-color: #fff;
+  font-family: Pretendard;
+}
+
 .css-14f8kx2-001 {
   width: 100%;
   max-width: 545px;
-  padding: 20px;
+  padding: 15px;
   border-radius: 12px;
   background-color: #f4f5f6;
   font-size: 10px;
@@ -240,10 +306,8 @@ export default {
   align-items: center;
   justify-content: center;
   gap: 4px;
-  margin-left: 233px;
+  margin-left: 200px; /* 수정된 부분 */
 }
-
-
 
 input {
   border: none;
@@ -319,21 +383,22 @@ html {
 }
 
 .css-f7no94 {
-  display: flex;
-  flex-direction: row;
-  width: 90%;
   gap: 16px;
+  width: 100%;
+  display: flex;
+  align-items: start;
+  justify-content: center;
   font-family: Pretendard;
 }
 
 .css-f7no94-reply {
   display: flex;
   flex-direction: row;
-  width: 95%;
+  width: 92%;
   gap: 16px;
   font-family: Pretendard;
   margin-top: 11px;
-  margin-left: 29px;
+  margin-left: 42px;
 }
 
 .css-3o2y5e {
@@ -351,9 +416,10 @@ html {
 }
 
 .css-14f8kx2 {
-  width: 100%;
+  font-family: Pretendard;
+  width: 500px;
   max-width: 545px;
-  padding: 20px;
+  padding: 15px;
   border-radius: 12px;
   background-color: #f4f5f6;
 }
@@ -408,6 +474,7 @@ html {
 }
 
 .css-comment {
+  font-family: Pretendard;
   font-size: 14px;
   width: 100%;
 }

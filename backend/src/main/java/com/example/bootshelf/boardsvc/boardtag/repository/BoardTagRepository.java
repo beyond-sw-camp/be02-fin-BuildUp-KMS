@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface BoardTagRepository extends JpaRepository<BoardTag, Integer>, BoardTagRepositoryCustom {
-    List<BoardTag> findAllByIdx(Integer idx);
+    Integer deleteAllByBoard_Idx(Integer idx);
 }

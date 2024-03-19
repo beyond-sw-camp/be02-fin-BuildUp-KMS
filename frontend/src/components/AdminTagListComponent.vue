@@ -9,9 +9,9 @@
         <i class="bx bx-dots-vertical-rounded"></i>
       </button>
       <div class="dropdown-menu" v-show="userMenuVisible">
-        <!-- <router-link :to="{ name: 'AdminTagUpdate', params: { categoryIdx: tag.idx, categoryName: tag.tagName } }"> -->
+        <router-link :to="{ name: 'AdminTagUpdate', params: { categoryIdx: tag.idx, categoryName: tag.tagName } }">
           <a class="dropdown-item"><i class="bx bx-edit-alt me-1"></i>수정</a>
-        <!-- </router-link> -->
+        </router-link>
         <a class="dropdown-item" @click="deleteTag"><i class="bx bx-trash me-1"></i> 삭제</a>
       </div>
     </div>
@@ -45,8 +45,12 @@ export default {
 
     const deleteTag = async () => {
       try {
-        await tagStore.deleteTag(props.tags.idx);
-        alert('태그가 삭제되었습니다.');
+        let response = await tagStore.deleteTag(props.tag.idx);
+        if (response.data.isSuccess) {
+          alert('태그가 삭제되었습니다.');
+          window.location.reload();
+        }
+        
       } catch (error) {
         console.error('태그 삭제 에러:', error);
         alert('태그 삭제에 실패했습니다.');

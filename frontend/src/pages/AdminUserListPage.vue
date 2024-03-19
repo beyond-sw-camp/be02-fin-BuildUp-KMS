@@ -8,7 +8,7 @@
           <!-- Content -->
           <div class="container-xxl flex-grow-1 container-p-y">
             <h3 class="py-3 mb-4">
-              <span class="text-muted fw-light">태그 /</span> 목록
+              <span class="text-muted fw-light">회원 /</span> 목록
             </h3>
 
             <!-- 회원 목록 -->
