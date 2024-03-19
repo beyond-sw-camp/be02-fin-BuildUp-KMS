@@ -12,6 +12,8 @@ import com.example.bootshelf.boardsvc.boardcategory.model.entity.BoardCategory;
 import com.example.bootshelf.boardsvc.boardcomment.model.entity.BoardComment;
 import com.example.bootshelf.boardsvc.boardimage.model.entity.BoardImage;
 import com.example.bootshelf.boardsvc.boardimage.service.BoardImageService;
+import com.example.bootshelf.boardsvc.boardscrap.model.response.GetFindBoardScrapRes;
+import com.example.bootshelf.boardsvc.boardscrap.model.response.GetFindBoardScrapResResult;
 import com.example.bootshelf.boardsvc.boardtag.model.entity.BoardTag;
 import com.example.bootshelf.boardsvc.boardtag.service.BoardTagService;
 import com.example.bootshelf.common.BaseRes;
@@ -208,11 +210,11 @@ public class BoardService {
             }
 
             GetListBoardRes getListBoardRes = GetListBoardRes.builder()
-                    .boardIdx(board.getIdx())
+                    .idx(board.getIdx())
                     .nickName(user.getNickName())
                     .userProfileImage(user.getProfileImage())
-                    .boardTitle(board.getBoardTitle())
-                    .boardContent(board.getBoardContent())
+                    .title(board.getBoardTitle())
+                    .content(board.getBoardContent())
                     .boardCategoryIdx(board.getBoardCategory().getIdx())
                     .tagNameList(tagNames)
                     .viewCnt(board.getViewCnt())
@@ -260,11 +262,11 @@ public class BoardService {
             }
 
             GetListBoardRes getListBoardRes = GetListBoardRes.builder()
-                    .boardIdx(board.getIdx())
+                    .idx(board.getIdx())
                     .nickName(board.getUser().getNickName())
                     .userProfileImage(user.getProfileImage())
-                    .boardTitle(board.getBoardTitle())
-                    .boardContent(board.getBoardContent())
+                    .title(board.getBoardTitle())
+                    .content(board.getBoardContent())
                     .boardCategoryIdx(board.getBoardCategory().getIdx())
                     .tagNameList(tagNames)
                     .viewCnt(board.getViewCnt())
@@ -290,7 +292,7 @@ public class BoardService {
         Long totalCnt = boardList.getTotalElements();
         Integer totalPages = boardList.getTotalPages();
 
-        GetBoardListResResult result = GetBoardListResResult.builder()
+        GetListBoardResResult result = GetListBoardResResult.builder()
                 .totalCnt(totalCnt)
                 .totalPages(totalPages)
                 .list(getListBoardResList)
@@ -320,11 +322,11 @@ public class BoardService {
             }
 
             GetListBoardRes getListBoardRes = GetListBoardRes.builder()
-                    .boardIdx(board.getIdx())
+                    .idx(board.getIdx())
                     .nickName(board.getUser().getNickName())
                     .userProfileImage(board.getUser().getProfileImage())
-                    .boardTitle(board.getBoardTitle())
-                    .boardContent(board.getBoardContent())
+                    .title(board.getBoardTitle())
+                    .content(board.getBoardContent())
                     .boardCategoryIdx(board.getBoardCategory().getIdx())
                     .tagNameList(tagNames)
                     .viewCnt(board.getViewCnt())
@@ -381,11 +383,11 @@ public class BoardService {
             }
 
             GetListBoardRes getListBoardRes = GetListBoardRes.builder()
-                    .boardIdx(board.getIdx())
+                    .idx(board.getIdx())
                     .nickName(board.getUser().getNickName())
                     .userProfileImage(board.getUser().getProfileImage())
-                    .boardTitle(board.getBoardTitle())
-                    .boardContent(board.getBoardContent())
+                    .title(board.getBoardTitle())
+                    .content(board.getBoardContent())
                     .boardCategoryIdx(board.getBoardCategory().getIdx())
                     .tagNameList(tagNames)
                     .viewCnt(board.getViewCnt())
@@ -443,11 +445,11 @@ public class BoardService {
             }
 
             GetListBoardRes getListBoardRes = GetListBoardRes.builder()
-                    .boardIdx(board.getIdx())
+                    .idx(board.getIdx())
                     .nickName(board.getUser().getNickName())
                     .userProfileImage(board.getUser().getProfileImage())
-                    .boardTitle(board.getBoardTitle())
-                    .boardContent(board.getBoardContent())
+                    .title(board.getBoardTitle())
+                    .content(board.getBoardContent())
                     .boardCategoryIdx(board.getBoardCategory().getIdx())
                     .tagNameList(tagNames)
                     .viewCnt(board.getViewCnt())
@@ -670,12 +672,12 @@ public class BoardService {
     }
 
     @Transactional(readOnly = false)
-    public BaseRes deleteBoard(User user, Integer boardIdx) {
+    public BaseRes deleteBoard(User user, Integer idx) {
 
-        Optional<Board> result = boardRepository.findByIdx(boardIdx);
+        Optional<Board> result = boardRepository.findByIdxAndUserIdx(idx, user.getIdx());
 
         if (!result.isPresent()) {
-            throw new BoardException(ErrorCode.BOARD_NOT_EXISTS, String.format("Board Idx [ %s ] is not exists.", boardIdx));
+            throw new BoardException(ErrorCode.BOARD_NOT_EXISTS, String.format("Board Idx [ %s ] is not exists.", idx));
         }
 
         Board board = result.get();

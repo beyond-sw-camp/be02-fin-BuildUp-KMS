@@ -5,6 +5,7 @@ import com.example.bootshelf.reviewsvc.reviewscrap.model.request.PostCreateRevie
 import com.example.bootshelf.reviewsvc.reviewscrap.service.ReviewScrapService;
 import com.example.bootshelf.user.model.entity.User;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -16,6 +17,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 @Tag(name = "후기", description = "ReviewScrap CRUD")
 @Api(tags = "후기 스크랩")
@@ -55,6 +59,22 @@ public class ReviewScrapController {
             @PageableDefault(size = 10) Pageable pageable
     ) {
         return ResponseEntity.ok().body(reviewScrapService.findReviewScrapList(user, pageable));
+    }
+
+    @Operation(summary = "ReviewScrap 카테고리별 목록 조회",
+            description = "카테고리별 스크랩한 리뷰 게시물 목록을 조회하는 API입니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+    })
+    @GetMapping("/list/${reviewCategoryIdx}/${sortType}")
+    public ResponseEntity<BaseRes> findReviewScrapListByCategory(
+            @AuthenticationPrincipal User user,
+            @PathVariable(value = "reviewCategoryIdx") Integer reviewCategoryIdx,
+            @PathVariable @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") @ApiParam(value = "정렬유형 : 1 (최신순), 2 (추천수 순), 3 (조회수 순), 4 (스크랩수 순), 5 (댓글수 순)") Integer sortType,
+            @PageableDefault(size = 10) Pageable pageable
+    ) {
+        return ResponseEntity.ok().body(reviewScrapService.findReviewScrapListByCategory(user, reviewCategoryIdx, sortType ,pageable));
     }
 
 

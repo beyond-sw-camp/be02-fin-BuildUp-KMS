@@ -62,12 +62,6 @@
                 </div>
               </div>
             </div>
-            <!-- <div class="css-164vtnj">
-              <div class="css-cqjiz9">스크랩</div>
-              <div class="css-2120cz">작성글</div>
-              <div class="css-cqjiz9">댓글</div>
-              <div class="css-cqjiz9">스터디</div>
-            </div> -->
             <div class="css-164vtnj">
               <div
                 class="css-cqjiz9"
@@ -96,20 +90,6 @@
                   <option value="댓글순">댓글순</option>
                 </select>
               </div>
-              <!-- <div
-                class="css-cqjiz9"
-                :class="{ 'css-2120cz': currentTab === '댓글' }"
-                @click="changeTab('댓글')"
-              >
-                댓글
-              </div>
-              <div
-                class="css-cqjiz9"
-                :class="{ 'css-2120cz': currentTab === '스터디' }"
-                @click="changeTab('스터디')"
-              >
-                스터디
-              </div> -->
             </div>
             <div class="css-6ylcwl">
               <div class="css-1o94c7r">
@@ -126,22 +106,20 @@
                       cy="2"
                       r="2"
                       :fill="
-                        selectedBoardType === 'knowledge'
-                          ? '#e8344e'
-                          : '#B4BFC6'
+                        selectedTotalType === 'course' ? '#e8344e' : '#B4BFC6'
                       "
                     ></circle>
                   </svg>
                   <!-- <div class="css-1619ajl">과정 후기</div> -->
                   <div
                     :class="
-                      selectedBoardType === 'knowledge'
+                      selectedTotalType === 'course'
                         ? 'css-1619ajl'
                         : 'css-1j5hzn7'
                     "
-                    @click="selectBoardType('knowledge')"
+                    @click="selectTotalType('course')"
                   >
-                    지식공유
+                    과정 후기
                   </div>
                 </div>
                 <div class="css-bewb21">
@@ -157,43 +135,143 @@
                       cy="2"
                       r="2"
                       :fill="
-                        selectedBoardType === 'knowledge'
-                          ? '#B4BFC6'
-                          : '#e8344e'
+                        selectedTotalType === 'instructor'
+                          ? '#e8344e'
+                          : '#B4BFC6'
                       "
                     ></circle>
                   </svg>
                   <!-- <div class="css-1j5hzn7">강사 후기</div> -->
                   <div
                     :class="
-                      selectedBoardType === 'qna'
+                      selectedTotalType === 'instructor'
                         ? 'css-1619ajl'
                         : 'css-1j5hzn7'
                     "
-                    @click="selectBoardType('qna')"
+                    @click="selectTotalType('instructor')"
                   >
-                    Q & A
+                    강사 후기
+                  </div>
+                </div>
+                <div class="css-bewb21">
+                  <svg
+                    width="4"
+                    height="4"
+                    viewBox="0 0 4 4"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle
+                      cx="2"
+                      cy="2"
+                      r="2"
+                      :fill="
+                        selectedTotalType === 'knowledge'
+                          ? '#e8344e'
+                          : '#B4BFC6'
+                      "
+                    ></circle>
+                  </svg>
+                  <!-- <div class="css-1j5hzn7">강사 후기</div> -->
+                  <div
+                    :class="
+                      selectedTotalType === 'knowledge'
+                        ? 'css-1619ajl'
+                        : 'css-1j5hzn7'
+                    "
+                    @click="selectTotalType('knowledge')"
+                  >
+                    지식 공유
+                  </div>
+                </div>
+                <div class="css-bewb21">
+                  <svg
+                    width="4"
+                    height="4"
+                    viewBox="0 0 4 4"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle
+                      cx="2"
+                      cy="2"
+                      r="2"
+                      :fill="
+                        selectedTotalType === 'qna' ? '#e8344e' : '#B4BFC6'
+                      "
+                    ></circle>
+                  </svg>
+                  <!-- <div class="css-1j5hzn7">강사 후기</div> -->
+                  <div
+                    :class="
+                      selectedTotalType === 'qna'
+                        ? 'css-1619ajl'
+                        : 'css-1j5hzn7'
+                    "
+                    @click="selectTotalType('qna')"
+                  >
+                    QnA
+                  </div>
+                </div>
+                <div class="css-bewb21">
+                  <svg
+                    width="4"
+                    height="4"
+                    viewBox="0 0 4 4"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle
+                      cx="2"
+                      cy="2"
+                      r="2"
+                      :fill="
+                        selectedTotalType === 'study' ? '#e8344e' : '#B4BFC6'
+                      "
+                    ></circle>
+                  </svg>
+                  <!-- <div class="css-1j5hzn7">강사 후기</div> -->
+                  <div
+                    :class="
+                      selectedTotalType === 'study'
+                        ? 'css-1619ajl'
+                        : 'css-1j5hzn7'
+                    "
+                    @click="selectTotalType('study')"
+                  >
+                    스터디
                   </div>
                 </div>
               </div>
             </div>
             <div class="css-1csvk83">
-              <ul class="css-10c0kk0 e15eiqsa1">
+              <ul class="css-10c0kk0">
                 <li
                   class="css-k59gj9"
-                  v-for="boards in currentBoardList"
-                  :key="boards.boardIdx"
+                  v-for="totals in totalStore.totalList"
+                  :key="totals.idx"
                 >
                   <!-- Render the corresponding component based on the currentTab -->
-                  <MyPageBoardComponent :boards="boardlist.board" />
+                  <MyPageBoardComponent :totals="totals" />
                 </li>
               </ul>
+              <div class="css-6g4q8b" v-show="!totalStore.isBoardExist">
+                <div class="css-aa80it">
+                  <img src="@/assets/img/002.png" class="css-1baht8c" />
+                  <div class="css-dhqp8i">
+                    <div class="css-c7zvxr">검색 결과가 없습니다.</div>
+                    <div class="css-1mcux1f">
+                      질문을 직접 남겨서 궁금증을 해결해 보세요!
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <!--페이지네이션 자리-->
             <div class="d-flex justify-content-center py-0 py-md-4">
               <PaginationComponent
-                :current-page="boardStore.currentPage"
-                :total-pages="boardStore.totalPages"
+                :current-page="totalStore.currentPage"
+                :total-pages="totalStore.totalPages"
                 @change-page="changePage"
               />
             </div>
@@ -205,89 +283,35 @@
   </div>
 </template>
 
-<!-- <script setup>
-import { ref, computed } from "vue";
-import router from "@/router";
-
-const currentTab = ref("작성글");
-const boardStore = useBoardStore();
-
-const changeTab = (tab) => {
-  currentTab.value = tab;
-  router.push({ path: "/mypage" });
-};
-
-// 계산된 속성으로 현재 탭에 따라 다른 게시글 목록을 반환
-const currentBoardList = computed(() => {
-      if (currentTab.value === '작성글') {
-        return boardStore.findMyBoardListByCategory();
-      } else if (currentTab.value === '스크랩') {
-        return boardStore.findBoardScrapListByCategory();
-      } else {
-        return []; // 다른 탭이면 빈 배열 반환
-      }
-});
-
-return { boardStore, currentTab, changeTab, currentBoardList };
-</script> -->
-
 <script>
 import { mapStores } from "pinia";
 import { useUserStore } from "@/stores/useUserStore";
 import { useBoardStore } from "@/stores/useBoardStore";
-import { ref, watchEffect } from "vue";
-import router from "@/router";
+import { useTotalStore } from "../stores/useTotalStore";
+// import { ref, watchEffect } from "vue";
+// import router from "@/router";
 import MyPageBoardComponent from "@/components/MyPageBoardComponent.vue";
 import PaginationComponent from "@/components/PaginationComponent.vue";
 export default {
   name: "MyPage",
-  setup() {
-    const currentTab = ref("작성글");
-    const boardStore = useBoardStore();
-
-    const changeTab = (tab) => {
-      currentTab.value = tab;
-      router.push({ path: "/mypage" });
-    };
-
-    const currentBoardList = ref([]);
-
-    // 게시글 목록을 업데이트하는 함수
-    const updateBoardList = async () => {
-      if (currentTab.value === "작성글") {
-        currentBoardList.value = await boardStore.findMyBoardListByCategory();
-      } else if (currentTab.value === "스크랩") {
-        currentBoardList.value = await boardStore.findBoardScrapListByCategory();
-      } else {
-        currentBoardList.value = [];
-      }
-    };
-
-    // currentTab 값이 변경될 때마다 게시글 목록을 업데이트합니다.
-    watchEffect(() => {
-      updateBoardList();
-    });
-
-    return { currentTab, changeTab, currentBoardList };
-  },
   data() {
     return {
       selectedSortType: "최신순",
       sortType: 1,
-      boardCategoryIdx: "1",
-      selectedBoardType: "knowledge",
+      selectedTotalType: "knowledge",
       user: {},
+      currentTab: "작성글",
     };
   },
   computed: {
-    ...mapStores(useUserStore, useBoardStore),
+    ...mapStores(useUserStore, useBoardStore, useTotalStore),
     visiblePages() {
       // 최대 5개의 페이지 번호만 보이도록 계산
       let pages = [];
-      const total = this.boardStore.totalPages;
+      const total = this.totalStore.totalPages;
 
       // 현재 페이지에서 앞뒤로 2개씩 보이게 하되, 총 페이지 수를 초과하지 않도록 조정
-      let start = Math.max(1, this.boardStore.currentPage - 2);
+      let start = Math.max(1, this.totalStore.currentPage - 2);
       let end = Math.min(total, start + 4);
 
       // 시작점 재조정: end가 변경되었을 때, 5개 페이지를 유지하려면 start도 조정해야 함
@@ -304,10 +328,14 @@ export default {
     PaginationComponent,
   },
   mounted() {
-    this.loadBoardList(1);
+    this.loadTotalList(1);
     this.userStore.getUserInfo();
   },
   methods: {
+    async changeTab(tab) {
+      this.currentTab = tab;
+    },
+    
     updateSortType() {
       switch (this.selectedSortType) {
         case "최신순":
@@ -328,32 +356,72 @@ export default {
         default:
           this.sortType = 1; // 기본값 또는 예외 처리
       }
-      this.loadBoardList(this.boardStore.currentPage);
+      this.loadTotalList(this.totalStore.currentPage);
     },
-    selectBoardType(type) {
-      this.selectedBoardType = type;
-      this.boardCategoryIdx = type === "knowledge" ? "1" : "2";
-      this.loadBoardList(1); // 리뷰 카테고리 변경 시 첫 페이지로 돌아감.
+    selectTotalType(type) {
+      this.selectedTotalType = type;
+      const totalTypeToIdx = {
+        course: 1,
+        instructor: 2,
+        knowledge: 1,
+        qna: 2,
+        study: 3,
+      };
+      // 전달된 타입에 해당하는 값을 가져와서 selectedTotalType에 할당합니다.
+      this.totalCategoryIdx = totalTypeToIdx[type];
+      this.loadTotalList(1); // 선택된 타입에 따라 리스트를 로드합니다.
     },
-    loadBoardList(page) {
-      this.boardStore.findMyBoardListByCategory(
-        this.boardCategoryIdx,
-        this.sortType,
-        page
-      );
+
+    loadTotalList(page) {
+      if (this.currentTab === "작성글") {
+        if (
+          this.selectedTotalType === "course" ||
+          this.selectedTotalType === "instructor"
+        ) {
+          this.totalStore.getReviewList(
+            this.totalCategoryIdx,
+            this.sortType,
+            page
+          );
+        } else {
+          this.totalStore.findMyBoardListByCategory(
+            this.totalCategoryIdx,
+            this.sortType,
+            page
+          );
+        }
+      } else {
+        if (
+          this.selectedTotalType === "course" ||
+          this.selectedTotalType === "instructor"
+        ) {
+          this.totalStore.findReviewScrapListByCategory(
+            this.totalCategoryIdx,
+            this.sortType,
+            page
+          );
+        } else {
+          this.totalStore.findBoardScrapListByCategory(
+            this.totalCategoryIdx,
+            this.sortType,
+            page
+          );
+        }
+      }
     },
+
     changePage(page) {
-      this.loadBoardList(page);
+      this.loadTotalList(page);
     },
     jumpForward() {
       // 현재 페이지에서 3페이지 앞으로 점프
       let nextPage = Math.min(
-        this.boardStore.currentPage + 3,
-        this.boardStore.totalPages
+        this.totalStore.currentPage + 3,
+        this.totalStore.totalPages
       );
       this.changePage(nextPage);
 
-      this.boardStore.currentPage = nextPage;
+      this.totalStore.currentPage = nextPage;
     },
   },
 };
@@ -676,4 +744,89 @@ a {
   align-items: center;
   color: #3a3e41;
 }
+.css-10c0kk0 {
+  width: 100%;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(3, minmax(15rem, 1fr));
+  grid-auto-flow: dense row;
+  align-items: center;
+  justify-content: space-around;
+  position: relative;
+  padding-left: 0px;
+}
+.total-selection {
+  display: flex;
+}
+
+.total-type {
+  font-family: Pretendard;
+  padding-left: 3px;
+  padding-right: 30px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.selected {
+  color: rgb(150, 48, 202);
+}
+.css-6g4q8b {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  min-height: 400px;
+  background-color: white;
+  margin-bottom: 50px;
+}
+.css-aa80it {
+  display: flex;
+  flex-direction: column;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  gap: 16px;
+}
+img {
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  -ms-interpolation-mode: nearest-neighbor;
+}
+.css-1baht8c {
+  width: 160px;
+  height: 88px;
+}
+.css-dhqp8i {
+  display: flex;
+  flex-direction: column;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  gap: 6px;
+  text-align: center;
+}
+.css-c7zvxr {
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  color: rgb(28, 29, 30);
+}
+.css-1mcux1f {
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 20px;
+  color: rgb(131, 134, 137);
+  white-space: pre-wrap;
+}
+
 </style>

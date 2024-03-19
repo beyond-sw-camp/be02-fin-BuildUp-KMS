@@ -68,6 +68,7 @@ public class BoardScrapRepositoryCustomImpl extends QuerydslRepositorySupport im
         return new PageImpl<>(boardScrapList, pageable, pageableQuery.fetchCount());
     }
 
+
     private OrderSpecifier[] createOrderSpecifier(Integer sortIdx, QBoardScrap boardScrap) {
         List<OrderSpecifier> orderSpecifiers = new ArrayList<>();
 

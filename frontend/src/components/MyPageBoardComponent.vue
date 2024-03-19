@@ -1,64 +1,111 @@
 <template>
-  <a :href="'/board/' + boards.boardIdx">
-    <div class="css-aw1sgr">
-      <div class="css-amlmv6">
-        <div class="css-1254q6y">답변 대기중</div>
-      </div>
-      <div class="css-kem115">
-        <div class="css-12i5occ">
-          <div class="css-1jibmi3">
-            <div class="css-cp47oo">
-              {{ boards.boardTitle }}
+  <div class="css-aw1sgr">
+    <div class="css-amlmv6">
+      <div class="css-1254q6y">답변 대기중</div>
+    </div>
+    <div class="css-kem115">
+      <div class="css-12i5occ">
+        <div class="css-1jibmi3">
+          <a
+            :href="
+              totals.type === 'review'
+                ? '/review/' + totals.idx
+                : '/board/' + totals.idx
+            "
+            ><div class="css-cp47oo">
+              {{ totals.title }}
             </div>
             <div class="css-14bssip">
-              {{ boards.boardContent }}
+              {{ totals.content }}
             </div>
-          </div>
-          <!--태그 컴포넌트 자리-->
-          <TagComponent :tagNameList="boards.tagNameList" />
+          </a>
         </div>
-        <router-link to="/board/new">
-          <button class="updateboardgms">수정</button>
-        </router-link>
-        <button class="deleteboardgms">삭제</button>
-        <!--사진-->
+        <!--태그 컴포넌트 자리-->
+        <TagComponent
+          :tagNameList="totals.tagNameList"
+          v-if="totals.tagNameList && totals.tagNameList.length > 0"
+        />
       </div>
-      <div class="css-99cwur">
-        <div class="css-1ry6usa">{{ boards.createdAt }}</div>
-        <div class="css-o01lup">
-          <div class="css-ts29it">
-            <div class="css-1ry6usa">댓글</div>
-            <div class="css-1ry6usa">{{ boards.commentCnt }}</div>
-          </div>
-          <div class="css-1yw6m61-1"></div>
-          <div class="css-ts29it">
-            <div class="css-1ry6usa">추천</div>
-            <div class="css-1ry6usa">{{ boards.upCnt }}</div>
-          </div>
-          <div class="css-1yw6m61-1"></div>
-          <div class="css-ts29it">
-            <div class="css-1ry6usa">조회수</div>
-            <div class="css-1ry6usa">{{ boards.viewCnt }}</div>
-          </div>
+      <router-link to="/board/new">
+        <button class="updateboardgms">⚙ 수정</button>
+      </router-link>
+      <button class="deleteboardgms" @click="deleteB">삭제</button>
+      <ConfirmDialogComponent
+        v-if="showMyPageConfirmDialog"
+        :isVisible="showMyPageConfirmDialog"
+        message="For real?"
+        :onConfirm="moveMyPage"
+        :onCancel="dontMoveMyPage"
+      />
+      <!--사진-->
+    </div>
+    <div class="css-99cwur">
+      <div class="css-1ry6usa">{{ totals.createdAt }}</div>
+      <div class="css-o01lup">
+        <div class="css-ts29it">
+          <div class="css-1ry6usa">댓글</div>
+          <div class="css-1ry6usa">{{ totals.commentCnt }}</div>
+        </div>
+        <div class="css-1yw6m61-1"></div>
+        <div class="css-ts29it">
+          <div class="css-1ry6usa">추천</div>
+          <div class="css-1ry6usa">{{ totals.upCnt }}</div>
+        </div>
+        <div class="css-1yw6m61-1"></div>
+        <div class="css-ts29it">
+          <div class="css-1ry6usa">조회수</div>
+          <div class="css-1ry6usa">{{ totals.viewCnt }}</div>
         </div>
       </div>
     </div>
-  </a>
+  </div>
 </template>
 
 <script>
 import { mapStores } from "pinia";
-import { useBoardStore } from "@/stores/useBoardStore";
+import { useTotalStore } from "@/stores/useTotalStore";
 import TagComponent from "@/components/TagComponent.vue";
+import ConfirmDialogComponent from "./ConfirmDialogComponent.vue";
 
 export default {
   name: "MyPageBoardComponent",
-  props: ["boards"],
+  props: ["totals"],
+  data() {
+    return {
+      showMyPageConfirmDialog: false,
+      isModalOpen: false,
+      totalStore: useTotalStore(), // totalStore 객체 초기화
+    };
+  },
   computed: {
-    ...mapStores(useBoardStore, ["tagNameList"]),
+    ...mapStores(useTotalStore, ["tagNameList"]), // mapStores 함수 사용 수정
+  },
+  methods: {
+    async moveMyPage() {
+      this.showMyPageConfirmDialog = false;
+      try {
+        let response = await this.totalStore.deleteBoard(this.totals.idx);
+        if (response) {
+          console.log("Board deleted successfully:", response);
+          window.location.reload();
+        } else {
+          console.error("Delete request failed: No response data");
+        }
+      } catch (error) {
+        console.error("An error occurred while deleting:", error);
+      }
+    },
+    dontMoveMyPage() {
+      this.showMyPageConfirmDialog = false;
+      window.location.reload();
+    },
+    deleteB() {
+      this.showMyPageConfirmDialog = true;
+    },
   },
   components: {
     TagComponent,
+    ConfirmDialogComponent,
   },
 };
 </script>
@@ -271,12 +318,12 @@ export default {
 .updateboardgms {
   font-family: Pretendard;
   cursor: pointer;
-  width: 45px;
-  padding: 3px 8px;
-  margin-left: 10px;
+  width: 52px;
+  padding: 3px 1px;
+  margin-left: 5px;
   border-radius: 5px;
-  border-color: rgba(0, 0, 0, 0);
-  background-color: rgba(84, 29, 112, 0.148);
+  border-color: rgba(0, 0, 0, 0.285);
+  background-color: rgba(84, 29, 112, 0);
   font-size: 11px;
   font-weight: bold;
   display: flex;
@@ -288,10 +335,10 @@ export default {
 .deleteboardgms {
   font-family: Pretendard;
   cursor: pointer;
-  width: 45px;
+  width: 60px;
   padding: 3px 8px;
   border-radius: 5px;
-  border-color: rgba(0, 0, 0, 0);
+  border-color: rgba(0, 0, 0, 0.285);
   background-color: rgba(255, 0, 0, 0.185);
   font-size: 11px;
   font-weight: bold;
@@ -300,5 +347,26 @@ export default {
   justify-content: center;
   gap: 9px;
   color: #000000cf;
+}
+.modal {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 배경을 어둡게 함 */
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+a {
+  text-decoration: none;
 }
 </style>

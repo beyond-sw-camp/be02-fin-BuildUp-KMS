@@ -1,41 +1,25 @@
-package com.example.bootshelf.boardsvc.board.model.response;
+package com.example.bootshelf.reviewsvc.reviewscrap.model.response;
 
 import lombok.*;
-
-import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class GetListBoardRes {
+public class GetScrapListReviewRes {
 
     private Integer idx;
-
+    private Integer userIdx;
     private String nickName;
-
-    private String userProfileImage;
-
     private String title;
-
     private String content;
-
-    private Integer boardCategoryIdx;
-
-    private String boardImg;
-
-    private List<String> tagNameList;
-
+    private String courseName;
+    private Integer courseEvaluation;
     private Integer viewCnt;
-
     private Integer upCnt;
-
     private Integer scrapCnt;
-
     private Integer commentCnt;
-
-    private String createdAt;
-
     private String updatedAt;
+
 }

@@ -474,6 +474,26 @@ export const useBoardStore = defineStore("board", {
       } catch (error) {
         console.error(error);
       }
+    },
+
+    async deleteBoard(boardIdx){
+      try {
+        let response = await axios.delete(
+          backend + 
+          "/board/delete/" + 
+          boardIdx, {
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+            "Content-Type": "application/json"
+          },
+        });
+
+        console.log(response);
+
+        return response.data;
+      } catch (error) {
+        console.error(error);
+      }
     }
   },
 });

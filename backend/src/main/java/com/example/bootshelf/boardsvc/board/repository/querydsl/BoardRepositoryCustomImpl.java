@@ -2,9 +2,9 @@ package com.example.bootshelf.boardsvc.board.repository.querydsl;
 
 import com.example.bootshelf.boardsvc.board.model.entity.Board;
 import com.example.bootshelf.boardsvc.board.model.entity.QBoard;
-import com.example.bootshelf.boardsvc.boardcategory.model.entity.QBoardCategory;
+import com.example.bootshelf.boardsvc.boardscrap.model.entity.QBoardScrap;
 import com.example.bootshelf.boardsvc.boardtag.model.entity.QBoardTag;
-import com.example.bootshelf.tag.model.entity.QTag;
+import com.example.bootshelf.user.model.entity.User;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLQuery;
@@ -224,5 +224,23 @@ public class BoardRepositoryCustomImpl extends QuerydslRepositorySupport impleme
     private BooleanExpression contentContainsV2(String query) {
         if (query == null || query.trim().isEmpty()) return null;
         return QBoard.board.boardContent.containsIgnoreCase(query);
+    }
+
+    @Override
+    public Page<Board> findBoardScrapListByCategory(Pageable pageable, User user, Integer boardCategoryIdx, Integer sortIdx) {
+        QBoardScrap boardScrap = new QBoardScrap("boardScrap");
+        QBoard board = new QBoard("board");
+
+        OrderSpecifier[] orderSpecifiers = createOrderSpecifier(sortIdx, board);
+        JPQLQuery<Board> result = from(board)
+                .leftJoin(boardScrap)
+                .on(board.idx.eq(boardScrap.board.idx))
+                .where(board.user.idx.eq(user.getIdx()).and(boardScrap.board.status.eq(true)).and(board.boardCategory.idx.eq(boardCategoryIdx)))
+                .orderBy(orderSpecifiers);
+
+        JPQLQuery<Board> pageableQuery = getQuerydsl().applyPagination(pageable, result);
+        List<Board> boardList = pageableQuery.fetch();
+
+        return new PageImpl<>(boardList, pageable, pageableQuery.fetchCount());
     }
 }
