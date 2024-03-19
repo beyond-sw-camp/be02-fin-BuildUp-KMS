@@ -20,7 +20,6 @@ import KakaoLogIn from "@/pages/KakaoLogIn.vue";
 import KnowledgeBoardListPage from "@/pages/KnowledgeBoardListPage.vue";
 import QnABoardListPage from "@/pages/QnABoardListPage.vue";
 import BoardUpdatePage from "@/pages/BoardUpdatePage.vue";
-import StudyDetailsPage from "@/pages/StudyDetailsPage.vue";
 import HotListPage from "@/pages/HotListPage.vue";
 import TagBoardListPage from "@/pages/TagBoardListPage.vue";
 import ReviewUpdatePage from "@/pages/ReviewUpdatePage.vue";
@@ -139,9 +138,8 @@ const routes = [
     component: ReviewWritePage,
     beforeEnter: requireUserAuth(),
   },
-  { path: "/board/:boardIdx", component: BoardDetailsPage },
+  { path: "/board/:idx", component: BoardDetailsPage },
   { path: "/review/:idx", component: ReviewDetailsPage },
-  { path: "/study/:boardIdx", component: StudyDetailsPage },
   { path: "/board/knowledge", component: KnowledgeBoardListPage },
   { path: "/board/tag", component: TagBoardListPage },
   { path: "/board/qna", component: QnABoardListPage },

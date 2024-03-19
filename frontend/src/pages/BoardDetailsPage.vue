@@ -283,7 +283,7 @@ export default {
     }
   },
   async mounted() {
-    const boardIdx = this.$route.params.boardIdx;
+    const boardIdx = this.$route.params.idx;
 
     this.boardIdx = boardIdx;
 
