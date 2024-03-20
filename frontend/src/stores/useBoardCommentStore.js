@@ -2,7 +2,8 @@ import { defineStore } from "pinia";
 import axios from "axios";
 // import VueJwtDecode from "vue-jwt-decode";
 
-const backend = "http://frontend-svc:8080";
+// const backend = "http://frontend-svc:8080";
+const backend = "http://localhost:8080";
 // boardStore를 사용하면 해당 idx 가져오기..
 // const boardIdx = useBoardStore().boardIdx;
 
@@ -34,9 +35,9 @@ export const useBoardCommentStore = defineStore({
           },
         }
       );
-      console.log(response);
-      console.log("게시판 댓글 작성 성공");
-      window.location.href = `http://localhost:8081/board/${boardIdx}`;
+      if(response.data.isSuccess === true) {
+        window.location.href = `/board/${boardIdx}`;
+      }
 
     } catch (error) {
       console.error("ERROR : ", error);
@@ -62,12 +63,11 @@ export const useBoardCommentStore = defineStore({
           },
         }
       );
-      console.log(commentIdx);
-      console.log(boardCommentContent);
+      
 
-      console.log(response);
-      console.log("게시판 댓글 수정 성공");
-      window.location.href = `http://localhost:8081/board/${boardIdx}`;
+      if(response.data.isSuccess === true) {
+        window.location.href = `/board/${boardIdx}`;
+      }
 
     } catch (error) {
       console.error("댓글 수정 실패 : ", error);
@@ -94,9 +94,9 @@ export const useBoardCommentStore = defineStore({
         } 
       );
 
-      console.log(response);
-      console.log("게시판 댓글 삭제 성공");
-      window.location.href = `http://localhost:8081/board/${boardIdx}`;
+      if(response.data.isSuccess === true) {
+        window.location.href = `/board/${boardIdx}`;
+      }
 
     } catch (error) {
       console.error("삭제 실패 : ", error);
@@ -137,9 +137,11 @@ export const useBoardCommentStore = defineStore({
                 },
               }
             );
-            console.log(response);
-            console.log("게시판 대댓글 작성 성공");
-            window.location.href = `http://localhost:8081/board/${boardIdx}`;
+
+            if(response.data.isSuccess === true) {
+              window.location.href = `/board/${boardIdx}`;
+            }
+
           } catch (error) {
             console.error("ERROR : ", error);
           }

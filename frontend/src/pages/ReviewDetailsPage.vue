@@ -437,7 +437,6 @@ export default {
           token,
           this.reviewIdx
         );
-        console.log(response);
 
         if (response.data && response.data.result.status === true) {
           this.isRecommended = true;
@@ -457,7 +456,6 @@ export default {
           token,
           this.reviewIdx
         );
-        console.log(response);
 
         if (response.data && response.data.result.status === true) {
           this.isScrapped = true;
