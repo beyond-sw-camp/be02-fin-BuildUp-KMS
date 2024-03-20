@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 
+// const backend = "http://frontend-svc:8080";
 const backend = "http://localhost:8080";
 
 export const useTagStore = defineStore("tag", {

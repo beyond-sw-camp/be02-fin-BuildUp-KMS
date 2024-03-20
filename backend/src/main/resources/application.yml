@@ -40,12 +40,13 @@ spring:
           writetimeout: 5000
 
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.mariadb.jdbc.Driver
     url: ${MASTER_URL}
     username: ${MASTER}
     password: ${MASTER_PW}
 
   jpa:
+    database-platform: org.hibernate.dialect.MariaDB103Dialect
     hibernate:
       ddl-auto: update
       naming:

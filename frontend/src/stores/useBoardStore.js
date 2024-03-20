@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 
+// const backend = "http://frontend-svc:8080";
 const backend = "http://localhost:8080";
 const storedToken = localStorage.getItem("token");
 
@@ -76,7 +77,6 @@ export const useBoardStore = defineStore("board", {
           this.isPageExist = true;
         }
 
-        console.log(response);
       } catch (error) {
         console.error(error);
       } finally {
@@ -111,7 +111,6 @@ export const useBoardStore = defineStore("board", {
           this.isPageExist = true;
         }
 
-        console.log(response);
       } catch (error) {
         console.error(error);
       } finally {
@@ -156,7 +155,6 @@ export const useBoardStore = defineStore("board", {
         let response = await axios.get(backend + "/board/" + boardIdx);
         this.boardDetail = response.data.result;
 
-        console.log(response);
         return this.boardDetail;
       } catch (e) {
         console.log(e);
@@ -207,7 +205,6 @@ export const useBoardStore = defineStore("board", {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log(response);
 
         this.isRecommended = response.data.result.status;
 
@@ -227,7 +224,6 @@ export const useBoardStore = defineStore("board", {
             },
           }
         );
-        console.log(response);
 
         this.isScrapped = response.data.result.status;
 
@@ -239,7 +235,7 @@ export const useBoardStore = defineStore("board", {
     },
     async cancelBoardUp(token, boardUpIdx) {
       try {
-        let response = await axios.patch(
+        await axios.patch(
           `${backend}/boardup/delete/${boardUpIdx}`,
           {},
           {
@@ -249,7 +245,7 @@ export const useBoardStore = defineStore("board", {
             },
           }
         );
-        console.log(response);
+
       } catch (e) {
         console.error(e);
         throw e;
@@ -257,7 +253,7 @@ export const useBoardStore = defineStore("board", {
     },
     async cancelBoardScrap(token, boardScrapIdx) {
       try {
-        let response = await axios.patch(
+        await axios.patch(
           `${backend}/boardscrap/delete/${boardScrapIdx}`,
           {},
           {
@@ -267,7 +263,6 @@ export const useBoardStore = defineStore("board", {
             },
           }
         );
-        console.log(response);
       } catch (e) {
         console.error(e);
         throw e;
@@ -341,7 +336,6 @@ export const useBoardStore = defineStore("board", {
         });
         this.boardDetail = response.data.result;
 
-        console.log(response);
         return this.boardDetail;
       } catch (e) {
         console.log(e);
@@ -377,7 +371,6 @@ export const useBoardStore = defineStore("board", {
         let response = await axios.get(backend + "/board/2");
         this.boardDetail = response.data.result;
 
-        console.log(response);
         return this.boardDetail;
       } catch (e) {
         console.log(e);

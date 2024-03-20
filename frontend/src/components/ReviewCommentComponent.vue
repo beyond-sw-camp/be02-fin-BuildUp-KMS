@@ -45,7 +45,7 @@
       <div class="css-f7no94-reply" v-if="reviewComment.showReplyForm">
         <div class="css-3o2y5e">
           <div width="36px" height="36px" class="css-jg5tbe">
-            <img alt="나의얼굴" width="34px" height="34px" :src="reviewStore.review.profileImage">
+            <img alt="나의얼굴" width="34px" height="34px" :src="userStore.user.profileImage">
           </div>
         </div>
         <div class="css-14f8kx2-0318">
@@ -108,12 +108,13 @@
 import { mapStores } from "pinia";
 import { useReviewCommentStore } from '@/stores/useReviewCommentStore';
 import { useReviewStore } from "@/stores/useReviewStore";
+import { useUserStore } from '../stores/useUserStore';
 import VueJwtDecode from "vue-jwt-decode";
 
 export default {
   name: "ReviewCommentComponent",
   computed: {
-    ...mapStores(useReviewCommentStore, useReviewStore),
+    ...mapStores(useReviewCommentStore, useReviewStore, useUserStore),
     filteredReviewComments() {
       return this.reviewCommentStore.reviewCommentList.filter(comment => comment.status);
     }

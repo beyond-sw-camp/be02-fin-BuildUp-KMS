@@ -10,6 +10,7 @@ import lombok.*;
 public class GetScrapListReviewRes {
 
     private Integer idx;
+    private Integer scrapIdx;
     private Integer userIdx;
     private String nickName;
     private String title;

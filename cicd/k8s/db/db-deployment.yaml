@@ -1,0 +1,33 @@
+apiVersion: apps/v1 
+kind: Deployment 
+metadata: 
+  name: db-deployment 
+spec: 
+  replicas: 1 
+  strategy: 
+    type: Recreate 
+  revisionHistoryLimit: 1
+  selector: 
+    matchLabels: 
+      type: mariadb
+  template: 
+    metadata: 
+      labels: 
+        type: mariadb 
+    spec: 
+      nodeSelector:
+        kubernetes.io/hostname: worker01
+      containers: 
+        - name: mariadb 
+          image: mariadb:latest 
+          envFrom: 
+            - configMapRef: 
+                name: db-config 
+          volumeMounts: 
+            - name: db-vol
+              mountPath: /var/lib/mysql 
+      terminationGracePeriodSeconds: 5 
+      volumes: 
+        - name: db-vol 
+          persistentVolumeClaim: 
+            claimName: db-pvc 

@@ -171,9 +171,9 @@ export default {
     },
     async deleteScrap() {
       if (this.totals.type === "board") {
-        await this.totalStore.deleteBoardScrap(this.totals.idx);
+        await this.totalStore.deleteBoardScrap(this.totals.scrapIdx);
       } else {
-        await this.totalStore.deletReviewScrap(this.totals.idx);
+        await this.totalStore.deletReviewScrap(this.totals.scrapIdx);
       }
     },
   },

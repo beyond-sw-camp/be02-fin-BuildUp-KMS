@@ -13,6 +13,8 @@ public class GetListBoardResByScrap {
 
     private Integer idx;
 
+    private Integer scrapIdx;
+
     private String nickName;
 
     private String userProfileImage;

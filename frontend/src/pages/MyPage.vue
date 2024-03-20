@@ -353,7 +353,7 @@ export default {
       };
       // 전달된 타입에 해당하는 값을 가져와서 selectedTotalType에 할당합니다.
       this.totalCategoryIdx = totalTypeToIdx[type] || "1";
-      this.loadTotalList(1); // 선택된 타입에 따라 리스트를 로드합니다.
+      this.loadTotalList(1); // 선택된 타입에 따라 리스트를 로드합니다..
     },
 
     loadTotalList(page) {

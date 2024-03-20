@@ -1,6 +1,7 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 
+// const backend = "http://frontend-svc:8080";
 const backend = "http://localhost:8080";
 let token = localStorage.getItem("token");
 
@@ -43,9 +44,10 @@ export const useReviewCommentStore = defineStore("reviewComment", {
             },
           }
         );
-        console.log(response);
-        console.log("게시판 댓글 작성 성공");
-        window.location.href = `http://localhost:8081/review/${reviewIdx}`;
+
+        if(response.data.isSuccess === true) {
+          window.location.href = `/review/${reviewIdx}`;
+        }
       } catch (error) {
         console.error("ERROR : ", error);
       }
@@ -71,10 +73,9 @@ export const useReviewCommentStore = defineStore("reviewComment", {
           }
         );
 
-        window.location.href = `http://localhost:8081/review/${reviewIdx}`;
-
-        console.log(response);
-        console.log("게시판 댓글 수정 성공");
+        if(response.data.isSuccess === true) {
+          window.location.href = `/review/${reviewIdx}`;
+        }
       } catch (error) {
         console.error("수정 실패 : ", error);
       }
@@ -100,9 +101,9 @@ export const useReviewCommentStore = defineStore("reviewComment", {
             }
           );
 
-          console.log(response);
-          console.log("게시판 댓글 삭제");
-          window.location.href = `http://localhost:8081/review/${reviewIdx}`;
+          if(response.data.isSuccess === true) {
+            window.location.href = `/review/${reviewIdx}`;
+          }
         } catch (error) {
           console.error("삭제 실패 : ", error);
         }
@@ -121,9 +122,9 @@ export const useReviewCommentStore = defineStore("reviewComment", {
             },
           }
         );
-        console.log(response);
-        console.log("게시판 대댓글 작성 성공");
-        window.location.href = `http://localhost:8081/review/${reviewIdx}`;
+        if(response.data.isSuccess === true) {
+          window.location.href = `/review/${reviewIdx}`;
+        }
       } catch (error) {
         console.error("ERROR : ", error);
       }

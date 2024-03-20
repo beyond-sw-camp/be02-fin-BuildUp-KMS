@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 
+// const backend = "http://frontend-svc:8080";
 const backend = "http://localhost:8080";
 const storedToken = localStorage.getItem("token");
 
@@ -112,7 +113,6 @@ export const useTotalStore = defineStore("total", {
           this.isPageExist = true;
         }
 
-        console.log(response);
       } catch (error) {
         console.error(error);
       } finally {
@@ -222,7 +222,6 @@ export const useTotalStore = defineStore("total", {
           this.isPageExist = true;
         }
 
-        console.log(response);
       } catch (error) {
         console.error(error);
       }
