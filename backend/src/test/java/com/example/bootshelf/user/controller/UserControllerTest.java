@@ -9,8 +9,10 @@ import com.example.bootshelf.common.error.exception.GlobalExceptionHandler;
 import com.example.bootshelf.config.SecurityConfig;
 import com.example.bootshelf.config.handler.OAuth2AuthenticationSuccessHandler;
 import com.example.bootshelf.config.utils.JwtUtils;
+import com.example.bootshelf.user.controller.mock.WithCustomMockUser;
 import com.example.bootshelf.user.exception.security.CustomAccessDeniedHandler;
 import com.example.bootshelf.user.exception.security.CustomAuthenticationEntryPoint;
+import com.example.bootshelf.user.model.entity.User;
 import com.example.bootshelf.user.model.request.PatchUpdateUserReq;
 import com.example.bootshelf.user.model.request.PostLoginUserReq;
 import com.example.bootshelf.user.model.request.PostSignUpUserReq;
@@ -51,6 +53,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.nio.charset.StandardCharsets;
 
 import static com.example.bootshelf.common.error.ErrorCode.DIFFERENT_USER_PASSWORD;
+import static com.example.bootshelf.common.error.ErrorCode.USER_NOT_EXISTS;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -224,10 +227,11 @@ class UserControllerTest {
 //                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("User Password [ Qwer1234@ ] is different."))
                 .andDo(print());
     }
+
     @DisplayName("회원목록 조회 성공")
     @WithMockUser
     @Test
-    void userController_list_success() throws Exception{
+    void userController_list_success() throws Exception {
 
         GetListUserRes getListUserRes = GetListUserRes.builder()
                 .userIdx(1)
@@ -258,11 +262,10 @@ class UserControllerTest {
                 .andDo(print());
     }
 
-    // 401 에러 뜸
     @DisplayName("회원정보 수정 성공")
-    @WithMockUser
+    @WithCustomMockUser
     @Test
-    void userController_update_success() throws Exception{
+    void userController_update_success() throws Exception {
 
         BaseRes baseRes = BaseRes.builder()
                 .isSuccess(true)
@@ -273,22 +276,72 @@ class UserControllerTest {
         ObjectMapper mapper = new ObjectMapper();
 
         PatchUpdateUserReq patchUpdateUserReq = PatchUpdateUserReq.builder()
-                .nickName("userNickName")
+                .nickName("test02")
                 .password("Qwer1234!")
                 .checkPassword("Qwer1234!")
                 .build();
 
-        given(userService.update(any(), any(PatchUpdateUserReq.class)))
+        given(userService.update(any(String.class), any(PatchUpdateUserReq.class)))
                 .willReturn(baseRes);
 
         // when & then
 
         mvc.perform(patch("/user/update")
                         .content(mapper.writeValueAsBytes(patchUpdateUserReq))
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.isSuccess").value(true))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("회원정보 수정 성공"))
                 .andDo(print());
     }
+
+    @DisplayName("회원탈퇴 성공")
+    @WithCustomMockUser
+    @Test
+    void userController_cancel_success() throws Exception {
+
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("요청 성공")
+                .result("회원의 상태가 탈퇴 상태로 변경되었습니다.")
+                .build();
+
+        // given
+        given(userService.cancel(any(Integer.class)))
+                .willReturn(baseRes);
+
+        // when & then
+
+        mvc.perform(delete("/user/cancel")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.isSuccess").value(true))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("요청 성공"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result").value("회원의 상태가 탈퇴 상태로 변경되었습니다."))
+                .andDo(print());
+    }
+
+    @DisplayName("회원탈퇴 실패")
+    @WithCustomMockUser
+    @Test
+    void userController_cancel_failed() throws Exception {
+
+        // given
+        given(userService.cancel(any(Integer.class)))
+                .willThrow(new UserException(ErrorCode.USER_NOT_EXISTS, "UserIdx [ %s ] is not exists."));
+
+        // when & then
+
+        mvc.perform(delete("/user/cancel")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
+                .andExpect(status().isUnauthorized())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("ACCOUNT-001"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Request processing failed; nested exception is com.example.bootshelf.common.error.entityexception.UserException: UserIdx [ %s ] is not exists."))
+                .andDo(print());
+    }
+
+
 }

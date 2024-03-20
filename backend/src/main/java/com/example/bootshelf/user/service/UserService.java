@@ -345,7 +345,11 @@ public class UserService {
             loginUser.setStatus(false);
             userRepository.save(loginUser);
 
-            return BaseRes.builder().isSuccess(true).message("요청 성공").result("회원의 상태가 탈퇴 상태로 변경되었습니다.").build();
+            return BaseRes.builder()
+                    .isSuccess(true)
+                    .message("요청 성공")
+                    .result("회원의 상태가 탈퇴 상태로 변경되었습니다.")
+                    .build();
         } else {
             throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("UserIdx [ %s ] is not exists.", userIdx));
         }
