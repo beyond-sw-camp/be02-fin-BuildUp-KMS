@@ -88,7 +88,6 @@ public class ReviewService {
     }
 
     // 인증회원 본인이 작성한 후기글 목록 조회
-    @Transactional(readOnly = true)
     public BaseRes myList(User user, Pageable pageable, Integer reviewCategoryIdx, Integer sortType) {
 
         Page<Review> reviewList = reviewRepository.findMyReviewList(user.getIdx(), pageable, reviewCategoryIdx, sortType);
@@ -288,6 +287,7 @@ public class ReviewService {
         List<GetReviewListByQueryRes> getReviewListByQueryResList = new ArrayList<>();
 
         for (Review review : reviewList) {
+
             GetReviewListByQueryRes getReviewListByQueryRes = GetReviewListByQueryRes.builder()
                     .reviewIdx(review.getIdx())
                     .reviewTitle(review.getReviewTitle())

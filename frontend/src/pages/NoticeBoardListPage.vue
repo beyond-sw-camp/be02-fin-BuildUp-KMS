@@ -23,6 +23,7 @@
             <PaginationComponent
               :current-page="boardStore.currentPage"
               :total-pages="boardStore.totalPages"
+              :isPageExist="boardStore.isPageExist"
               @change-page="changePage"
             />
           </div>
@@ -53,23 +54,6 @@ export default {
   },
   computed: {
     ...mapStores(useBoardStore),
-    visiblePages() {
-      // 최대 5개의 페이지 번호만 보이도록 계산
-      let pages = [];
-      const total = this.boardStore.totalPages;
-
-      // 현재 페이지에서 앞뒤로 2개씩 보이게 하되, 총 페이지 수를 초과하지 않도록 조정
-      let start = Math.max(1, this.boardStore.currentPage - 2);
-      let end = Math.min(total, start + 4);
-
-      // 시작점 재조정: end가 변경되었을 때, 5개 페이지를 유지하려면 start도 조정해야 함
-      start = Math.max(1, Math.min(start, total - Math.min(total, 4)));
-
-      for (let i = start; i <= end; i++) {
-        pages.push(i);
-      }
-      return pages;
-    },
   },
   mounted() {
     this.loadBoardList(1);
@@ -78,8 +62,8 @@ export default {
     handleSelect(isClicked) {
       this.parentClass = isClicked ? "css-1e49g7k" : "css-1wa49dz";
     },
-    loadBoardList(page) {
-      this.boardStore.findListByCategory(
+    async loadBoardList(page) {
+      await this.boardStore.findListByCategory(
         this.boardCategoryIdx,
         this.sortType,
         page

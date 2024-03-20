@@ -292,6 +292,7 @@
             <PaginationComponent
               :current-page="totalStore.currentPage"
               :total-pages="totalStore.totalPages"
+              :isPageExist="totalStore.isPageExist"
               @change-page="changePage"
             />
           </div>
@@ -321,23 +322,6 @@ export default {
   },
   computed: {
     ...mapStores(useTotalStore, useBoardTagStore),
-    visiblePages() {
-      // 최대 5개의 페이지 번호만 보이도록 계산
-      let pages = [];
-      const total = this.totalStore.totalPages;
-
-      // 현재 페이지에서 앞뒤로 2개씩 보이게 하되, 총 페이지 수를 초과하지 않도록 조정
-      let start = Math.max(1, this.totalStore.currentPage - 2);
-      let end = Math.min(total, start + 4);
-
-      // 시작점 재조정: end가 변경되었을 때, 5개 페이지를 유지하려면 start도 조정해야 함
-      start = Math.max(1, Math.min(start, total - Math.min(total, 4)));
-
-      for (let i = start; i <= end; i++) {
-        pages.push(i);
-      }
-      return pages;
-    },
   },
   components: {
     HotBoardComponent,
@@ -383,20 +367,20 @@ export default {
       this.totalCategoryIdx = totalTypeToIdx[type] || "1";
       this.loadTotalList(1);
     },
-    loadTotalList(page) {
+    async loadTotalList(page) {
       if (this.searchTerm) {
         if (
           this.selectedTotalType === "course" ||
           this.selectedTotalType === "instructor"
         ) {
-          this.totalStore.getSearchHotReviewList(
+          await this.totalStore.getSearchHotReviewList(
             this.totalCategoryIdx,
             this.searchTerm,
             this.sortType,
             page
           );
         } else {
-          this.totalStore.getSearchHotBoardList(
+          await this.totalStore.getSearchHotBoardList(
             this.totalCategoryIdx,
             this.searchTerm,
             this.sortType,
@@ -408,13 +392,13 @@ export default {
           this.selectedTotalType === "course" ||
           this.selectedTotalType === "instructor"
         ) {
-          this.totalStore.getHotReviewList(
+          await this.totalStore.getHotReviewList(
             this.totalCategoryIdx,
             this.sortType,
             page
           );
         } else {
-          this.totalStore.getHotBoardList(
+          await this.totalStore.getHotBoardList(
             this.totalCategoryIdx,
             this.sortType,
             page

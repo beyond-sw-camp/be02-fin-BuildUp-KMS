@@ -59,7 +59,7 @@ public class BoardScrapRepositoryCustomImpl extends QuerydslRepositorySupport im
         OrderSpecifier[] orderSpecifiers = createOrderSpecifier(sortIdx, boardScrap);
         JPQLQuery<BoardScrap> result = from(boardScrap)
                 .leftJoin(boardScrap.board.boardCategory)
-                .where(boardScrap.user.idx.eq(user.getIdx()).and(boardScrap.board.status.eq(true)).and(boardScrap.board.boardCategory.idx.eq(boardCategoryIdx)))
+                .where(boardScrap.user.idx.eq(user.getIdx()).and(boardScrap.status.eq(true)).and(boardScrap.board.boardCategory.idx.eq(boardCategoryIdx)))
                 .orderBy(orderSpecifiers);
 
         JPQLQuery<BoardScrap> pageableQuery = getQuerydsl().applyPagination(pageable, result);

@@ -17,7 +17,8 @@ export const useBoardStore = defineStore("board", {
     previousPath: "",
     isBoardExist: true,
     isLoading: false,
-    fromEdit: false
+    fromEdit: false,
+    isPageExist: true
   }),
 
   actions: {
@@ -67,10 +68,12 @@ export const useBoardStore = defineStore("board", {
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
-        if (this.totalCnt === 0) {
+        if (this.boardList.length === 0) {
           this.isBoardExist = false;
+          this.isPageExist = false;
         } else {
           this.isBoardExist = true;
+          this.isPageExist = true;
         }
 
         console.log(response);
@@ -100,10 +103,12 @@ export const useBoardStore = defineStore("board", {
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
-        if (this.totalCnt === 0) {
+        if (this.boardList.length === 0) {
           this.isBoardExist = false;
+          this.isPageExist = false;
         } else {
           this.isBoardExist = true;
+          this.isPageExist = true;
         }
 
         console.log(response);
@@ -133,10 +138,12 @@ export const useBoardStore = defineStore("board", {
         this.totalPages = response.data.result.totalPages;
         this.totalCnt = response.data.result.totalCnt;
 
-        if (this.totalCnt === 0) {
+        if (this.boardList.length === 0) {
           this.isBoardExist = false;
+          this.isPageExist = false;
         } else {
           this.isBoardExist = true;
+          this.isPageExist = true;
         }
       } catch (e) {
         console.log(e);
@@ -291,12 +298,14 @@ export const useBoardStore = defineStore("board", {
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
-        if (this.totalCnt === 0) {
+        if (this.boardList.length === 0) {
           this.isBoardExist = false;
+          this.isPageExist = false;
         } else {
           this.isBoardExist = true;
+          this.isPageExist = true;
         }
-        console.log(response);
+
       } catch (error) {
         console.error(error);
       } finally {
@@ -324,10 +333,8 @@ export const useBoardStore = defineStore("board", {
     async findBoardDetailByUserIdx(boardIdx) {
       try {
         this.isLoading = true;
-        
-        let response = await axios.get(
-          `${backend}/board/mywrite/${boardIdx}`,
-          {
+
+        let response = await axios.get(`${backend}/board/mywrite/${boardIdx}`, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
           },
@@ -350,17 +357,13 @@ export const useBoardStore = defineStore("board", {
       formData.append("boardImage", boardImage);
 
       try {
-        let response = await axios.patch(
-          `${backend}/board/update`,
-          formData,
-          {
-            headers: {
-              Authorization: `Bearer ${storedToken}`,
-              "Content-Type": "multipart/form-data",
-              // "Content-Type": "application/json",
-            },
-          }
-        );
+        let response = await axios.patch(`${backend}/board/update`, formData, {
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+            "Content-Type": "multipart/form-data",
+            // "Content-Type": "application/json",
+          },
+        });
         if (response.data.isSuccess === true) {
           alert("게시글이 수정되었습니다.");
           window.location.href = "/board/" + board.boardIdx;
@@ -402,13 +405,14 @@ export const useBoardStore = defineStore("board", {
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
-        if (this.totalCnt === 0) {
+        if (this.boardList.length === 0) {
           this.isBoardExist = false;
+          this.isPageExist = false;
         } else {
           this.isBoardExist = true;
+          this.isPageExist = true;
         }
 
-        console.log(response);
       } catch (error) {
         console.error(error);
       } finally {
@@ -446,18 +450,21 @@ export const useBoardStore = defineStore("board", {
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
-        if (this.totalCnt === 0) {
+        if (this.boardList.length === 0) {
           this.isBoardExist = false;
+          this.isPageExist = false;
         } else {
           this.isBoardExist = true;
+          this.isPageExist = true;
         }
+
       } catch (e) {
         console.log(e);
       } finally {
         this.isLoading = false;
       }
     },
-    
+
     async deleteBoardCategory(boardCategoryIdx) {
       try {
         await axios.delete(backend + "/admin/board/delete/" + boardCategoryIdx);
@@ -470,78 +477,98 @@ export const useBoardStore = defineStore("board", {
     async updateBoardCategory(boardCategoryIdx, newCategoryName) {
       try {
         await axios.patch(backend + "/admin/board/update/" + boardCategoryIdx, {
-          categoryName: newCategoryName
-        })
-      } catch(e) {
+          categoryName: newCategoryName,
+        });
+      } catch (e) {
         console.error(e);
         throw e;
       }
     },
-    async findMyBoardListByCategory(boardCategoryIdx, option, page = 1){
+    async findMyBoardListByCategory(boardCategoryIdx, option, page = 1) {
       try {
         let response = await axios.get(
-          backend + 
-          "/board/mylist/" + 
-          boardCategoryIdx + "/" +
-          option + 
-          "?page=" + (page-1), {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-            "Content-Type": "application/json"
-          },
-        });
+          backend +
+            "/board/mylist/" +
+            boardCategoryIdx +
+            "/" +
+            option +
+            "?page=" +
+            (page - 1),
+          {
+            headers: {
+              Authorization: `Bearer ${storedToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
         this.boardList = response.data.result.list;
         this.totalPages = response.data.result.totalPages;
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
-        console.log(response);
+        if (this.boardList.length === 0) {
+          this.isBoardExist = false;
+          this.isPageExist = false;
+        } else {
+          this.isBoardExist = true;
+          this.isPageExist = true;
+        }
+
       } catch (error) {
         console.error(error);
       }
     },
-    async findBoardScrapListByCategory(boardCategoryIdx, option, page = 1){
+    async findBoardScrapListByCategory(boardCategoryIdx, option, page = 1) {
       try {
         let response = await axios.get(
-          backend + 
-          "/boardscrap/list/" + 
-          boardCategoryIdx + "/" +
-          option + 
-          "?page=" + (page-1), {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-            "Content-Type": "application/json"
-          },
-        });
+          backend +
+            "/boardscrap/list/" +
+            boardCategoryIdx +
+            "/" +
+            option +
+            "?page=" +
+            (page - 1),
+          {
+            headers: {
+              Authorization: `Bearer ${storedToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
         this.boardList = response.data.result.list;
         this.totalPages = response.data.result.totalPages;
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
-        console.log(response);
+        if (this.boardList.length === 0) {
+          this.isBoardExist = false;
+          this.isPageExist = false;
+        } else {
+          this.isBoardExist = true;
+          this.isPageExist = true;
+        }
+
       } catch (error) {
         console.error(error);
       }
     },
 
-    async deleteBoard(boardIdx){
+    async deleteBoard(boardIdx) {
       try {
         let response = await axios.delete(
-          backend + 
-          "/board/delete/" + 
-          boardIdx, {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-            "Content-Type": "application/json"
-          },
-        });
-
-        console.log(response);
+          backend + "/board/delete/" + boardIdx,
+          {
+            headers: {
+              Authorization: `Bearer ${storedToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         return response.data;
       } catch (error) {
         console.error(error);
       }
-    }
+    },
   },
 });
