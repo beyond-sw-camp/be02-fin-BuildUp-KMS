@@ -16,12 +16,6 @@ import java.util.Optional;
 
 public class WithCustomMockUserSecurityContextFactory implements WithSecurityContextFactory<WithCustomMockUser> {
 
-    private final UserRepository userRepository;
-
-    public WithCustomMockUserSecurityContextFactory(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
     @Override
     public SecurityContext createSecurityContext(WithCustomMockUser annotation) {
 
