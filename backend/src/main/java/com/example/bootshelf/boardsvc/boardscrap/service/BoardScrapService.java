@@ -189,7 +189,8 @@ public class BoardScrapService {
             }
 
             GetListBoardResByScrap res = GetListBoardResByScrap.builder()
-                    .idx(boardScrap.getIdx())
+                    .idx(boardScrap.getBoard().getIdx())
+                    .scrapIdx(boardScrap.getIdx())
                     .nickName(boardScrap.getBoard().getUser().getNickName())
                     .userProfileImage(user.getProfileImage())
                     .title(boardScrap.getBoard().getBoardTitle())
