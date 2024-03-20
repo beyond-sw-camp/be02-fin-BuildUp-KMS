@@ -165,7 +165,7 @@ const routes = [
   { path: "/admin/user", component: AdminUserListPage, beforeEnter: requireAdminAuth() },
   { path: "/admin/signup", component: AdminSignUpPage },
   { path: "/admin/login", component: AdminLoginPage },
-  { path: "/review/mywrite/:reviewIdx", component: ReviewUpdatePage },
+
 
 ];
 
