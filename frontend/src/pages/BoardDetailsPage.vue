@@ -84,9 +84,7 @@
                     class="layer_cont"
                     style="margin: -140.5px 0px 0px -225px"
                   >
-                    <p>
-                      마이페이지로 이동하시겠습니까?
-                    </p>
+                    <p>마이페이지로 이동하시겠습니까?</p>
                     <div class="btn_wrap">
                       <button
                         type="button"
@@ -365,66 +363,76 @@ export default {
     },
     async createBoardUp() {
       let token = window.localStorage.getItem("token");
-      let requestBody = {
-        boardIdx: this.boardIdx,
-      };
 
-      try {
-        if (this.isRecommended) {
-          await this.boardStore.cancelBoardUp(token, this.boardUpIdx);
-          console.log("게시글 추천 취소 성공");
-          this.isRecommended = false;
+      if (token == null) {
+        alert("로그인 후 이용해주세요.");
+      } else {
+        let requestBody = {
+          boardIdx: this.boardIdx,
+        };
 
-          window.location.reload();
-        } else {
-          const response = await this.boardStore.createBoardUp(
-            token,
-            requestBody
-          );
+        try {
+          if (this.isRecommended) {
+            await this.boardStore.cancelBoardUp(token, this.boardUpIdx);
+            console.log("게시글 추천 취소 성공");
+            this.isRecommended = false;
 
-          if (response.status === 200 && response.data) {
-            console.log("게시글 추천 성공!");
-            this.isRecommended = true;
             window.location.reload();
           } else {
-            console.error("게시글 추천 실패");
-            alert("게시글 추천 실패");
+            const response = await this.boardStore.createBoardUp(
+              token,
+              requestBody
+            );
+
+            if (response.status === 200 && response.data) {
+              console.log("게시글 추천 성공!");
+              this.isRecommended = true;
+              window.location.reload();
+            } else {
+              console.error("게시글 추천 실패");
+              alert("게시글 추천 실패");
+            }
           }
+        } catch (e) {
+          console.error("게시글 추천 과정에서 문제가 발생했습니다!", e);
         }
-      } catch (e) {
-        console.error("게시글 추천 과정에서 문제가 발생했습니다!", e);
       }
     },
     async createBoardScrap() {
       let token = window.localStorage.getItem("token");
-      let requestBody = {
-        boardIdx: this.boardIdx,
-      };
 
-      try {
-        if (this.isScrapped) {
-          await this.boardStore.cancelBoardScrap(token, this.boardScrapIdx);
-          console.log("게시글 스크랩 취소 성공");
-          this.isScrapped = false;
+      if (token == null) {
+        alert("로그인 후 이용해주세요.");
+      } else {
+        let requestBody = {
+          boardIdx: this.boardIdx,
+        };
 
-          window.location.reload();
-        } else {
-          const response = await this.boardStore.createBoardScrap(
-            token,
-            requestBody
-          );
+        try {
+          if (this.isScrapped) {
+            await this.boardStore.cancelBoardScrap(token, this.boardScrapIdx);
+            console.log("게시글 스크랩 취소 성공");
+            this.isScrapped = false;
 
-          if (response.status === 200 && response.data) {
-            console.log("게시글 스크랩 성공!");
-            this.isScrapped = true;
-            this.isActive = true;
+            window.location.reload();
           } else {
-            console.error("게시글 스크랩 실패");
-            alert("게시글 스크랩 실패");
+            const response = await this.boardStore.createBoardScrap(
+              token,
+              requestBody
+            );
+
+            if (response.status === 200 && response.data) {
+              console.log("게시글 스크랩 성공!");
+              this.isScrapped = true;
+              this.isActive = true;
+            } else {
+              console.error("게시글 스크랩 실패");
+              alert("게시글 스크랩 실패");
+            }
           }
+        } catch (e) {
+          console.error("게시글 스크랩 과정에서 문제가 발생했습니다!", e);
         }
-      } catch (e) {
-        console.error("게시글 스크랩 과정에서 문제가 발생했습니다!", e);
       }
     },
     moveMyPage() {
@@ -1194,18 +1202,18 @@ span.btn.black {
 }
 
 .css-myjkxi {
-    position: absolute;
-    top: 18px;
-    right: 16px;
-    font-family: Pretendard;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 26px;
-    color: rgb(58, 62, 65);
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    cursor: pointer;
+  position: absolute;
+  top: 18px;
+  right: 16px;
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 26px;
+  color: rgb(58, 62, 65);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
 }
 </style>

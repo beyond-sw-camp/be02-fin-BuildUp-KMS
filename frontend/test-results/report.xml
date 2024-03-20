@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="3" failures="0" errors="0" time="0.487">
-  <testsuite name="AdminLoginPage" errors="0" failures="0" skipped="0" timestamp="2024-03-19T10:16:14" time="0.287" tests="3">
-    <testcase classname="AdminLoginPage sets hideHeaderAndFooter to true on mount" name="AdminLoginPage sets hideHeaderAndFooter to true on mount" time="0.014">
+<testsuites name="jest tests" tests="3" failures="0" errors="0" time="2.502">
+  <testsuite name="AdminLoginPage" errors="0" failures="0" skipped="0" timestamp="2024-03-20T00:24:59" time="1.283" tests="3">
+    <testcase classname="AdminLoginPage 헤더 &amp; 푸터 숨김 true mount 설정" name="AdminLoginPage 헤더 &amp; 푸터 숨김 true mount 설정" time="0.03">
     </testcase>
-    <testcase classname="AdminLoginPage calls adminLogin with email and password on form submit" name="AdminLoginPage calls adminLogin with email and password on form submit" time="0.006">
+    <testcase classname="AdminLoginPage form 형식으로 email, password 입력을 통한 관리자 로그인" name="AdminLoginPage form 형식으로 email, password 입력을 통한 관리자 로그인" time="0.019">
     </testcase>
-    <testcase classname="AdminLoginPage navigates to /admin/tag/register on successful login" name="AdminLoginPage navigates to /admin/tag/register on successful login" time="0.004">
+    <testcase classname="AdminLoginPage 관리자 로그인 성공 시 /admin/tag/register 경로로 이동" name="AdminLoginPage 관리자 로그인 성공 시 /admin/tag/register 경로로 이동" time="0.009">
     </testcase>
   </testsuite>
 </testsuites>
