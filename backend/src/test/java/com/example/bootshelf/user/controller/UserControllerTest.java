@@ -289,7 +289,7 @@ class UserControllerTest {
         mvc.perform(patch("/user/update")
                         .content(mapper.writeValueAsBytes(patchUpdateUserReq))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(csrf()))
+                        )
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.isSuccess").value(true))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("회원정보 수정 성공"))
@@ -315,7 +315,7 @@ class UserControllerTest {
 
         mvc.perform(delete("/user/cancel")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(csrf()))
+                        )
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.isSuccess").value(true))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("요청 성공"))
@@ -336,7 +336,7 @@ class UserControllerTest {
 
         mvc.perform(delete("/user/cancel")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(csrf()))
+                        )
                 .andExpect(status().isUnauthorized())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("ACCOUNT-001"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Request processing failed; nested exception is com.example.bootshelf.common.error.entityexception.UserException: UserIdx [ %s ] is not exists."))
