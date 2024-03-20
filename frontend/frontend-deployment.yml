@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata: 
+  name: frontend-deployment
+spec: 
+  replicas: 2
+  strategy: 
+    type: RollingUpdate 
+  revisionHistoryLimit: 1 
+  selector: 
+    matchLabels: 
+      type: frontend 
+  template:
+    metadata: 
+      labels: 
+        type: frontend 
+    spec: 
+      containers: 
+        - name: frontend-container
+          image: tessssssssy/frontend:1.0 
+          resources: 
+            requests: 
+              memory: "512m" 
+              cpu: "100m" 
+            limits: 
+              memory: "3Gi" 
+              cpu: "2000m" 
