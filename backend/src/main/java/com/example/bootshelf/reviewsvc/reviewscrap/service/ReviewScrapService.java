@@ -109,7 +109,8 @@ public class ReviewScrapService {
         for (ReviewScrap reviewScrap : reviewScrapList.getContent()) {
 
             GetScrapListReviewRes res = GetScrapListReviewRes.builder()
-                    .idx(reviewScrap.getIdx())
+                    .idx(reviewScrap.getReview().getIdx())
+                    .scrapIdx(reviewScrap.getIdx())
                     .userIdx(reviewScrap.getUser().getIdx())
                     .nickName(reviewScrap.getUser().getNickName())
                     .title(reviewScrap.getReview().getReviewTitle())
