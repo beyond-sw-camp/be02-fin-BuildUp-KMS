@@ -924,6 +924,16 @@ svg {
 }
 /*-------------프로필 이미지 업로드---------------*/
 /*--------로딩창-------------*/
+.loadingio-spinner-spinner {
+  position: fixed;
+  top: 0;
+  left: 0%;
+  z-index: 1000; /* 다른 요소 위에 표시하기 위한 z-index 값 */
+  width: 100%; /* 전체 화면을 커버 */
+  height: 100%;
+  justify-content: center; /* 가운데 정렬 */
+  align-items: center; /* 세로 가운데 정렬 */
+}
 @keyframes ldio-f4nnk2ltl0v {
   0% {
     opacity: 1;
