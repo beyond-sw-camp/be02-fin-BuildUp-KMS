@@ -343,67 +343,80 @@ export default {
     },
     async createReviewUp() {
       let token = window.localStorage.getItem("token");
-      let requestBody = {
-        reviewIdx: this.reviewIdx,
-      };
 
-      try {
-        if (this.isRecommended) {
-          await this.reviewStore.cancelReviewUp(token, this.reviewUpIdx);
-          console.log("후기 추천 취소 성공");
-          this.isRecommended = false;
+      if (token == null) {
+        alert("로그인 후 이용해주세요.");
+      } else {
+        let requestBody = {
+          reviewIdx: this.reviewIdx,
+        };
 
-          window.location.reload();
-        } else {
-          const response = await this.reviewStore.createReviewUp(
-            token,
-            requestBody
-          );
+        try {
+          if (this.isRecommended) {
+            await this.reviewStore.cancelReviewUp(token, this.reviewUpIdx);
+            console.log("후기 추천 취소 성공");
+            this.isRecommended = false;
 
-          if (response.status === 200 && response.data) {
-            console.log("후기 추천 성공!");
-            this.isRecommended = true;
             window.location.reload();
           } else {
-            console.error("후기 추천 실패");
-            alert("후기 추천 실패");
+            const response = await this.reviewStore.createReviewUp(
+              token,
+              requestBody
+            );
+
+            if (response.status === 200 && response.data) {
+              console.log("후기 추천 성공!");
+              this.isRecommended = true;
+              window.location.reload();
+            } else {
+              console.error("후기 추천 실패");
+              alert("후기 추천 실패");
+            }
           }
+        } catch (e) {
+          console.error("후기 추천 과정에서 문제가 발생했습니다!", e);
         }
-      } catch (e) {
-        console.error("후기 추천 과정에서 문제가 발생했습니다!", e);
       }
     },
 
     async createReviewScrap() {
       let token = window.localStorage.getItem("token");
-      let requestBody = {
-        reviewIdx: this.reviewIdx,
-      };
 
-      try {
-        if (this.isScrapped) {
-          await this.reviewStore.cancelReviewScrap(token, this.reviewScrapIdx);
-          console.log("후기 스크랩 취소 성공");
-          this.isScrapped = false;
+      if (token == null) {
+        alert("로그인 후 이용해주세요.");
+      } else {
+        let requestBody = {
+          reviewIdx: this.reviewIdx,
+        };
 
-          window.location.reload();
-        } else {
-          const response = await this.reviewStore.createReviewScrap(
-            token,
-            requestBody
-          );
+        try {
+          if (this.isScrapped) {
+            await this.reviewStore.cancelReviewScrap(
+              token,
+              this.reviewScrapIdx
+            );
+            console.log("후기 스크랩 취소 성공");
+            this.isScrapped = false;
 
-          if (response.status === 200 && response.data) {
-            console.log("후기 스크랩 성공!");
-            this.isScrapped = true;
-            this.isActive = true;
+            window.location.reload();
           } else {
-            console.error("후기 스크랩 실패");
-            alert("후기 스크랩 실패");
+            const response = await this.reviewStore.createReviewScrap(
+              token,
+              requestBody
+            );
+
+            if (response.status === 200 && response.data) {
+              console.log("후기 스크랩 성공!");
+              this.isScrapped = true;
+              this.isActive = true;
+            } else {
+              console.error("후기 스크랩 실패");
+              alert("후기 스크랩 실패");
+            }
           }
+        } catch (e) {
+          console.error("후기 스크랩 과정에서 문제가 발생했습니다!", e);
         }
-      } catch (e) {
-        console.error("후기 스크랩 과정에서 문제가 발생했습니다!", e);
       }
     },
 
@@ -1235,18 +1248,18 @@ span.btn.black {
 }
 
 .css-myjkxi {
-    position: absolute;
-    top: 18px;
-    right: 16px;
-    font-family: Pretendard;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 26px;
-    color: rgb(58, 62, 65);
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    cursor: pointer;
+  position: absolute;
+  top: 18px;
+  right: 16px;
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 26px;
+  color: rgb(58, 62, 65);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
 }
 </style>
