@@ -20,14 +20,27 @@ spec:
     spec:
       containers:
         - name: backend-container
-          image: tessssssssy/bootshelf-backend:1.4
+          image: hyungdoyou/bootshelf-be:2.VERSION
           resources:
             requests:
-              memory: "512m"
+              memory: "512Mi"
               cpu: "100m"
             limits:
               memory: "3Gi"
               cpu: "2000m"
+          readinessProbe:
+            httpGet:
+              path: /board/category/1/1?page=0
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            successThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /board/category/1/1?page=0
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 10
           envFrom:
             - configMapRef:
                 name: backend-config
