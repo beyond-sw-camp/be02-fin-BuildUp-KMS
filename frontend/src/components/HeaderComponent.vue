@@ -374,7 +374,8 @@ export default {
   },
   methods: {
     loginKakao() {
-      window.location.href = "http://localhost:8080/oauth2/authorization/kakao";
+      // window.location.href = "http://localhost:8080/oauth2/authorization/kakao";
+      window.location.href = "http://192.168.0.82/api/oauth2/authorization/kakao";
     },
     openLoginModal() {
       this.isLogin = true;
