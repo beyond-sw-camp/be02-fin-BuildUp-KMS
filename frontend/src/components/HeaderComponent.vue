@@ -112,18 +112,14 @@
                       <div class="css-13fd4ke">
                         <div class="css-1jibmi3">
                           <div class="css-16regn8">
-                            <router-link to="/profile">
-                              <div class="css-17gywxx">프로필</div>
-                            </router-link>
+                              <div class="css-17gywxx" @click="goMyProfile()">프로필</div>
                           </div>
                         </div>
                       </div>
                       <div class="css-13fd4ke">
                         <div class="css-1jibmi3">
                           <div class="css-16regn8">
-                            <router-link to="/mypage">
-                              <div class="css-17gywxx">마이페이지</div>
-                            </router-link>
+                              <div class="css-17gywxx" @click="goMyPage()">마이페이지</div>
                           </div>
                         </div>
                       </div>
@@ -378,7 +374,8 @@ export default {
   },
   methods: {
     loginKakao() {
-      window.location.href = "http://localhost:8080/oauth2/authorization/kakao";
+      // window.location.href = "http://localhost:8080/oauth2/authorization/kakao";
+      window.location.href = "http://192.168.0.82/api/oauth2/authorization/kakao";
     },
     openLoginModal() {
       this.isLogin = true;
@@ -408,8 +405,15 @@ export default {
       store.decodedToken = {};
       this.isDropdownOpen = false;
       this.$router.push("/");
+      window.location.reload();
       this.email = ""
       this.password = ""
+    },
+    goMyProfile() {
+      window.location.href = "/profile"
+    },
+    goMyPage() {
+      window.location.href = "/mypage"
     },
     decodeToken(token) {
       const base64Url = token.split(".")[1];

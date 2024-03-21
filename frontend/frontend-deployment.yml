@@ -17,11 +17,24 @@ spec:
     spec: 
       containers: 
         - name: frontend-container
-          image: tessssssssy/frontend:1.0 
+          image: hyungdoyou/bootshelf-fe:2.VERSION 
           resources: 
             requests: 
-              memory: "512m" 
+              memory: "512Mi" 
               cpu: "100m" 
             limits: 
               memory: "3Gi" 
-              cpu: "2000m" 
+              cpu: "2000m"
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            successThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 20
+            periodSeconds: 10    
