@@ -9,4 +9,9 @@ class ReviewUpControllerTest {
     @Test
     void createReviewUp() {
     }
+
+    @Test
+    void checkReviewUp() {
+
+    }
 }
