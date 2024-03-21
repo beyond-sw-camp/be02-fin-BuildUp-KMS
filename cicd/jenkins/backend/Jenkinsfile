@@ -6,21 +6,38 @@ pipeline {
         maven "maven-3.9.5"
     }
     
+    environment {
+        IS_BACKEND_CHANGED = 'false'
+    }
+    
     stages {
         stage('git clone') {
                 steps {
                         git branch: 'develop', url: 'https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS'
                 }
         }
-
-        stage('Build') {
+        
+        stage('Check for Backend Changes') {
             steps {
                 script {
-                    dir('backend') {
-                        sh 'mvn -B -DskipTests clean package' 
-                    }
+                    def changedFiles = sh(script: "git diff --name-only HEAD^ HEAD", returnStdout: true).trim().split('\n')
+                    IS_BACKEND_CHANGED = changedFiles.any { it.startsWith("backend/") }.toString()
+                    echo "Backend changes: ${IS_BACKEND_CHANGED}"
                 }
             }
+        }
+
+        stage('Build') {
+            when {
+                expression { IS_BACKEND_CHANGED == 'true' }
+            }
+            
+            steps {
+                dir('backend') {
+                    sh 'mvn clean package'
+                }
+            }
+            
             post {
                 // 테스트 코드 성공 시 슬랙 채널 ( #buildup-dev ) 로 성공 알림 발송
                 success {
@@ -50,13 +67,16 @@ pipeline {
         } 
 
         stage('Docker Build') {
+            when {
+                expression { IS_BACKEND_CHANGED == 'true' }
+            }
+            
             steps {
-                script {
-                    dir('backend') {
-                        sh 'docker build --tag hyungdoyou/bootshelf-be:2.$BUILD_NUMBER .'
-                    }
+                dir('backend') {
+                    sh 'docker build --tag hyungdoyou/bootshelf-be:2.${BUILD_NUMBER} .'
                 }
             }
+            
             post {
                 // Docker 빌드 성공 시 슬랙 채널 ( #buildup-dev ) 로 성공 알림 발송
                 success {
@@ -80,18 +100,19 @@ pipeline {
         }
         // 6. Docker Push
         stage('Docker Push') {
+            when {
+                expression { IS_BACKEND_CHANGED == 'true' }
+            }
+            
             steps {
-                script {
-                    dir('backend') {
-                        // Docker 로그인
-                        withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_EMAIL', passwordVariable: 'DOCKER_PASSWORD')]) {
-                            sh "docker login -u ${DOCKER_EMAIL} -p ${DOCKER_PASSWORD}"
-                        }
-                        // Docker Push
-                        sh 'docker push hyungdoyou/bootshelf-be:2.$BUILD_NUMBER'
+                dir('backend') {
+                    withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_EMAIL', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        sh "docker login -u ${DOCKER_EMAIL} -p ${DOCKER_PASSWORD}"
+                        sh "docker push hyungdoyou/bootshelf-be:2.${BUILD_NUMBER}"
                     }
                 }
             }
+            
             post {
                 // Docker Push 성공 시 슬랙 채널 ( #buildup-dev ) 로 성공 알림 발송
                 success {
@@ -115,6 +136,10 @@ pipeline {
         }
         // 7. SSH 전송
         stage('SSH transfer') {
+            when {
+                expression { IS_BACKEND_CHANGED == 'true' }
+            }
+            
             steps {
                 dir('backend') {
                     // SSH 전송 플러그인 사용

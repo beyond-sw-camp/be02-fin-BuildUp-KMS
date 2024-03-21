@@ -1,6 +1,10 @@
 pipeline {
     agent any
     
+    environment {
+        IS_FRONTEND_CHANGED = 'false'
+    }
+    
     // 파이프라인의 실행 단계 정의
     stages {
 
@@ -10,10 +14,26 @@ pipeline {
                         git branch: 'develop', url: 'https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS'
                 }
         }
+        
+        stage('Check for Frontend Changes') {
+            steps {
+                script {
+                    // Checking if there are any changes in the frontend directory
+                    def changedFiles = sh(script: "git diff --name-only HEAD^ HEAD", returnStdout: true).trim().split('\n')
+                    IS_FRONTEND_CHANGED = changedFiles.any { it.startsWith("frontend/") }.toString()
+                    echo "Frontend changes: ${IS_FRONTEND_CHANGED}"
+                }
+            }
+        }
 
 
         // 2. 프로젝트에 필요한 패키지 설치
         stage('Install Dependencies') {
+            when {
+                // Only run this stage if frontend changes are detected
+                expression { IS_FRONTEND_CHANGED == 'true' }
+            }
+            
             steps {
                 script {
                     dir('frontend') {
@@ -34,6 +54,10 @@ pipeline {
         
         // 4. frontend 폴더로 이동해서 새로운 프로젝트 빌드
         stage('Build') {
+            when {
+                expression { IS_FRONTEND_CHANGED == 'true' }
+            }
+            
             steps {
                 script {
                     dir('frontend') {
@@ -65,6 +89,10 @@ pipeline {
 
         // 5. Docker 빌드
         stage('Docker Build') {
+            when {
+                expression { IS_FRONTEND_CHANGED == 'true' }
+            }
+            
             steps {
                 script {
                     dir('frontend') {
@@ -96,6 +124,10 @@ pipeline {
 
         // 6. Docker Push
         stage('Docker Push') {
+            when {
+                expression { IS_FRONTEND_CHANGED }
+            }
+            
             steps {
                 script {
                     dir('frontend') {
@@ -131,6 +163,10 @@ pipeline {
         }
         // 7. SSH 전송
         stage('SSH transfer') {
+            when {
+                expression { IS_FRONTEND_CHANGED }
+            }
+            
             steps {
                 dir('frontend') {
                     // SSH 전송 플러그인 사용
