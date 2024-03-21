@@ -21,7 +21,33 @@ pipeline {
                     }
                 }
             }
+            post {
+                // 테스트 코드 성공 시 슬랙 채널 ( #buildup-dev ) 로 성공 알림 발송
+                success {
+                    slackSend(
+                        channel: '#buildup-dev',
+                        color: 'good',
+                        message: "Backend hyungdoyou/bootshelf-be:2.${BUILD_NUMBER} test success.",
+                        teamDomain: 'beyondsw2',
+                        tokenCredentialId: 'slack-notification')
+                }
+                // 테스트 코드 실패 시 슬랙 채널 ( #buildup-dev ) 로 실패 알림 발송
+                failure {
+                    slackSend(
+                        channel: '#buildup-dev',
+                        color: 'danger',
+                        message: "Backend hyungdoyou/bootshelf-be:2.${BUILD_NUMBER} test failed.",
+                        teamDomain: 'beyondsw2',
+                        tokenCredentialId: 'slack-notification')
+                }
+            }
         }
+        
+        stage('Publish test results') {
+            steps {
+                junit 'backend/target/surfire-reports/*.xml'
+            }
+        } 
 
         stage('Docker Build') {
             steps {
@@ -32,7 +58,7 @@ pipeline {
                 }
             }
             post {
-                // Docker 빌드 성공 시 슬랙 채널 ( #테스트 ) 로 성공 알림 발송
+                // Docker 빌드 성공 시 슬랙 채널 ( #buildup-dev ) 로 성공 알림 발송
                 success {
                     slackSend(
                         channel: '#buildup-dev',
@@ -41,7 +67,7 @@ pipeline {
                         teamDomain: 'beyondsw2',
                         tokenCredentialId: 'slack-notification')
                 }
-                // Docker 빌드 실패 시 슬랙 채널 ( #테스트 ) 로 실패 알림 발송
+                // Docker 빌드 실패 시 슬랙 채널 ( #buildup-dev ) 로 실패 알림 발송
                 failure {
                     slackSend(
                         channel: '#buildup-dev',
@@ -67,7 +93,7 @@ pipeline {
                 }
             }
             post {
-                // Docker Push 성공 시 슬랙 채널 ( #테스트 ) 로 성공 알림 발송
+                // Docker Push 성공 시 슬랙 채널 ( #buildup-dev ) 로 성공 알림 발송
                 success {
                     slackSend(
                         channel: '#buildup-dev',
@@ -76,7 +102,7 @@ pipeline {
                         teamDomain: 'beyondsw2',
                         tokenCredentialId: 'slack-notification')
                 }
-                // Docker Push 실패 시 슬랙 채널 ( #테스트 ) 로 실패 알림 발송
+                // Docker Push 실패 시 슬랙 채널 ( #buildup-dev ) 로 실패 알림 발송
                 failure {
                     slackSend(
                         channel: '#buildup-dev',
