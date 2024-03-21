@@ -377,7 +377,16 @@ public class UserService {
             throw new AdminException(ErrorCode.DUPLICATE_SIGNUP_EMAIL, String.format("SignUp Email [ %s ] is duplicated.", postSignUpAdminReq.getEmail()));
         }
 
-        User user = User.builder().password(passwordEncoder.encode(postSignUpAdminReq.getPassword())).name(postSignUpAdminReq.getName()).email(postSignUpAdminReq.getEmail()).authority("ROLE_ADMIN").createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))).updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))).status(true).build();
+        User user = User.builder()
+                .password(passwordEncoder.encode(postSignUpAdminReq.getPassword()))
+                .name(postSignUpAdminReq.getName())
+                .nickName(postSignUpAdminReq.getName() + "관리자")
+                .email(postSignUpAdminReq.getEmail())
+                .profileImage("https://bootshelf-profile.s3.ap-northeast-2.amazonaws.com/2024/03/18/6cd22d07-0d6f-43fe-9a55-c3fb9dffc240_admin.png")
+                .authority("ROLE_ADMIN")
+                .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+                .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+                .status(true).build();
 
         userRepository.save(user);
 
