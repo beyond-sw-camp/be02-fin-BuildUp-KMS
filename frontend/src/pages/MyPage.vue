@@ -92,67 +92,7 @@
               </div>
             </div>
             <div class="css-6ylcwl">
-              <div class="css-1o94c7r">
-                <div class="css-1kb98ja">
-                  <svg
-                    width="4"
-                    height="4"
-                    viewBox="0 0 4 4"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <circle
-                      cx="2"
-                      cy="2"
-                      r="2"
-                      :fill="
-                        selectedTotalType === 'course' ? '#e8344e' : '#B4BFC6'
-                      "
-                    ></circle>
-                  </svg>
-                  <!-- <div class="css-1619ajl">과정 후기</div> -->
-                  <div
-                    :class="
-                      selectedTotalType === 'course'
-                        ? 'css-1619ajl'
-                        : 'css-1j5hzn7'
-                    "
-                    @click="selectTotalType('course')"
-                  >
-                    과정 후기
-                  </div>
-                </div>
-                <div class="css-bewb21">
-                  <svg
-                    width="4"
-                    height="4"
-                    viewBox="0 0 4 4"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <circle
-                      cx="2"
-                      cy="2"
-                      r="2"
-                      :fill="
-                        selectedTotalType === 'instructor'
-                          ? '#e8344e'
-                          : '#B4BFC6'
-                      "
-                    ></circle>
-                  </svg>
-                  <!-- <div class="css-1j5hzn7">강사 후기</div> -->
-                  <div
-                    :class="
-                      selectedTotalType === 'instructor'
-                        ? 'css-1619ajl'
-                        : 'css-1j5hzn7'
-                    "
-                    @click="selectTotalType('instructor')"
-                  >
-                    강사 후기
-                  </div>
-                </div>
+              <div class="css-1o94c7r" v-if="currentTab === '작성글'">
                 <div class="css-bewb21">
                   <svg
                     width="4"
@@ -242,7 +182,221 @@
                     스터디
                   </div>
                 </div>
+                <div class="css-1kb98ja" v-if="userRole === 'ROLE_AUTHUSER'">
+                  <svg
+                    width="4"
+                    height="4"
+                    viewBox="0 0 4 4"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle
+                      cx="2"
+                      cy="2"
+                      r="2"
+                      :fill="
+                        selectedTotalType === 'course' ? '#e8344e' : '#B4BFC6'
+                      "
+                    ></circle>
+                  </svg>
+                  <!-- <div class="css-1619ajl">과정 후기</div> -->
+                  <div
+                    v-if="userRole === 'ROLE_AUTHUSER'"
+                    :class="
+                      selectedTotalType === 'course'
+                        ? 'css-1619ajl'
+                        : 'css-1j5hzn7'
+                    "
+                    @click="selectTotalType('course')"
+                  >
+                    과정 후기
+                  </div>
+                </div>
+                <div class="css-bewb21" v-if="userRole === 'ROLE_AUTHUSER'">
+                  <svg
+                    width="4"
+                    height="4"
+                    viewBox="0 0 4 4"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle
+                      cx="2"
+                      cy="2"
+                      r="2"
+                      :fill="
+                        selectedTotalType === 'instructor'
+                          ? '#e8344e'
+                          : '#B4BFC6'
+                      "
+                    ></circle>
+                  </svg>
+                  <!-- <div class="css-1j5hzn7">강사 후기</div> -->
+                  <div
+                    v-if="userRole === 'ROLE_AUTHUSER'"
+                    :class="
+                      selectedTotalType === 'instructor'
+                        ? 'css-1619ajl'
+                        : 'css-1j5hzn7'
+                    "
+                    @click="selectTotalType('instructor')"
+                  >
+                    강사 후기
+                  </div>
+                </div>
               </div>
+              <div class="css-1o94c7r" v-if="currentTab === '스크랩'">
+                <div class="css-bewb21">
+                  <svg
+                    width="4"
+                    height="4"
+                    viewBox="0 0 4 4"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle
+                      cx="2"
+                      cy="2"
+                      r="2"
+                      :fill="
+                        selectedTotalType === 'knowledge'
+                          ? '#e8344e'
+                          : '#B4BFC6'
+                      "
+                    ></circle>
+                  </svg>
+                  <!-- <div class="css-1j5hzn7">강사 후기</div> -->
+                  <div
+                    :class="
+                      selectedTotalType === 'knowledge'
+                        ? 'css-1619ajl'
+                        : 'css-1j5hzn7'
+                    "
+                    @click="selectTotalType('knowledge')"
+                  >
+                    지식 공유
+                  </div>
+                </div>
+                <div class="css-bewb21">
+                  <svg
+                    width="4"
+                    height="4"
+                    viewBox="0 0 4 4"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle
+                      cx="2"
+                      cy="2"
+                      r="2"
+                      :fill="
+                        selectedTotalType === 'qna' ? '#e8344e' : '#B4BFC6'
+                      "
+                    ></circle>
+                  </svg>
+                  <!-- <div class="css-1j5hzn7">강사 후기</div> -->
+                  <div
+                    :class="
+                      selectedTotalType === 'qna'
+                        ? 'css-1619ajl'
+                        : 'css-1j5hzn7'
+                    "
+                    @click="selectTotalType('qna')"
+                  >
+                    QnA
+                  </div>
+                </div>
+                <div class="css-bewb21">
+                  <svg
+                    width="4"
+                    height="4"
+                    viewBox="0 0 4 4"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle
+                      cx="2"
+                      cy="2"
+                      r="2"
+                      :fill="
+                        selectedTotalType === 'study' ? '#e8344e' : '#B4BFC6'
+                      "
+                    ></circle>
+                  </svg>
+                  <!-- <div class="css-1j5hzn7">강사 후기</div> -->
+                  <div
+                    :class="
+                      selectedTotalType === 'study'
+                        ? 'css-1619ajl'
+                        : 'css-1j5hzn7'
+                    "
+                    @click="selectTotalType('study')"
+                  >
+                    스터디
+                  </div>
+                </div>
+                <div class="css-1kb98ja">
+                  <svg
+                    width="4"
+                    height="4"
+                    viewBox="0 0 4 4"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle
+                      cx="2"
+                      cy="2"
+                      r="2"
+                      :fill="
+                        selectedTotalType === 'course' ? '#e8344e' : '#B4BFC6'
+                      "
+                    ></circle>
+                  </svg>
+                  <!-- <div class="css-1619ajl">과정 후기</div> -->
+                  <div
+                    :class="
+                      selectedTotalType === 'course'
+                        ? 'css-1619ajl'
+                        : 'css-1j5hzn7'
+                    "
+                    @click="selectTotalType('course')"
+                  >
+                    과정 후기
+                  </div>
+                </div>
+                <div class="css-bewb21">
+                  <svg
+                    width="4"
+                    height="4"
+                    viewBox="0 0 4 4"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle
+                      cx="2"
+                      cy="2"
+                      r="2"
+                      :fill="
+                        selectedTotalType === 'instructor'
+                          ? '#e8344e'
+                          : '#B4BFC6'
+                      "
+                    ></circle>
+                  </svg>
+                  <!-- <div class="css-1j5hzn7">강사 후기</div> -->
+                  <div
+                    :class="
+                      selectedTotalType === 'instructor'
+                        ? 'css-1619ajl'
+                        : 'css-1j5hzn7'
+                    "
+                    @click="selectTotalType('instructor')"
+                  >
+                    강사 후기
+                  </div>
+                </div>
+              </div>
+              <!-----기존 버전------->
             </div>
             <div class="css-1csvk83">
               <ul class="css-10c0kk0">
@@ -259,9 +413,9 @@
                 <div class="css-aa80it">
                   <img src="@/assets/img/002.png" class="css-1baht8c" />
                   <div class="css-dhqp8i">
-                    <div class="css-c7zvxr">검색 결과가 없습니다.</div>
+                    <div class="css-c7zvxr">해당되는 게시글이 없습니다.</div>
                     <div class="css-1mcux1f">
-                      질문을 직접 남겨서 궁금증을 해결해 보세요!
+                      질문을 직접 작성하거나, 관심글을 스크랩 해보세요!
                     </div>
                   </div>
                 </div>
@@ -291,13 +445,16 @@ import { useBoardStore } from "@/stores/useBoardStore";
 import { useTotalStore } from "../stores/useTotalStore";
 import MyPageBoardComponent from "@/components/MyPageBoardComponent.vue";
 import PaginationComponent from "@/components/PaginationComponent.vue";
+import VueJwtDecode from "vue-jwt-decode";
+
 export default {
   name: "MyPage",
   data() {
     return {
+      userRole: "ROLE_USER",
       selectedSortType: "최신순",
       sortType: 1,
-      selectedTotalType: "course",
+      selectedTotalType: "knowledge",
       totalCategoryIdx: "1",
       user: {},
       currentTab: "작성글",
@@ -313,10 +470,19 @@ export default {
   mounted() {
     this.loadTotalList(1);
     this.userStore.getUserInfo();
+    this.checkRole();
   },
   methods: {
+    checkRole() {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const role = VueJwtDecode.decode(token).ROLE;
+        this.userRole = role;
+      }
+    },
     async changeTab(tab) {
       this.currentTab = tab;
+      this.selectedTotalType = "knowledge";
       this.loadTotalList(1);
     },
 
