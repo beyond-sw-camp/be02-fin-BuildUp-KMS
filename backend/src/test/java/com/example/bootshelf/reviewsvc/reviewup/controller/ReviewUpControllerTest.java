@@ -10,9 +10,4 @@ class ReviewUpControllerTest {
     void createReviewUp() {
     }
 
-    @Test
-    void checkReviewUp() {
-
-    }
-
 }
