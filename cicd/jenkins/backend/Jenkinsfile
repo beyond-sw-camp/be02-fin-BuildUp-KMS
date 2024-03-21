@@ -1,0 +1,154 @@
+pipeline {
+    agent any
+    
+    // 파이프라인 실행에 필요한 도구로 maven 지정
+    tools {
+        maven "maven-3.9.5"
+    }
+    
+    stages {
+        stage('git clone') {
+                steps {
+                        git branch: 'develop', url: 'https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS'
+                }
+        }
+
+        stage('Build') {
+            steps {
+                script {
+                    dir('backend') {
+                        sh 'mvn -B -DskipTests clean package' 
+                    }
+                }
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                script {
+                    dir('backend') {
+                        sh 'docker build --tag hyungdoyou/bootshelf-be:2.$BUILD_NUMBER .'
+                    }
+                }
+            }
+            post {
+                // Docker 빌드 성공 시 슬랙 채널 ( #테스트 ) 로 성공 알림 발송
+                success {
+                    slackSend(
+                        channel: '#buildup-dev',
+                        color: 'good',
+                        message: "Docker image hyungdoyou/bootshelf-be:2.${BUILD_NUMBER} build success.",
+                        teamDomain: 'beyondsw2',
+                        tokenCredentialId: 'slack-notification')
+                }
+                // Docker 빌드 실패 시 슬랙 채널 ( #테스트 ) 로 실패 알림 발송
+                failure {
+                    slackSend(
+                        channel: '#buildup-dev',
+                        color: 'danger',
+                        message: "Docker image hyungdoyou/bootshelf-be:2.${BUILD_NUMBER} build failed.",
+                        teamDomain: 'beyondsw2',
+                        tokenCredentialId: 'slack-notification')
+                }
+            }
+        }
+        // 6. Docker Push
+        stage('Docker Push') {
+            steps {
+                script {
+                    dir('backend') {
+                        // Docker 로그인
+                        withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_EMAIL', passwordVariable: 'DOCKER_PASSWORD')]) {
+                            sh "docker login -u ${DOCKER_EMAIL} -p ${DOCKER_PASSWORD}"
+                        }
+                        // Docker Push
+                        sh 'docker push hyungdoyou/bootshelf-be:2.$BUILD_NUMBER'
+                    }
+                }
+            }
+            post {
+                // Docker Push 성공 시 슬랙 채널 ( #테스트 ) 로 성공 알림 발송
+                success {
+                    slackSend(
+                        channel: '#buildup-dev',
+                        color: 'good',
+                        message: "Docker image hyungdoyou/bootshelf-be:2.${BUILD_NUMBER} push success.",
+                        teamDomain: 'beyondsw2',
+                        tokenCredentialId: 'slack-notification')
+                }
+                // Docker Push 실패 시 슬랙 채널 ( #테스트 ) 로 실패 알림 발송
+                failure {
+                    slackSend(
+                        channel: '#buildup-dev',
+                        color: 'danger',
+                        message: "Docker image hyungdoyou/bootshelf-be:2.${BUILD_NUMBER} push failed.",
+                        teamDomain: 'beyondsw2',
+                        tokenCredentialId: 'slack-notification')
+                }
+            }
+        }
+        // 7. SSH 전송
+        stage('SSH transfer') {
+            steps {
+                dir('backend') {
+                    // SSH 전송 플러그인 사용
+                    sshPublisher(
+                        continueOnError: false, // 오류 발생 시 진행을 멈춤
+                        failOnError: true, // 오류 발생 시 파이프라인을 실패시킴
+                        publishers: [
+                            sshPublisherDesc(
+                                configName: "k8s-master", // SSH 서버 설정 이름 지정 (master 노드)
+                                verbose: true, // 자세한 출력 모드 활성화
+                                transfers: [
+                                    sshTransfer(
+                                        sourceFiles: "backend-deployment.yml", // 전송할 파일 지정
+                                        remoteDirectory: "/root/", // 원격 디렉토리 지정
+                                        execCommand: '''
+                                            sed -i "s/VERSION/$BUILD_ID/g" /root/backend-deployment.yml
+                                            kubectl apply -f /root/backend-deployment.yml
+                                        '''
+                                    )
+                                ]
+                            )
+                        ]
+                    )
+                }
+            }
+            post {
+                success {
+                    slackSend(
+                        channel: '#buildup-dev',
+                        color: 'good',
+                        message: "backend-deployment.yml transfer success.",
+                        teamDomain: 'beyondsw2',
+                        tokenCredentialId: 'slack-notification'
+                    )
+                }
+                failure {
+                    slackSend(
+                        channel: '#buildup-dev',
+                        color: 'danger',
+                        message: "backend-deployment.yml transfer failed.",
+                        teamDomain: 'beyondsw2',
+                        tokenCredentialId: 'slack-notification'
+                    )
+                }
+            }
+        }
+        // 8. 슬랙 알림
+        stage('Slack Notification') {
+            steps {
+                script {
+                    // 파이프라인 단계가 끝나고 슬랙으로 최종 알림 발송
+                    slackSend(
+                        channel: '#buildup-dev',
+                        color: 'good',
+                        message: "Build version : ${env.BUILD_NUMBER} is finally successful!",
+                        teamDomain: 'beyondsw2',
+                        tokenCredentialId: 'slack-notification'
+                        )
+                }
+            }
+        }
+    }
+}
