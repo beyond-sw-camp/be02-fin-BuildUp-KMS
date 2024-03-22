@@ -58,34 +58,7 @@ class BoardCommentControllerTest {
     private WebApplicationContext context;
 
     @MockBean
-    private BoardCommentRepository boardCommentRepository;
-
-    @MockBean
-    private BoardCommentUpRepository boardCommentUpRepository;
-
-    @MockBean
-    private UserRepository userRepository;
-
-    @MockBean
-    private BoardRepository boardRepository;
-
-    @MockBean
     private BoardCommentService boardCommentService;
-
-    @MockBean
-    private JwtUtils jwtUtils;
-
-    @MockBean
-    private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
-
-    @MockBean
-    private UserOAuth2Service userOAuth2Service;
-
-    @MockBean
-    private CustomAccessDeniedHandler customAccessDeniedHandler;
-
-    @MockBean
-    private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     @BeforeEach
     public void setup() {
@@ -102,7 +75,8 @@ class BoardCommentControllerTest {
     void boardCommentController_create_success() throws Exception {
         // Given
         PostCreateBoardCommentRes postCreateBoardCommentRes = PostCreateBoardCommentRes.builder()
-                .boardCommentContent("게시판 테스트 댓글입니다.")
+                .idx(1)
+                .boardCommentContent("게시글 댓글 작성 성공 테스트입니다.")
                 .build();
 
         BaseRes baseRes = BaseRes.builder()
@@ -112,7 +86,7 @@ class BoardCommentControllerTest {
                 .build();
 
         PostCreateBoardCommentReq postCreateBoardCommentReq = PostCreateBoardCommentReq.builder()
-                .boardCommentContent("게시판 테스트 댓글입니다.")
+                .boardCommentContent("게시글 댓글 작성 성공 테스트입니다.")
                 .build();
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -135,7 +109,7 @@ class BoardCommentControllerTest {
     @Test
     @DisplayName("게시글 댓글 등록 실패 - 댓글 내용이 작성되지 않았을 때")
     @WithCustomMockUser
-    void boardCommentController_create_fail() throws Exception {
+    void boardCommentController_create_fail_commentContentEmpty() throws Exception {
         // Given
         ObjectMapper objectMapper = new ObjectMapper();
 
