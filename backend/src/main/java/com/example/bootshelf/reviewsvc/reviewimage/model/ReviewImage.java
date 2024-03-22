@@ -20,7 +20,7 @@ public class ReviewImage {
     @JoinColumn(name = "Review_idx")
     private Review review;
 
-    @Column(nullable = false, length = 200)
+    @Column(nullable = false, length = 500)
     private String reviewImage;
 
     @Column(nullable = false)

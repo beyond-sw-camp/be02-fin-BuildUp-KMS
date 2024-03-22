@@ -2,8 +2,8 @@ import { defineStore } from "pinia";
 import axios from "axios";
 // import VueJwtDecode from "vue-jwt-decode";
 
-// const backend = "http://192.168.0.82/api";
-const backend = "http://localhost:8080";
+const backend = "http://192.168.0.61/api";
+// const backend = "http://localhost:8080";
 // boardStore를 사용하면 해당 idx 가져오기..
 // const boardIdx = useBoardStore().boardIdx;
 
