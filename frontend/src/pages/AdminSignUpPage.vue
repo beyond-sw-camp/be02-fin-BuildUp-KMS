@@ -7,11 +7,11 @@
                     <div class="card-body">
                         <!-- Logo -->
                         <div class="app-brand justify-content-center">
-                            <a href="../html/auth-main.html" class="app-brand-link gap-2">
+                            <router-link to="/admin/tag">
                                 <span class="app-brand-logo demo">
                                     <img src="../assets/img/logo.png" alt="BOOKSHELF 로고" width="140px">
                                 </span>
-                            </a>
+                            </router-link>
                         </div>
                         <!-- /Logo -->
                         <h4 class="mb-2">관리자 회원가입</h4>

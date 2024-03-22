@@ -32,20 +32,21 @@ public class BoardCommentController {
 
     private final BoardCommentService boardCommentService;
 
-    @Operation(summary = "게시판 댓글 등록", description = "회원은 게시판에 작성되어 있는 게시글에 댓글을 작성할 수 있다.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "성공"),
-            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
-    })
-    @RequestMapping(method = RequestMethod.POST, value = "/{boardIdx}/comment/create")
-    public ResponseEntity createBoardComment(
-            @AuthenticationPrincipal User user,
-            @PathVariable @NotNull @Positive Integer boardIdx,
-            @RequestBody @Valid PostCreateBoardCommentReq postCreateBoardCommentReq) {
-        BaseRes baseRes = boardCommentService.createBoardComment(user, boardIdx, postCreateBoardCommentReq);
+        @Operation(summary = "게시판 댓글 등록", description = "회원은 게시판에 작성되어 있는 게시글에 댓글을 작성할 수 있다.")
+        @ApiResponses({
+                @ApiResponse(responseCode = "200", description = "성공"),
+                @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+        })
+        @RequestMapping(method = RequestMethod.POST, value = "/{boardIdx}/comment/create")
+        public ResponseEntity createBoardComment(
+                @AuthenticationPrincipal User user,
+                @PathVariable @NotNull @Positive Integer boardIdx,
+                @RequestBody @Valid PostCreateBoardCommentReq postCreateBoardCommentReq) {
 
-        return ResponseEntity.ok().body(baseRes);
-    }
+            BaseRes baseRes = boardCommentService.createBoardComment(user, boardIdx, postCreateBoardCommentReq);
+
+            return ResponseEntity.ok().body(baseRes);
+        }
 
 
     @Operation(summary = "게시판 댓글 목록 조회", description = "회원/비회원은 게시글에 대한 전체 댓글을 조회할 수 있다.")

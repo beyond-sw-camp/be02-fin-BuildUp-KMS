@@ -2,7 +2,8 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import VueJwtDecode from "vue-jwt-decode";
 
-const backend = "http://localhost:8080";
+const backend = "http://192.168.0.82/api";
+// const backend = "http://localhost:8080";
 const storedToken = localStorage.getItem("token");
 
 export const useUserStore = defineStore("user", {
@@ -29,10 +30,8 @@ export const useUserStore = defineStore("user", {
 
         if (response.data.isSuccess && response.data.result.token) {
           let token = response.data.result.token;
-          console.log(token);
           
           let userClaims = VueJwtDecode.decode(token);
-          console.log(userClaims);
 
           window.localStorage.setItem("token", token);
           this.setDecodedToken(userClaims);
@@ -43,7 +42,6 @@ export const useUserStore = defineStore("user", {
         }
       } catch (e) {
         if (e.response && e.response.data) {
-          console.log(e.response.data);
           if (e.response.data.code === "USER-003") {
             alert("이메일을 찾을 수 없습니다. 가입한 이메일인지 다시 확인해주세요.");
           } else if (e.response.data.code === "USER-004") {
@@ -115,7 +113,6 @@ export const useUserStore = defineStore("user", {
         }
       } catch (e) {
         if (e.response && e.response.data) {
-          console.log(e.response.data);
           if (e.response.data.code === "USER-001") {
             alert("이미 사용중인 이메일입니다.");
           } else if (e.response.data.code === "USER-002") {
@@ -183,7 +180,6 @@ export const useUserStore = defineStore("user", {
           }
         } catch (e) {
           if (e.response && e.response.data) {
-            console.log(e.response.data);
             if (e.response.data.code === "USER-002") {
               alert("이미 사용중인 닉네임입니다.");
             } else if (e.response.data.code === "USER-003") {
@@ -222,7 +218,6 @@ export const useUserStore = defineStore("user", {
         }
       } catch (e) {
         if (e.response && e.response.data) {
-          console.log(e.response.data);
           if (e.response.data.code === "USER-003") {
             alert("회원 정보를 찾을 수 없습니다.");
           }
@@ -276,7 +271,6 @@ export const useUserStore = defineStore("user", {
         }
       } catch (e) {
         if (e.response && e.response.data) {
-          console.log(e.response.data);
           if (e.response.data.code === "OCR-001") {
             alert(
               "나의 훈련이력 이미지를 잘못 첨부하였습니다. 가이드를 확인해주세요!"

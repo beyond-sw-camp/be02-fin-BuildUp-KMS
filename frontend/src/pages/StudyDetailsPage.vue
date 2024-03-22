@@ -394,7 +394,6 @@ export default {
       try {
         let token = window.localStorage.getItem("token");
         let response = await this.boardStore.checkBoardUp(token, this.boardIdx);
-        console.log(response);
 
         if (response.data && response.data.result.status === true) {
           this.isRecommended = true;
@@ -413,7 +412,6 @@ export default {
           token,
           this.boardIdx
         );
-        console.log(response);
 
         if (response.data && response.data.result.status === true) {
           this.isScrapped = true;

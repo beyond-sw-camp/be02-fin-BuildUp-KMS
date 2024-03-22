@@ -67,7 +67,6 @@ public class BoardCommentService {
         boardRepository.save(board);
 
         PostCreateBoardCommentRes postCreateBoardCommentRes = PostCreateBoardCommentRes.builder()
-                .idx(boardComment.getIdx())
                 .boardCommentContent(postCreateBoardCommentReq.getBoardCommentContent())
                 .build();
 
