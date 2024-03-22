@@ -151,7 +151,7 @@ class UserControllerTest {
         given(userService.signup(any(PostSignUpUserReq.class), any(MockMultipartFile.class)))
                 .willReturn(baseRes);
 
-        // when & then.
+        // when & then
         mvc.perform(multipart("/user/signup")
                         .file(new MockMultipartFile("user", "", "application/json", content.getBytes(StandardCharsets.UTF_8)))
                         .file(multipartFile)
