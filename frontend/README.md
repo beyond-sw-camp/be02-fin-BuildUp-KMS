@@ -66,7 +66,7 @@
 ## ⏩ 프로젝트 시연 영상
 <details>
   <summary>👩‍💼 회　　　원 👨‍💼</summary>
-
+ 
   <details>
     <summary> 일반 회원가입 및 이메일 인증 </summary>
 
@@ -99,27 +99,27 @@
 
 ### 마이페이지 - 회원 정보 수정
 ➡ 회원이 수정하고 싶은 내용 [패스워드, 닉네임, 프로필이미지] 을 입력하여 회원 정보를 수정한다.
-  <img src ="./src/assets/gif/마이페이지.jpg" width="600" height="400">
+  <img src ="#" width="600" height="400">
 
   </details>
   <details>
     <summary> 마이페이지 - 회원 탈퇴 </summary>
 
 ### 마이페이지 - 회원 탈퇴
-
+➡ 회원이 마이페이지의 "회원 탈퇴" 버튼을 클릭하여 진행한다.
   
-  <img src ="./src/assets/gif/마이페이지 수정.jpg" width="600" height="400">
-  <img src ="./src/assets/gif/마이페이지 수정2.jpg" width="600" height="400">
-
+  <img src ="#" width="600" height="400">
   </details>
 
 
   <details>
     <summary> 마이페이지 - 활동 내역 </summary>
 
-### 팔로우 & 팔로잉
-  <img src ="./src/assets/gif/팔로우.jpg" width="600" height="400">
-  <img src ="./src/assets/gif/팔로잉.jpg" width="600" height="400">
+### 마이페이지 - 활동 내역
+➡ 마이페이지 활동 내역에서 본인이 했던 게시물 스크랩, 댓글, 
+
+  <img src ="#" width="600" height="400">
+  <img src ="#" width="600" height="400">
 
   </details>
 
@@ -127,8 +127,8 @@
     <summary> 컬렉션 </summary>
 
 ### 컬렉션
-  <img src ="./src/assets/gif/내컬렉션디테일.jpg" width="600" height="400">
-  <img src ="./src/assets/gif/내컬렉션목록.jpg" width="600" height="400">
+  <img src ="#" width="600" height="400">
+  <img src ="#" width="600" height="400">
 
   </details>
   
@@ -136,7 +136,7 @@
     <summary> 코멘트 </summary>
 
 ### 코멘트
-  <img src ="./src/assets/gif/코멘트.gif" width="600" height="400">
+  <img src ="#" width="600" height="400">
 
   </details>
 
@@ -144,7 +144,7 @@
     <summary> 메인화면 </summary>
 
 ### 메인화면
-  <img src ="./src/assets/gif/main.gif" width="600" height="400">
+  <img src ="#" width="600" height="400">
   
   메인화면에서는 웹툰, 웹소설을 전부 확인 가능하며 헤더의 웹툰, 웹소설을 클릭해 원하는 종류의 작품만 모아서 볼 수 있다.
   </details>
@@ -154,7 +154,7 @@
     <summary> 작품 코멘트 생성</summary>
 
 ### 작품 코멘트 생성
-  <img src ="./src/assets/gif/commentcreate.gif" width="600" height="400">
+  <img src ="#" width="600" height="400">
 
   </details>
 
@@ -162,7 +162,7 @@
     <summary> 작품 코멘트 더보기 </summary>
 
 ### 작품 코멘트 더보기
-  <img src ="./src/assets/gif/commentmore.gif" width="600" height="400">
+  <img src ="#" width="600" height="400">
 
   </details>
 
@@ -170,7 +170,7 @@
     <summary> 작품 코멘트 삭제 </summary>
 
 ### 작품 코멘트 삭제
-  <img src ="./src/assets/gif/commentdelete.gif" width="600" height="400">
+  <img src ="#" width="600" height="400">
 
   </details>
 
