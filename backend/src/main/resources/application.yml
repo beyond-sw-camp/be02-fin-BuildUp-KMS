@@ -86,3 +86,6 @@ cloud:
       auto: false
     stack:
       auto: false
+
+naver:
+  api-key: ${NAVER_API_KEY}

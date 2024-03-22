@@ -260,18 +260,6 @@
                 </div>
               </div>
             </div>
-            <div class="css-1csvk83">
-              <div class="css-k59gj9">
-                <!--MyPageBoardComponent 자리-->
-                <div>
-                  <MyPageBoardComponent />
-                  <MyPageBoardComponent />
-                  <MyPageBoardComponent />
-                  <MyPageBoardComponent />
-                </div>
-                <!--MyPageBoardComponent 자리-->
-              </div>
-            </div>
             <!--페이지네이션 자리-->
           </div>
         </div>

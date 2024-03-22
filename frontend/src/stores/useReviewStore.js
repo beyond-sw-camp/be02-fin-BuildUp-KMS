@@ -1,7 +1,8 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 
-const backend = "http://localhost:8080";
+const backend = "http://192.168.0.82/api";
+// const backend = "http://localhost:8080";
 const storedToken = localStorage.getItem("token");
 
 export const useReviewStore = defineStore("review", {
@@ -198,7 +199,6 @@ export const useReviewStore = defineStore("review", {
             },
           }
         );
-        console.log(response);
 
         this.isRecommended = response.data.result.status;
 
@@ -219,7 +219,6 @@ export const useReviewStore = defineStore("review", {
             },
           }
         );
-        console.log(response);
 
         this.isScrapped = response.data.result.status;
 
@@ -232,7 +231,7 @@ export const useReviewStore = defineStore("review", {
 
     async cancelReviewUp(token, reviewUpIdx) {
       try {
-        let response = await axios.patch(
+        await axios.patch(
           `${backend}/reviewup/delete/${reviewUpIdx}`,
           {},
           {
@@ -242,7 +241,6 @@ export const useReviewStore = defineStore("review", {
             },
           }
         );
-        console.log(response);
       } catch (e) {
         console.error(e);
         throw e;
@@ -251,7 +249,7 @@ export const useReviewStore = defineStore("review", {
 
     async cancelReviewScrap(token, reviewScrapIdx) {
       try {
-        let response = await axios.patch(
+        await axios.patch(
           `${backend}/reviewscrap/delete/${reviewScrapIdx}`,
           {},
           {
@@ -261,7 +259,6 @@ export const useReviewStore = defineStore("review", {
             },
           }
         );
-        console.log(response);
       } catch (e) {
         console.error(e);
         throw e;
@@ -321,7 +318,6 @@ export const useReviewStore = defineStore("review", {
         );
         this.reviewDetail = response.data.result;
 
-        console.log(response);
         return this.reviewDetail;
       } catch (e) {
         console.log(e);

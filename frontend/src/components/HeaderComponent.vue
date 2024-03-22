@@ -57,7 +57,7 @@
             </button>
             <!-- 로그인 되었을 때 닉네임을 표시 -->
             <div v-if="isAuthenticated" class="user-info">
-              <span class="user-nickname">{{ decodedToken.name }}</span>
+              <span class="user-nickname">{{ decodedToken.nickName }}</span>
             </div>
           </div>
           <div
@@ -95,6 +95,30 @@
                     <div class="css-a72rbc"></div>
                   </div>
                   <div class="css-zqyw9">
+                    <span
+                      class="css-aw18wm"
+                      style="padding: 0px; position: absolute; inset: 0px"
+                      ><img
+                        sizes="100vw"
+                        :src="userProfileImage"
+                        decoding="async"
+                        data-nimg="fill"
+                        style="
+                          position: absolute;
+                          inset: 0px;
+                          box-sizing: border-box;
+                          padding: 0px;
+                          border: none;
+                          margin: auto;
+                          display: block;
+                          width: 0px;
+                          height: 0px;
+                          min-width: 100%;
+                          max-width: 100%;
+                          min-height: 100%;
+                          max-height: 100%;
+                        "
+                    /></span>
                     <div class="css-156933a" style="font-weight: lighter">
                       {{ decodedToken.name }}
                     </div>
@@ -112,18 +136,88 @@
                       <div class="css-13fd4ke">
                         <div class="css-1jibmi3">
                           <div class="css-16regn8">
-                            <router-link to="/profile">
-                              <div class="css-17gywxx">프로필</div>
-                            </router-link>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke-width="1.5"
+                              stroke="currentColor"
+                              aria-hidden="true"
+                              class="myprofile"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"
+                              ></path>
+                            </svg>
+                            <div class="css-17gywxx" @click="goMyProfile()">
+                              프로필
+                            </div>
                           </div>
                         </div>
                       </div>
                       <div class="css-13fd4ke">
                         <div class="css-1jibmi3">
                           <div class="css-16regn8">
-                            <router-link to="/mypage">
-                              <div class="css-17gywxx">마이페이지</div>
-                            </router-link>
+                            <svg
+                              class="myprofile"
+                              width="16"
+                              height="16"
+                              viewBox="-2 -2 16 16"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 5.5V7.80769L8.5 9.25"
+                                stroke="currentColor"
+                                stroke-width="1"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              ></path>
+                              <path
+                                d="M1 1.5L1 4.75H1.43783M13 6.25C12.6295 3.29027 10.0949 1 7.0233 1C4.49549 1 2.33137 2.55113 1.43783 4.75M1.43783 4.75H4M12.6088 9.25C11.7152 11.4489 9.55111 13 7.0233 13C3.9517 13 1.41711 10.7097 1.0466 7.75"
+                                stroke="currentColor"
+                                stroke-width="1"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              ></path>
+                            </svg>
+                            <div class="css-17gywxx" @click="goMyPage()">
+                              활동내역
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="css-13fd4ke" v-if="isAdminLogin">
+                        <div class="css-1jibmi3">
+                          <div class="css-16regn8">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke-width="1.5"
+                              stroke="currentColor"
+                              aria-hidden="true"
+                              class="myprofile"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 011.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.107 1.204.165.397.505.71.93.78l.893.15c.543.09.94.56.94 1.109v1.094c0 .55-.397 1.02-.94 1.11l-.893.149c-.425.07-.765.383-.93.78-.165.398-.143.854.107 1.204l.527.738c.32.447.269 1.06-.12 1.45l-.774.773a1.125 1.125 0 01-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.107-.397.165-.71.505-.781.929l-.149.894c-.09.542-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.148-.894c-.071-.424-.384-.764-.781-.93-.398-.164-.854-.142-1.204.108l-.738.527c-.447.32-1.06.269-1.45-.12l-.773-.774a1.125 1.125 0 01-.12-1.45l.527-.737c.25-.35.273-.806.108-1.204-.165-.397-.505-.71-.93-.78l-.894-.15c-.542-.09-.94-.56-.94-1.109v-1.094c0-.55.398-1.02.94-1.11l.894-.149c.424-.07.765-.383.93-.78.165-.398.143-.854-.107-1.204l-.527-.738a1.125 1.125 0 01.12-1.45l.773-.773a1.125 1.125 0 011.45-.12l.737.527c.35.25.807.272 1.204.107.397-.165.71-.505.78-.929l.15-.894z"
+                              ></path>
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                              ></path>
+                            </svg>
+                            <div
+                              class="css-17gywxx"
+                              @click="goAdminPage()"
+                            >
+                              관리자 페이지
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -135,6 +229,21 @@
                   <div class="css-ik70s9">
                     <div class="css-1jibmi3">
                       <div class="css-28a73i">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          aria-hidden="true"
+                          class="myprofile"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"
+                          ></path>
+                        </svg>
                         <div class="css-4l7ba3" @click.prevent="logout">
                           로그아웃
                         </div>
@@ -289,7 +398,6 @@
               type="string"
               autocapitalize="off"
               class="login-custom-input css-krmsb5"
-              value=""
               v-model="email"
             />
             <div direction="vertical" size="12" class="css-j86f64"></div>
@@ -298,7 +406,6 @@
               type="password"
               autocapitalize="off"
               class="login-custom-input css-krmsb5"
-              value=""
               v-model="password"
             />
             <div direction="vertical" size="40" class="css-ygt1wz"></div>
@@ -338,6 +445,7 @@
 <script>
 import { useUserStore } from "/src/stores/useUserStore";
 import { mapStores } from "pinia";
+import VueJwtDecode from "vue-jwt-decode";
 
 export default {
   name: "HeaderComponent",
@@ -362,6 +470,8 @@ export default {
       email: "",
       password: "",
       isDropdownOpen: false,
+      profileImage: "",
+      isAdminLogin: false,
     };
   },
   computed: {
@@ -375,10 +485,34 @@ export default {
       const store = useUserStore();
       return store.decodedToken;
     },
+    isLoggedIn() {
+      return !!localStorage.getItem("token");
+    },
+    userProfileImage() {
+      const store = useUserStore();
+      if (store.user && store.user.profileImage) {
+        return store.user.profileImage;
+      }
+      return null;
+    },
+  },
+  mounted() {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      const role = VueJwtDecode.decode(token).ROLE;
+      if (role === "ROLE_ADMIN") {
+        this.isAdminLogin = true;
+      } else {
+        this.isAdminLogin = false;
+      }
+    }
   },
   methods: {
     loginKakao() {
-      window.location.href = "http://localhost:8080/oauth2/authorization/kakao";
+      // window.location.href = "http://localhost:8080/oauth2/authorization/kakao";
+      window.location.href =
+        "http://192.168.0.82/api/oauth2/authorization/kakao";
     },
     openLoginModal() {
       this.isLogin = true;
@@ -408,8 +542,18 @@ export default {
       store.decodedToken = {};
       this.isDropdownOpen = false;
       this.$router.push("/");
-      this.email = ""
-      this.password = ""
+      window.location.reload();
+      this.email = "";
+      this.password = "";
+    },
+    goMyProfile() {
+      window.location.href = "/profile";
+    },
+    goMyPage() {
+      window.location.href = "/mypage";
+    },
+    goAdminPage() {
+      window.location.href = "/admin/login";
     },
     decodeToken(token) {
       const base64Url = token.split(".")[1];
@@ -427,7 +571,8 @@ export default {
         await this.userStore.login(this.email, this.password);
         if (this.userStore.isAuthenticated === true) {
           this.closeAllLoginModal();
-          this.$router.push("/");
+          window.location.href = "/";
+          // this.$router.push("/");
           this.closeLoginModal();
         }
       } catch (error) {
@@ -446,6 +591,9 @@ export default {
       const store = useUserStore();
       store.setDecodedToken(decoded);
       store.isAuthenticated = true;
+    }
+    if (this.isLoggedIn) {
+      this.userStore.getUserInfo();
     }
   },
 };
@@ -758,6 +906,7 @@ export default {
   justify-content: space-between;
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
   width: 100%;
+  padding-left: 10px;
 }
 
 .css-wkr2a ::before,
@@ -926,7 +1075,7 @@ export default {
 
 .css-1fgr4mj {
   display: block;
-  padding: 32px 0 0 0;
+  padding: 25px 0 0 0;
   border: #d7e0e6 solid 1px;
   border-radius: 10px;
   position: absolute;
@@ -934,7 +1083,7 @@ export default {
   right: 0;
   background-color: white;
   z-index: 100;
-  width: 282px;
+  width: 230px;
   box-shadow: 0px 8px 24px rgba(95, 102, 107, 0.12);
   font-family: "Pretendard";
   overflow: scroll;
@@ -998,7 +1147,7 @@ export default {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   font-family: Pretendard, -apple-system, “system-ui”, "Malgun Gothic",
     "맑은 고딕", sans-serif;
   font-family: Pretendard;
@@ -1229,6 +1378,7 @@ export default {
   justify-content: space-between;
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
   width: 100%;
+  padding-left: 10px;
 }
 
 .css-28a73i {
@@ -1269,7 +1419,7 @@ export default {
   line-height: 22px;
   color: #141617;
   color: #141617;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   color: #5f666b;
 }
@@ -1901,5 +2051,37 @@ input {
   height: 16px;
   background: rgb(215, 224, 230);
   margin: 0px 22px;
+}
+
+.myprofile {
+  width: 1.25rem;
+  height: 25px;
+}
+
+.css-10kntrg {
+  font-size: 16px;
+}
+
+.css-aw18wm {
+  width: 30px;
+  height: 30px;
+  position: relative;
+  border-radius: 100%;
+  overflow: hidden;
+  margin-left: 60px;
+  margin-top: 23px;
+}
+
+.css-156933a {
+  margin-bottom: 10px;
+  margin-left: 35px;
+}
+
+.user-info {
+  font-family: Pretendard, -apple-system, “system-ui”, "Malgun Gothic",
+    "맑은 고딕", sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  color: #141617;
 }
 </style>
