@@ -8,6 +8,10 @@ import com.nimbusds.jose.shaded.json.JSONArray;
 import com.nimbusds.jose.shaded.json.JSONObject;
 import com.nimbusds.jose.shaded.json.parser.JSONParser;
 import com.nimbusds.jose.shaded.json.parser.ParseException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -19,7 +23,9 @@ import java.util.UUID;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
+@Component
 public class NaverOcrApi {
+
     /**
      * 네이버 ocr api 호출한다
      *
@@ -29,8 +35,15 @@ public class NaverOcrApi {
      * @param {string} ext 확장자
      * @returns {List} 추출 text list
      */
+
+    private static String apiKey;
+    @Value("${naver.api-key}")
+    public void setApiKey(String apiKey) {
+        NaverOcrApi.apiKey = apiKey;
+    }
+
     public static String callApi(String type, byte[] imageData, String naver_secretKey, String ext) {
-        String apiURL = "https://9qjtyunc44.apigw.ntruss.com/custom/v1/29172/10a632378b264bf02aede3670158653eec422ae2161881cb17de43380a9b9bf9/general";
+        String apiURL = apiKey;
         String secretKey = naver_secretKey;
         String parseData = null;
 

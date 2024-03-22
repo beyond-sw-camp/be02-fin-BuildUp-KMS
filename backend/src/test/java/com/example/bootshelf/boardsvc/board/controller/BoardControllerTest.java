@@ -1,47 +1,38 @@
 package com.example.bootshelf.boardsvc.board.controller;
 
-import com.example.bootshelf.boardsvc.board.model.request.PostCreateBoardReq;
+import com.example.bootshelf.boardsvc.board.model.response.GetBoardListByQueryRes;
+import com.example.bootshelf.boardsvc.board.model.response.GetBoardListByQueryResResult;
 import com.example.bootshelf.boardsvc.board.service.BoardService;
 import com.example.bootshelf.common.BaseRes;
-import com.example.bootshelf.config.SecurityConfig;
-import com.example.bootshelf.config.handler.OAuth2AuthenticationSuccessHandler;
-import com.example.bootshelf.user.exception.security.CustomAccessDeniedHandler;
-import com.example.bootshelf.user.exception.security.CustomAuthenticationEntryPoint;
-import com.example.bootshelf.user.model.entity.User;
-import com.example.bootshelf.user.repository.UserRepository;
-import com.example.bootshelf.user.service.UserOAuth2Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(BoardController.class)
-@ContextConfiguration(classes = {SecurityConfig.class, BoardController.class})
-@AutoConfigureMockMvc
 class BoardControllerTest {
+
     @Autowired
     MockMvc mvc;
 
@@ -51,70 +42,48 @@ class BoardControllerTest {
     @MockBean
     private BoardService boardService;
 
-    @MockBean
-    private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
-
-    @MockBean
-    private UserRepository userRepository;
-
-    @MockBean
-    private UserOAuth2Service userOAuth2Service;
-
-    @MockBean
-    private CustomAccessDeniedHandler customAccessDeniedHandler;
-
-    @MockBean
-    private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
-
 
     @BeforeEach
     public void setup() {
         mvc = MockMvcBuilders
                 .webAppContextSetup(context)
-                .apply(springSecurity())
+                .addFilter(new CharacterEncodingFilter("UTF-8", true))
                 .build();
     }
 
-    @DisplayName("게시판 게시글 생성 테스트")
-    @WithMockUser
     @Test
-    void boardController_create_success() throws Exception {
-        PostCreateBoardReq mockRequest = new PostCreateBoardReq();
-        mockRequest.setBoardTitle("Test Title");
-        mockRequest.setBoardContent("Test Content");
-        mockRequest.setBoardCategoryIdx(1);
-        mockRequest.setTagList(Arrays.asList("tag1", "tag2"));
-
-        MultipartFile[] mockFiles = new MultipartFile[1];
-        mockFiles[0] = new MockMultipartFile("file", "test.jpg", "image/jpeg", "test image content".getBytes());
-
-        BaseRes mockResponse = BaseRes.builder()
-                .isSuccess(true)
-                .message("게시글 등록 성공")
-                .result(new Object())
+    public void 게시판_검색_결과_조회() throws Exception {
+        // given
+        GetBoardListByQueryRes getBoardListByQueryRes = GetBoardListByQueryRes.builder()
+                .idx(1)
+                .title("스프링 테스트 코드")
+                .content("스프링 테스트 코드는 영한이형에게")
+                .nickName("갓영한")
+                .createdAt(LocalDateTime.now().toString())
+                .updatedAt(LocalDateTime.now().toString())
+                .viewCnt(100)
+                .commentCnt(10)
+                .upCnt(50)
                 .build();
 
-        when(boardService.createBoard(any(User.class), any(PostCreateBoardReq.class), any(MultipartFile[].class)))
-                .thenReturn(mockResponse);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String requestJson = objectMapper.writeValueAsString(mockRequest);
+        List<GetBoardListByQueryRes> content = Arrays.asList(getBoardListByQueryRes);
 
-        MockMultipartFile jsonFile = new MockMultipartFile("board", "", "application/json", requestJson.getBytes());
-        MockMultipartFile imageFile = new MockMultipartFile("boardImage", "test.jpg", "image/jpeg", "test image content".getBytes());
+        GetBoardListByQueryResResult result = new GetBoardListByQueryResResult(1L, 1, content);
+        BaseRes baseRes = new BaseRes(true, "게시글 검색 성공", result);
 
-//        // Perform Post Request
-//        mvc.perform(MockMvcRequestBuilders.multipart("/create")
-//                        .file(jsonFile)
-//                        .file(imageFile)
-//                        .contentType(MediaType.MULTIPART_FORM_DATA)
-//                        .with(csrf()))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.isSuccess").value(true))
-//                .andExpect(jsonPath("$.message").value("게시글 등록 성공"));
+        given(boardService.searchBoardListByQuery(anyString(), anyInt(), any(Pageable.class)))
+                .willReturn(baseRes);
 
-        // Verify that the boardService.createBoard was called
-        verify(boardService, times(1)).createBoard(any(User.class), any(PostCreateBoardReq.class), any(MultipartFile[].class));
-
+        // When & Then
+        mvc.perform(get("/board/search")
+                        .param("query", "스프링 테스트 코드")
+                        .param("searchType", "1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.isSuccess").value(true))
+                .andExpect(jsonPath("$.message").value("게시글 검색 성공"))
+                .andExpect(jsonPath("$.result.totalCnt").value(1L))
+                .andExpect(jsonPath("$.result.list[0].title").value("스프링 테스트 코드"));
     }
 }

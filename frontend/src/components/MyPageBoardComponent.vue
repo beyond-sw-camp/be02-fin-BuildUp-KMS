@@ -134,7 +134,6 @@ export default {
     return {
       showMyPageConfirmDialog: false,
       isModalOpen: false,
-      totalStore: useTotalStore(), // totalStore 객체 초기화
       isActive: false,
     };
   },

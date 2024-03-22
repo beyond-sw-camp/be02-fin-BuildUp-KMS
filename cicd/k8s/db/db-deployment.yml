@@ -30,4 +30,4 @@ spec:
       volumes: 
         - name: db-vol 
           persistentVolumeClaim: 
-            claimName: db-pvc 
+            claimName: db-pv-claim 
