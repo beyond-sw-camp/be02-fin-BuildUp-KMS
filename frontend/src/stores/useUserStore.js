@@ -3,7 +3,7 @@ import axios from "axios";
 import VueJwtDecode from "vue-jwt-decode";
 
 const backend = "http://192.168.0.61/api";
-// const backend = "http://localhost:8080";
+// const backend = "http://localhost:8080"; 
 const storedToken = localStorage.getItem("token");
 
 export const useUserStore = defineStore("user", {
@@ -91,7 +91,7 @@ export const useUserStore = defineStore("user", {
       }
     },
 
-    // 회원 회원가입
+    // 회원 회원가입.
     async signUpData(user, profileImage) {
       try {
         this.isLoading = true;
