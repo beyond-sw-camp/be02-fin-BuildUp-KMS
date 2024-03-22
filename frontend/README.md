@@ -81,10 +81,9 @@
 
 ➡ 회원이 입력한 이메일로 온 인증메일을 통해 이메일 인증을 완료한 후 로그인이 가능하다.
 
-<img src = "./docs/gif/BOOTSHELF-일반 회원가입" width="600" height="400">
+<img src = "./docs/gif/BOOTSHELF- 일반 회원가입.gif" width="600" height="400">
 
   </details>
-<br>
 
   <details>
     <summary> 인증 회원가입 및 이메일 인증</summary>
@@ -100,7 +99,26 @@
 
   </details>
 <br>
+
+<!---------------------------------- 로그인 ---------------------------------------->
+
+### 로그인
+
+  <details>
+    <summary>일반/인증 회원 로그인</summary>
 <br>
+
+➡ 부트캠프를 수강하지 않은 일반 회원이 가입을 할 수 있다.
+
+➡ 회원 정보  [ 이메일, 패스워드, 이름, 닉네임, 프로필 사진 ]를 입력하여 가입한다.
+
+➡ 회원이 입력한 이메일로 온 인증메일을 통해 이메일 인증을 완료한 후 로그인이 가능하다.
+
+<img src = "./docs/gif/BOOTSHELF- 일반 회원가입.gif" width="600" height="400">
+
+  </details>
+<br>
+
 <!----------------------------마이페이지(프로필)------------------------------------->
 
 ### 마이페이지 - 프로필
@@ -116,7 +134,6 @@
   <img src ="#" width="600" height="400">
 
   </details>
-<br>
 
   <details>
     <summary> 회원 탈퇴 </summary>
@@ -129,7 +146,7 @@
   <img src ="#" width="600" height="400">
   </details>
 <br>
-<br>
+
 <!----------------------------마이페이지(나의활동) ------------------------------------>
 
 ### 마이페이지 - 나의 활동
@@ -146,7 +163,6 @@
   <img src ="#" width="600" height="400">
 
   </details>
-<br>
 
   <details>
     <summary> 스크랩 내역 확인 </summary>
@@ -161,7 +177,7 @@
 
   </details>
 <br>
-<br>
+
 <!-----------------------------------------메인페이지-------------------------------------->
 
 ### 메인페이지  
@@ -176,11 +192,9 @@
   <img src ="#" width="600" height="400">
 
   </details>
-<br>
 
   <details>
     <summary> 메인페이지 - 메뉴 </summary>
-<br>
 
 ➡ 회원/비회원은 메뉴 이동이 가능하다.
 
@@ -189,7 +203,7 @@
   <img src ="#" width="600" height="400">
   </details>
 <br>
-<br>
+
 <!-----------------------------------------게시판 crud-------------------------------------->
 
 ### 지식공유,  Q&A, 스터디 게시판
@@ -203,7 +217,6 @@
   <img src ="#" width="600" height="400">
 
   </details>
-<br>
 
   <details>
     <summary>  게시글 상세 목록 조회 </summary>
@@ -212,8 +225,6 @@
   <img src ="#" width="600" height="400">
 
   </details>
-<br>
-
 
   <details>
     <summary> 게시글 검색 </summary>
@@ -224,7 +235,6 @@
   <img src ="#" width="600" height="400">
 
   </details>
-<br>
 
   <details>
     <summary> 게시글 작성 </summary>
@@ -237,7 +247,6 @@
   <img src ="#" width="600" height="400">
 
   </details>
-<br>
 
   <details>
     <summary> 게시글 수정 </summary>
@@ -249,7 +258,6 @@
 
   <img src ="./src/assets/gif/chat.gif" width="600" height="400">   
   </details>
-<br>
 
   <details>
     <summary> 게시글 삭제</summary>
@@ -259,8 +267,7 @@
 
   <img src ="./src/assets/gif/chat.gif" width="600" height="400">   
   </details>
-<br>
-<br>
+
 <!-----------------------------------------후기 crud-------------------------------------->
 
 ### 후기 게시판  
@@ -277,7 +284,6 @@
   <img src ="#" width="600" height="400">
 
   </details>
-<br>
 
   <details>
     <summary> 게시글 상세 조회 </summary>
@@ -287,7 +293,6 @@
   <img src ="#" width="600" height="400">
 
   </details>
-<br>
 
   <details>
     <summary> 게시글 작성 </summary>
@@ -301,7 +306,6 @@
   <img src ="#" width="600" height="400">
 
   </details>
-<br>
 
   <details>
     <summary> 게시글 수정 </summary>
@@ -316,7 +320,7 @@
 
   </details>
 <br>
-<br>
+
 <!-----------------------------------------댓글 crud-------------------------------------->
 
 ### 댓글  
@@ -331,7 +335,6 @@
   <img src ="#" width="600" height="400">
 
   </details>
-<br>
 
   <details>
     <summary> 대댓글 작성 </summary>
@@ -343,7 +346,6 @@
   <img src ="#" width="600" height="400">
 
   </details>
-<br>
 
   <details>
     <summary> 댓글/대댓글 수정 </summary>
@@ -355,7 +357,6 @@
   <img src ="#" width="600" height="400">
 
   </details>
-<br>
 
   <details>
     <summary> 댓글/대댓글 삭제 </summary>
@@ -368,8 +369,8 @@
 
   </details>
 <br>
-<br>
-<!-- 게시글 스크랩 -->
+
+<!-----------------------------------------게시글 스크랩------------------------------------->
 
 ### 게시글 스크랩
 
@@ -384,37 +385,83 @@
   <img src ="#" width="600" height="400">
 
   </details>
-<br>
 
   <details>
     <summary> 게시글 스크랩 취소 </summary>
 
 ➡ 일반/인증회원은 모든 게시판의 게시글 스크랩을 취소 할 수 있다.
 
-➡ 본인이 스크랩 한 게시글 상세 페이지에서 버튼을 한 번 더 클릭하여 스크랩을 취소할 수 있다.
+➡ 취소1. 본인이 스크랩 한 게시글 상세 페이지에서 버튼을 한 번 더 클릭하여 스크랩을 취소할 수 있다.
 
-➡ 마이페이지의 나의 활동에서 스크랩을 취소할 수 있다.
+➡ 취소2. 마이페이지의 나의 활동에서 스크랩을 취소할 수 있다.
 
 
   <img src ="#" width="600" height="400">
 
   </details>
 <br>
+<!-----------------------------------------게시글 추천----------------------------------------->
 
+### 게시글 추천
 
+  <details>
+    <summary> 게시글 추천 </summary>
 
+➡ 일반/인증회원은 모든 게시판의 게시글을 추천할 수 있다.
 
+➡ 게시글 상세 조회 페이지에서 스크랩 버튼을 클릭하여 스크랩을 할 수 있다.
 
-<!-- 게시물 추천 -->
+  <img src ="#" width="600" height="400">
+  </details>
+
+  <details>
+    <summary> 게시글 취소 </summary>
+
+➡ 일반/인증회원은 모든 게시판의 게시글을 추천 취소할 수 있다.
+
+➡ 취소1. 본인이 추천 한 게시글 상세 페이지에서 버튼을 한 번 더 클릭하여 추천을 취소할 수 있다.
+
+➡ 취소2. 마이페이지의 나의 활동에서 추천을 취소할 수 있다.
+
+  <img src ="#" width="600" height="400">
+  </details>
+
+<!-- 회원 디테일 태그 -->
+
 </details>
-
-
-
-
-<br><br>
-<!-- 관리자 시연 영상 -->
+<!-------------------------------------------관리자-------------------------------------------->
 <details>
   <summary>🧑‍💻 관  　리  　자 👩‍💻</summary>
+<br>
+
+  <details>
+    <summary> 관리자 회원가입 </summary>
+<br>
+
+➡ 관리자만 회원가입이 가능하다.
+
+➡ 회원 정보  [ 이름, 이메일, 비밀번호, 비밀번호 확인 ]를 입력하여 가입한다.
+
+<img src = "#" width="600" height="400">
+
+  <details>
+    <summary> 관리자 로그인 </summary>
+<br>
+
+➡ 관리자만 회원가입이 가능하다.
+
+➡ 회원 정보  [ 이름, 이메일, 비밀번호, 비밀번호 확인 ]를 입력하여 가입한다.
+
+<img src = "#" width="600" height="400">
+  </details>
+
+  </details>
+
+
+
+  
+
+  
 
 
 </details>
