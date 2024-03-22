@@ -104,17 +104,22 @@
 
 - Vue.js가 배포되어 있는 Nginx 서버로 클라이언트가 HTTP 요청을 보낸다.
 
-- 요청 URL 은 http://[프론트엔드 서버 IP]/api 형태이며, Nginx 서버 Reverse Proxy 설정을 통해 URL에 "/api" 가 포함되어 있는 요청을 백엔드 서버로 보내준다.
+- 요청 URL 은 http://[프론트엔드 서버 IP]/api 형태이며, Nginx 서버 Reverse Proxy 설정을 통해 URL에 "/api" 가 
+
+&nbsp;&nbsp;&nbsp;　포함되어 있는 요청을 백엔드 서버로 보내준다.
 
 #### ➡ 백엔드 서버 : Spring Framework
 - Spring Boot로 개발하였으며, 레이어드 아키텍처를 적용하였다.
 
 - 벡엔드 서버에서는 "Spring Security" 를 이용하여 헤더에 포함된 JWT 토큰을 통해 
-사용자의 
- &nbsp;&nbsp;&nbsp; 권한을 확인 후 권한에 따라 서비스 이용을 제한적으로 허가해준다.
+사용자의 권한을 확인 후 
+
+&nbsp;&nbsp;&nbsp;　권한에 따라 서비스 이용을 제한적으로 허가해준다.
 
  - 백엔드 서버는 데이터 처리를 위해 Spring Data JPA를 사용하여 DB 서버 (MariaDB) 에 접근하며, 
- 조회 (SELECT) 요청은 N+1 문제를 해결하기 위해 QueryDSL을 사용하였다.
+ 조회 (SELECT) 
+ 
+ &nbsp;&nbsp;&nbsp;　요청은 N+1 문제를 해결하기 위해 QueryDSL을 사용하였다.
 
  #### ➡ DB 서버 : MariaDB
 
@@ -124,7 +129,9 @@ Write 요청은 Master에게 전달한다.
 
 #### ➡ 이미지 저장 : AWS S3
 
-- 게시글, 후기 및 프로필 이미지를 AWS S3에 각 버킷별로 저장하고, DB에는 각각 저장된 이미지의 URL을 저장한다.
+- 게시글, 후기 및 프로필 이미지를 AWS S3에 각 버킷별로 저장하고, DB에는 각각 저장된 이미지의 URL을 
+
+&nbsp;&nbsp;&nbsp;　저장한다.
 
 - 클라이언트가 이미지를 요청하면, 이미지가 저장된 URL을 반환, AWS S3에서 이미지를 불러와서 보여준다.
 
@@ -140,23 +147,24 @@ Write 요청은 Master에게 전달한다.
 
 - 각각의 브랜치( ex : backend/feature/user/login ) 에 최신 버전의 백엔드 또는 프론트엔드 
 
-&nbsp;&nbsp;&nbsp;　　프로젝트를 "Push" 한다.
+&nbsp;&nbsp;&nbsp;　프로젝트를 "Push" 한다.
 
 - 깃허브 develop 브랜치에 최신 버전의 프로젝트가 이상없는 것을 확인 후 "Pull requests" 를 통해 
 
-&nbsp;&nbsp;&nbsp;　　Merge 시킨다.
+&nbsp;&nbsp;&nbsp;　Merge 시킨다.
 
 - develop 브랜치에 Merge 시 깃허브는 젠킨스에게 WebHook을 보낸다.
 
 #### ➡ CI/CD 도구 : Jenkins
 
-- 깃허브로부터 WebHook을 수신한 젠킨스에서는 프론트엔드 파이프라인과, 백엔드 파이프라인으로 모두 요청이 들어온다.
+- 깃허브로부터 WebHook을 수신한 젠킨스에서는 프론트엔드 파이프라인과, 백엔드 파이프라인으로 모두 요청이 
 
-- 깃 클론 후 변동사항이 생긴 폴더가 "frontend" 인지, "backend" 인지를 판단하여, 변동사항이 
+&nbsp;&nbsp;&nbsp;　들어온다.
 
-&nbsp;&nbsp;&nbsp;　　발생하지 않은 파이프라인은 다음 단계를 실행하지 않고, 변동사항이 발생한 
-파이프라인만 
+- 깃 클론 후 변동사항이 생긴 폴더가 "frontend" 인지, "backend" 인지를 판단하여, 변동사항이 발생하지 않은 
 
-&nbsp;&nbsp;&nbsp;　　단계별 절차를 진행한다.
+&nbsp;&nbsp;&nbsp;　파이프라인은 다음 단계를 실행하지 않고, 
+
+&nbsp;&nbsp;&nbsp;　변동사항이 발생한 파이프라인만 단계별 절차를 진행한다.
 
 #### ➡ 오케스트레이션 툴 : 쿠버네티스 (k8s)
