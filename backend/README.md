@@ -88,28 +88,28 @@
          <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/ac3e7b83-feee-4ab4-8f85-ae7bec007bc8"/></p>
          </details><br>
 	 <details>
-         <summary><b>REQ-0025. 일반 로그인</b></summary>
+         <summary><b>SEARCH_001. 게시글 검색</b></summary>
                   <br>
-         <p><b>➡ 회원이 [ 이메일, 패스워드 ] 를 입력하여 로그인을 시도한다.</b></p><br>
-         <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/bf2cf6a6-720b-4d78-bdda-cd258d1bd3b7"/></p>
+         <p><b>➡ 회원이 검색창에 원하는 단어를 입력하여 게시글 목록을 조회할 수 있다.</b></p><br>
+         <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/e0ef7068-436c-4dd3-ad63-e0aadd2a3a99"/></p>
          </details><br>
 	 <details>
-         <summary><b>REQ-0026. 카카오 로그인</b></summary>
+         <summary><b>BOARD_001. 게시글 작성</b></summary>
                   <br>
-         <p><b>➡ 회원이 카카오를 통해 로그인 및 서비스를 이용한다.</b></p><br>
-         <p><img src="https://github.com/beyond-sw-camp/be02-2nd-developer_passion-fashion/assets/148875644/9369c157-ed31-4671-84a0-2d9f0e93835a"/></p>
+         <p><b>➡ 회원이 공유하고자 하는 게시글을 작성할 수 있다.</b></p><br>
+         <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/5810155e-5d84-40c3-ab75-1eb01b02e100"/></p>
          </details><br>
 	 <details>
-         <summary><b>REQ-0027. 이메일 인증</b></summary>
+         <summary><b>BOARD_002. 게시글 상세 조회</b></summary>
                   <br>
-         <p><b>➡ 회원이 메일함으로 온 이메일을 클릭하여 이메일 인증을 진행한다.</b></p><br>
-         <p><img src="https://github.com/beyond-sw-camp/be02-2nd-developer_passion-fashion/assets/148875644/ff3ff83b-a280-4a80-adc0-4185e26505d5"/></p>
+         <p><b>➡ 모든 사용자가 게시글의 상세 내용을 조회할 수 있다.</b></p><br>
+         <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/6b25d077-91e9-4c8f-ab3f-4d6f2dd729d6"/></p>
          </details><br>
 	 <details>
-         <summary><b>REQ-0028. 쿠폰 모두 조회</b></summary>
+         <summary><b>BOARD_003. 게시판 카테고리별 조회</b></summary>
                   <br>
-         <p><b>➡ 작성 중</b></p><br>
-         <p><img src="https://github.com/beyond-sw-camp/be02-2nd-developer_passion-fashion/assets/148875644/f4fe88f8-4ac7-4450-9d7e-4dc812ff974a"/></p>
+         <p><b>➡ 모든 사용자가 게시판 카테고리별 게시글을 최신 순으로 조회할 수 있다.</b></p><br>
+         <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/3aff27f6-fcff-47df-b0ef-869faa371c3d"/></p>
          </details><br>
 	 <details>
          <summary><b>REQ-0029. 상품 목록 조회</b></summary>
