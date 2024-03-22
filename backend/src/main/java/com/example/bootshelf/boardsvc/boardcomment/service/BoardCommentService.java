@@ -66,7 +66,7 @@ public class BoardCommentService {
         board.increaseCommentUpCnt();
         boardRepository.save(board);
 
-        PostCreateBoardCommentRes postCreateBoardCommentRes = PostCreateBoardCommentRes.builder()
+            PostCreateBoardCommentRes postCreateBoardCommentRes = PostCreateBoardCommentRes.builder()
                 .boardCommentContent(postCreateBoardCommentReq.getBoardCommentContent())
                 .build();
 
