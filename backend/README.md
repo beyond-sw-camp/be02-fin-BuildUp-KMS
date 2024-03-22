@@ -1,3 +1,58 @@
+<br>
+
+![header](https://capsule-render.vercel.app/api?type=Waving&color=541D7A&height=250&section=header&text=BOOTSHELF🌠&desc=BOOTCAMP&descSize=20&descAlign=68&descAlignY=70&fontSize=100&animation=fadeIn&fontColor=ffff)
+
+> **[플레이 데이터] 한화시스템 BEYOND SW캠프 / 📚 Team : BuildUp 📚**
+
+<br>
+
+## 🤼‍♂️ 팀원 소개
+
+<br><br>
+
+&nbsp;　&nbsp;　&nbsp;　&nbsp;　&nbsp;　&nbsp;　&nbsp;　&nbsp;　 🦁 **[유형도](https://github.com/hyungdoyou)**&nbsp;　 🐻 **[임태우](https://github.com/Tesssssssssy)** &nbsp;　 🐶 **[홍현주](https://github.com/hyeonjju)** &nbsp;　 🐱 **[강지흔](https://github.com/heueun)** &nbsp;　 🐼 **[길민석](https://github.com/gilms0730)**
+<br><br><br><br><br>
+
+
+
+## ✨ 프로젝트 기본 소개
+
+<br>
+
+- 최근 들어 디지털 인재 수요가 계속해서 늘어나고 있는 만큼 개발자 양성 **부트캠프, 국비지원교육이 증가**하고 있다.
+
+- 수 많은 교육 과정들로 인해 훗날 개발자를 희망하는 준비생들이 교육 커리큘럼, 강사에 관한 정보 부족 등의 이유로 **선택의 어려움을 겪고 있는 것이 현실**이다.
+
+- **“BootShelf”** 서비스는 교육 희망생들에게 실제 프로그램을 수강했거나, 수강하고 있는 교육생들의 교육과정 또는 강사의 후기/평점을 확인하여 **선택의 폭을 줄여주고**, 수강생들 간의 교육 간 궁금증, 해결한 내용 등의 **지식을 서로 공유하는 서비스를 제공**한다.
+
+<br>
+
+
+## 💻 시스템 아키텍쳐
+
+<br>
+
+<img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/46624fce-be4f-44a4-9b99-6323a770f8e0">
+
+<br>
+
+
+
+## 🔥 STACKS
+
+<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/L i n u x-FCC624?style=flat&logo=linux&logoColor=black"></a>
+&nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/MySQL InnoDB-4479A1?style=flat&logo=MySQL&logoColor=white"/></a>
+&nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/CentOS   8-262577?style=flat&logo=centos&logoColor=white&color=purple"/></a></a>
+&nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=flat&logo=springBoot&logoColor=white&color=green"/></a></a>
+&nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/Spring Cloud-6DB33F?style=flat&logo=spring&logoColor=white&color=dargreen"/></a></a>
+&nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/Spring Security-6DB33F?style=flat&logo=springsecurity&logoColor=white&color=darkgreen"/></a></a>
+&nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/Apache kafka-231F20F?style=flat&logo=ApacheKafka&logoColor=black&color=white"/></a></a>
+&nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/Amazon AWS-232F3E?style=flat&logo=AmazonAWS&logoColor=black&color=orange"/></a></a>
+
+<br>
+
 <details>
 <summary><b>🫅🏻 회&nbsp;&nbsp;&nbsp;&nbsp;원</b></summary><br>
     <div>
@@ -15,7 +70,6 @@
          <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/e08b7dca-4261-4174-a75f-963e6e61cd15"/></p>
          </details><br>
 	 <details>
-	 <details>
          <summary><b>USER_004. 일반 로그인</b></summary>
                   <br>
          <p><b>➡ 회원이 [ 이메일, 패스워드 ] 를 입력하여 로그인을 시도한다.</b></p><br>
@@ -24,14 +78,14 @@
 	 <details>
          <summary><b>USER-006. 회원 정보 수정</b></summary>
                   <br>
-         <p><b>➡ 회원이 수정하고 싶은 내용 [ 집 주소, 전화번호, 선호 스타일, 상/하체 유형 등 ] 을 입력하여 본인의 회원 정보를 수정한다.</b></p><br>
-         <p><img src="https://github.com/beyond-sw-camp/be02-2nd-developer_passion-fashion/assets/148875644/bf54c5e2-36fc-410b-afdd-f7017103ab1f"/></p>
+         <p><b>➡ 회원이 수정하고 싶은 내용 [ 닉네임, 비밀번호 ] 을 입력하여 본인의 회원 정보를 수정한다.</b></p><br>
+         <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/e5363cf7-1bca-4ad6-b490-377c6dafc2f6"/></p>
          </details><br>
 	 <details>
-         <summary><b>REQ-0024. 회원 탈퇴</b></summary>
+         <summary><b>USER-007. 회원 탈퇴</b></summary>
                   <br>
          <p><b>➡ 회원이 회원 IDX를 통해 회원 탈퇴를 진행한다.</b></p><br>
-         <p><img src="https://github.com/beyond-sw-camp/be02-2nd-developer_passion-fashion/assets/148875644/78b2ac42-c6d5-4dab-81da-57576b3fde0a"/></p>
+         <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/ac3e7b83-feee-4ab4-8f85-ae7bec007bc8"/></p>
          </details><br>
 	 <details>
          <summary><b>REQ-0025. 일반 로그인</b></summary>
