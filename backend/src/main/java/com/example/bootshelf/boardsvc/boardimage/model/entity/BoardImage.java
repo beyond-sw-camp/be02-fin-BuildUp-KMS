@@ -21,7 +21,7 @@ public class BoardImage {
     @JoinColumn(name = "Board_idx")
     private Board board;
 
-    @Column(nullable = false, length = 200)
+    @Column(nullable = false, length = 500)
     private String boardImage;
 
     @Column(nullable = false)
