@@ -16,63 +16,63 @@
 <div align="center"> 
 <table>
     <tr>
-        <td style="text-align: center;">
+        <td align="center">
             <a>
             </a>
                 <img src="https://github.com/hyungdoyou/devops-backend/assets/148875644/9f37abd0-2d96-4430-b37d-e011f1aa42ef" width="100px" />
         </td>
-        <td style="text-align: center;">
+        <td align="center">
             <a>
                 <img src="https://github.com/hyungdoyou/devops-backend/assets/148875644/190604d7-dc42-4327-a1db-615be511a47c" width="100px" />
             </a>
         </td>
-        <td style="text-align: center;">
+        <td align="center">
             <a>
                 <img src="https://github.com/hyungdoyou/devops-backend/assets/148875644/d8c46afb-efd1-4c93-a174-3374fbf370f3" width="100px" />
             </a>
         </td>
-        <td style="text-align: center;">
+        <td align="center">
             <a>
                 <img src="https://github.com/hyungdoyou/devops-backend/assets/148875644/cbc15af3-00eb-48f1-9b48-f99b9745c360" width="100px" />
             </a>
         </td>
-        <td style="text-align: center;">
+        <td align="center">
             <a>
                 <img src="https://github.com/hyungdoyou/devops-backend/assets/148875644/57faa2ff-52d9-45e6-a821-9c843a0338c0" width="100px" />
             </a>
         </td>
     </tr>
     <tr>
-        <td style="text-align: center;">
+        <td align="center">
             <b>유형도</b>
         </td>
-        <td style="text-align: center;">
+        <td align="center">
             <b>임태우</b>
         </td>
-        <td style="text-align: center;">
+        <td align="center">
             <b>홍현주</b>
         </td>
-        <td style="text-align: center;">
+        <td align="center">
             <b>강지흔</b>
         </td>
-        <td style="text-align: center;">
+        <td align="center">
             <b>길민석</b>
         </td>
     </tr>
     <tr>
-        <td style="text-align: center;">
+        <td align="center"">
             <b>Backend/frontend</b>
         </td>
-        <td style="text-align: center;">
+        <td align="center">
             <b>Backend/frontend</b>
         </td>
-        <td style="text-align: center;">
+        <td align="center">
             <b>Backend/frontend</b>
         </td>
-        <td style="text-align: center;">
+        <td align="center">
             <b>Backend/frontend</b>
         </td>
-        <td style="text-align: center;">
+        <td align="center">
             <b>Backend/frontend</b>
         </td>
     </tr>
