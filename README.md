@@ -256,6 +256,8 @@
 
 ### 🛸 시스템 아키텍처 ( CI/CD 적용 후 )
 
+<br>
+
 <img src="./img/k8s_system_architecture.png">
 
 #### ➡ 형상관리 : GitHub
@@ -266,20 +268,26 @@
 
 - 깃허브 develop 브랜치에 최신 버전의 프로젝트가 이상없는 것을 확인 후 "Pull requests" 를 통해
 
-&nbsp;&nbsp;&nbsp;&nbsp;　 Merge 시킨다.
+&nbsp;&nbsp;&nbsp;&nbsp;　 라벨(backend 또는 frontend) 을 달고 Merge 시킨다.
 
 - develop 브랜치에 Merge 시 깃허브는 젠킨스에게 WebHook을 보낸다.
 
-#### ➡ CI/CD 도구 : Jenkins
+#### ➡ CI/CD 도구 : Jenkins, Slack
 
-- 깃허브로부터 WebHook을 수신한 젠킨스에서는 프론트엔드 파이프라인과, 백엔드 파이프라인으로 모두 요청이
+- 깃허브로부터 WebHook을 수신한 젠킨스에서는 라벨을 확인하여, "backend" 라벨이면 백엔드 파이프라인으로,
 
-&nbsp;&nbsp;&nbsp;&nbsp;　들어온다.
+&nbsp;&nbsp;&nbsp;&nbsp;　"frontend" 라벨이면 프론트엔드 파이프라인으로 요청이 들어온다.
 
-- 깃 클론 후 변동사항이 생긴 폴더가 "frontend" 인지, "backend" 인지를 판단하여, 변동사항이 발생하지 않은
+- 깃 클론 후 각각의 파이프라인 단계별 절차를 진행하며, 절차 진행 간 성공, 실패 여부를 슬랙 알람으로 보낸다.
 
-&nbsp;&nbsp;&nbsp;&nbsp;　파이프라인은 다음 단계를 실행하지 않고,
+#### ➡ 컨테이너 오케스트레이션 툴 : 쿠버네티스 (k8s)
 
-&nbsp;&nbsp;&nbsp;&nbsp;　변동사항이 발생한 파이프라인만 단계별 절차를 진행한다.
+- 프론트엔드, 백엔드 서버는 각각 Deployment 로 파드를 생성, DB 서버는 StatefulSet 으로 파드를 생성한다.
 
-#### ➡ 오케스트레이션 툴 : 쿠버네티스 (k8s)
+- 프론트엔드, 백엔드 파드에는 HPA(Horizontal Pod Autoscaler) 설정을 통해 리소스를 자동으로 관리한다.
+
+- 클라이언트는 LoadBalancer 타입의 서비스를 통해 프론트엔드 서버에 접근하고, Nginx Reverse Proxy 설정을 통해
+
+&nbsp;&nbsp;&nbsp;&nbsp;　백엔드 서비스로 요청을 보낸다. 백엔드와 DB 간의 통신은 ClusterIP 타입의 서비스를 통해서
+
+&nbsp;&nbsp;&nbsp;&nbsp;　서비스 내부에서 이루어진다.
