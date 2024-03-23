@@ -221,7 +221,7 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;　포함되어 있는 요청을 백엔드 서버로 보내준다.
 
-#### ➡ 백엔드 서버 : Spring Framework
+#### ➡ 백엔드 서버 : Spring Boot
 
 - Spring Boot로 개발하였으며, 레이어드 아키텍처를 적용하였다.
 
@@ -262,9 +262,9 @@
 
 #### ➡ 형상관리 : GitHub
 
-- 각각의 브랜치( ex : backend/feature/user/login ) 에 최신 버전의 백엔드 또는 프론트엔드
+- 각각의 브랜치( ex : backend/feature/user/login ) 에 최신 버전의 백엔드 또는 프론트엔드 프로젝트를 
 
-&nbsp;&nbsp;&nbsp;&nbsp;　프로젝트를 "Push" 한다.
+&nbsp;&nbsp;&nbsp;&nbsp;　"Push" 한다.
 
 - 깃허브 develop 브랜치에 최신 버전의 프로젝트가 이상없는 것을 확인 후 "Pull requests" 를 통해
 
@@ -280,6 +280,12 @@
 
 - 깃 클론 후 각각의 파이프라인 단계별 절차를 진행하며, 절차 진행 간 성공, 실패 여부를 슬랙 알람으로 보낸다.
 
+#### ➡ 컨테이너화 플랫폼 : 도커
+
+- 프론트엔드, 백엔드 프로젝트 수정 시 젠킨스 빌드 번호를 버전으로 포함하는 도커 이미지로 생성, 도커허브로 푸쉬한다.
+  - 프론트엔드 : /bootshelf-fe:2.VERSION
+  - 백엔드 : /bootshelf-be:2.VERSION
+
 #### ➡ 컨테이너 오케스트레이션 툴 : 쿠버네티스 (k8s)
 
 - 프론트엔드, 백엔드 서버는 각각 Deployment 로 파드를 생성, DB 서버는 StatefulSet 으로 파드를 생성한다.
@@ -288,6 +294,6 @@
 
 - 클라이언트는 LoadBalancer 타입의 서비스를 통해 프론트엔드 서버에 접근하고, Nginx Reverse Proxy 설정을 통해
 
-&nbsp;&nbsp;&nbsp;&nbsp;　백엔드 서비스로 요청을 보낸다. 백엔드와 DB 간의 통신은 ClusterIP 타입의 서비스를 통해서
+&nbsp;&nbsp;&nbsp;&nbsp;　백엔드 서비스로 요청을 보낸다. 백엔드와 DB 간의 통신은 ClusterIP 타입의 서비스를 통해서 서비스 내부에서 
 
-&nbsp;&nbsp;&nbsp;&nbsp;　서비스 내부에서 이루어진다.
+&nbsp;&nbsp;&nbsp;&nbsp;　이루어진다.
