@@ -206,6 +206,16 @@
 
 ---
 
+#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 👉 [피그마 바로가기](https://www.figma.com/file/EPxkgc0NKKEkoXUjaHuRRm/BuildUp-%ED%99%94%EB%A9%B4-%EC%84%A4%EA%B3%84%EC%84%9C?type=design&node-id=0-1&mode=design&t=qNlrkmOxFiZFf7ZB-0)
+
+<br>
+
+#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 👉 [API 명세서 바로가기](https://www.notion.so/API-639ea057342142a180469afce0c6c7d9)
+
+<br>
+
+---
+
 ### 🚀 시스템 아키텍처 ( CI/CD 적용 전 )
 
 <br>
@@ -300,3 +310,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;　통해 백엔드 서비스로 요청을 보낸다. 
 
 &nbsp;&nbsp;&nbsp;&nbsp;　백엔드와 DB 간의 통신은 **ClusterIP 타입의 서비스**를 통해서 서비스 내부에서 이루어진다.
+
+<br>
+
+---
