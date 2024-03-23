@@ -281,9 +281,12 @@
 
 #### ➡ 컨테이너화 플랫폼 : 도커
 
-- 프론트엔드, 백엔드 프로젝트 수정 시 젠킨스 빌드 번호를 버전으로 포함하는 도커 이미지로 생성, 도커허브로 푸쉬한다.
-  - 프론트엔드 : /bootshelf-fe:2.VERSION
-  - 백엔드 : /bootshelf-be:2.VERSION
+- 프론트엔드, 백엔드 프로젝트 수정 시 젠킨스 빌드 번호를 버전으로 포함하는 도커 이미지로 생성, 도커허브로
+
+&nbsp;&nbsp;&nbsp;&nbsp;　푸쉬한다.
+
+  - 프론트엔드 : bootshelf-fe:2.VERSION
+  - 백엔드 : bootshelf-be:2.VERSION
 
 #### ➡ 컨테이너 오케스트레이션 툴 : 쿠버네티스 (k8s)
 
@@ -293,6 +296,6 @@
 
 - 클라이언트는 LoadBalancer 타입의 서비스를 통해 프론트엔드 서버에 접근하고, Nginx Reverse Proxy 설정을 통해
 
-&nbsp;&nbsp;&nbsp;&nbsp;　백엔드 서비스로 요청을 보낸다. 백엔드와 DB 간의 통신은 ClusterIP 타입의 서비스를 통해서 서비스 내부에서 
+&nbsp;&nbsp;&nbsp;&nbsp;　백엔드 서비스로 요청을 보낸다. 
 
-&nbsp;&nbsp;&nbsp;&nbsp;　이루어진다.
+&nbsp;&nbsp;&nbsp;&nbsp;　백엔드와 DB 간의 통신은 ClusterIP 타입의 서비스를 통해서 서비스 내부에서 이루어진다.
