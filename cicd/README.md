@@ -87,34 +87,43 @@
 
 <h3>백엔드</h3>
 
-#### 1. <img src="https://img.shields.io/badge/GitHub-181717?style=flat&logo=GitHub&logoColor=white&color=black">  원격 저장소의 개발 중인 브랜치에 ```push``` <br>
+#### 1. ```Github```  원격 저장소의 개발 중인 브랜치에 ```push``` <br>
 
-#### 2. 개발 중이던 브랜치로부터 <img src="https://img.shields.io/badge/GitHub-181717?style=flat&logo=GitHub&logoColor=white&color=black">  ```develop``` 브랜치에 ```pull request``` <br>
+#### 2. 개발 중이던 브랜치에서 ```Github```  ```develop``` 브랜치에 ```pull request``` <br>
 
-#### 3. ```pull request```가 완료됨과 동시에 <img src="https://img.shields.io/badge/GitHub Actions-2088FF?style=flat&logo=GitHub Actions&logoColor=white&color=gray">으로 <img src="https://img.shields.io/badge/Jenkins-D24939?style=flat&logo=jenkins&logoColor=white"/>에 알림 <br>
+#### 3. ```pull request```가 완료됨과 동시에 ```Github Webhook```을 통해 ```Jenkins```에 알림 <br>
 
-#### 4. <img src="https://img.shields.io/badge/Jenkins-D24939?style=flat&logo=jenkins&logoColor=white"/>가 푸쉬된 새 코드를 가져오기 위해 ```git clone``` <br>
+#### 4. ```Jenkins```가 푸쉬된 새 코드를 가져오기 위해 ```git clone``` <br>
 
-#### 5. <img src="https://img.shields.io/badge/Jenkins-D24939?style=flat&logo=jenkins&logoColor=white"/>는 ```Build``` 단계에서 ```mvn```을 통해 컴파일 및 빌드, 패키징 <br>
+#### 5. ```Jenkins```는 ```mvn```을 통해 컴파일 및 패키징 <br>
 
-#### 6. 빌드 전후로 <img src="https://img.shields.io/badge/Slack-4A154B?style=flat&logo=Slack&logoColor=yellow&color=purple"/>의 ```'#buildup-dev'``` 채널로 알림 전송 (성공, 실패) <br>
+#### 6. ```Jenkins```는 ```mvn```을 통해 테스트 코드 실행 <br>
+
+#### 7. 테스트 코드 실행 전후로```Slack```의 ```'#buildup-dev'``` 채널로 알림 전송 (성공, 실패) <br>
+
 
 <br>
 <br>
 
 <h3>프론트엔드</h3>
 
-#### 1. <img src="https://img.shields.io/badge/GitHub-181717?style=flat&logo=GitHub&logoColor=white&color=black">  원격 저장소의 개발 중인 브랜치에 ```push``` <br>
+#### 1. ```Github```  원격 저장소의 개발 중인 브랜치에 ```push``` <br>
 
-#### 2. 개발 중이던 브랜치로부터 <img src="https://img.shields.io/badge/GitHub-181717?style=flat&logo=GitHub&logoColor=white&color=black">  ```develop``` 브랜치에 ```pull request``` <br>
+#### 2. 개발 중이던 브랜치에서 ```Github```  ```develop``` 브랜치에 ```pull request``` <br>
 
-#### 3. ```pull request```가 완료됨과 동시에 <img src="https://img.shields.io/badge/GitHub Actions-2088FF?style=flat&logo=GitHub Actions&logoColor=white&color=gray">으로 <img src="https://img.shields.io/badge/Jenkins-D24939?style=flat&logo=jenkins&logoColor=white"/>에 알림 <br>
+#### 3. ```pull request```가 완료됨과 동시에 ```Github Webhook```을 통해 ```Jenkins```에 알림 <br>
 
-#### 4. <img src="https://img.shields.io/badge/Jenkins-D24939?style=flat&logo=jenkins&logoColor=white"/>가 푸쉬된 새 코드를 가져오기 위해 ```git clone``` <br>
+#### 4. ```Jenkins```가 푸쉬된 새 코드를 가져오기 위해 ```git clone``` <br>
 
-#### 5. <img src="https://img.shields.io/badge/Jenkins-D24939?style=flat&logo=jenkins&logoColor=white"/>는 ```Build``` 단계에서 ```npm```을 통해 dependency 설치, 컴파일, 빌드 <br>
+#### 5. ```Jenkins```는 ```npm```을 통해 package 설치 <br>
 
-#### 6. 빌드 전후로 <img src="https://img.shields.io/badge/Slack-4A154B?style=flat&logo=Slack&logoColor=yellow&color=purple"/>의 ```'#buildup-dev'``` 채널로 알림 전송 (성공, 실패) <br>
+#### 6. ```Jenkins```는 기존에 생성되어 있던 ```dist``` 폴더 삭제 <br>
+
+#### 7. 빌드 전후로 ```Slack```의 ```'#buildup-dev'``` 채널로 알림 전송 (성공, 실패) <br>
+
+#### 8. ```Jenkins```는 ```npm```을 통해 ```build``` <br>
+
+#### 9. 테스트 코드 실행 전후로 ```Slack```의 ```'#buildup-dev'``` 채널로 알림 전송 (성공, 실패) <br>
 
 </details>
 
@@ -122,32 +131,26 @@
 
 <details>
 <summary style="font-size: 18px; font-weight: bold; color: purple;">CD</summary>
-진행중입니다
-<h3>백엔드</h3>
 
-#### 1. Jenkins는 Docker Build 단계에서 새로운 Docker Image를 Build하고 tag 지정 (2.x) <br>
+<h3>백엔드 / 프론트엔드</h3>
 
-#### 2. Build된 Docker Image는 Docker Push를 통해 Docker Hub로 push **[hyungdoyou/bootshelf-fe]** <br>
+#### 1. ```Jenkins```는 ```Docker Build``` 단계에서 새로운 ```Docker Image```를 ```Build```하고 ```tag``` 지정 (2.x) <br>
 
-#### 3. Jenkins는 미리 등록한 K8S Cluster의 master 서버에 ssh로 Deployment를 update <br>
+#### 2. ```Docker Image``` 빌드 전후로 ```Slack```의 ```'#buildup-dev'``` 채널로 알림 전송 (성공, 실패) <br>
 
-#### 4. update된 Deployment 파일은 kubectl 명령어를 통해 K8S Cluster에 적용 <br>
+#### 3. ```Build```된 ```Docker Image```는 ```Docker Push```를 통해 ```Docker Hub```로 ```push``` **[hyungdoyou/bootshelf-fe]** <br>
 
-#### 5. 배포 성공, 실패 시 Slack의 ```'#buildup-dev'``` 채널로 알림 전송 <br>
+#### 4. ```Docker Push``` 전후로 ```Slack```의 ```'#buildup-dev'``` 채널로 알림 전송 (성공, 실패) <br>
+
+#### 5. ```Jenkins```는 미리 등록되어 있던 ```ssh``` server 설정을 이용해 ```K8S Cluster```의 ```master``` 서버에 ```deployment.yaml``` update <br>
+
+#### 6. update된 Deployment 파일은 ```kubectl``` 명령어를 통해 ```K8S Cluster```에 적용 <br>
+
+#### 7. deployment.yaml 전송 후 ```Slack```의 ```'#buildup-dev'``` 채널로 알림 전송 (성공, 실패) <br>
+
+#### 8. ```Jenkins``` Pipeline 종료 후 ```Slack```의 ```'#buildup-dev'``` 채널로 최종 알림 전송 <br>
 
 <br>
-
-<h3>프론트엔드</h3>
-
-#### 1. Jenkins는 Docker Build 단계에서 새로운 Docker Image를 Build하고 tag 지정 (2.x) <br>
-
-#### 2. Build된 Docker Image는 Docker Push를 통해 Docker Hub로 push **[hyungdoyou/bootshelf-fe]** <br>
-
-#### 3. Jenkins는 미리 등록한 K8S Cluster의 master 서버에 ssh로 Deployment를 update <br>
-
-#### 4. update된 Deployment 파일은 kubectl 명령어를 통해 K8S Cluster에 적용 <br>
-
-#### 5. 배포 성공, 실패 시 Slack의 '#buildup-dev' 채널로 알림 전송 <br>
 
 </details>
 
