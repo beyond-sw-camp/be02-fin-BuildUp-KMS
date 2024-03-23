@@ -304,7 +304,7 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;　통해 백엔드 서비스로 요청을 보낸다. 
 
-&nbsp;&nbsp;&nbsp;&nbsp;　백엔드와 DB 간의 통신은 **ClusterIP 타입의 서비스**를 통해서 서비스 내부에서 이루어진다.
+- 백엔드와 DB 간의 통신은 **ClusterIP 타입의 서비스**를 통해서 서비스 내부에서 이루어진다.
 
 <br>
 
