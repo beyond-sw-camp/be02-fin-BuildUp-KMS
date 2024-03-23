@@ -295,8 +295,8 @@
 
 - 프론트엔드, 백엔드 파드에는 **HPA(Horizontal Pod Autoscaler) 설정을 통해 리소스를 자동으로 관리**한다.
 
-- 클라이언트는 **LoadBalancer 타입의 서비스**를 통해 프론트엔드 서버에 접근하고, Nginx Reverse Proxy 설정을 통해
+- 클라이언트는 **LoadBalancer 타입의 서비스**를 통해 프론트엔드 서버에 접근하고, Nginx Reverse Proxy 설정을
 
-&nbsp;&nbsp;&nbsp;&nbsp;　백엔드 서비스로 요청을 보낸다. 
+&nbsp;&nbsp;&nbsp;&nbsp;　통해 백엔드 서비스로 요청을 보낸다. 
 
 &nbsp;&nbsp;&nbsp;&nbsp;　백엔드와 DB 간의 통신은 **ClusterIP 타입의 서비스**를 통해서 서비스 내부에서 이루어진다.
