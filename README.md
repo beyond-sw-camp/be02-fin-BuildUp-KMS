@@ -80,9 +80,8 @@
 
 ---
 
-<br>
-
 ### ✨ 프로젝트 기본 소개
+
 
 - 최근 들어 디지털 인재 수요가 계속해서 늘어나고 있는 만큼 개발자 양성 **부트캠프, 국비지원교육이 증가**
 
@@ -98,7 +97,46 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;　**지식을 서로 공유하는 서비스를 제공**한다.
 
+<br>
+
 ---
+
+### 🧐 프로젝트 배경
+
+<br>
+
+<div align="center">
+<figure class="half">
+ <img src="./img/배경-1.png" height=175>&nbsp;　&nbsp;　
+ <img src="./img/배경-2.png" height=175>
+</figure>
+<br/>
+</div>
+
+- IT 인재양성 스타트업 코드스테이츠가 자사 부트캠프 지원자와 수강생 데이터를 분석하여 “2021 IT 교육 트렌드 리포트” 를 
+
+&nbsp;&nbsp;&nbsp;&nbsp;　발표한 결과, 2021년 코드스테이츠 부트캠프 지원자는 총 2만4571명으로, 2020년 6273명 대비 292% 증가한 것으로 
+
+&nbsp;&nbsp;&nbsp;&nbsp;　확인됐다. 한 해 동안 교육 프로그램 지원자 수가 약 4배로 상승한 것이다. 이처럼, 개발자를 꿈꾸고 국비지원교육, 
+
+&nbsp;&nbsp;&nbsp;&nbsp;　부트캠프교육을 희망하는 비전공자들이 지속적으로 상승하고 있다.
+
+<br>
+
+- “ㅋ사” 교육을 수강한 사람들을 대상으로 조사한 결과 국비지원교육, 부트캠프의 가장 큰 문제점으로 교육과정 부실, 
+
+&nbsp;&nbsp;&nbsp;&nbsp;　정보의 불균형 등을 뽑았다. 실제로 A교육생은 다음과 같이 답변했다. “질문하면 만족할 만한 수준의 답변이 나오지 않는 
+
+&nbsp;&nbsp;&nbsp;&nbsp;　경우가 많았어요. (강사들도) 수업 준비 부족이 많이 느껴졌고요. 학원하고 실력 없는 강사만 배부른 상황이라고 생각해요.” 
+
+&nbsp;&nbsp;&nbsp;&nbsp;　또한 B교육생은 “어떻게 구글링해야 잘 나오는지 알려줘야 하는데 그냥 하라고만 했다” 등 강사들의 실력 문제도 지속적으로 
+
+&nbsp;&nbsp;&nbsp;&nbsp;　거론되고 있는 것이 현실이다.
+
+<br>
+
+---
+
 
 ### 📌 기술 스택
 
@@ -135,9 +173,9 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/JUnit5-25A162?style=flat&logo=JUnit5&logoColor=green&color=red"/></a></a>
 &nbsp;&nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/Slack-4A154B?style=flat&logo=Slack&logoColor=yellow&color=purple"/></a></a>
 
----
-
 <br>
+
+---
 
 ### 📚 프로젝트 기획
 
@@ -168,6 +206,8 @@
 ---
 
 ### 🚀 시스템 아키텍처 ( CI/CD 적용 전 )
+
+<br>
 
 <img src="./img/시스템 아키텍처.png">
 
