@@ -112,7 +112,7 @@ public class UserService {
 
             return baseRes;
         } else {
-            Optional<Course> resultCourse = courseRepository.findProgramName(postSignUpUserReq.getProgramName());
+            Optional<Course> resultCourse = courseRepository.findByProgramName(postSignUpUserReq.getProgramName());
             // 과정명이 존재하지 않을 때 예외처리
             if (!resultCourse.isPresent()) {
                 throw new CourseException(ErrorCode.COURSE_NOT_EXISTS, String.format("Course [%s] is not exists.", postSignUpUserReq.getProgramName()));
