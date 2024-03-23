@@ -180,9 +180,9 @@
 
 ### 📚 프로젝트 기획
 
-#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🔗 [WBS 바로가기](https://docs.google.com/spreadsheets/d/13p4rbHRj4yU6FU8hGdU-2VQ5eIj3EGHB/edit#gid=1297511367)
+### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🔗 [WBS 바로가기](https://docs.google.com/spreadsheets/d/13p4rbHRj4yU6FU8hGdU-2VQ5eIj3EGHB/edit#gid=1297511367)
 
-#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ✍ [요구사항 정의서 바로가기](https://docs.google.com/spreadsheets/d/1zWRshDDYx6A5WiRITPbgeP8Y-cxG2I0w/edit#gid=19011910)
+### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ✍ [요구사항 정의서 바로가기](https://docs.google.com/spreadsheets/d/1zWRshDDYx6A5WiRITPbgeP8Y-cxG2I0w/edit#gid=19011910)
 
 <br>
 
@@ -190,22 +190,22 @@
 
 ### 📜 프로젝트 설계
 
-#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 👉 ERD
+### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 👉 ERD
 
 <img src="./img/★5. ERD_v1.0 (5팀).png">
 
 <br>
 
-#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 👉 릴레이션 스키마
+### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 👉 릴레이션 스키마
 
 <img src="./img/★5. 릴레이션 스키마_v1.0 (5팀).png">
 
 <br>
 
-#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🌈 [화면 설계도 ( Figma ) 바로가기](https://www.figma.com/file/EPxkgc0NKKEkoXUjaHuRRm/BuildUp-%ED%99%94%EB%A9%B4-%EC%84%A4%EA%B3%84%EC%84%9C?type=design&node-id=0-1&mode=design&t=qNlrkmOxFiZFf7ZB-0)
+### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🌈 [화면 설계도 ( Figma ) 바로가기](https://www.figma.com/file/EPxkgc0NKKEkoXUjaHuRRm/BuildUp-%ED%99%94%EB%A9%B4-%EC%84%A4%EA%B3%84%EC%84%9C?type=design&node-id=0-1&mode=design&t=qNlrkmOxFiZFf7ZB-0)
 
 
-#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 💻 [API 명세서 바로가기](https://www.notion.so/API-639ea057342142a180469afce0c6c7d9)
+### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 💻 [API 명세서 바로가기](https://www.notion.so/API-639ea057342142a180469afce0c6c7d9)
 
 <br>
 
