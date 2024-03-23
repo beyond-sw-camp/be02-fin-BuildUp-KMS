@@ -216,7 +216,7 @@
 
 - Vue.js가 배포되어 있는 Nginx 서버로 클라이언트가 HTTP 요청을 보낸다.
 
-- 요청 URL 은 http://[프론트엔드 서버 IP]/api 형태이며, Nginx 서버 Reverse Proxy 설정을 통해 URL에 "/api" 가
+- 요청 URL 은 http://[프론트엔드 서버 IP]/api 형태이며, Nginx 서버 **Reverse Proxy 설정**을 통해 URL에 "/api" 가
 
 &nbsp;&nbsp;&nbsp;&nbsp;　포함되어 있는 요청을 백엔드 서버로 보내준다.
 
@@ -224,10 +224,10 @@
 
 - Spring Boot로 개발하였으며, 레이어드 아키텍처를 적용하였다.
 
-- 벡엔드 서버에서는 "Spring Security" 를 이용하여 헤더에 포함된 JWT 토큰을 통해
+- 벡엔드 서버에서는 **"Spring Security"** 를 이용하여 헤더에 포함된 JWT 토큰을 통해
   사용자의 권한을 확인 후
 
-&nbsp;&nbsp;&nbsp;&nbsp;　권한에 따라 서비스 이용을 제한적으로 허가해준다.
+&nbsp;&nbsp;&nbsp;&nbsp;　**권한에 따라 서비스 이용을 제한적으로 허가**해준다.
 
 - 백엔드 서버는 데이터 처리를 위해 Spring Data JPA를 사용하여 DB 서버 (MariaDB) 에 접근하며,
   조회 (SELECT)
@@ -236,7 +236,7 @@
 
 #### ➡ DB 서버 : MariaDB
 
-- MariaDB를 Master Slave 이중화로 구성하였으며, 부하 분산을 위해 Read 요청은
+- MariaDB를 **Master - Slave 이중화로 구성**하였으며, 부하 분산을 위해 Read 요청은
   Slave 서버에게, Write 요청은
 
 &nbsp;&nbsp;&nbsp;&nbsp;　 Master에게 전달한다.
@@ -267,35 +267,36 @@
 
 - 깃허브 develop 브랜치에 최신 버전의 프로젝트가 이상없는 것을 확인 후 "Pull requests" 를 통해
 
-&nbsp;&nbsp;&nbsp;&nbsp;　 라벨(backend 또는 frontend) 을 달고 Merge 시킨다.
+&nbsp;&nbsp;&nbsp;&nbsp;　 **라벨(backend 또는 frontend) 을 달고 Merge** 시킨다.
 
 - develop 브랜치에 Merge 시 깃허브는 젠킨스에게 WebHook을 보낸다.
 
 #### ➡ CI/CD 도구 : Jenkins, Slack
 
-- 깃허브로부터 WebHook을 수신한 젠킨스에서는 라벨을 확인하여, "backend" 라벨이면 백엔드 파이프라인으로,
+- 깃허브로부터 WebHook을 수신한 젠킨스에서는 **라벨을 확인**하여, "backend" 라벨이면 백엔드 파이프라인으로,
 
 &nbsp;&nbsp;&nbsp;&nbsp;　"frontend" 라벨이면 프론트엔드 파이프라인으로 요청이 들어온다.
 
-- 깃 클론 후 각각의 파이프라인 단계별 절차를 진행하며, 절차 진행 간 성공, 실패 여부를 슬랙 알람으로 보낸다.
+- 깃 클론 후 각각의 파이프라인 단계별 절차를 진행하며, 절차 진행 간 성공, 실패 여부를 **슬랙 알람**으로 보낸다.
 
 #### ➡ 컨테이너화 플랫폼 : 도커
 
-- 프론트엔드, 백엔드 프로젝트 수정 시 젠킨스 빌드 번호를 버전으로 포함하는 도커 이미지로 생성, 도커허브로
+- 프론트엔드, 백엔드 프로젝트 수정 시 젠킨스 빌드 번호를 버전으로 하는 도커 이미지를 생성, 도커허브로
 
 &nbsp;&nbsp;&nbsp;&nbsp;　푸쉬한다.
 
-  - 프론트엔드 : bootshelf-fe:2.VERSION
-  - 백엔드 : bootshelf-be:2.VERSION
+&nbsp;&nbsp;&nbsp;&nbsp;　🎨 **프론트엔드 : bootshelf-fe:2.VERSION**
+
+&nbsp;&nbsp;&nbsp;&nbsp;　🧑‍💻 **백엔드 : bootshelf-be:2.VERSION**
 
 #### ➡ 컨테이너 오케스트레이션 툴 : 쿠버네티스 (k8s)
 
-- 프론트엔드, 백엔드 서버는 각각 Deployment 로 파드를 생성, DB 서버는 StatefulSet 으로 파드를 생성한다.
+- 프론트엔드, 백엔드 서버는 각각 **Deployment 로 파드를 생성**, DB 서버는 **StatefulSet 으로 파드를 생성**한다.
 
-- 프론트엔드, 백엔드 파드에는 HPA(Horizontal Pod Autoscaler) 설정을 통해 리소스를 자동으로 관리한다.
+- 프론트엔드, 백엔드 파드에는 **HPA(Horizontal Pod Autoscaler) 설정을 통해 리소스를 자동으로 관리**한다.
 
-- 클라이언트는 LoadBalancer 타입의 서비스를 통해 프론트엔드 서버에 접근하고, Nginx Reverse Proxy 설정을 통해
+- 클라이언트는 **LoadBalancer 타입의 서비스**를 통해 프론트엔드 서버에 접근하고, Nginx Reverse Proxy 설정을 통해
 
 &nbsp;&nbsp;&nbsp;&nbsp;　백엔드 서비스로 요청을 보낸다. 
 
-&nbsp;&nbsp;&nbsp;&nbsp;　백엔드와 DB 간의 통신은 ClusterIP 타입의 서비스를 통해서 서비스 내부에서 이루어진다.
+&nbsp;&nbsp;&nbsp;&nbsp;　백엔드와 DB 간의 통신은 **ClusterIP 타입의 서비스**를 통해서 서비스 내부에서 이루어진다.
