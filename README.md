@@ -196,23 +196,16 @@
 
 <br>
 
----
-
 #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 👉 릴레이션 스키마
 
 <img src="./img/★5. 릴레이션 스키마_v1.0 (5팀).png">
 
 <br>
 
----
-
 #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 👉 [피그마 바로가기](https://www.figma.com/file/EPxkgc0NKKEkoXUjaHuRRm/BuildUp-%ED%99%94%EB%A9%B4-%EC%84%A4%EA%B3%84%EC%84%9C?type=design&node-id=0-1&mode=design&t=qNlrkmOxFiZFf7ZB-0)
 
-<br>
 
 #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 👉 [API 명세서 바로가기](https://www.notion.so/API-639ea057342142a180469afce0c6c7d9)
-
-<br>
 
 ---
 
