@@ -1,6 +1,7 @@
 package com.example.bootshelf.user.repository.querydsl;
 
 
+import com.example.bootshelf.course.Course;
 import com.example.bootshelf.user.model.entity.QUser;
 import com.example.bootshelf.user.model.entity.User;
 import org.springframework.data.domain.Page;
