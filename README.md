@@ -20,7 +20,7 @@
         </td>
         <td align="center">
             <a>
-                <img src="https://github.com/hyungdoyou/devops-backend/assets/148875644/5df71bc1-61fb-4a45-b1f1-acee62176402" width="100px" />
+                <img src="https://github.com/hyungdoyou/devops-backend/assets/148875644/0717c52d-9cd1-4d28-9017-db36be05ce60" width="100px" />
             </a>
         </td>
         <td align="center">
@@ -30,12 +30,12 @@
         </td>
         <td align="center">
             <a>
-                <img src="https://github.com/hyungdoyou/devops-backend/assets/148875644/91c2e06c-0ea9-4408-a365-f7a009b9a39b" width="100px" />
+                <img src="https://github.com/hyungdoyou/devops-backend/assets/148875644/08b8f51c-561b-44c8-9a31-1ab15832e692" width="100px" />
             </a>
         </td>
         <td align="center">
             <a>
-                <img src="https://github.com/hyungdoyou/devops-backend/assets/148875644/14efe07f-81a1-4941-85d4-fc8511b3524d" width="100px" />
+                <img src="https://github.com/hyungdoyou/devops-backend/assets/148875644/8c4116c4-46e7-4c94-ba53-bbcac1a6a5cb" width="100px" />
             </a>
         </td>
     </tr>
