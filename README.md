@@ -192,7 +192,7 @@
 <br>
 
   <details>
-    <summary><b>📝 ERD</b></summary>
+    <summary><b>📝 ERD</b></summary></br>
         <img src="./img/★5. ERD_v1.0 (5팀).png">
   </details>
 
@@ -200,7 +200,7 @@
 
 
   <details>
-    <summary><b>⏳ 릴레이션 스키마</b></summary>
+    <summary><b>⏳ 릴레이션 스키마</b></summary></br>
         <img src="./img/★5. 릴레이션 스키마_v1.0 (5팀).png">
   </details>
 
