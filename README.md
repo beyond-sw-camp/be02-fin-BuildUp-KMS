@@ -16,7 +16,7 @@
         <td align="center">
             <a>
             </a>
-                <img src="https://github.com/hyungdoyou/devops-backend/assets/148875644/029a3b19-a73f-4534-84e4-a0d9e8ebdb1a" width="100px" />
+                <img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148875644/ca888817-d336-44ab-bf4d-1c2333edc63d" width="100px" />
         </td>
         <td align="center">
             <a>
