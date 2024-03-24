@@ -144,7 +144,6 @@
 
 #### &nbsp;　[ DB ]
 
-&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/L i n u x-FCC624?style=flat&logo=linux&logoColor=black"></a>
 &nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/MariaDB-003545?style=flat&logo=MariaDB&logoColor=white"/></a>
 
 #### &nbsp;　[ Backend ]
@@ -190,29 +189,40 @@
 
 ### 📜 프로젝트 설계
 
-### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 👉 ERD
+<br>
 
-<img src="./img/★5. ERD_v1.0 (5팀).png">
+  <details>
+    <summary><b>📝 ERD</b></summary>
+        <img src="./img/★5. ERD_v1.0 (5팀).png">
+  </details>
 
 <br>
 
-### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 👉 릴레이션 스키마
 
-<img src="./img/★5. 릴레이션 스키마_v1.0 (5팀).png">
+  <details>
+    <summary><b>⏳ 릴레이션 스키마</b></summary>
+        <img src="./img/★5. 릴레이션 스키마_v1.0 (5팀).png">
+  </details>
 
 <br>
 
-### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🌈 [화면 설계도 ( Figma ) 바로가기](https://www.figma.com/file/EPxkgc0NKKEkoXUjaHuRRm/BuildUp-%ED%99%94%EB%A9%B4-%EC%84%A4%EA%B3%84%EC%84%9C?type=design&node-id=0-1&mode=design&t=qNlrkmOxFiZFf7ZB-0)
+---
+### 🌈 [화면 설계도 ( Figma ) 바로가기](https://www.figma.com/file/EPxkgc0NKKEkoXUjaHuRRm/BuildUp-%ED%99%94%EB%A9%B4-%EC%84%A4%EA%B3%84%EC%84%9C?type=design&node-id=0-1&mode=design&t=qNlrkmOxFiZFf7ZB-0)
 
 <br/>
 
-### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 💻 [API 명세서 바로가기](https://www.notion.so/API-639ea057342142a180469afce0c6c7d9)
+### 💻 [API 명세서 바로가기](https://www.notion.so/API-639ea057342142a180469afce0c6c7d9)
 
 <br>
 
 ---
 
-### 🚀 시스템 아키텍처 ( CI/CD 적용 전 )
+### 🚀 시스템 아키텍처
+
+<br>
+
+<details>
+<summary><b>CI/CD 적용 전</b></summary>
 
 <br>
 
@@ -255,14 +265,12 @@
 
 - 클라이언트가 이미지를 요청하면, 이미지가 저장된 URL을 반환, AWS S3에서 이미지를 불러와서 보여준다.
 
-<br>
-
----
-
-### 🛸 시스템 아키텍처 ( CI/CD 적용 후 )
+</details>
 
 <br>
 
+<details>
+<summary><b>CI/CD 적용 후</b></summary>
 <img src="./img/k8s_system_architecture.png">
 
 #### ➡ 형상관리 : GitHub
@@ -306,6 +314,9 @@
 &nbsp;&nbsp;&nbsp;&nbsp;　통해 백엔드 서비스로 요청을 보낸다. 
 
 - 백엔드와 DB 간의 통신은 **ClusterIP 타입의 서비스**를 통해서 서비스 내부에서 이루어진다.
+
+<br>
+</details>
 
 <br>
 
