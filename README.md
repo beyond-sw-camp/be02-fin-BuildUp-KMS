@@ -209,11 +209,7 @@
 ---
 ### 🌈 [화면 설계도 ( Figma ) 바로가기](https://www.figma.com/file/EPxkgc0NKKEkoXUjaHuRRm/BuildUp-%ED%99%94%EB%A9%B4-%EC%84%A4%EA%B3%84%EC%84%9C?type=design&node-id=0-1&mode=design&t=qNlrkmOxFiZFf7ZB-0)
 
-<br/>
-
 ### 💻 [API 명세서 바로가기](https://www.notion.so/API-639ea057342142a180469afce0c6c7d9)
-
-<br>
 
 ---
 
@@ -271,6 +267,9 @@
 
 <details>
 <summary><b>CI/CD 적용 후</b></summary>
+
+<br>
+
 <img src="./img/k8s_system_architecture.png">
 
 #### ➡ 형상관리 : GitHub
