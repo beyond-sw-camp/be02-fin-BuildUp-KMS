@@ -83,7 +83,7 @@
 
 # CI/CD 시나리오
 <details>
-<summary style="font-size: 18px; font-weight: bold; color: purple;">CI</summary>
+<summary>CI</summary>
 
 <h3>백엔드</h3>
 
@@ -130,7 +130,7 @@
 <br>
 
 <details>
-<summary style="font-size: 18px; font-weight: bold; color: purple;">CD</summary>
+<summary>CD</summary>
 
 <h3>백엔드 / 프론트엔드</h3>
 
@@ -161,7 +161,7 @@
 
 # CI/CD 기대 효과
 <details>
-<summary style="font-size: 18px; font-weight: bold; color: purple;">CI</summary>
+<summary>CI</summary>
 코드를 변경했을 때 자동으로 Build되어 빠르고 안정적으로 코드를 통합할 수 있고
 항상 배포 준비가 완료된 상태를 유지할 수 있다. 
 
@@ -170,7 +170,7 @@
 <br>
 
 <details>
-<summary style="font-size: 18px; font-weight: bold; color: purple;">CD</summary>
+<summary>CD</summary>
 개발자가 Github의 remote repository에 code를 push할 때마다 자동으로 빌드 및 배포되기 때문에
 수동 배포에 비해 시간과 노력을 크게 절약할 수 있고 사용자에게 즉각적인 업데이트를 제공할 수 있다. 
 
@@ -181,21 +181,21 @@
 
 # 시연 화면
 <details>
-<summary style="font-size: 18px; font-weight: bold; color: purple;">Frontend</summary>
+<summary>Frontend</summary>
 
 </details>
 
 <br>
 
 <details>
-<summary style="font-size: 18px; font-weight: bold; color: purple;">Backend</summary>
+<summary>Backend</summary>
 
 </details>
 
 <br>
 
 <details>
-<summary style="font-size: 18px; font-weight: bold; color: purple;">Slack Alarm</summary>
+<summary">Slack Alarm</summary>
 
 </details>
 
