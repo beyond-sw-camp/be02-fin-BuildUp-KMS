@@ -76,7 +76,6 @@ public class BoardCommentController {
         return ResponseEntity.ok().body(baseRes);
     }
 
-
     @Operation(summary = "게시판 댓글 삭제", description = "회원은 등록한 댓글을 삭제할 수 있다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
