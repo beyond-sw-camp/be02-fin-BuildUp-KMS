@@ -79,8 +79,8 @@ export default {
                 visible: false,
                 submenu: [
                     { name: '게시판 카테고리 등록', path: '/admin/board/category/register' },
-                    { name: '후기 카테고리 등록', path: '/admin/review/category/register' },
                     { name: '게시판 카테고리 조회', path: '/admin/board/category' },
+                    { name: '후기 카테고리 등록', path: '/admin/review/category/register' },
                     { name: '후기 카테고리 조회', path: '/admin/review/category' },
                 ],
             },
