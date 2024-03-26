@@ -158,19 +158,14 @@
 # 시연 화면
 <details>
 <summary>Frontend</summary>
-<video width="1000" controls>
-  <source src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/105422037/4ec0308c-dda8-47f2-ae13-e4634e637914" type="video/mp4">
-</video>
-
+<img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/105422037/4ec0308c-dda8-47f2-ae13-e4634e637914" type="video/mp4">
 </details>
 
 <br>
 
 <details>
 <summary>Backend</summary>
-<video width="1000" controls>
-  <source src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/105422037/f07742cb-3dc0-4e23-a927-657bfdc70245" type="video/mp4">
-</video>
+<img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/105422037/f07742cb-3dc0-4e23-a927-657bfdc70245" type="video/mp4">
 </details>
 
 <br>
