@@ -310,7 +310,8 @@ public class UserService {
         user.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
         userRepository.save(user);
 
-        return BaseRes.builder().isSuccess(true).message("회원정보 수정 성공").result("요청 성공").build();
+        return BaseRes.builder().isSuccess(true).message("회원정보 수정 성공").result(user.getNickName()).build();
+
     }
 
     // 회원 프로필 이미지 수정
@@ -358,9 +359,11 @@ public class UserService {
     @Transactional(readOnly = false)
     public BaseRes delete(Integer userIdx) {
 
-        Integer result = userRepository.deleteByIdx(userIdx);
-        if (!result.equals(0)) {
-
+        Optional<User> result = userRepository.findById(userIdx);
+        if (!result.isEmpty()) {
+            User user = result.get();
+            user.setStatus(false);
+            userRepository.save(user);
             return BaseRes.builder().isSuccess(true).message("요청 성공").result("회원이 삭제되었습니다.").build();
         } else {
             throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("UserIdx [ %s ] is not exists.", userIdx));
