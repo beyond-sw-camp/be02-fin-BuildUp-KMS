@@ -270,7 +270,7 @@
 
 <br>
 
-<img src="./img/k8s_system_architecture.png">
+<img src="./img/전체 시스템 아키텍처.png">
 
 #### ➡ 형상관리 : GitHub
 
