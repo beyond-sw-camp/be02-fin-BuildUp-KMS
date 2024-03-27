@@ -296,7 +296,7 @@ export const useUserStore = defineStore("user", {
 
     async deleteUser(userIdx) {
       try {
-        await axios.delete(backend + "/user/delete/" + userIdx);
+        await axios.patch(backend + "/user/delete/" + userIdx);
       } catch (e) {
         console.error(e);
         throw e;
