@@ -17,10 +17,7 @@ import com.example.bootshelf.course.repository.CourseRepository;
 import com.example.bootshelf.common.error.entityexception.UserException;
 import com.example.bootshelf.tag.model.response.GetListTagResResult;
 import com.example.bootshelf.user.model.entity.User;
-import com.example.bootshelf.user.model.request.PatchUpdateUserReq;
-import com.example.bootshelf.user.model.request.PostCheckPasswordReq;
-import com.example.bootshelf.user.model.request.PostLoginUserReq;
-import com.example.bootshelf.user.model.request.PostSignUpUserReq;
+import com.example.bootshelf.user.model.request.*;
 import com.example.bootshelf.user.model.response.*;
 import com.example.bootshelf.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -387,5 +384,57 @@ public class UserService {
         BaseRes baseRes = BaseRes.builder().isSuccess(true).message("관리자 가입에 성공하였습니다.").result(PostSignUpAdminRes.builder().email(user.getEmail()).name(user.getName()).build()).build();
 
         return baseRes;
+    }
+    // 비밀번호 찾기시 임시 비밀번호로 DB 업데이트
+    public String updatePassword(String email, String name) {
+
+        Optional<User> result = userRepository.findByEmailAndName(email, name);
+        if (result.isEmpty()) {
+            throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("UserEmail [ %s ] is not exists.", email));
+        }
+            User user = result.get();
+            String pw = getTempPassword();
+            user.setPassword(passwordEncoder.encode(pw));
+
+            user.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+            userRepository.save(user);
+            return pw;
+    }
+
+    public String getTempPassword() {
+        char[] charSet = new char[]{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+                'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+
+        char[] charSet2 = new char[]{'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s',
+        't','u','v','w','x','y','z'};
+
+        char[] charSet3 = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+
+        String str = "";
+
+        int idx1 = 0;
+        int idx2 = 0;
+        int idx3 = 0;
+
+        for (int i = 0; i < 3; i++) {
+            idx1 = (int) (charSet.length * Math.random());
+            idx2 = (int) (charSet2.length * Math.random());
+            idx3 = (int) (charSet3.length * Math.random());
+            str += charSet[idx1];
+            str += charSet2[idx2];
+            str += charSet3[idx3];
+        }
+        str += "@";
+        return str;
+    }
+
+    public Map<String, String> findEmail(GetFindEmailUserReq getFindEmailUserReq) {
+        Optional<User> user = userRepository.findByNameAndNickName(getFindEmailUserReq.getName(),getFindEmailUserReq.getNickName());
+        if (!user.isPresent()) {
+            throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("UserNickName [ %s ] is not exists.", getFindEmailUserReq.getNickName()));
+        }
+        Map<String, String> result = new HashMap<>();
+        result.put("userEmail", user.get().getEmail());
+        return result;
     }
 }

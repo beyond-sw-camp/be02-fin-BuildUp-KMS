@@ -15,4 +15,6 @@ public interface UserRepository extends JpaRepository<User, Integer>, UserReposi
     public Integer deleteByIdx(Integer idx);
     public Optional<User> findByEmail(String email);
     public Optional<User> findByNickName(String userNickName);
+    public Optional<User> findByEmailAndName(String email, String name);
+    public Optional<User> findByNameAndNickName(String name, String Nickname);
 }

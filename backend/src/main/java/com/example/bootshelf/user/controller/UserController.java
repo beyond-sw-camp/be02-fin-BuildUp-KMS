@@ -5,7 +5,9 @@ import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.config.naver.NaverOcrApi;
 import com.example.bootshelf.user.model.entity.User;
 import com.example.bootshelf.user.model.request.*;
+import com.example.bootshelf.user.model.response.GetEmailVerifyRes;
 import com.example.bootshelf.user.service.EmailVerifyService;
+import com.example.bootshelf.user.service.SendEmailService;
 import com.example.bootshelf.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,7 +30,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.io.IOException;
-import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -39,6 +41,7 @@ public class UserController {
 
     private final UserService userService;
     private final EmailVerifyService emailVerifyService;
+    private final SendEmailService sendEmailService;
 
     @Operation(summary = "회원 가입",
             description = "회원이 회원 정보를 입력하여 회원 가입을 진행한다.")
@@ -191,6 +194,26 @@ public class UserController {
                 .isSuccess(true)
                 .message("Naver Clova Ocr Success")
                 .result(result)
+                .build();
+
+        return ResponseEntity.ok().body(baseRes);
+    }
+    // 이메일 찾기
+    @RequestMapping(method = RequestMethod.POST, value = "/findemail")
+    public Map<String, String> findEmail(@RequestBody @Valid GetFindEmailUserReq getFindEmailUserReq) {
+        Map<String, String> email = userService.findEmail(getFindEmailUserReq);
+        return email;
+    }
+    //등록된 이메일로 임시비밀번호를 발송하고 발송된 임시비밀번호로 사용자의 pw를 변경하는 컨트롤러
+    @RequestMapping(method = RequestMethod.POST, value = "/findpw/sendemail")
+    public  ResponseEntity sendEmail(@RequestBody @Valid PatchFindPasswordUserReq patchFindPasswordUserReq){
+        GetEmailVerifyRes dto = sendEmailService.changePasswordMailSend(patchFindPasswordUserReq.getEmail(),patchFindPasswordUserReq.getName());
+        sendEmailService.mailSend(dto);
+
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("메일 발송 완료")
+                .result("메일 발송 완료")
                 .build();
 
         return ResponseEntity.ok().body(baseRes);
