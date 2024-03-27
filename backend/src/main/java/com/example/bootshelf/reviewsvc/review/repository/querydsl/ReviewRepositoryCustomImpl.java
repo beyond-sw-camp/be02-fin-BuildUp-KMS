@@ -102,7 +102,7 @@ public class ReviewRepositoryCustomImpl extends QuerydslRepositorySupport implem
     private OrderSpecifier[] createOrderSpecifier(Integer sortType, QReview review) {
         List<OrderSpecifier> orderSpecifiers = new ArrayList<>();
 
-        // sortType에 따른 동적 정렬 조건 설정
+        // sortType에 따른 동적 정렬 조건 설정.
         switch (sortType) {
             case 1:
                 orderSpecifiers.add(review.updatedAt.desc());
@@ -132,6 +132,7 @@ public class ReviewRepositoryCustomImpl extends QuerydslRepositorySupport implem
         QReviewCategory reviewCategory = new QReviewCategory("reviewCategory");
         QUser user = new QUser("user");
 
+        // 정렬 조건
         OrderSpecifier[] orderSpecifiers = createOrderSpecifier(sortType, review);
 
         // 검색 조건을 BooleanExpression으로 구성

@@ -1,20 +1,5 @@
 <br>
 
-![header](https://capsule-render.vercel.app/api?type=Waving&color=541D7A&height=250&section=header&text=BOOTSHELF🌠&desc=BOOTCAMP&descSize=20&descAlign=68&descAlignY=70&fontSize=100&animation=fadeIn&fontColor=ffff)
-
-> # **[플레이 데이터] 한화시스템 BEYOND SW캠프 / 📚 Team : BuildUp 📚**
-
-<br>
-
-### 🤼‍♂️ 팀원 소개
-
-<br><br>
-
-&nbsp;　&nbsp;　&nbsp;　&nbsp;　&nbsp;　&nbsp;　&nbsp;　&nbsp;　 🦁 **[유형도](https://github.com/hyungdoyou)**&nbsp;　 🐻 **[임태우](https://github.com/Tesssssssssy)** &nbsp;　 🐶 **[홍현주](https://github.com/hyeonjju)** &nbsp;　 🐱 **[강지흔](https://github.com/heueun)** &nbsp;　 🐼 **[길민석](https://github.com/gilms0730)**
-<br><br><br><br><br>
-
-<br>
-
 # Badges
 <div align="left">
 &nbsp;&nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/GitHub-181717?style=flat&logo=GitHub&logoColor=white&color=black"></a></a>
@@ -34,10 +19,16 @@
 <br>
 
 # 🖥️ Architecture
+<details>
+<summary>system architecture</summary>
+<img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/105422037/b783b71b-e6dd-40b4-8973-0bfa57979a16">
+</details>
 
-### [system architecture](https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/105422037/8b43264d-ded8-4656-b779-532fc8a254d0)
-
-### [Cluster Architecture](https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/105422037/db082524-56c8-4e6a-98ae-953167014d56)
+<br>
+<details>
+<summary>cluster architecture</summary>
+<img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/105422037/db082524-56c8-4e6a-98ae-953167014d56">
+</details>
 
 
 <br>
@@ -47,7 +38,7 @@
 
 # Devops 운영 환경
 <details>
-<summary style="font-size: 18px; font-weight: bold; color: purple;">DockerHub Images</summary>
+<summary>DockerHub Images</summary>
 
 <h3>백엔드</h3>
 <img width="500" alt="docker hub backend" src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/105422037/e6d1b2ca-2209-4b93-8c93-a0b1d7fde036">
@@ -64,7 +55,12 @@
 <br>
 
 <details>
-<summary style="font-size: 18px; font-weight: bold; color: purple;">Kubernetes</summary>
+<summary>Kubernetes</summary>
+<img width="1725" alt="스크린샷_2024-03-25_오후_2 06 16" src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/105422037/7ec7a8f6-4a06-48a1-868b-c8b15858d658">
+
+<br>
+
+<img width="1274" alt="스크린샷 2024-03-26 오후 4 18 44" src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/105422037/cd7c2cd4-6199-45e5-83fd-75bc8fb8e5d3">
 
 </details>
 
@@ -72,8 +68,8 @@
 <br>
 
 <details>
-<summary style="font-size: 18px; font-weight: bold; color: purple;">Jenkins</summary>
-
+<summary>Jenkins</summary>
+<img width="1266" alt="스크린샷 2024-03-26 오후 4 13 45" src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/105422037/71de888b-96e9-4752-94cf-13e5199d8321">
 </details>
 
 <br>
@@ -83,7 +79,7 @@
 
 # CI/CD 시나리오
 <details>
-<summary style="font-size: 18px; font-weight: bold; color: purple;">CI</summary>
+<summary>CI</summary>
 
 <h3>백엔드</h3>
 
@@ -130,7 +126,7 @@
 <br>
 
 <details>
-<summary style="font-size: 18px; font-weight: bold; color: purple;">CD</summary>
+<summary>CD</summary>
 
 <h3>백엔드 / 프론트엔드</h3>
 
@@ -159,43 +155,28 @@
 <br>
 <br>
 
-# CI/CD 기대 효과
-<details>
-<summary style="font-size: 18px; font-weight: bold; color: purple;">CI</summary>
-코드를 변경했을 때 자동으로 Build되어 빠르고 안정적으로 코드를 통합할 수 있고
-항상 배포 준비가 완료된 상태를 유지할 수 있다. 
-
-</details>
-
-<br>
-
-<details>
-<summary style="font-size: 18px; font-weight: bold; color: purple;">CD</summary>
-개발자가 Github의 remote repository에 code를 push할 때마다 자동으로 빌드 및 배포되기 때문에
-수동 배포에 비해 시간과 노력을 크게 절약할 수 있고 사용자에게 즉각적인 업데이트를 제공할 수 있다. 
-
-</details>
-
-<br>
-<br>
-
 # 시연 화면
 <details>
-<summary style="font-size: 18px; font-weight: bold; color: purple;">Frontend</summary>
+<summary>Frontend</summary>
+
+[frontend mp4](https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/105422037/4ec0308c-dda8-47f2-ae13-e4634e637914)
+</details>
+
+<br>
+
+<details>
+<summary>Backend</summary>
+
+[backend mp4](https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/105422037/f07742cb-3dc0-4e23-a927-657bfdc70245)
 
 </details>
 
 <br>
 
 <details>
-<summary style="font-size: 18px; font-weight: bold; color: purple;">Backend</summary>
+<summary>Slack Alarm</summary>
 
-</details>
-
-<br>
-
-<details>
-<summary style="font-size: 18px; font-weight: bold; color: purple;">Slack Alarm</summary>
+<img width="700" alt="slack alarm" src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/105422037/c4139122-e358-4627-87fb-f4753d73e944">
 
 </details>
 
