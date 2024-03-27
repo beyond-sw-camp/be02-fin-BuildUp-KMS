@@ -161,7 +161,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
-    @RequestMapping(method = RequestMethod.DELETE, value = "/delete/{userIdx}")
+    @RequestMapping(method = RequestMethod.PATCH, value = "/delete/{userIdx}")
     public ResponseEntity<BaseRes> delete(@PathVariable @NotNull @Positive Integer userIdx) {
 
         BaseRes baseRes = userService.delete(userIdx);

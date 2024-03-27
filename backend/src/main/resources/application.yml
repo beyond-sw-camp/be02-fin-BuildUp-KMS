@@ -45,6 +45,14 @@ spring:
     username: ${MASTER}
     password: ${MASTER_PW}
 
+    slaves:
+      slave1:
+        name: slave1
+        driver-class-name: org.mariadb.jdbc.Driver
+        url: ${SLAVE_URL}
+        username: ${SLAVE}
+        password: ${SLAVE_PW}
+
   jpa:
     database-platform: org.hibernate.dialect.MariaDB103Dialect
     hibernate:

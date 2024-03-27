@@ -132,6 +132,7 @@ public class ReviewRepositoryCustomImpl extends QuerydslRepositorySupport implem
         QReviewCategory reviewCategory = new QReviewCategory("reviewCategory");
         QUser user = new QUser("user");
 
+        // 정렬 조건
         OrderSpecifier[] orderSpecifiers = createOrderSpecifier(sortType, review);
 
         // 검색 조건을 BooleanExpression으로 구성

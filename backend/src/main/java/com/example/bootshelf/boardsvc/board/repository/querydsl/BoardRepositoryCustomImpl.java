@@ -191,7 +191,7 @@ public class BoardRepositoryCustomImpl extends QuerydslRepositorySupport impleme
 
     /**
      *  게시판 (+ 후기) 검색 api (v2)
-     *  -> 페이지네이션 잘 안됨
+     *  -> 페이지네이션 잘 안됨       -> 사용 ㄴㄴㄴㄴㄴ
      */
     @Override
     public Page<Board> searchBoardListByQueryV2(Pageable pageable, String query, Integer searchType) {
