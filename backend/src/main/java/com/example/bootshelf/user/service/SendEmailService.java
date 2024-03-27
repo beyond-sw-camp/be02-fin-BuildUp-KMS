@@ -20,7 +20,7 @@ public class SendEmailService {
     private JavaMailSender mailSender;
     private static final String FROM_ADDRESS = "heueun77@gmail.com";
 
-    public GetEmailVerifyRes changePasswordMailSend(String email, String name){
+    public GetEmailVerifyRes findPassword(String email, String name){
         String str = userService.updatePassword(email, name);
         GetEmailVerifyRes dto = new GetEmailVerifyRes();
         dto.setEmail(email);

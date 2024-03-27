@@ -199,15 +199,15 @@ public class UserController {
         return ResponseEntity.ok().body(baseRes);
     }
     // 이메일 찾기
-    @RequestMapping(method = RequestMethod.POST, value = "/findemail")
+    @RequestMapping(method = RequestMethod.POST, value = "/find/email")
     public Map<String, String> findEmail(@RequestBody @Valid GetFindEmailUserReq getFindEmailUserReq) {
         Map<String, String> email = userService.findEmail(getFindEmailUserReq);
         return email;
     }
     //등록된 이메일로 임시비밀번호를 발송하고 발송된 임시비밀번호로 사용자의 pw를 변경하는 컨트롤러
-    @RequestMapping(method = RequestMethod.POST, value = "/findpw/sendemail")
-    public  ResponseEntity sendEmail(@RequestBody @Valid PatchFindPasswordUserReq patchFindPasswordUserReq){
-        GetEmailVerifyRes dto = sendEmailService.changePasswordMailSend(patchFindPasswordUserReq.getEmail(),patchFindPasswordUserReq.getName());
+    @RequestMapping(method = RequestMethod.POST, value = "/find/password")
+    public  ResponseEntity findPassword(@RequestBody @Valid PatchFindPasswordUserReq patchFindPasswordUserReq){
+        GetEmailVerifyRes dto = sendEmailService.findPassword(patchFindPasswordUserReq.getEmail(),patchFindPasswordUserReq.getName());
         sendEmailService.mailSend(dto);
 
         BaseRes baseRes = BaseRes.builder()
