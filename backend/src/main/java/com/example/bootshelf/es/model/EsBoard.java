@@ -24,7 +24,7 @@ public class EsBoard {
     @Field(type = FieldType.Integer)
     private Integer boardCategory;
 
-    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Text, name = "boardtitle")
     private String boardTitle;
 
     @Field(type = FieldType.Text)
