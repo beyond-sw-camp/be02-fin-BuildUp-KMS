@@ -11,4 +11,6 @@ public class GetEmailVerifyRes {
 
     private String email;
     private Boolean status;
+    private String title;
+    private String message;
 }

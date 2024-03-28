@@ -18,4 +18,6 @@ public class GetEmailVerifyReq {
 //    @NotNull(message = "인증용 토큰은 필수 입력 항목입니다.")
 //    @ApiModelProperty(value = "사용자 인증 토큰", example = "uuid", required = true)
     private String uuid;
+    private String title;
+    private String message;
 }
