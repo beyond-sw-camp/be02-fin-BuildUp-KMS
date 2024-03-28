@@ -18,11 +18,9 @@ import javax.mail.internet.MimeMessage;
 @AllArgsConstructor
 public class SendEmailService {
 
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
     private final UserService userService;
-    private JavaMailSender mailSender;
-    private static final String FROM_ADDRESS = "heueun77@gmail.com";
+    private final JavaMailSender mailSender;
 
     public void findPassword(String email, String name) throws MessagingException {
 
@@ -41,7 +39,7 @@ public class SendEmailService {
                     "[ " + name + " ] 회원님의 임시 비밀번호는" + "[ " + str + " ] 입니다. " +
                     "</p>" + "<p style='color: #333; height: 100%; margin: 0; text-align: center; font-size: 25px; line-height: 3;'>" +
                     "임시 비밀번호로 로그인 후 비밀번호를 변경해주세요 <br/>" + "</p>" + "<div style='text-align: center; line-height: 3;'>\n" +
-                    "<a href=`http://localhost:8081` style='color: #fff; text-decoration: none; background-color: rgb(84, 29, 122); padding: 10px 20px; border-radius: 5px; border: 2px solid rgb(84, 29, 122); display: inline-block; font-size: 20px; line-height: 2;'>\n" +
+                    "<a href=`http://localhost:8081` style='color: #fff; text-decoration: none; background-color: rgb(84, 29, 122); padding: 10px 20px; border-radius: 5px; border: 2px solid rgb(84, 29, 122); display: inline-block; font-size: 20px; line-height: 1;'>\n" +
                     "로그인 하기\n" + "</a>\n" + "</div>" + "</body></html>";
 
             helper.setText(content, true);
@@ -50,16 +48,5 @@ public class SendEmailService {
             e.printStackTrace();
             // 예외 처리 로직
         }
-    }
-
-    public void mailSend(GetEmailVerifyRes getEmailVerifyRes) {
-        System.out.println("이메일 전송 완료");
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(getEmailVerifyRes.getEmail());
-        message.setFrom(SendEmailService.FROM_ADDRESS);
-        message.setSubject(getEmailVerifyRes.getTitle());
-        message.setText(getEmailVerifyRes.getMessage());
-
-        mailSender.send(message);
     }
 }
