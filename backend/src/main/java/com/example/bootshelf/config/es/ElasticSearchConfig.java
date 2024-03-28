@@ -1,6 +1,5 @@
 package com.example.bootshelf.config.es;
 
-import lombok.Value;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.elasticsearch.client.ClientConfiguration;
