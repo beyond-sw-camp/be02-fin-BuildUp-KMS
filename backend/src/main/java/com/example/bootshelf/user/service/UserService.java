@@ -227,7 +227,12 @@ public class UserService {
             String imagePath = "https://github.com/hyungdoyou/devops/assets/148875644/f9dc322f-9d41-455d-b35c-e3cfcd7c008d";
 
             // HTML 문자열에 이미지 포함
-            String content = "<html><body style= 'font-family: Arial, sans-serif;'>" + "<img src='" + imagePath + "' style='width: auto; height: auto;'/>" + "<p style='color: rgb(84, 29, 122); margin-bottom: 15px; height: 100%; margin: 0; text-align: center; font-size: 30px; line-height: 3;'>" + "<strong>BOOTSHELF</strong> 에 가입해주셔서 감사합니다" + "</p>" + "<p style='color: #333; margin-bottom: 15px; height: 100%; margin: 0; text-align: center; font-size: 20px; line-height: 3;'>" + "이메일 인증 완료 후 회원들과 지식을 공유해보세요" + "</p>" + "<div style='text-align: center;'>\n" + "    <a href='" + url + "' style='color: #fff; text-decoration: none; background-color: rgb(84, 29, 122); padding: 10px 20px; border-radius: 5px; border: 2px solid rgb(84, 29, 122); display: inline-block; font-size: 15px; line-height: 2;'>\n" + "        이메일 인증하기\n" + "    </a>\n" + "</div>" + "</body></html>";
+            String content = "<html><body style= 'font-family: Pretendard; font-style: normal; font-weight: 500'>" +
+                    "<p style='color: rgb(84, 29, 122); height: 100%; margin: 0; text-align: center; font-size: 30px; line-height: 3;'>" +
+                    "<img src='" + imagePath + "' style='width: auto; height: auto;'/> <br/>" +
+                    "<strong>BOOTSHELF</strong> 에 가입해주셔서 감사합니다" +
+                    "</p>" + "<p style='color: #333; height: 100%; margin: 0; text-align: center; font-size: 25px; line-height: 3;'>" +
+                    "이메일 인증 완료 후 회원들과 지식을 공유해보세요" + "</p>" + "<div style='text-align: center;'>\n" + "    <a href='" + url + "' style='color: #fff; text-decoration: none; background-color: rgb(84, 29, 122); padding: 10px 20px; border-radius: 5px; border: 2px solid rgb(84, 29, 122); display: inline-block; font-size: 20px; line-height: 2;'>\n" + "        이메일 인증하기\n" + "    </a>\n" + "</div>" + "</body></html>";
             helper.setText(content, true); // true는 HTML 메일임을 의미합니다.
             emailSender.send(message);
             emailVerifyService.create(postSignUpUserReq.getEmail(), uuid);
@@ -428,13 +433,24 @@ public class UserService {
         return str;
     }
 
-    public Map<String, String> findEmail(GetFindEmailUserReq getFindEmailUserReq) {
-        Optional<User> user = userRepository.findByNameAndNickName(getFindEmailUserReq.getName(),getFindEmailUserReq.getNickName());
-        if (!user.isPresent()) {
-            throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("UserNickName [ %s ] is not exists.", getFindEmailUserReq.getNickName()));
+    public BaseRes findEmail(GetFindEmailUserReq getFindEmailUserReq) {
+        Optional<User> result = userRepository.findByNameAndNickName(getFindEmailUserReq.getName(),getFindEmailUserReq.getNickName());
+        if (!result.isPresent()) {
+            throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("User Name [ %s ], NickNmae [ %s ] is not exists.", getFindEmailUserReq.getName(), getFindEmailUserReq.getNickName()));
         }
-        Map<String, String> result = new HashMap<>();
-        result.put("userEmail", user.get().getEmail());
-        return result;
+
+        User user = result.get();
+
+        GetFindEmailUserRes getFindEmailUserRes = GetFindEmailUserRes.builder()
+                .email(user.getEmail())
+                .build();
+
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("회원 이메일 찾기 성공")
+                .result(getFindEmailUserRes)
+                .build();
+
+        return baseRes;
     }
 }
