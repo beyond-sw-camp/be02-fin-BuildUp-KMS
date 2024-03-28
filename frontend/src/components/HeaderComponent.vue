@@ -309,7 +309,7 @@
           </div>
           <div class="css-1hal8c">BOOTSHELF 회원들과 함께 공유해보세요!</div>
           <div direction="vertical" size="40" class="css-ygt1wz"></div>
-          <a href="http://http://192.168.0.61/api/oauth2/authorization/kakao">
+          <a href="http://192.168.0.61/api/oauth2/authorization/kakao" class="css-18wq8ro">
             <button
               color="#141617"
               class="css-18wq8ro"
