@@ -1,4 +1,20 @@
 <template>
+  <div class="loadingio-spinner-spinner" v-if="userStore.isLoading">
+    <div class="ldio-f4nnk2ltl0v">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
   <header>
     <div
       class="css-wkr2a"
@@ -212,10 +228,7 @@
                                 d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
                               ></path>
                             </svg>
-                            <div
-                              class="css-17gywxx"
-                              @click="goAdminPage()"
-                            >
+                            <div class="css-17gywxx" @click="goAdminPage()">
                               관리자 페이지
                             </div>
                           </div>
@@ -426,6 +439,7 @@
               color="#81898F"
               class="css-1cap2q"
               style="text-decoration: none"
+              @click="openFindEmailModal()"
               >이메일 찾기</span
             >
             <div class="css-1653a83"></div>
@@ -433,9 +447,316 @@
               color="#81898F"
               class="css-1cap2q"
               style="text-decoration: none"
+              @click="openFindPasswordModal()"
               >비밀번호 찾기</span
             >
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!----------------여기부터 이메일 찾기 모달창-------------------------->
+  <div class="css-1gpya5f" v-show="isFindEmail">
+    <div class="css-4oebd2">
+      <div class="css-1n1k95p">
+        <div class="css-1a96vvi" @click="closeFindEmailModal()">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9.16699 5L4.16699 10L9.16699 15"
+              stroke="#3A3E41"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+            <path
+              d="M5 10L15.8333 10"
+              stroke="#3A3E41"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
+          뒤로
+        </div>
+        <div class="css-myjkxi" @click="closeAllLoginModal()">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4.16663 4.16669L15.8333 15.8334"
+              stroke="#3A3E41"
+              stroke-width="1.75"
+              stroke-linecap="round"
+            ></path>
+            <path
+              d="M15.8334 4.16669L4.16671 15.8334"
+              stroke="#3A3E41"
+              stroke-width="1.75"
+              stroke-linecap="round"
+            ></path>
+          </svg>
+        </div>
+      </div>
+      <div class="css-1djguz4">
+        <div class="css-yj1ay2">
+          <div class="css-bbe5fx">이메일 찾기</div>
+          <form id="findEmailForm"></form>
+          <form id="loginForm">
+            <div direction="vertical" size="40" class="css-ygt1wz"></div>
+            <input
+              v-model="name"
+              placeholder="이름 입력"
+              type="string"
+              autocapitalize="off"
+              class="login-custom-input css-krmsb5"
+            />
+            <div direction="vertical" size="12" class="css-j86f64"></div>
+            <input
+              v-model="nickName"
+              placeholder="닉네임 입력"
+              type="nickName"
+              autocapitalize="off"
+              class="login-custom-input css-krmsb5"
+            />
+            <div direction="vertical" size="40" class="css-ygt1wz"></div>
+          </form>
+          <button
+            @click="sendFindEmail()"
+            @keyup.enter="sendFindEmail()"
+            color="#FFFFFF"
+            class="css-uscuon1"
+          >
+            확인
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="css-1gpya5f" v-show="isCheckEmail">
+    <div class="css-4oebd2">
+      <div class="css-1n1k95p">
+        <div class="css-1a96vvi" @click="closeCheckEmailModal()">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9.16699 5L4.16699 10L9.16699 15"
+              stroke="#3A3E41"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+            <path
+              d="M5 10L15.8333 10"
+              stroke="#3A3E41"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
+          뒤로
+        </div>
+        <div class="css-myjkxi" @click="closeAllLoginModal()">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4.16663 4.16669L15.8333 15.8334"
+              stroke="#3A3E41"
+              stroke-width="1.75"
+              stroke-linecap="round"
+            ></path>
+            <path
+              d="M15.8334 4.16669L4.16671 15.8334"
+              stroke="#3A3E41"
+              stroke-width="1.75"
+              stroke-linecap="round"
+            ></path>
+          </svg>
+        </div>
+      </div>
+      <div class="css-1djguz4">
+        <div class="css-yj1ay2">
+          <div direction="vertical" size="40" class="css-ygt1wz"></div>
+          <div class="css-bbe5fx2">회원님의 이메일은</div>
+          <div direction="vertical" size="40" class="css-ygt1wz"></div>
+          <div class="css-bbe5fx3">{{ userStore.userEmail }} 입니다.</div>
+          <div direction="vertical" size="40" class="css-ygt1wz"></div>
+          <button @click="moveLoginModal()" color="#FFFFFF" class="css-uscuon1">
+            로그인하러 가기
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!----------------여기부터 비밀번호 찾기 모달창------------------------>
+  <div class="css-1gpya5f" v-show="isFindPassword">
+    <div class="css-4oebd2">
+      <div class="css-1n1k95p">
+        <div class="css-1a96vvi" @click="closeFindPasswordModal()">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9.16699 5L4.16699 10L9.16699 15"
+              stroke="#3A3E41"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+            <path
+              d="M5 10L15.8333 10"
+              stroke="#3A3E41"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
+          뒤로
+        </div>
+        <div class="css-myjkxi" @click="closeAllLoginModal()">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4.16663 4.16669L15.8333 15.8334"
+              stroke="#3A3E41"
+              stroke-width="1.75"
+              stroke-linecap="round"
+            ></path>
+            <path
+              d="M15.8334 4.16669L4.16671 15.8334"
+              stroke="#3A3E41"
+              stroke-width="1.75"
+              stroke-linecap="round"
+            ></path>
+          </svg>
+        </div>
+      </div>
+      <div class="css-1djguz4">
+        <div class="css-yj1ay2">
+          <div class="css-bbe5fx">비밀번호 찾기</div>
+          <form id="findEmailForm"></form>
+          <form id="loginForm">
+            <div direction="vertical" size="40" class="css-ygt1wz"></div>
+            <input
+              v-model="email"
+              placeholder="이메일 입력"
+              type="string"
+              autocapitalize="off"
+              class="login-custom-input css-krmsb5"
+            />
+            <div direction="vertical" size="12" class="css-j86f64"></div>
+            <input
+              v-model="name"
+              placeholder="이름 입력"
+              type="nickName"
+              autocapitalize="off"
+              class="login-custom-input css-krmsb5"
+            />
+            <div direction="vertical" size="40" class="css-ygt1wz"></div>
+          </form>
+          <button
+            @click="sendFindPassword()"
+            @keyup.enter="sendFindPassword()"
+            color="#FFFFFF"
+            class="css-uscuon1"
+          >
+            확인
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="css-1gpya5f" v-show="isCheckPassword">
+    <div class="css-4oebd2">
+      <div class="css-1n1k95p">
+        <div class="css-1a96vvi" @click="closeCheckPasswordModal()">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9.16699 5L4.16699 10L9.16699 15"
+              stroke="#3A3E41"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+            <path
+              d="M5 10L15.8333 10"
+              stroke="#3A3E41"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
+          뒤로
+        </div>
+        <div class="css-myjkxi" @click="closeAllLoginModal()">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4.16663 4.16669L15.8333 15.8334"
+              stroke="#3A3E41"
+              stroke-width="1.75"
+              stroke-linecap="round"
+            ></path>
+            <path
+              d="M15.8334 4.16669L4.16671 15.8334"
+              stroke="#3A3E41"
+              stroke-width="1.75"
+              stroke-linecap="round"
+            ></path>
+          </svg>
+        </div>
+      </div>
+      <div class="css-1djguz4">
+        <div class="css-yj1ay2">
+          <div direction="vertical" size="40" class="css-ygt1wz"></div>
+          <div class="css-bbe5fx2">회원님의 임시 비밀번호가 입력하신</div>
+          <div class="css-bbe5fx2">이메일 주소로 발송되었습니다.</div>
+          <div direction="vertical" size="40" class="css-ygt1wz"></div>
+          <div class="css-bbe5fx3">이메일을 확인하여 임시비밀번호로</div>
+          <div class="css-bbe5fx3">로그인해주세요.</div>
+          <div direction="vertical" size="40" class="css-ygt1wz"></div>
+          <button @click="moveLoginModal()" color="#FFFFFF" class="css-uscuon1">
+            로그인하러 가기
+          </button>
         </div>
       </div>
     </div>
@@ -467,11 +788,17 @@ export default {
     return {
       isLogin: false,
       isEmailLogin: false,
+      isFindEmail: false,
+      isCheckEmail: false,
+      isFindPassword: false,
+      isCheckPassword: false,
+      isAdminLogin: false,
+      isDropdownOpen: false,
       email: "",
       password: "",
-      isDropdownOpen: false,
       profileImage: "",
-      isAdminLogin: false,
+      nickName: "",
+      name: "",
     };
   },
   computed: {
@@ -524,13 +851,51 @@ export default {
       this.isEmailLogin = true;
       this.isLogin = false;
     },
+    openFindEmailModal() {
+      this.isFindEmail = true;
+      this.isEmailLogin = false;
+    },
+    openFindPasswordModal() {
+      this.isFindPassword = true;
+      this.isEmailLogin = false;
+    },
     closeEmailLoginModal() {
       this.isLogin = true;
       this.isEmailLogin = false;
     },
+    closeFindEmailModal() {
+      this.isEmailLogin = true;
+      this.isFindEmail = false;
+    },
+    closeCheckEmailModal() {
+      this.isEmailLogin = true;
+      this.isCheckEmail = false;
+      (this.name = ""), (this.nickName = "");
+    },
+    closeCheckPasswordModal() {
+      this.isEmailLogin = true;
+      this.isCheckPassword = false;
+      (this.email = ""), (this.name = "");
+    },
+    closeFindPasswordModal() {
+      this.isEmailLogin = true;
+      this.isFindPassword = false;
+      (this.email = ""), (this.name = "");
+    },
     closeAllLoginModal() {
       this.isLogin = false;
       this.isEmailLogin = false;
+      this.isFindEmail = false;
+      this.isCheckEmail = false;
+      this.isFindPassword = false;
+      this.isCheckPassword = false;
+      (this.name = ""), (this.nickName = ""), (this.email = ""), (this.password = "");
+    },
+    moveLoginModal() {
+      this.isEmailLogin = true;
+      this.isCheckEmail = false;
+      this.isCheckPassword = false;
+      (this.name = ""), (this.nickName = ""), (this.email = "");
     },
     selectSignUp() {
       window.location.href = "/select/signup";
@@ -577,6 +942,28 @@ export default {
         }
       } catch (error) {
         console.error("Login failed:", error);
+      }
+    },
+    async sendFindEmail() {
+      try {
+        await this.userStore.findEmail(this.name, this.nickName);
+        if (this.userStore.isFindEmailSuccess === true) {
+          this.isCheckEmail = true;
+          this.isFindEmail = false;
+        }
+      } catch (error) {
+        console.error("Find Email failed:", error);
+      }
+    },
+    async sendFindPassword() {
+      try {
+        await this.userStore.findPassword(this.email, this.name);
+        if (this.userStore.isFindPasswordSuccess === true) {
+          this.isCheckPassword = true;
+          this.isFindPassword = false;
+        }
+      } catch (error) {
+        console.error("Find Password failed:", error);
       }
     },
     toggleDropdownMenu() {
@@ -1710,6 +2097,7 @@ button {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-left: 17px;
 }
 
 /* ----------여기까지 로그인 첫 클릭 시 모달 창---------- */
@@ -1988,6 +2376,26 @@ button {
   color: rgb(20, 22, 23);
 }
 
+.css-bbe5fx2 {
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 26px;
+  color: rgb(20, 22, 23);
+  margin-bottom: 15px;
+}
+
+.css-bbe5fx3 {
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 26px;
+  color: rgb(20, 22, 23);
+  margin-bottom: 15px;
+}
+
 input {
   border: none;
   background: none;
@@ -2020,6 +2428,25 @@ input {
   border: none;
   cursor: pointer;
   width: 99.5%;
+  height: 56px;
+  background: #541d7a;
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 26px;
+  color: rgb(255, 255, 255);
+  border-radius: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.css-uscuon1 {
+  border: none;
+  cursor: pointer;
+  width: 77.5%;
   height: 56px;
   background: #541d7a;
   font-family: Pretendard;
@@ -2068,7 +2495,7 @@ input {
   position: relative;
   border-radius: 100%;
   overflow: hidden;
-  margin-left: 60px;
+  margin-left: 40px;
   margin-top: 23px;
 }
 
@@ -2083,5 +2510,107 @@ input {
   font-weight: 600;
   font-size: 18px;
   color: #141617;
+}
+/*--------로딩창-------------*/
+.loadingio-spinner-spinner {
+  position: fixed;
+  top: 0;
+  left: 0%;
+  z-index: 1000; /* 다른 요소 위에 표시하기 위한 z-index 값 */
+  width: 100%; /* 전체 화면을 커버 */
+  height: 100%;
+  justify-content: center; /* 가운데 정렬 */
+  align-items: center; /* 세로 가운데 정렬 */
+}
+@keyframes ldio-f4nnk2ltl0v {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.ldio-f4nnk2ltl0v div {
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999; /* 다른 요소 위에 표시하기 위한 z-index 값 */
+  animation: ldio-f4nnk2ltl0v linear 1s infinite;
+  background: #fe718d;
+  width: 18.240000000000002px;
+  height: 36.480000000000004px;
+  border-radius: 9.120000000000001px / 18.240000000000002px;
+  transform-origin: 9.120000000000001px 79.04px;
+}
+.ldio-f4nnk2ltl0v div:nth-child(1) {
+  transform: rotate(0deg);
+  animation-delay: -0.9166666666666666s;
+  background: #fe718d;
+}
+.ldio-f4nnk2ltl0v div:nth-child(2) {
+  transform: rotate(30deg);
+  animation-delay: -0.8333333333333334s;
+  background: #f47e60;
+}
+.ldio-f4nnk2ltl0v div:nth-child(3) {
+  transform: rotate(60deg);
+  animation-delay: -0.75s;
+  background: #f8b26a;
+}
+.ldio-f4nnk2ltl0v div:nth-child(4) {
+  transform: rotate(90deg);
+  animation-delay: -0.6666666666666666s;
+  background: #abbd81;
+}
+.ldio-f4nnk2ltl0v div:nth-child(5) {
+  transform: rotate(120deg);
+  animation-delay: -0.5833333333333334s;
+  background: #849b87;
+}
+.ldio-f4nnk2ltl0v div:nth-child(6) {
+  transform: rotate(150deg);
+  animation-delay: -0.5s;
+  background: #6492ac;
+}
+.ldio-f4nnk2ltl0v div:nth-child(7) {
+  transform: rotate(180deg);
+  animation-delay: -0.4166666666666667s;
+  background: #637cb5;
+}
+.ldio-f4nnk2ltl0v div:nth-child(8) {
+  transform: rotate(210deg);
+  animation-delay: -0.3333333333333333s;
+  background: #6a63b6;
+}
+.ldio-f4nnk2ltl0v div:nth-child(9) {
+  transform: rotate(240deg);
+  animation-delay: -0.25s;
+  background: #fe718d;
+}
+.ldio-f4nnk2ltl0v div:nth-child(10) {
+  transform: rotate(270deg);
+  animation-delay: -0.16666666666666666s;
+  background: #f47e60;
+}
+.ldio-f4nnk2ltl0v div:nth-child(11) {
+  transform: rotate(300deg);
+  animation-delay: -0.08333333333333333s;
+  background: #f8b26a;
+}
+.ldio-f4nnk2ltl0v div:nth-child(12) {
+  transform: rotate(330deg);
+  animation-delay: 0s;
+  background: #abbd81;
+}
+.loadingio-spinner-spinner-pz89b3jiaad {
+  width: 304px;
+  height: 304px;
+  display: inline-block;
+  overflow: hidden;
+  background: #ffffff;
+}
+.ldio-f4nnk2ltl0v div {
+  box-sizing: content-box;
 }
 </style>
