@@ -837,9 +837,13 @@ export default {
   },
   methods: {
     loginKakao() {
+      setTimeout(() => {
+        window.location.href =
+          "http://192.168.0.61/api/oauth2/authorization/kakao";
+      }, 1000);
       // window.location.href = "http://localhost:8080/oauth2/authorization/kakao";
-      window.location.href =
-        "http://192.168.0.61/api/oauth2/authorization/kakao";
+      // window.location.href =
+      //   "http://192.168.0.61/api/oauth2/authorization/kakao";
     },
     openLoginModal() {
       this.isLogin = true;
@@ -889,7 +893,10 @@ export default {
       this.isCheckEmail = false;
       this.isFindPassword = false;
       this.isCheckPassword = false;
-      (this.name = ""), (this.nickName = ""), (this.email = ""), (this.password = "");
+      (this.name = ""),
+        (this.nickName = ""),
+        (this.email = ""),
+        (this.password = "");
     },
     moveLoginModal() {
       this.isEmailLogin = true;
