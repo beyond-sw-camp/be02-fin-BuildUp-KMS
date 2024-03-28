@@ -9,7 +9,6 @@ import App from './App.vue'
 
 import router from './router';
 
-window.Kakao.init("191705327b9b9b8e00ae538d0b849015");
 const pinia = createPinia();
 const app = createApp(App)
 
