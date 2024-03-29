@@ -21,6 +21,7 @@ import com.example.bootshelf.user.model.response.PostLoginUserRes;
 import com.example.bootshelf.user.model.response.PostSignUpUserRes;
 import com.example.bootshelf.user.repository.UserRepository;
 import com.example.bootshelf.user.service.EmailVerifyService;
+import com.example.bootshelf.user.service.SendEmailService;
 import com.example.bootshelf.user.service.UserOAuth2Service;
 import com.example.bootshelf.user.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -83,6 +84,9 @@ class UserControllerTest {
 
     @MockBean
     private UserService userService;
+
+    @MockBean
+    private SendEmailService sendEmailService;
 
     @MockBean
     private EmailVerifyService emailVerifyService;

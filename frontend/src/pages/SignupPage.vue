@@ -206,7 +206,7 @@ import { mapStores } from "pinia";
 import { useUserStore } from "../stores/useUserStore";
 
 export default {
-  name: "AuthSignupPage",
+  name: "SignupPage",
   computed: {
     ...mapStores(useUserStore),
     isSubmitEnabled() {

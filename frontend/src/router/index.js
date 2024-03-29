@@ -23,6 +23,7 @@ import BoardUpdatePage from "@/pages/BoardUpdatePage.vue";
 import HotListPage from "@/pages/HotListPage.vue";
 import TagBoardListPage from "@/pages/TagBoardListPage.vue";
 import ReviewUpdatePage from "@/pages/ReviewUpdatePage.vue";
+import NotFoundPage from "@/pages/NotFoundPage.vue";
 
 import AdminMainPage from "@/pages/AdminMainPage.vue";
 import AdminWithdrawPage from "@/pages/AdminWithdrawPage.vue";
@@ -149,6 +150,7 @@ const routes = [
   { path: "/select/signup", component: SelectSignupPage },
   { path: "/email/verify", component: EmailValidationPage },
   { path: "/notice", component: NoticeBoardListPage },
+  { path: "/not/found", component: NotFoundPage },
   { path: "/board/mywrite/:boardIdx", component: BoardUpdatePage },
   { path: "/review/mywrite/:reviewIdx", component: ReviewUpdatePage},
   { path: "/admin", component: AdminMainPage, beforeEnter: requireAdminAuth() },
