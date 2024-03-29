@@ -29,7 +29,7 @@
                                         <form>
                                             <div class="mb-3">
                                                 <input type="text" class="form-control" id="newCategoryName"
-                                                    placeholder="스터디" v-model="newCategoryName" />
+                                                    placeholder="수정할 카테고리명을 입력해 주세요." v-model="newCategoryName" />
                                             </div>
                                         </form>
                                     </div>
