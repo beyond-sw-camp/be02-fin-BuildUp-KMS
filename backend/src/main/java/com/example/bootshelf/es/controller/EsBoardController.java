@@ -22,17 +22,11 @@ public class EsBoardController {
     private final EsBoardService esBoardService;
 
     @GetMapping("/search")
-    public ResponseEntity<Page<EsBoard>> searchBoards(
-            @RequestParam String title,
-            @PageableDefault(size = 20) Pageable pageable) {
-        Page<EsBoard> boards = esBoardService.searchByTitle(title, pageable);
-        return ResponseEntity.ok(boards);
-    }
-
-    @GetMapping("/search/{title}")
     @ResponseBody
-    public SearchHits<EsBoard> search(@PathVariable  String title, Pageable pageable) {
-
+    public SearchHits<EsBoard> search(
+            @RequestParam String title,
+            @PageableDefault(size = 20) Pageable pageable
+    ) {
         return esBoardService.searchWordByElastic(title, pageable);
     }
 }
