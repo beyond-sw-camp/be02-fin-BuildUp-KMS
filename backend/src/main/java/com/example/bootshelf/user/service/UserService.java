@@ -15,18 +15,18 @@ import com.example.bootshelf.course.Course;
 import com.example.bootshelf.common.error.entityexception.CourseException;
 import com.example.bootshelf.course.repository.CourseRepository;
 import com.example.bootshelf.common.error.entityexception.UserException;
-import com.example.bootshelf.tag.model.response.GetListTagResResult;
 import com.example.bootshelf.user.model.entity.User;
+import com.example.bootshelf.user.model.entity.UserRefreshToken;
 import com.example.bootshelf.user.model.request.PatchUpdateUserReq;
 import com.example.bootshelf.user.model.request.PostCheckPasswordReq;
 import com.example.bootshelf.user.model.request.PostLoginUserReq;
 import com.example.bootshelf.user.model.request.PostSignUpUserReq;
 import com.example.bootshelf.user.model.response.*;
+import com.example.bootshelf.user.repository.UserRefreshTokenRepository;
 import com.example.bootshelf.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -49,6 +49,8 @@ public class UserService {
     private String secretKey;
     @Value("${jwt.token.expired-time-ms}")
     private Long expiredTimeMs;
+    @Value("${jwt.token.refresh-expiration-hours}")
+    private Long refreshTime;
     @Value("${cloud.aws.s3.profile-bucket}")
     private String profileBucket;
 
@@ -60,6 +62,7 @@ public class UserService {
     private final JavaMailSender emailSender;
     private final EmailVerifyService emailVerifyService;
     private final JwtUtils jwtUtils;
+    private final UserRefreshTokenRepository userRefreshTokenRepository;
 
     @Transactional(readOnly = false)
     public User saveUser(PostSignUpUserReq postSignUpUserReq, MultipartFile profileImage) {
@@ -197,7 +200,28 @@ public class UserService {
 
         User user = result.get();
         if (passwordEncoder.matches(postLoginUserReq.getPassword(), user.getPassword()) && user.getStatus().equals(true)) {
-            PostLoginUserRes postLogInUserRes = PostLoginUserRes.builder().token(jwtUtils.generateAccessToken(user, secretKey, expiredTimeMs)).build();
+            PostLoginUserRes postLogInUserRes = PostLoginUserRes.builder()
+                    .accessToken(jwtUtils.generateAccessToken(user, secretKey, expiredTimeMs))
+                    .build();
+
+            Optional<UserRefreshToken> userRefreshTokenOptional = userRefreshTokenRepository.findById(user.getIdx());
+
+            if (!userRefreshTokenOptional.isPresent()) {
+                // 리프레시 토큰이 없는 경우 새로 생성
+                String refreshToken = jwtUtils.generateRefreshToken(secretKey, refreshTime);
+
+                // 새로 생성한 리프레시 토큰을 데이터베이스에 저장
+                UserRefreshToken newRefreshToken = new UserRefreshToken(user, refreshToken);
+                userRefreshTokenRepository.save(newRefreshToken);
+
+                // 응답에 새로 생성한 리프레시 토큰 추가
+                postLogInUserRes.setRefreshToken(refreshToken);
+            } else {
+                // 리프레시 토큰이 이미 존재하는 경우 데이터베이스에서 해당 토큰을 가져와서 응답에 추가
+                String existingRefreshToken = userRefreshTokenOptional.get().getRefreshToken();
+                postLogInUserRes.setRefreshToken(existingRefreshToken);
+            }
+
 
             return BaseRes.builder().isSuccess(true).message("로그인에 성공하였습니다.").result(postLogInUserRes).build();
         } else {
@@ -388,4 +412,5 @@ public class UserService {
 
         return baseRes;
     }
+
 }

@@ -3,7 +3,7 @@ import axios from "axios";
 
 // const backend = "http://192.168.0.61/api";
 const backend = "http://localhost:8080";
-const storedToken = localStorage.getItem("token");
+const storedToken = localStorage.getItem("accessToken");
 
 export const useBoardStore = defineStore("board", {
   state: () => ({
@@ -160,7 +160,7 @@ export const useBoardStore = defineStore("board", {
         console.log(e);
       }
     },
-    async createBoardUp(token, requestBody) {
+    async createBoardUp(accessToken, requestBody) {
       try {
         let response = await axios.post(
           backend + "/boardup/create",
@@ -168,7 +168,7 @@ export const useBoardStore = defineStore("board", {
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${accessToken}`,
             },
           }
         );
@@ -179,7 +179,7 @@ export const useBoardStore = defineStore("board", {
         throw e;
       }
     },
-    async createBoardScrap(token, requestBody) {
+    async createBoardScrap(accessToken, requestBody) {
       try {
         let response = await axios.post(
           backend + "/boardscrap/create",
@@ -187,7 +187,7 @@ export const useBoardStore = defineStore("board", {
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${accessToken}`,
             },
           }
         );
@@ -198,11 +198,11 @@ export const useBoardStore = defineStore("board", {
         throw e;
       }
     },
-    async checkBoardUp(token, boardIdx) {
+    async checkBoardUp(accessToken, boardIdx) {
       try {
         let response = await axios.get(`${backend}/boardup/check/${boardIdx}`, {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         });
 
@@ -214,13 +214,13 @@ export const useBoardStore = defineStore("board", {
         throw e;
       }
     },
-    async checkBoardScrap(token, boardIdx) {
+    async checkBoardScrap(accessToken, boardIdx) {
       try {
         let response = await axios.get(
           `${backend}/boardscrap/check/${boardIdx}`,
           {
             headers: {
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${accessToken}`,
             },
           }
         );
@@ -233,14 +233,14 @@ export const useBoardStore = defineStore("board", {
         throw e;
       }
     },
-    async cancelBoardUp(token, boardUpIdx) {
+    async cancelBoardUp(accessToken, boardUpIdx) {
       try {
         await axios.patch(
           `${backend}/boardup/delete/${boardUpIdx}`,
           {},
           {
             headers: {
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${accessToken}`,
               "Content-Type": "application/json",
             },
           }
@@ -251,14 +251,14 @@ export const useBoardStore = defineStore("board", {
         throw e;
       }
     },
-    async cancelBoardScrap(token, boardScrapIdx) {
+    async cancelBoardScrap(accessToken, boardScrapIdx) {
       try {
         await axios.patch(
           `${backend}/boardscrap/delete/${boardScrapIdx}`,
           {},
           {
             headers: {
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${accessToken}`,
               "Content-Type": "application/json",
             },
           }

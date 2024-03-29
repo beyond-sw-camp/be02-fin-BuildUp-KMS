@@ -3,7 +3,7 @@ import axios from "axios";
 
 // const backend = "http://192.168.0.61/api";
 const backend = "http://localhost:8080";
-const storedToken = localStorage.getItem("token");
+const storedToken = localStorage.getItem("accessToken");
 
 export const useReviewStore = defineStore("review", {
   state: () => ({
@@ -149,7 +149,7 @@ export const useReviewStore = defineStore("review", {
       }
     },
 
-    async createReviewUp(token, requestBody) {
+    async createReviewUp(accessToken, requestBody) {
       try {
         let response = await axios.post(
           backend + "/reviewup/create",
@@ -157,7 +157,7 @@ export const useReviewStore = defineStore("review", {
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${accessToken}`,
             },
           }
         );
@@ -169,7 +169,7 @@ export const useReviewStore = defineStore("review", {
       }
     },
 
-    async createReviewScrap(token, requestBody) {
+    async createReviewScrap(accessToken, requestBody) {
       try {
         let response = await axios.post(
           backend + "/reviewscrap/create",
@@ -177,7 +177,7 @@ export const useReviewStore = defineStore("review", {
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${accessToken}`,
             },
           }
         );
@@ -189,13 +189,13 @@ export const useReviewStore = defineStore("review", {
       }
     },
 
-    async checkReviewUp(token, reviewIdx) {
+    async checkReviewUp(accessToken, reviewIdx) {
       try {
         let response = await axios.get(
           `${backend}/reviewup/check/${reviewIdx}`,
           {
             headers: {
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${accessToken}`,
             },
           }
         );
@@ -209,13 +209,13 @@ export const useReviewStore = defineStore("review", {
       }
     },
 
-    async checkReviewScrap(token, reviewIdx) {
+    async checkReviewScrap(accessToken, reviewIdx) {
       try {
         let response = await axios.get(
           `${backend}/reviewscrap/check/${reviewIdx}`,
           {
             headers: {
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${accessToken}`,
             },
           }
         );
@@ -229,14 +229,14 @@ export const useReviewStore = defineStore("review", {
       }
     },
 
-    async cancelReviewUp(token, reviewUpIdx) {
+    async cancelReviewUp(accessToken, reviewUpIdx) {
       try {
         await axios.patch(
           `${backend}/reviewup/delete/${reviewUpIdx}`,
           {},
           {
             headers: {
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${accessToken}`,
               "Content-Type": "application/json",
             },
           }
@@ -247,14 +247,14 @@ export const useReviewStore = defineStore("review", {
       }
     },
 
-    async cancelReviewScrap(token, reviewScrapIdx) {
+    async cancelReviewScrap(accessToken, reviewScrapIdx) {
       try {
         await axios.patch(
           `${backend}/reviewscrap/delete/${reviewScrapIdx}`,
           {},
           {
             headers: {
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${accessToken}`,
               "Content-Type": "application/json",
             },
           }

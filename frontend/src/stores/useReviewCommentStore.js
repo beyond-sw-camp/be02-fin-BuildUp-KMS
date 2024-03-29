@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 
 // const backend = "http://192.168.0.61/api";
 const backend = "http://localhost:8080";
-let token = localStorage.getItem("token");
+let accessToken = localStorage.getItem("accessToken");
 
 export const useReviewCommentStore = defineStore("reviewComment", {
   state: () => ({
@@ -39,7 +39,7 @@ export const useReviewCommentStore = defineStore("reviewComment", {
           { reviewCommentContent: reviewCommentContent },
           {
             headers: {
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${accessToken}`,
               "Content-Type": "application/json",
             },
           }
@@ -56,7 +56,7 @@ export const useReviewCommentStore = defineStore("reviewComment", {
     // 댓글 수정
     async updateReviewComment(reviewCommentContent, commentIdx, reviewIdx) {
       try {
-        if (!token) {
+        if (!accessToken) {
           throw new Error(
             "토큰이 없습니다. 사용자가 로그인되었는지 확인하세요."
           );
@@ -67,7 +67,7 @@ export const useReviewCommentStore = defineStore("reviewComment", {
           { reviewCommentContent: reviewCommentContent },
           {
             headers: {
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${accessToken}`,
               "Content-Type": "application/json",
             },
           }
@@ -84,7 +84,7 @@ export const useReviewCommentStore = defineStore("reviewComment", {
     // 댓글 삭제
       async deleteReviewComment(commentIdx, reviewIdx, userIdx) {
         try {
-          if (!token) {
+          if (!accessToken) {
             throw new Error(
               "토큰이 없습니다. 사용자가 로그인되었는지 확인하세요."
             );
@@ -95,7 +95,7 @@ export const useReviewCommentStore = defineStore("reviewComment", {
             {userIdx : userIdx},
             {
               headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${accessToken}`,
                 "Content-Type": "application/json",
               },
             }
@@ -117,7 +117,7 @@ export const useReviewCommentStore = defineStore("reviewComment", {
           { reviewReplyContent: reviewReplyContent },
           {
             headers: {
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${accessToken}`,
               "Content-Type": "application/json",
             },
           }
@@ -135,7 +135,7 @@ export const useReviewCommentStore = defineStore("reviewComment", {
     async reviewRecommend(commentIdx) {
       try {
         await axios.post(`${backend}/reviewcomment/up/create`, { reviewCommentIdx: commentIdx }, {
-          headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+          headers: { Authorization: `Bearer ${accessToken}`, "Content-Type": "application/json" },
         });
         console.log("Comment recommendation successful");
       } catch (error) {
@@ -153,7 +153,7 @@ export const useReviewCommentStore = defineStore("reviewComment", {
     async cancelReviewComment(commentIdx) {
       try {
         await axios.patch(`${backend}/reviewcomment/up/delete/${commentIdx}`, {}, {
-          headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+          headers: { Authorization: `Bearer ${accessToken}`, "Content-Type": "application/json" },
         });
         console.log("Comment recommendation cancellation successful");
         // You may want to update your store's state here to reflect the cancellation
@@ -164,9 +164,9 @@ export const useReviewCommentStore = defineStore("reviewComment", {
 
     // Inside your useReviewCommentStore
     async updateCommentRecommendationStatus() {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        console.error('Authentication token not found.');
+      const accessToken = localStorage.getItem('accessToken');
+      if (!accessToken) {
+        console.error('Authentication accessToken not found.');
         return;
       }
 
@@ -183,7 +183,7 @@ export const useReviewCommentStore = defineStore("reviewComment", {
     async updateRecommendationStatusForCommentOrReply(item) {
       try {
         const response = await axios.get(`${backend}/reviewcomment/up/check/${item.idx}`, {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${accessToken}` },
         });
         item.isReviewCommentRecommended = response.data.result.status;
       } catch (error) {
@@ -194,13 +194,13 @@ export const useReviewCommentStore = defineStore("reviewComment", {
 
     async checkReviewCommentUp(reviewCommentIdx) {
       try {
-        const token = localStorage.getItem('token'); // Ensure you have a token
-        if (!token) {
-          throw new Error('No authentication token found');
+        const accessToken = localStorage.getItem('accessToken'); // Ensure you have a accessToken
+        if (!accessToken) {
+          throw new Error('No authentication accessToken found');
         }
         const response = await axios.get(`${backend}/reviewcomment/up/check/${reviewCommentIdx}`, {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         });
         // Adjust based on actual API response structure

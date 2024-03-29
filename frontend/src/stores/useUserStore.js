@@ -4,7 +4,7 @@ import VueJwtDecode from "vue-jwt-decode";
 
 // const backend = "http://192.168.0.61/api";
 const backend = "http://localhost:8080"; 
-const storedToken = localStorage.getItem("token");
+const storedToken = localStorage.getItem("accessToken");
 
 export const useUserStore = defineStore("user", {
   state: () => ({
@@ -28,12 +28,15 @@ export const useUserStore = defineStore("user", {
 
         let response = await axios.post(backend + "/user/login", loginUser);
 
-        if (response.data.isSuccess && response.data.result.token) {
-          let token = response.data.result.token;
+        if (response.data.isSuccess && response.data.result.accessToken && response.data.result.refreshToken) {
+          let accessToken = response.data.result.accessToken;
+          console.log(accessToken);
+          let refreshToken = response.data.result.refreshToken;
           
-          let userClaims = VueJwtDecode.decode(token);
+          let userClaims = VueJwtDecode.decode(accessToken);
 
-          window.localStorage.setItem("token", token);
+          window.localStorage.setItem("accessToken", accessToken);
+          window.localStorage.setItem("refreshToken", refreshToken);
           this.setDecodedToken(userClaims);
 
           this.isAuthenticated = true;
@@ -58,9 +61,9 @@ export const useUserStore = defineStore("user", {
     },
 
     decodeToken() {
-      const token = localStorage.getItem("token");
-      if (token) {
-        const decoded = VueJwtDecode.decode(token);
+      const accessToken = localStorage.getItem("accessToken");
+      if (accessToken) {
+        const decoded = VueJwtDecode.decode(accessToken);
         if (decoded.exp < Date.now() / 1000) {
           this.logout();
         } else {
@@ -71,7 +74,8 @@ export const useUserStore = defineStore("user", {
     },
 
     logout() {
-      localStorage.removeItem("token");
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
       this.isAuthenticated = false;
       this.decodedToken = null;
 
@@ -241,7 +245,7 @@ export const useUserStore = defineStore("user", {
           alert(
             '회원 탈퇴가 성공적으로 처리되었습니다. 그동안 "BOOTSHELF" 를 이용해주셔서 감사합니다.'
           );
-          sessionStorage.removeItem("token");
+          sessionStorage.removeItem("accessToken");
           window.location.href = "/";
         }
       } catch (e) {

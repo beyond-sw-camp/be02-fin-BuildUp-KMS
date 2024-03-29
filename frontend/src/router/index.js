@@ -40,7 +40,7 @@ import AdminBoardCategoryUpdatePage from "@/pages/AdminBoardCategoryUpdatePage";
 import AdminTagUpdatePage from "@/pages/AdminTagUpdatePage";
 
 const requireAuth = () => (from, to, next) => {
-  const storedToken = window.localStorage.getItem("token");
+  const storedToken = window.localStorage.getItem("accessToken");
   if (storedToken === null) {
     alert("로그인 후 이용할 수 있습니다.");
     next("/");
@@ -50,7 +50,7 @@ const requireAuth = () => (from, to, next) => {
 
     if (tokenData.exp < currentTime) {
       alert("로그인 유지시간이 만료되었습니다. 다시 로그인해주세요.");
-      localStorage.removeItem("token");
+      localStorage.removeItem("accessToken");
       next("/");
     } else {
       next();
@@ -59,7 +59,7 @@ const requireAuth = () => (from, to, next) => {
 };
 
 const requireUserAuth = () => (from, to, next) => {
-  const storedToken = window.localStorage.getItem("token");
+  const storedToken = window.localStorage.getItem("accessToken");
 
   if (storedToken === null) {
     alert("로그인 후 이용할 수 있습니다.");
@@ -70,7 +70,7 @@ const requireUserAuth = () => (from, to, next) => {
 
     if (tokenData.exp < currentTime) {
       alert("로그인 유지시간이 만료되었습니다. 다시 로그인해주세요.");
-      localStorage.removeItem("token");
+      localStorage.removeItem("accessToken");
       next("/");
     } else if (tokenData.ROLE !== "ROLE_AUTHUSER") {
       alert("인증회원만 후기글을 작성할 수 있습니다.");
