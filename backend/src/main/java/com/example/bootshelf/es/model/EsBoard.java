@@ -24,7 +24,7 @@ public class EsBoard {
     @Field(type = FieldType.Integer)
     private Integer boardCategory;
 
-    @Field(type = FieldType.Text, name = "boardtitle")
+    @Field(type = FieldType.Text)
     private String boardTitle;
 
     @Field(type = FieldType.Text)
@@ -45,9 +45,9 @@ public class EsBoard {
     @Field(type = FieldType.Boolean)
     private Boolean status;
 
-    @Field(type = FieldType.Date, format = {DateFormat.date_hour_minute_second_millis, DateFormat.epoch_millis})
-    private LocalDateTime createdAt;
+//    @Field(type = FieldType.Date, format = {DateFormat.date_hour_minute_second_millis, DateFormat.epoch_millis})
+    private String createdAt;
 
-    @Field(type = FieldType.Date, format = {DateFormat.date_hour_minute_second_millis, DateFormat.epoch_millis})
-    private LocalDateTime updatedAt;
+//    @Field(type = FieldType.Date, format = {DateFormat.date_hour_minute_second_millis, DateFormat.epoch_millis})
+    private String updatedAt;
 }

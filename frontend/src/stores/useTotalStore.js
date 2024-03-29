@@ -112,7 +112,6 @@ export const useTotalStore = defineStore("total", {
           this.isBoardExist = true;
           this.isPageExist = true;
         }
-
       } catch (error) {
         console.error(error);
       } finally {
@@ -221,7 +220,6 @@ export const useTotalStore = defineStore("total", {
           this.isBoardExist = true;
           this.isPageExist = true;
         }
-
       } catch (error) {
         console.error(error);
       }
@@ -287,8 +285,8 @@ export const useTotalStore = defineStore("total", {
           this.isBoardExist = true;
           this.isPageExist = true;
         }
-      } catch (error) {
-        console.error(error);
+      } catch (e) {
+        console.error(e);
       }
     },
     async deleteBoard(idx) {
@@ -304,8 +302,12 @@ export const useTotalStore = defineStore("total", {
           alert("게시글이 삭제되었습니다.");
           window.location.href = "/mypage";
         }
-      } catch (error) {
-        console.error(error);
+      } catch (e) {
+        if (e.response && e.response.data) {
+          if (e.response.data.code === "BOARD-001") {
+            alert("게시글을 찾을 수 없습니다.");
+          }
+        }
       }
     },
     async deleteReview(idx) {
@@ -321,8 +323,12 @@ export const useTotalStore = defineStore("total", {
           alert("후기글이 삭제되었습니다.");
           window.location.href = "/mypage";
         }
-      } catch (error) {
-        console.error(error);
+      } catch (e) {
+        if (e.response && e.response.data) {
+          if (e.response.data.code === "REVIEW-001") {
+            alert("후기글을 찾을 수 없습니다.");
+          }
+        }
       }
     },
     async deleteBoardScrap(boardScrapIdx) {
@@ -342,8 +348,12 @@ export const useTotalStore = defineStore("total", {
           alert("게시글 스크랩을 취소하였습니다.");
           window.location.href = "/mypage";
         }
-      } catch (error) {
-        console.error(error);
+      } catch (e) {
+        if (e.response && e.response.data) {
+          if (e.response.data.code === "BOARDSCRAP-004") {
+            alert("스크랩한 게시글이 존재하지 않습니다.");
+          }
+        }
       }
     },
 
@@ -365,8 +375,11 @@ export const useTotalStore = defineStore("total", {
           window.location.href = "/mypage";
         }
       } catch (e) {
-        console.error(e);
-        throw e;
+        if (e.response && e.response.data) {
+          if (e.response.data.code === "REVIEWSCRAP-004") {
+            alert("스크랩한 후기글이 존재하지 않습니다.");
+          }
+        }
       }
     },
   },

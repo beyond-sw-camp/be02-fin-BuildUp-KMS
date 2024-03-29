@@ -21,7 +21,7 @@
           <div class="css-r8q25b">
             {{
               selectedCategory
-                ? "[ " + selectedCategory + "] 후기글 작성하기"
+                ? "[" + selectedCategory + "] 작성하기"
                 : "후기글 작성하기"
             }}
           </div>

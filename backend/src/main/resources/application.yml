@@ -20,7 +20,7 @@ spring:
               - profile_nickname
               - profile_image
             authorization-grant-type: authorization_code
-            redirect-uri:  http://192.168.0.61/api/login/oauth2/code/kakao
+            redirect-uri:  http://192.168.0.61/api/logino/oauth2/code/kaka
             client-name: Kakao
             client-authentication-method: POST
         provider:

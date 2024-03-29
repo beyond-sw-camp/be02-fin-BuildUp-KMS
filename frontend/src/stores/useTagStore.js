@@ -34,8 +34,11 @@ export const useTagStore = defineStore("tag", {
           }
         });
       } catch (e) {
-        console.error(e);
-        throw e;
+        if (e.response && e.response.data) {
+          if (e.response.data.code === "TAG-002") {
+            alert("이미 존재하는 태그명입니다.");
+          }
+        }
       }
     },
 
@@ -46,8 +49,13 @@ export const useTagStore = defineStore("tag", {
           tagName: newCategoryName
         })
       } catch(e) {
-        console.error(e);
-        throw e;
+        if (e.response && e.response.data) {
+          if (e.response.data.code === "TAG-001") {
+            alert("해당 태그가 존재하지 않습니다.");
+          } else if(e.response.data.code === "TAG-002") {
+            alert("이미 존재하는 태그명입니다.");
+          }
+        }
       }
     },
 
@@ -56,8 +64,11 @@ export const useTagStore = defineStore("tag", {
         let response = await axios.delete(backend + "/admin/tag/delete/" + tagIdx);
         return response;
       } catch (e) {
-        console.error(e);
-        throw e;
+        if (e.response && e.response.data) {
+          if (e.response.data.code === "TAG-001") {
+            alert("해당 태그가 존재하지 않습니다.");
+          }
+        }
       }
     },
   },
