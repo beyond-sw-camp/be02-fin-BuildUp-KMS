@@ -11,6 +11,7 @@ import com.example.bootshelf.boardsvc.boardcategory.model.response.PostCreateBoa
 import com.example.bootshelf.boardsvc.boardcategory.repository.BoardCategoryRepository;
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.common.error.ErrorCode;
+import com.example.bootshelf.common.error.entityexception.BoardCategoryException;
 import com.example.bootshelf.common.error.entityexception.BoardCommentException;
 import com.example.bootshelf.reviewsvc.review.model.entity.Review;
 import com.example.bootshelf.user.model.entity.User;
@@ -92,11 +93,10 @@ public class BoardCategoryService {
     public BaseRes updateBoardCategory(PatchUpdateBoardCategoryReq patchUpdateBoardCategoryReq, Integer boardCategoryIdx) {
         Optional<BoardCategory> result = boardCategoryRepository.findById(boardCategoryIdx);
 
-//        // 수정하고자 하는 카테고리를 찾지 못할 때
-//        if(!result.isPresent()){
-//            throw new BoardCommentException(ErrorCode.BOARD_CATEGORY_NOT_EXISTS, String.format("Board Category [ idx : %s ] is not exists.", boardCategoryIdx));
-//
-//        }
+        // 수정하고자 하는 카테고리를 찾지 못할 때
+        if(!result.isPresent()){
+            throw new BoardCategoryException(ErrorCode.BOARD_CATEGORY_NOT_EXISTS, String.format("Board Category [ idx : %s ] is not exists.", boardCategoryIdx));
+        }
 
         if(result.isPresent()) {
             BoardCategory boardCategory = result.get();
@@ -129,7 +129,7 @@ public class BoardCategoryService {
 
         // 삭제하고자 하는 카테고리를 찾지 못할 때
         if(!result.isPresent()){
-            throw new BoardCommentException(ErrorCode.BOARD_CATEGORY_NOT_EXISTS, String.format("Board Category [ idx : %s ] is not exists.", boardCategoryIdx));
+            throw new BoardCategoryException(ErrorCode.BOARD_CATEGORY_NOT_EXISTS, String.format("Board Category [ idx : %s ] is not exists.", boardCategoryIdx));
 
         }
             BoardCategory boardCategory = result.get();

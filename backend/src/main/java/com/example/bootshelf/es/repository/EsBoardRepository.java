@@ -9,6 +9,4 @@ import java.util.List;
 
 public interface EsBoardRepository extends ElasticsearchRepository<EsBoard, String> {
     Page<EsBoard> findByBoardTitleContaining(String title, Pageable pageable);
-
-
 }

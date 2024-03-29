@@ -120,53 +120,6 @@ public class ReviewController {
         return ResponseEntity.ok().body(reviewService.searchReviewListByQuery(query, searchType, pageable));
     }
 
-    @Operation(summary = "후기글 상세 조회",
-            description = "모든 사용자가 후기글 상세내용을 조회할 수 있다.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "성공"),
-            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
-    })
-    @RequestMapping(method = RequestMethod.GET, value = "/{reviewIdx}")
-    public ResponseEntity<BaseRes> readReview(
-            @PathVariable @NotNull(message = "후기 IDX는 필수 입력 항목입니다.") @Positive(message = "후기 IDX는 1이상의 양수입니다.") Integer reviewIdx
-    ) {
-        BaseRes baseRes = reviewService.readReview(reviewIdx);
-
-        return ResponseEntity.ok().body(baseRes);
-    }
-
-    @Operation(summary = "본인이 작성한 후기글 수정",
-            description = "인증회원은 본인이 작성한 후기글을 수정할 수 있다.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "성공"),
-            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
-    })
-    @RequestMapping(method = RequestMethod.PATCH, value = "/update")
-    public ResponseEntity<BaseRes> updateReview(
-            @RequestPart(value = "review") @Valid PatchUpdateReviewReq patchUpdateReviewReq,
-            @RequestPart(value = "reviewImage", required = false) MultipartFile reviewImage){
-        User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        BaseRes baseRes = reviewService.updateReview(user, patchUpdateReviewReq, reviewImage);
-
-        return ResponseEntity.ok().body(baseRes);
-    }
-
-    @Operation(summary = "본인이 작성한 후기글 삭제",
-            description = "인증회원은 본인이 작성한 후기글을 삭제할 수 있다.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "성공"),
-            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
-    })
-    @RequestMapping(method = RequestMethod.DELETE, value = "/delete/{reviewIdx}")
-    public ResponseEntity<BaseRes> deleteReview(
-            @PathVariable @NotNull(message = "후기 IDX는 필수 입력 항목입니다.") @Positive(message = "후기 IDX는 1이상의 양수입니다.") Integer reviewIdx
-    ) {
-        User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        BaseRes baseRes = reviewService.deleteReview(user, reviewIdx);
-
-        return ResponseEntity.ok().body(baseRes);
-    }
-
     // 인기 게시글 용 조회 API
     @Operation(summary = "카테고리 별, 조건( 조회수, 추천수, 스크랩수, 댓글수) 별 인기 후기글 목록 조회",
             description = "모든 사용자가 카테고리 별, 조건 별 인기 후기글 목록을 조회할 수 있다.")
@@ -202,6 +155,38 @@ public class ReviewController {
 
         return ResponseEntity.ok().body(baseRes);
     }
+
+    @Operation(summary = "후기글 상세 조회",
+            description = "모든 사용자가 후기글 상세내용을 조회할 수 있다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+    })
+    @RequestMapping(method = RequestMethod.GET, value = "/{reviewIdx}")
+    public ResponseEntity<BaseRes> readReview(
+            @PathVariable @NotNull(message = "후기 IDX는 필수 입력 항목입니다.") @Positive(message = "후기 IDX는 1이상의 양수입니다.") Integer reviewIdx
+    ) {
+        BaseRes baseRes = reviewService.readReview(reviewIdx);
+
+        return ResponseEntity.ok().body(baseRes);
+    }
+
+    @Operation(summary = "본인이 작성한 후기글 수정",
+            description = "인증회원은 본인이 작성한 후기글을 수정할 수 있다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+    })
+    @RequestMapping(method = RequestMethod.PATCH, value = "/update")
+    public ResponseEntity<BaseRes> updateReview(
+            @RequestPart(value = "review") @Valid PatchUpdateReviewReq patchUpdateReviewReq,
+            @RequestPart(value = "reviewImage", required = false) MultipartFile reviewImage) {
+        User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        BaseRes baseRes = reviewService.updateReview(user, patchUpdateReviewReq, reviewImage);
+
+        return ResponseEntity.ok().body(baseRes);
+    }
+
     @Operation(summary = "Review 본인 후기글 수정을 위한 상세 조회",
             description = "본인이 작성한 후기글을 수정하기 위해 작성한 후기글을 불러오는 API입니다.")
     @ApiResponses({
@@ -218,4 +203,19 @@ public class ReviewController {
         return ResponseEntity.ok().body(baseRes);
     }
 
+    @Operation(summary = "본인이 작성한 후기글 삭제",
+            description = "인증회원은 본인이 작성한 후기글을 삭제할 수 있다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+    })
+    @RequestMapping(method = RequestMethod.DELETE, value = "/delete/{reviewIdx}")
+    public ResponseEntity<BaseRes> deleteReview(
+            @PathVariable @NotNull(message = "후기 IDX는 필수 입력 항목입니다.") @Positive(message = "후기 IDX는 1이상의 양수입니다.") Integer reviewIdx
+    ) {
+        User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        BaseRes baseRes = reviewService.deleteReview(user, reviewIdx);
+
+        return ResponseEntity.ok().body(baseRes);
+    }
 }
