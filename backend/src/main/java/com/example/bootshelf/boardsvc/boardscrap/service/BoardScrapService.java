@@ -144,7 +144,7 @@ public class BoardScrapService {
                         .build();
             } else {
                 GetCheckBoardScrapRes res = GetCheckBoardScrapRes.builder()
-                        .boardScrapIdx(boardScrapResult.getIdx())
+                        .boardScrapIdx(boardIdx)
                         .status(false)
                         .build();
 
@@ -157,7 +157,7 @@ public class BoardScrapService {
 
         } else {
             GetCheckBoardScrapRes res2 = GetCheckBoardScrapRes.builder()
-                    .boardScrapIdx(boardScrapResult.getIdx())
+                    .boardScrapIdx(boardIdx)
                     .status(false)
                     .build();
 

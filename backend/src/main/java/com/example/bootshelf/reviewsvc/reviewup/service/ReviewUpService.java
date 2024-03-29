@@ -51,7 +51,7 @@ public class ReviewUpService {
 
                 return BaseRes.builder()
                         .isSuccess(true)
-                        .message("후기 추천 등록 성공")
+                        .message("후기글 추천 등록 성공")
                         .result(res)
                         .build();
             }
@@ -68,7 +68,7 @@ public class ReviewUpService {
 
         return BaseRes.builder()
                 .isSuccess(true)
-                .message("후기 추천 등록 성공")
+                .message("후기글 추천 등록 성공")
                 .result(res)
                 .build();
     }
@@ -92,7 +92,7 @@ public class ReviewUpService {
 
         return BaseRes.builder()
                 .isSuccess(true)
-                .message("게시글 스크랩 목록 조회 성공")
+                .message("후기글 추천 목록 조회 성공")
                 .result(resultList)
                 .build();
     }
@@ -108,7 +108,7 @@ public class ReviewUpService {
 
                 return BaseRes.builder()
                         .isSuccess(true)
-                        .message("후기 추천 여부 확인 성공")
+                        .message("후기글 추천 여부 확인 성공")
                         .result(res)
                         .build();
             }
@@ -120,7 +120,7 @@ public class ReviewUpService {
 
                 return BaseRes.builder()
                         .isSuccess(true)
-                        .message("후기 추천 여부 확인 성공")
+                        .message("후기글 추천 여부 확인 성공")
                         .result(res)
                         .build();
             }
@@ -132,7 +132,7 @@ public class ReviewUpService {
 
             return BaseRes.builder()
                     .isSuccess(true)
-                    .message("후기 추천 이력 존재 x")
+                    .message("후기글 추천 이력 존재 x")
                     .result(res)
                     .build();
         }
@@ -154,7 +154,8 @@ public class ReviewUpService {
 
                 return BaseRes.builder()
                         .isSuccess(true)
-                        .message("게시글 추천 삭제 성공")
+                        .message("후기글 추천 삭제 성공")
+                        .result("후기글 추천 삭제 완료")
                         .build();
             }
             throw new ReviewUpException(ErrorCode.UNAUTHORIZED_REVIEW_UP,
