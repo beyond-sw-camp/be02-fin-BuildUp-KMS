@@ -18,10 +18,6 @@ public class EsBoardService {
     private final EsBoardRepository esBoardRepository;
     private final EsOperation esOperation;
 
-    public Page<EsBoard> searchByTitle(String title, Pageable pageable) {
-        return esBoardRepository.findByBoardTitleContaining(title, pageable);
-    }
-
     public SearchHits<EsBoard> searchWordByElastic(@NotNull String title, Pageable pageable) {
         SearchHits<EsBoard> searchHits = esOperation.keywordSearchByElastic(title, pageable);
         return searchHits;
