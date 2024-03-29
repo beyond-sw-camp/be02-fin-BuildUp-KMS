@@ -3,7 +3,7 @@ import axios from "axios";
 import VueJwtDecode from "vue-jwt-decode";
 
 const backend = "http://192.168.0.61/api";
-// const backend = "http://localhost:8080";080";
+// const backend = "http://localhost:8080";
 const storedToken = localStorage.getItem("token");
 
 export const useUserStore = defineStore("user", {
@@ -93,7 +93,11 @@ export const useUserStore = defineStore("user", {
         });
         this.user = response.data.result;
       } catch (e) {
-        console.log(e);
+        if (e.response && e.response.data) {
+          if (e.response.data.code === "USER-003") {
+            alert("회원정보를 찾을 수 없습니다.");
+          }
+        }
       }
     },
 
@@ -251,8 +255,11 @@ export const useUserStore = defineStore("user", {
           window.location.href = "/";
         }
       } catch (e) {
-        console.log(e);
-        alert("회원정보를 찾을 수 없습니다.");
+        if (e.response && e.response.data) {
+          if (e.response.data.code === "USER-003") {
+            alert("회원 정보를 찾을 수 없습니다.");
+          }
+        }
       }
     },
 
@@ -355,8 +362,11 @@ export const useUserStore = defineStore("user", {
       try {
         await axios.patch(backend + "/user/delete/" + userIdx);
       } catch (e) {
-        console.error(e);
-        throw e;
+        if (e.response && e.response.data) {
+          if (e.response.data.code === "USER-003") {
+            alert("회원 정보를 찾을 수 없습니다.");
+          }
+        }
       }
     },
   },

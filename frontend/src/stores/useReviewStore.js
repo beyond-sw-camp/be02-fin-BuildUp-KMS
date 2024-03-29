@@ -284,9 +284,13 @@ export const useReviewStore = defineStore("review", {
 
     async deleteReviewCategory(reviewCategoryIdx) {
       try {
-        await axios.delete(
-          backend + "/admin/review/delete" + reviewCategoryIdx
+        let response = await axios.delete(
+          backend + "/admin/review/delete/" + reviewCategoryIdx
         );
+
+        if(response.data.isSuccess === true) {
+          window.location.href="/admin/review/category"
+        }
       } catch (e) {
         console.error(e);
         throw e;
