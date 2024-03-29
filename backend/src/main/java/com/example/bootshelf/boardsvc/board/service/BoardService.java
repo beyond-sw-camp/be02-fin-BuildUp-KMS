@@ -670,120 +670,6 @@ public class BoardService {
                 .build();
     }
 
-    // 게시글 수정
-    @Transactional(readOnly = false)
-    public BaseRes updateBoard(User user, PatchUpdateBoardReq patchUpdateBoardReq, MultipartFile boardImage) {
-        Optional<Board> result = boardRepository.findByIdxAndUserIdx(patchUpdateBoardReq.getBoardIdx(), user.getIdx());
-
-        if (!result.isPresent()) {
-            throw new BoardException(ErrorCode.BOARD_NOT_EXISTS, String.format("Board Idx [ %s ] is not exists.", patchUpdateBoardReq.getBoardIdx()));
-        }
-        Board board = result.get();
-
-        if(!board.getBoardTitle().equals(patchUpdateBoardReq.getBoardTitle())) {
-            Optional<Board> resultTitle = boardRepository.findByBoardTitle(patchUpdateBoardReq.getBoardTitle());
-
-            if (resultTitle.isPresent()) {
-                throw new BoardException(ErrorCode.DUPICATED_BOARD_TITLE, String.format("Board Title [ %s ] is duplicated.", patchUpdateBoardReq.getBoardTitle()));
-            }
-        }
-
-        boardTagService.updateBoardTag(patchUpdateBoardReq.getTagList(), patchUpdateBoardReq.getBoardIdx());
-
-        if (boardImage != null && boardImage.equals("")) {
-            boardImageService.updateBoardImage(board, boardImage);
-        }
-
-        board.setBoardTitle(patchUpdateBoardReq.getBoardTitle());
-        board.setBoardContent(patchUpdateBoardReq.getBoardContent());
-        board.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
-
-        boardRepository.save(board);
-
-        BaseRes baseRes = BaseRes.builder()
-                .isSuccess(true)
-                .message("게시글 수정 성공")
-                .result("요청 성공")
-                .build();
-
-        return baseRes;
-    }
-
-    // 게시글 삭제
-    @Transactional(readOnly = false)
-    public BaseRes deleteBoard(User user, Integer idx) {
-
-        Optional<Board> result = boardRepository.findByIdxAndUserIdx(idx, user.getIdx());
-
-        if (!result.isPresent()) {
-            throw new BoardException(ErrorCode.BOARD_NOT_EXISTS, String.format("Board Idx [ %s ] is not exists.", idx));
-        }
-
-        Board board = result.get();
-        board.setStatus(false);
-        boardRepository.save(board);
-
-        BaseRes baseRes = BaseRes.builder()
-                .isSuccess(true)
-                .message("게시글 삭제 성공")
-                .result("요청 성공")
-                .build();
-
-        return baseRes;
-    }
-
-    // 본인 게시글 상세 조회
-    @Transactional(readOnly = false)
-    public BaseRes findBoardDetailByUserIdx(Integer boardIdx, User user) {
-        Optional<Board> result = boardRepository.findByIdxAndUserIdx(boardIdx, user.getIdx());
-
-        if (!result.isPresent()) {
-            throw new BoardException(ErrorCode.BOARD_NOT_EXISTS, String.format("Board Idx [ %s ] is not exists.", boardIdx));
-        }
-
-        Board board = result.get();
-
-        List<String> tags = new ArrayList<>();
-
-        if (!board.getBoardTagList().isEmpty()) {
-            for (BoardTag boardTag : board.getBoardTagList()) {
-                tags.add(boardTag.getTag().getTagName());
-            }
-        }
-
-        // 이미지 조회
-        List<GetListImageBoardRes> getListImageBoardResList = new ArrayList<>();
-
-        if (!board.getBoardImageList().isEmpty()) {
-            for (BoardImage boardImage : board.getBoardImageList()) {
-                GetListImageBoardRes getListImageReviewRes = GetListImageBoardRes.builder()
-                        .boardImageIdx(boardImage.getIdx())
-                        .boardImage(boardImage.getBoardImage())
-                        .build();
-
-                getListImageBoardResList.add(getListImageReviewRes);
-            }
-        }
-
-        GetReadBoardRes getReadBoardRes = GetReadBoardRes.builder()
-                .idx(board.getIdx())
-                .boardCategoryName(board.getBoardCategory().getCategoryName())
-                .boardCategoryIdx(board.getBoardCategory().getIdx())
-                .boardTitle(board.getBoardTitle())
-                .boardContent(board.getBoardContent())
-                .tagList(tags)
-                .boardImageList(getListImageBoardResList)
-                .build();
-
-        BaseRes baseRes = BaseRes.builder()
-                .isSuccess(true)
-                .message("본인 작성 게시글 상세 조회 성공")
-                .result(getReadBoardRes)
-                .build();
-
-        return baseRes;
-    }
-
     // Hot 인기 게시글 조회
     @Transactional(readOnly = true)
     public BaseRes listHotBoard(Pageable pageable, Integer boardCategoryIdx, Integer sortIdx) {
@@ -908,6 +794,120 @@ public class BoardService {
                 .isSuccess(true)
                 .message("인기 게시글 검색어별 목록 조회 요청 성공")
                 .result(result)
+                .build();
+
+        return baseRes;
+    }
+
+    // 게시글 수정
+    @Transactional(readOnly = false)
+    public BaseRes updateBoard(User user, PatchUpdateBoardReq patchUpdateBoardReq, MultipartFile boardImage) {
+        Optional<Board> result = boardRepository.findByIdxAndUserIdx(patchUpdateBoardReq.getBoardIdx(), user.getIdx());
+
+        if (!result.isPresent()) {
+            throw new BoardException(ErrorCode.BOARD_NOT_EXISTS, String.format("Board Idx [ %s ] is not exists.", patchUpdateBoardReq.getBoardIdx()));
+        }
+        Board board = result.get();
+
+        if(!board.getBoardTitle().equals(patchUpdateBoardReq.getBoardTitle())) {
+            Optional<Board> resultTitle = boardRepository.findByBoardTitle(patchUpdateBoardReq.getBoardTitle());
+
+            if (resultTitle.isPresent()) {
+                throw new BoardException(ErrorCode.DUPICATED_BOARD_TITLE, String.format("Board Title [ %s ] is duplicated.", patchUpdateBoardReq.getBoardTitle()));
+            }
+        }
+
+        boardTagService.updateBoardTag(patchUpdateBoardReq.getTagList(), patchUpdateBoardReq.getBoardIdx());
+
+        if (boardImage != null && boardImage.equals("")) {
+            boardImageService.updateBoardImage(board, boardImage);
+        }
+
+        board.setBoardTitle(patchUpdateBoardReq.getBoardTitle());
+        board.setBoardContent(patchUpdateBoardReq.getBoardContent());
+        board.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+
+        boardRepository.save(board);
+
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("게시글 수정 성공")
+                .result("요청 성공")
+                .build();
+
+        return baseRes;
+    }
+
+    // 게시글 삭제
+    @Transactional(readOnly = false)
+    public BaseRes deleteBoard(User user, Integer idx) {
+
+        Optional<Board> result = boardRepository.findByIdxAndUserIdx(idx, user.getIdx());
+
+        if (!result.isPresent()) {
+            throw new BoardException(ErrorCode.BOARD_NOT_EXISTS, String.format("Board Idx [ %s ] is not exists.", idx));
+        }
+
+        Board board = result.get();
+        board.setStatus(false);
+        boardRepository.save(board);
+
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("게시글 삭제 성공")
+                .result("요청 성공")
+                .build();
+
+        return baseRes;
+    }
+
+    // 본인 게시글 상세 조회
+    @Transactional(readOnly = false)
+    public BaseRes findBoardDetailByUserIdx(Integer boardIdx, User user) {
+        Optional<Board> result = boardRepository.findByIdxAndUserIdx(boardIdx, user.getIdx());
+
+        if (!result.isPresent()) {
+            throw new BoardException(ErrorCode.BOARD_NOT_EXISTS, String.format("Board Idx [ %s ] is not exists.", boardIdx));
+        }
+
+        Board board = result.get();
+
+        List<String> tags = new ArrayList<>();
+
+        if (!board.getBoardTagList().isEmpty()) {
+            for (BoardTag boardTag : board.getBoardTagList()) {
+                tags.add(boardTag.getTag().getTagName());
+            }
+        }
+
+        // 이미지 조회
+        List<GetListImageBoardRes> getListImageBoardResList = new ArrayList<>();
+
+        if (!board.getBoardImageList().isEmpty()) {
+            for (BoardImage boardImage : board.getBoardImageList()) {
+                GetListImageBoardRes getListImageReviewRes = GetListImageBoardRes.builder()
+                        .boardImageIdx(boardImage.getIdx())
+                        .boardImage(boardImage.getBoardImage())
+                        .build();
+
+                getListImageBoardResList.add(getListImageReviewRes);
+            }
+        }
+
+        GetReadBoardRes getReadBoardRes = GetReadBoardRes.builder()
+                .idx(board.getIdx())
+                .boardCategoryName(board.getBoardCategory().getCategoryName())
+                .boardCategoryIdx(board.getBoardCategory().getIdx())
+                .boardTitle(board.getBoardTitle())
+                .boardContent(board.getBoardContent())
+                .tagList(tags)
+                .boardImageList(getListImageBoardResList)
+                .build();
+
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("본인 작성 게시글 상세 조회 성공")
+                .result(getReadBoardRes)
                 .build();
 
         return baseRes;

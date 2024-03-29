@@ -129,89 +129,6 @@ public class UserService {
         }
     }
 
-    @Transactional(readOnly = true)
-    public BaseRes list(Pageable pageable) {
-
-        Page<User> userList = userRepository.findAll(pageable);
-
-        List<GetListUserRes> getListUserResList = new ArrayList<>();
-        for (User user : userList) {
-
-            String status = user.getStatus() ? "활성" : "비활성";
-
-            GetListUserRes getListUserRes = GetListUserRes.builder()
-                    .userIdx(user.getIdx())
-                    .email(user.getEmail())
-                    .name(user.getName())
-                    .nickName(user.getNickName())
-                    .profileImage(user.getProfileImage())
-                    .status(status).build();
-
-            getListUserResList.add(getListUserRes);
-        }
-
-        Long totalCnt = userList.getTotalElements();
-        Integer totalPages = userList.getTotalPages();
-
-        GetListUserResResult result = GetListUserResResult.builder().totalCnt(totalCnt).totalPages(totalPages).list(getListUserResList).build();
-
-        return BaseRes.builder().isSuccess(true).message("요청 성공").result(result).build();
-    }
-
-    @Transactional(readOnly = true)
-    public BaseRes read(String email) {
-        Optional<User> result = userRepository.findUser(email);
-
-        if (!result.isPresent()) {
-            throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("User email [ %s ] is not exists.", email));
-        }
-
-        User user = result.get();
-
-        GetListUserRes getListUserRes = GetListUserRes.builder()
-                .userIdx(user.getIdx())
-                .email(user.getEmail())
-                .name(user.getName())
-                .nickName(user.getNickName())
-                .profileImage(user.getProfileImage())
-                .build();
-
-        if (user.getAuthority().equals("ROLE_AUTHUSER")) {
-            getListUserRes.setCourseName(user.getCertification().getCourse().getProgramName());
-        }
-
-        return BaseRes.builder().isSuccess(true).message("요청 성공").result(getListUserRes).build();
-    }
-
-    // 회원 로그인
-    @Transactional(readOnly = false)
-    public BaseRes login(PostLoginUserReq postLoginUserReq) {
-        Optional<User> result = userRepository.findByEmail(postLoginUserReq.getEmail());
-
-        if (result.isEmpty()) {
-            throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("User email [ %s ] is not exists.", postLoginUserReq.getEmail()));
-        }
-
-        User user = result.get();
-        if (passwordEncoder.matches(postLoginUserReq.getPassword(), user.getPassword()) && user.getStatus().equals(true)) {
-            PostLoginUserRes postLogInUserRes = PostLoginUserRes.builder().token(jwtUtils.generateAccessToken(user, secretKey, expiredTimeMs)).build();
-
-            return BaseRes.builder().isSuccess(true).message("로그인에 성공하였습니다.").result(postLogInUserRes).build();
-        } else {
-            throw new UserException(ErrorCode.DIFFERENT_USER_PASSWORD, String.format("User Password [ %s ] is different.", postLoginUserReq.getPassword()));
-        }
-    }
-
-    // 회원정보 수정을 위한 비밀번호 체크
-    @Transactional
-    public Boolean checkPassword(User user, PostCheckPasswordReq postCheckPasswordReq) {
-        if (passwordEncoder.matches(postCheckPasswordReq.getPassword(), user.getPassword())) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     // 인증메일 발송
     @Transactional(readOnly = false)
     public void sendEmail(PostSignUpUserReq postSignUpUserReq) {
@@ -275,6 +192,88 @@ public class UserService {
             return result.get();
         } else {
             return null;  // 카카오 로그인 시 null이 반환되면 가입 진행토록 설정
+        }
+    }
+    // 회원 로그인
+    @Transactional(readOnly = false)
+    public BaseRes login(PostLoginUserReq postLoginUserReq) {
+        Optional<User> result = userRepository.findByEmail(postLoginUserReq.getEmail());
+
+        if (result.isEmpty()) {
+            throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("User email [ %s ] is not exists.", postLoginUserReq.getEmail()));
+        }
+
+        User user = result.get();
+        if (passwordEncoder.matches(postLoginUserReq.getPassword(), user.getPassword()) && user.getStatus().equals(true)) {
+            PostLoginUserRes postLogInUserRes = PostLoginUserRes.builder().token(jwtUtils.generateAccessToken(user, secretKey, expiredTimeMs)).build();
+
+            return BaseRes.builder().isSuccess(true).message("로그인에 성공하였습니다.").result(postLogInUserRes).build();
+        } else {
+            throw new UserException(ErrorCode.DIFFERENT_USER_PASSWORD, String.format("User Password [ %s ] is different.", postLoginUserReq.getPassword()));
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public BaseRes list(Pageable pageable) {
+
+        Page<User> userList = userRepository.findAll(pageable);
+
+        List<GetListUserRes> getListUserResList = new ArrayList<>();
+        for (User user : userList) {
+
+            String status = user.getStatus() ? "활성" : "비활성";
+
+            GetListUserRes getListUserRes = GetListUserRes.builder()
+                    .userIdx(user.getIdx())
+                    .email(user.getEmail())
+                    .name(user.getName())
+                    .nickName(user.getNickName())
+                    .profileImage(user.getProfileImage())
+                    .status(status).build();
+
+            getListUserResList.add(getListUserRes);
+        }
+
+        Long totalCnt = userList.getTotalElements();
+        Integer totalPages = userList.getTotalPages();
+
+        GetListUserResResult result = GetListUserResResult.builder().totalCnt(totalCnt).totalPages(totalPages).list(getListUserResList).build();
+
+        return BaseRes.builder().isSuccess(true).message("요청 성공").result(result).build();
+    }
+
+    @Transactional(readOnly = true)
+    public BaseRes read(String email) {
+        Optional<User> result = userRepository.findUser(email);
+
+        if (!result.isPresent()) {
+            throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("User email [ %s ] is not exists.", email));
+        }
+
+        User user = result.get();
+
+        GetListUserRes getListUserRes = GetListUserRes.builder()
+                .userIdx(user.getIdx())
+                .email(user.getEmail())
+                .name(user.getName())
+                .nickName(user.getNickName())
+                .profileImage(user.getProfileImage())
+                .build();
+
+        if (user.getAuthority().equals("ROLE_AUTHUSER")) {
+            getListUserRes.setCourseName(user.getCertification().getCourse().getProgramName());
+        }
+
+        return BaseRes.builder().isSuccess(true).message("요청 성공").result(getListUserRes).build();
+    }
+
+    // 회원정보 수정을 위한 비밀번호 체크
+    @Transactional
+    public Boolean checkPassword(User user, PostCheckPasswordReq postCheckPasswordReq) {
+        if (passwordEncoder.matches(postCheckPasswordReq.getPassword(), user.getPassword())) {
+            return true;
+        } else {
+            return false;
         }
     }
 

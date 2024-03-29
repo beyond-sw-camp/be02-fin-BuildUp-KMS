@@ -61,6 +61,20 @@ public class UserController {
         return ResponseEntity.ok().body(baseRes);
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/check/course")
+    public ResponseEntity checkCourse(@RequestPart("courseImage") MultipartFile file) throws IOException {
+
+        String result = NaverOcrApi.callApi("POST", file.getBytes(), "VHlLZ3BiR0tGT3lNaVFxeUFhVUx3cVpTRlBRWmlFYWQ=", "jpg");
+
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("Naver Clova Ocr Success")
+                .result(result)
+                .build();
+
+        return ResponseEntity.ok().body(baseRes);
+    }
+
     @Operation(summary = "이메일 인증",
             description = "회원이 이메일 인증을 진행한다.")
     @ApiResponses({
@@ -118,6 +132,19 @@ public class UserController {
         return ResponseEntity.ok().body(baseRes);
     }
 
+    @Operation(summary = "회원 정보 수정 시 비밀번호 확인",
+            description = "회원이 회원 정보를 수정하기 위해서 비밀번호를 입력한다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+    })
+    @RequestMapping(method = RequestMethod.POST, value = "/checkpw")
+    public ResponseEntity checkPassword(@RequestBody @Valid PostCheckPasswordReq postCheckPasswordReq) {
+        User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+
+        return ResponseEntity.ok().body(userService.checkPassword(user, postCheckPasswordReq));
+    }
+
     @Operation(summary = "회원 정보 수정",
             description = "회원이 본인의 회원 정보를 수정한다.")
     @ApiResponses({
@@ -173,32 +200,6 @@ public class UserController {
         return ResponseEntity.ok().body(baseRes);
     }
 
-    @Operation(summary = "회원 정보 수정 시 비밀번호 확인",
-            description = "회원이 회원 정보를 수정하기 위해서 비밀번호를 입력한다.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "성공"),
-            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
-    })
-    @RequestMapping(method = RequestMethod.POST, value = "/checkpw")
-    public ResponseEntity checkPassword(@RequestBody @Valid PostCheckPasswordReq postCheckPasswordReq) {
-        User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-
-        return ResponseEntity.ok().body(userService.checkPassword(user, postCheckPasswordReq));
-    }
-
-    @RequestMapping(method = RequestMethod.POST, value = "/check/course")
-    public ResponseEntity checkCourse(@RequestPart("courseImage") MultipartFile file) throws IOException {
-
-        String result = NaverOcrApi.callApi("POST", file.getBytes(), "VHlLZ3BiR0tGT3lNaVFxeUFhVUx3cVpTRlBRWmlFYWQ=", "jpg");
-
-        BaseRes baseRes = BaseRes.builder()
-                .isSuccess(true)
-                .message("Naver Clova Ocr Success")
-                .result(result)
-                .build();
-
-        return ResponseEntity.ok().body(baseRes);
-    }
     // 이메일 찾기
     @RequestMapping(method = RequestMethod.POST, value = "/find/email")
     public ResponseEntity<BaseRes> findEmail(@RequestBody @Valid GetFindEmailUserReq getFindEmailUserReq) {

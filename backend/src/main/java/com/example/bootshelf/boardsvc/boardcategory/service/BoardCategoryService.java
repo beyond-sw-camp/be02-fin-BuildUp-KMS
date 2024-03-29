@@ -99,6 +99,11 @@ public class BoardCategoryService {
     // 수정
     public BaseRes updateBoardCategory(PatchUpdateBoardCategoryReq patchUpdateBoardCategoryReq, Integer boardCategoryIdx) {
         Optional<BoardCategory> result = boardCategoryRepository.findById(boardCategoryIdx);
+        Optional<BoardCategory> resultCategoryName = boardCategoryRepository.findByCategoryName(patchUpdateBoardCategoryReq.getCategoryName());
+
+        if (resultCategoryName.isPresent()) {
+            throw new BoardException(ErrorCode.DUPLICATED_BOARD_CATEGORY, String.format("Board Category [ %s ] is duplicated.", patchUpdateBoardCategoryReq.getCategoryName()));
+        }
 
 //        // 수정하고자 하는 카테고리를 찾지 못할 때
 //        if(!result.isPresent()){
