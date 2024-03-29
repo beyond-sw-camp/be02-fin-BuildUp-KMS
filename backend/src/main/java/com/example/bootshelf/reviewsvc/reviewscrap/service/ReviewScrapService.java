@@ -203,6 +203,7 @@ public class ReviewScrapService {
                 return BaseRes.builder()
                         .isSuccess(true)
                         .message("리뷰 스크랩 삭제 성공")
+                        .result("리뷰 스크랩 삭제 완료")
                         .build();
             }
             throw new ReviewScrapException(ErrorCode.UNAUTHORIZED_REVIEW_SCRAP,
