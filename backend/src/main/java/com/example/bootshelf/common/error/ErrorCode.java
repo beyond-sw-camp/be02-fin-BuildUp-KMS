@@ -100,12 +100,13 @@ public enum ErrorCode {
 
     // 관리자 게시판 태그 등록
     BOARD_CATEGORY_NOT_EXISTS(HttpStatus.NOT_FOUND, "BOARD-CATEGORY-001", "해당 게시글 카테고리 IDX가 존재하지 않는 경우"),
-
-    REVIEW_CATEGORY_NOT_EXISTS(HttpStatus.NOT_FOUND, "REVIEW-CATEGORY-001", "해당 후기글 카테고리 IDX가 존재하지 않는 경우"),
+    DUPLICATED_BOARD_CATEGORY(HttpStatus.CONFLICT, "BOARD-CATEGORY-002", "해당 게시판 카테고리 IDX가 이미 존재하는 경우"),
+    // 관리자 후기 게시판 태그 등록
+    REVIEW_CATEGORY_NOT_EXISTS(HttpStatus.NOT_FOUND, "REVIEW-CATEGORY-001", "해당 후기 게시판 카테고리 IDX가 존재하지 않는 경우"),
+    DUPLICATED_REVIEW_CATEGORY(HttpStatus.CONFLICT, "REVIEW-CATEGORY-002", "해당 후기 게시판 카테고리 IDX가 이미 존재하는 경우"),
 
     // 네이버 OCR
-    OCR_TEXT_NOT_FOUND(HttpStatus.BAD_REQUEST, "OCR-001", "OCR 판독 결과 아무런 글자도 나오지 않은 경우")
-    ;
+    OCR_TEXT_NOT_FOUND(HttpStatus.BAD_REQUEST, "OCR-001", "OCR 판독 결과 아무런 글자도 나오지 않은 경우");
 
     private final HttpStatus status;  // 헤더로 반환할 Http 상태 코드
     private final String code;    // 페이로드로 반환할 에러 코드
