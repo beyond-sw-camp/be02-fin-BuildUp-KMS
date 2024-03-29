@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class EsBoardController {
     private final EsBoardService esBoardService;
 
+    // 제목으로 검색
     @GetMapping("/search")
     @ResponseBody
     public SearchHits<EsBoard> search(
@@ -28,5 +29,15 @@ public class EsBoardController {
             @PageableDefault(size = 20) Pageable pageable
     ) {
         return esBoardService.searchWordByElastic(title, pageable);
+    }
+
+    // 제목+내용 검색
+    @GetMapping("/search/content")
+    @ResponseBody
+    public SearchHits<EsBoard> titleContentSearch(
+            @RequestParam String title,
+            @PageableDefault(size = 20) Pageable pageable
+    ) {
+        return esBoardService.titleContentSearchByElastic(title, pageable);
     }
 }
