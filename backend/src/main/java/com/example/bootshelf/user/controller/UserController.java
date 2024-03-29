@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -71,10 +72,10 @@ public class UserController {
         if (emailVerifyService.verify(getEmailVerifyReq)) {
             userService.updateStatus(getEmailVerifyReq.getEmail()); // 이메일 인증이 완료되면 회원의 status를 바꿔줌
 
-            return new RedirectView("http://localhost:8081/");
+            return new RedirectView("http://192.168.0.61/");
         } else {
 
-            return new RedirectView("http://localhost:8081/email/verify");
+            return new RedirectView("http://192.168.0.61/email/verify");
         }
     }
 
@@ -200,20 +201,20 @@ public class UserController {
     }
     // 이메일 찾기
     @RequestMapping(method = RequestMethod.POST, value = "/find/email")
-    public Map<String, String> findEmail(@RequestBody @Valid GetFindEmailUserReq getFindEmailUserReq) {
-        Map<String, String> email = userService.findEmail(getFindEmailUserReq);
-        return email;
+    public ResponseEntity<BaseRes> findEmail(@RequestBody @Valid GetFindEmailUserReq getFindEmailUserReq) {
+        BaseRes baseRes = userService.findEmail(getFindEmailUserReq);
+
+        return ResponseEntity.ok().body(baseRes);
     }
     //등록된 이메일로 임시비밀번호를 발송하고 발송된 임시비밀번호로 사용자의 pw를 변경하는 컨트롤러
-    @RequestMapping(method = RequestMethod.POST, value = "/find/password")
-    public  ResponseEntity findPassword(@RequestBody @Valid PatchFindPasswordUserReq patchFindPasswordUserReq){
-        GetEmailVerifyRes dto = sendEmailService.findPassword(patchFindPasswordUserReq.getEmail(),patchFindPasswordUserReq.getName());
-        sendEmailService.mailSend(dto);
+    @RequestMapping(method = RequestMethod.PATCH, value = "/find/password")
+    public  ResponseEntity findPassword(@RequestBody @Valid PatchFindPasswordUserReq patchFindPasswordUserReq) throws MessagingException {
+        sendEmailService.findPassword(patchFindPasswordUserReq.getEmail(),patchFindPasswordUserReq.getName());
 
         BaseRes baseRes = BaseRes.builder()
                 .isSuccess(true)
-                .message("메일 발송 완료")
-                .result("메일 발송 완료")
+                .message("비밀번호 찾기 요청 성공")
+                .result("임시 비밀번호 메일 발송 완료")
                 .build();
 
         return ResponseEntity.ok().body(baseRes);
