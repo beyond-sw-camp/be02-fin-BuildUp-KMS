@@ -310,6 +310,7 @@ export const useBoardStore = defineStore("board", {
 
     async createBoardCategory(categoryName) {
       try {
+        let response =
         await axios.post(
           backend + "/admin/board/create",
           { categoryName: categoryName },
@@ -319,9 +320,17 @@ export const useBoardStore = defineStore("board", {
             },
           }
         );
+        if(response.data.isSuccess === true) {
+          alert(`${categoryName} 생성 완료!`);
+          this.$router.push({ path: `/admin/board/category` });
+        }
       } catch (e) {
-        console.error(e);
-        throw e;
+        if (e.response && e.response.data) {
+          console.log(e.response.data);
+          if (e.response.data.code === "BOARD-CATEGORY-002") {
+            alert("동일한 이름의 카테고리가 이미 존재합니다.");
+          } 
+        }
       }
     },
 
@@ -469,12 +478,26 @@ export const useBoardStore = defineStore("board", {
 
     async updateBoardCategory(boardCategoryIdx, newCategoryName) {
       try {
-        await axios.patch(backend + "/admin/board/update/" + boardCategoryIdx, {
-          categoryName: newCategoryName,
-        });
+        let response =
+        await axios.patch(backend + "/admin/board/update/" + boardCategoryIdx,
+         { categoryName: newCategoryName},
+         {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+        );
+        if(response.data.isSuccess === true) {
+          alert(`카테고리 이름 수정 완료!`);
+          this.$router.push({ path: `/admin/board/update`});
+        }
       } catch (e) {
-        console.error(e);
-        throw e;
+        if (e.response && e.response.data) {
+          console.log(e.response.data);
+          if (e.response.data.code === "BOARD-CATEGORY-002") {
+            alert("동일한 이름의 카테고리가 이미 존재합니다.");
+          } 
+        }
       }
     },
     async findMyBoardListByCategory(boardCategoryIdx, option, page = 1) {

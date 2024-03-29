@@ -41,7 +41,6 @@ export default {
         const createBoardCategory = async (categoryName) => {
             try {
                 await boardStore.createBoardCategory(categoryName);
-                alert(`${categoryName} 생성 완료!`);
                 router.push("/admin/board/category");
             } catch (e) {
                 console.error(e);
