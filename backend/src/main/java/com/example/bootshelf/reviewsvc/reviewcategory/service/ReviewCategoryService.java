@@ -13,6 +13,7 @@ import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.common.error.ErrorCode;
 import com.example.bootshelf.common.error.entityexception.BoardCommentException;
 import com.example.bootshelf.common.error.entityexception.ReviewCategoryException;
+import com.example.bootshelf.common.error.entityexception.ReviewException;
 import com.example.bootshelf.reviewsvc.review.model.entity.Review;
 import com.example.bootshelf.reviewsvc.review.repository.ReviewRepository;
 import com.example.bootshelf.reviewsvc.reviewcategory.model.ReviewCategory;
@@ -43,6 +44,12 @@ public class ReviewCategoryService {
 
     // 카테고리 추가
     public BaseRes createReviewCategory(PostCreateReviewCategoryReq postCreateReviewCategoryReq) {
+
+        Optional<ReviewCategory> result = reviewCategoryRepository.findByCategoryName(postCreateReviewCategoryReq.getCategoryName());
+
+        if (result.isPresent()) {
+            throw new ReviewException(ErrorCode.DUPLICATED_REVIEW_CATEGORY, String.format("Review Category [ %s ] is duplicated.", postCreateReviewCategoryReq.getCategoryName()));
+        }
         if (postCreateReviewCategoryReq.getCategoryName() == null || postCreateReviewCategoryReq.getCategoryName().isEmpty()) {
             throw new BoardCommentException(ErrorCode.INVALID_INPUT_VALUE, String.format("Review Category is empty."));
         }
@@ -98,11 +105,14 @@ public class ReviewCategoryService {
     // 수정
     public BaseRes updateReviewCategory(PatchUpdateReviewCategoryReq patchUpdateReviewCategoryReq, Integer reviewCategoryIdx) {
         Optional<ReviewCategory> result = reviewCategoryRepository.findById(reviewCategoryIdx);
+        Optional<ReviewCategory> resultCategoryName = reviewCategoryRepository.findByCategoryName(patchUpdateReviewCategoryReq.getCategoryName());
 
+        if (resultCategoryName.isPresent()) {
+            throw new ReviewException(ErrorCode.DUPLICATED_REVIEW_CATEGORY, String.format("Review Category [ %s ] is duplicated.", patchUpdateReviewCategoryReq.getCategoryName()));
+        }
         // 수정하고자 하는 카테고리를 찾지 못할 때
         if (!result.isPresent()) {
-            throw new ReviewCategoryException(ErrorCode.REVIEW_CATEGORY_NOT_EXISTS, String.format("Review Category [ idx : %s ] is not exists.", reviewCategoryIdx));
-
+            throw new ReviewException(ErrorCode.REVIEW_CATEGORY_NOT_EXISTS, String.format("Review Category [ idx : %s ] is not exists.", reviewCategoryIdx));
         }
 
         ReviewCategory reviewCategory = result.get();
