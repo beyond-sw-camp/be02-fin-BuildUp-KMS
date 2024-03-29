@@ -267,6 +267,7 @@ export const useReviewStore = defineStore("review", {
 
     async createReviewCategory(categoryName) {
       try {
+        let response =
         await axios.post(
           backend + "/admin/review/create",
           { categoryName: categoryName },
@@ -276,9 +277,17 @@ export const useReviewStore = defineStore("review", {
             },
           }
         );
+        if(response.data.isSuccess === true){
+          alert(`${categoryName} 생성 완료!`);
+          this.$router.push({ path: `/admin/review/category/register`});
+        }
       } catch (e) {
-        console.error(e);
-        throw e;
+        if (e.response && e.response.data) {
+          console.log(e.response.data);
+          if (e.response.data.code === "REVIEW-CATEGORY-002") {
+            alert("동일한 이름의 카테고리가 이미 존재합니다.");
+          } 
+        }
       }
     },
 
@@ -299,15 +308,26 @@ export const useReviewStore = defineStore("review", {
 
     async updateReviewCategory(reviewCategoryIdx, newCategoryName) {
       try {
+        let response =
         await axios.patch(
           backend + "/admin/review/update/" + reviewCategoryIdx,
-          {
-            categoryName: newCategoryName,
-          }
+          {categoryName: newCategoryName},
+          {headers: {
+            "Content-Type": "application/json",
+          },
+        }
         );
+        if(response.data.isSuccess === true) {
+          alert(`카테고리 이름 수정 완료!`);
+          this.$router.push({ path: `/admin/review/update`});
+        }
       } catch (e) {
-        console.error(e);
-        throw e;
+        if(e.response && e.response.data){
+          console.log(e.response.data);
+          if (e.response.data.code === "REVIEW-CATEGORY-002"){
+            alert("동일한 이름의 카테고리가 이미 존재합니다.");
+          }
+        }
       }
     },
     async findReviewDetailByUserIdx(reviewIdx) {

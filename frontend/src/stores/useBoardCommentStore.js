@@ -39,8 +39,13 @@ export const useBoardCommentStore = defineStore({
         window.location.href = `/board/${boardIdx}`;
       }
 
-    } catch (error) {
-      console.error("ERROR : ", error);
+    } catch (e) {
+      if (e.response && e.response.data){
+        console.log(e.response.data);
+        if (e.response.data.code === "COMMON-001") {
+          alert("댓글 내용을 입력해주세요.")
+        }
+      }
     }
   },
 
@@ -69,8 +74,13 @@ export const useBoardCommentStore = defineStore({
         window.location.href = `/board/${boardIdx}`;
       }
 
-    } catch (error) {
-      console.error("댓글 수정 실패 : ", error);
+    } catch (e) {
+      if (e.response && e.response.data){
+        console.log(e.response.data);
+        if (e.response.data.code === "COMMON-001"){
+          alert("수정할 내용을 입력해주세요.")
+        }
+      }
     }
   },
 
@@ -142,8 +152,13 @@ export const useBoardCommentStore = defineStore({
               window.location.href = `/board/${boardIdx}`;
             }
 
-          } catch (error) {
-            console.error("ERROR : ", error);
+          } catch (e) {
+            if (e.response && e.response.data){
+              console.log(e.response.data);
+              if (e.response.data.code === "COMMON-001"){
+                alert("댓글을 입력해주세요.")
+              }
+            }
           }
         },
 

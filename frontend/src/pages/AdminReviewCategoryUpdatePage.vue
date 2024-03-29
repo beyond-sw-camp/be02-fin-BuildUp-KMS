@@ -86,7 +86,6 @@ export default {
 
             try {
                 await reviewStore.updateReviewCategory(categoryIdx.value, newCategoryName.value);
-                alert("후기 카테고리 수정 완료!");
                 router.push("/admin/review/category");
             } catch (error) {
                 console.error("후기 카테고리 수정 에러:", error);
