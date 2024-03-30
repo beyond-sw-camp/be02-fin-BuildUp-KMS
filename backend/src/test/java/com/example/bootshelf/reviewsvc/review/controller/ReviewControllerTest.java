@@ -140,22 +140,12 @@ public class ReviewControllerTest {
                 .courseEvaluation(5)
                 .build();
 
-        String content = mapper.writeValueAsString(request);
-
-        final String fileName = "testImage1";
-        final String contentType = "png";
-
-        MockMultipartFile multipartFile = setMockMultipartFile(fileName, contentType);
-
-        given(reviewService.createReview(any(User.class), any(PostCreateReviewReq.class), any()))
+        given(reviewService.createReview(any(User.class), any(PostCreateReviewReq.class)))
                 .willReturn(baseRes);
 
         mvc.perform(multipart("/review/create")
-                        .file(new MockMultipartFile("review", "", "application/json", content.getBytes(StandardCharsets.UTF_8)))
-                        .file(multipartFile)
-                        .contentType(MULTIPART_FORM_DATA)
-                        .accept(APPLICATION_JSON)
-                        .characterEncoding("UTF-8"))
+                        .content(mapper.writeValueAsBytes(request))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.isSuccess").value(true))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("후기글 등록 성공"))
@@ -180,22 +170,13 @@ public class ReviewControllerTest {
 
         String content = mapper.writeValueAsString(request);
 
-        final String fileName = "testImage1";
-        final String contentType = "png";
-
-        MockMultipartFile multipartFile = setMockMultipartFile(fileName, contentType);
-
-        given(reviewService.createReview(any(User.class), any(PostCreateReviewReq.class), any()))
+        given(reviewService.createReview(any(User.class), any(PostCreateReviewReq.class)))
                 .willThrow(new ReviewException(ErrorCode.DUPLICATE_REVIEW_TITLE, "Review Title [ %s ] is duplicated."));
 
         // when & then
         mvc.perform(multipart("/review/create")
-                        .file(new MockMultipartFile("review", "", "application/json", content.getBytes(StandardCharsets.UTF_8)))
-                        .file(multipartFile)
-                        .contentType(MULTIPART_FORM_DATA)
-                        .accept(APPLICATION_JSON)
-                        .characterEncoding("UTF-8"))
-
+                        .content(mapper.writeValueAsBytes(request))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("ACCOUNT-001"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Request processing failed; nested exception is com.example.bootshelf.common.error.entityexception.ReviewException: Review Title [ %s ] is duplicated."))
                 .andDo(print());
@@ -263,23 +244,13 @@ public class ReviewControllerTest {
                 .courseEvaluation(5)
                 .build();
 
-        String content = mapper.writeValueAsString(request);
-
-        final String fileName = "testImage1";
-        final String contentType = "png";
-
-        MockMultipartFile multipartFile = setMockMultipartFile(fileName, contentType);
-
-        given(reviewService.updateReview(any(User.class), any(PatchUpdateReviewReq.class), any(MockMultipartFile.class)))
+        given(reviewService.updateReview(any(User.class), any(PatchUpdateReviewReq.class)))
                 .willReturn(baseRes);
 
         // when & then
         mvc.perform(multipart(HttpMethod.PATCH, "/review/update")
-                        .file(new MockMultipartFile("review", "", "application/json", content.getBytes(StandardCharsets.UTF_8)))
-                        .file(multipartFile)
-                        .contentType(MULTIPART_FORM_DATA)
-                        .accept(APPLICATION_JSON)
-                        .characterEncoding("UTF-8")
+                        .content(mapper.writeValueAsBytes(request))
+                        .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf())
                 )
                 .andExpect(status().isOk())

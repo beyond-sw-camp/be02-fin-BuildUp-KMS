@@ -29,6 +29,7 @@ import javax.validation.constraints.Positive;
 @CrossOrigin("*")
 @RequestMapping("/reviewscrap")
 public class ReviewScrapController {
+
     private final ReviewScrapService reviewScrapService;
 
     @Operation(summary = "ReviewScrap 추가",
@@ -47,20 +48,6 @@ public class ReviewScrapController {
     }
 
 
-    @Operation(summary = "ReviewScrap 목록 조회",
-            description = "스크랩한 리뷰 게시물 목록을 조회하는 API입니다.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "성공"),
-            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
-    })
-    @GetMapping("/list")
-    public ResponseEntity<BaseRes> findReviewScrapList(
-            @AuthenticationPrincipal User user,
-            @PageableDefault(size = 5) Pageable pageable
-    ) {
-        return ResponseEntity.ok().body(reviewScrapService.findReviewScrapList(user, pageable));
-    }
-
     @Operation(summary = "ReviewScrap 카테고리별 목록 조회",
             description = "카테고리별 스크랩한 리뷰 게시물 목록을 조회하는 API입니다.")
     @ApiResponses({
@@ -76,7 +63,6 @@ public class ReviewScrapController {
     ) {
         return ResponseEntity.ok().body(reviewScrapService.findReviewScrapListByCategory(user, reviewCategoryIdx, sortType ,pageable));
     }
-
 
     @Operation(summary = "ReviewScrap 여부 조회",
             description = "게시글을 스크랩 여부를 확인하는 API입니다.")
@@ -106,4 +92,19 @@ public class ReviewScrapController {
     ) {
         return ResponseEntity.ok().body(reviewScrapService.deleteReviewScrap(user, reviewScrapIdx));
     }
+
+
+//    @Operation(summary = "ReviewScrap 목록 조회",
+//            description = "스크랩한 리뷰 게시물 목록을 조회하는 API입니다.")
+//    @ApiResponses({
+//            @ApiResponse(responseCode = "200", description = "성공"),
+//            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+//    })
+//    @GetMapping("/list")
+//    public ResponseEntity<BaseRes> findReviewScrapList(
+//            @AuthenticationPrincipal User user,
+//            @PageableDefault(size = 5) Pageable pageable
+//    ) {
+//        return ResponseEntity.ok().body(reviewScrapService.findReviewScrapList(user, pageable));
+//    }
 }

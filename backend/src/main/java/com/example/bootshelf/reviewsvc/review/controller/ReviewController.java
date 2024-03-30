@@ -4,6 +4,7 @@ import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.reviewsvc.review.model.request.PatchUpdateReviewReq;
 import com.example.bootshelf.reviewsvc.review.model.request.PostCreateReviewReq;
 import com.example.bootshelf.reviewsvc.review.service.ReviewService;
+import com.example.bootshelf.reviewsvc.reviewimage.service.ReviewImageService;
 import com.example.bootshelf.user.model.entity.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,8 +35,25 @@ import javax.validation.constraints.Positive;
 @CrossOrigin("*")
 public class ReviewController {
 
+    private final ReviewImageService reviewImageService;
     private final ReviewService reviewService;
 
+    //    @Operation(summary = "후기글 생성",
+//            description = "인증회원이 후기글을 생성할 수 있다.")
+//    @ApiResponses({
+//            @ApiResponse(responseCode = "200", description = "성공"),
+//            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+//    })
+//    @RequestMapping(method = RequestMethod.POST, value = "/create")
+//    public ResponseEntity<BaseRes> createReview(
+//            @RequestPart(value = "review") @Valid PostCreateReviewReq postCreateReviewReq,
+//            @RequestPart(value = "reviewImage", required = false) MultipartFile[] reviewImages
+//    ) {
+//        User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+//        BaseRes baseRes = reviewService.createReview(user, postCreateReviewReq, reviewImages);
+//
+//        return ResponseEntity.ok().body(baseRes);
+//    }
     @Operation(summary = "후기글 생성",
             description = "인증회원이 후기글을 생성할 수 있다.")
     @ApiResponses({
@@ -44,12 +62,19 @@ public class ReviewController {
     })
     @RequestMapping(method = RequestMethod.POST, value = "/create")
     public ResponseEntity<BaseRes> createReview(
-            @RequestPart(value = "review") @Valid PostCreateReviewReq postCreateReviewReq,
-            @RequestPart(value = "reviewImage", required = false) MultipartFile[] reviewImages
+            @RequestBody @Valid PostCreateReviewReq postCreateReviewReq
     ) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        BaseRes baseRes = reviewService.createReview(user, postCreateReviewReq, reviewImages);
+        BaseRes baseRes = reviewService.createReview(user, postCreateReviewReq);
 
+        return ResponseEntity.ok().body(baseRes);
+    }
+
+    @PostMapping("/image/upload")
+    public ResponseEntity<BaseRes> uploadReviewImage(
+            @RequestPart(value = "image") MultipartFile reviewImage
+    ) {
+        BaseRes baseRes = reviewImageService.uploadReviewImage(reviewImage);
         return ResponseEntity.ok().body(baseRes);
     }
 
@@ -143,10 +168,9 @@ public class ReviewController {
     })
     @RequestMapping(method = RequestMethod.PATCH, value = "/update")
     public ResponseEntity<BaseRes> updateReview(
-            @RequestPart(value = "review") @Valid PatchUpdateReviewReq patchUpdateReviewReq,
-            @RequestPart(value = "reviewImage", required = false) MultipartFile reviewImage){
+            @RequestBody @Valid PatchUpdateReviewReq patchUpdateReviewReq) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        BaseRes baseRes = reviewService.updateReview(user, patchUpdateReviewReq, reviewImage);
+        BaseRes baseRes = reviewService.updateReview(user, patchUpdateReviewReq);
 
         return ResponseEntity.ok().body(baseRes);
     }
@@ -202,6 +226,7 @@ public class ReviewController {
 
         return ResponseEntity.ok().body(baseRes);
     }
+
     @Operation(summary = "Review 본인 후기글 수정을 위한 상세 조회",
             description = "본인이 작성한 후기글을 수정하기 위해 작성한 후기글을 불러오는 API입니다.")
     @ApiResponses({

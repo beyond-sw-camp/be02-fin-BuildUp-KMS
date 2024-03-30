@@ -4,14 +4,13 @@ import com.example.bootshelf.reviewsvc.review.model.request.PatchUpdateReviewReq
 import com.example.bootshelf.reviewsvc.reviewcategory.model.ReviewCategory;
 import com.example.bootshelf.reviewsvc.reviewcomment.model.entity.ReviewComment;
 import com.example.bootshelf.reviewsvc.reviewhistory.model.ReviewHistory;
-import com.example.bootshelf.reviewsvc.reviewimage.model.ReviewImage;
+import com.example.bootshelf.reviewsvc.reviewimage.model.entity.ReviewImage;
 import com.example.bootshelf.reviewsvc.reviewscrap.model.entity.ReviewScrap;
 import com.example.bootshelf.reviewsvc.reviewup.model.entity.ReviewUp;
 import com.example.bootshelf.user.model.entity.User;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +52,7 @@ public class Review {
     @Column(nullable = false, length = 500)
     private String reviewTitle;
 
-    @Column(nullable = false, length = 1000)
+    @Column(nullable = false, length = 5000)
     private String reviewContent;
 
     @Column(nullable = false, length = 200)
