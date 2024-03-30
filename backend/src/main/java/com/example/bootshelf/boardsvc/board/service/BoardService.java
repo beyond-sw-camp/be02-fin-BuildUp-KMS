@@ -26,6 +26,10 @@ import com.example.bootshelf.reviewsvc.reviewcomment.model.entity.ReviewComment;
 import com.example.bootshelf.user.model.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -53,8 +57,57 @@ public class BoardService {
     private final ReviewRepository reviewRepository;
 
 
+    //    @Transactional(readOnly = false)
+//    public BaseRes createBoard(User user, PostCreateBoardReq request, MultipartFile[] boardImages) {
+//
+//        Optional<Board> result = boardRepository.findByBoardTitle(request.getBoardTitle());
+//
+//        if (result.isPresent()) {
+//            throw new BoardException(ErrorCode.DUPICATED_BOARD_TITLE, String.format("Board Title [ %s ] is duplicated.", request.getBoardTitle()));
+//        }
+//
+//        Board board = Board.builder()
+//                .boardTitle(request.getBoardTitle())
+//                .boardContent(request.getBoardContent())
+//                .boardCategory(BoardCategory.builder().idx(request.getBoardCategoryIdx()).build())
+//                .user(user)
+//                .status(true)
+//                .viewCnt(0)
+//                .upCnt(0)
+//                .commentCnt(0)
+//                .scrapCnt(0)
+//                .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+//                .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+//                .build();
+//
+//        board = boardRepository.save(board);
+//
+//        if (boardImages != null && boardImages.length > 0) {
+//            boardImageService.createBoardImage(board.getIdx(), boardImages);
+//        }
+//
+//        if (request.getTagList() != null) {
+//            boardTagService.saveBoardTag(request.getTagList(), board.getIdx());
+//        }
+//
+//        PostCreateBoardRes response = PostCreateBoardRes.builder()
+//                .boardIdx(board.getIdx())
+//                .boardtitle(board.getBoardTitle())
+//                .boardcontent(board.getBoardContent())
+//                .boardCategoryIdx(board.getBoardCategory().getIdx())
+//                .boardTagList(request.getTagList())
+//                .build();
+//
+//        BaseRes baseRes = BaseRes.builder()
+//                .isSuccess(true)
+//                .message("게시글 등록 성공")
+//                .result(response)
+//                .build();
+//
+//        return baseRes;
+//    }
     @Transactional(readOnly = false)
-    public BaseRes createBoard(User user, PostCreateBoardReq request, MultipartFile[] boardImages) {
+    public BaseRes createBoard(User user, PostCreateBoardReq request) {
 
         Optional<Board> result = boardRepository.findByBoardTitle(request.getBoardTitle());
 
@@ -78,8 +131,13 @@ public class BoardService {
 
         board = boardRepository.save(board);
 
-        if (boardImages != null && boardImages.length > 0) {
-            boardImageService.createBoardImage(board.getIdx(), boardImages);
+        // 게시글 본문의 html에서 img url을 뽑아내기 위해 jsoup 라이브러리 사용
+        Document doc = Jsoup.parse(request.getBoardContent());
+        Elements images = doc.select("img");
+
+        for (Element img : images) {
+            String imageUrl = img.attr("src");
+            boardImageService.saveImageUrl(board.getIdx(), imageUrl);
         }
 
         if (request.getTagList() != null) {
@@ -131,7 +189,7 @@ public class BoardService {
         List<BoardTag> boardTagList = board.getBoardTagList();
         List<String> tagNames = new ArrayList<>();
 
-        if(!boardTagList.isEmpty()) {
+        if (!boardTagList.isEmpty()) {
             for (BoardTag boardTag : boardTagList) {
                 String tagName = boardTag.getTag().getTagName();
                 tagNames.add(tagName);
@@ -680,7 +738,7 @@ public class BoardService {
         }
         Board board = result.get();
 
-        if(!board.getBoardTitle().equals(patchUpdateBoardReq.getBoardTitle())) {
+        if (!board.getBoardTitle().equals(patchUpdateBoardReq.getBoardTitle())) {
             Optional<Board> resultTitle = boardRepository.findByBoardTitle(patchUpdateBoardReq.getBoardTitle());
 
             if (resultTitle.isPresent()) {
