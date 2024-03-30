@@ -510,8 +510,7 @@
       <div class="css-1djguz4">
         <div class="css-yj1ay2">
           <div class="css-bbe5fx">이메일 찾기</div>
-          <form id="findEmailForm"></form>
-          <form id="loginForm">
+          <form id="loginForm1">
             <div direction="vertical" size="40" class="css-ygt1wz"></div>
             <input
               v-model="name"
@@ -663,7 +662,7 @@
         <div class="css-yj1ay2">
           <div class="css-bbe5fx">비밀번호 찾기</div>
           <form id="findEmailForm"></form>
-          <form id="loginForm">
+          <form id="loginForm2">
             <div direction="vertical" size="40" class="css-ygt1wz"></div>
             <input
               v-model="email"
@@ -834,6 +833,10 @@ export default {
         this.isAdminLogin = false;
       }
     }
+
+    if(token == null) {
+      this.isAuthenticated = false;
+    }
   },
   methods: {
     loginKakao() {
@@ -969,7 +972,6 @@ export default {
       }
     },
     toggleDropdownMenu() {
-      console.log("Dropdown toggled");
       this.isDropdownOpen = !this.isDropdownOpen;
     },
   },

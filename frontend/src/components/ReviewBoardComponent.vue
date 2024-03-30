@@ -93,10 +93,10 @@
             </div>
           </div>
           <div class="css-5zcuovss">
-                <div class="css-1sika4iss">
-                  평점 : {{ reviews.courseEvaluation }} 점
-                </div>
-              </div>
+            <div class="css-1sika4iss">
+              평점 : {{ reviews.courseEvaluation }} 점
+            </div>
+          </div>
         </div>
         <!-- 여기서부터 추천수 댓글수 등등 표시-->
         <div class="css-o01lup">
@@ -358,6 +358,9 @@ export default {
 }
 @media (min-width: 820px) {
   .css-14bssip {
+    overflow: hidden;
+    word-break: break-all;
+    text-overflow: ellipsis;
     font-family: Pretendard;
     font-style: normal;
     font-weight: 400;
@@ -370,6 +373,9 @@ export default {
 .css-14bssip {
   overflow: hidden;
   text-overflow: ellipsis;
+  word-break: break-all;
+  max-width: 850px;
+  overflow-wrap: break-word;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -381,7 +387,7 @@ export default {
   line-height: 21px;
   color: rgb(95, 102, 107);
   word-break: keep-all;
-  height: 42px;
+  height: 45px;
 }
 .css-sebsp7 {
   display: flex;
@@ -489,7 +495,7 @@ export default {
   font-family: Pretendard;
   cursor: pointer;
   border-radius: 5px;
-  background-color: rgb(0 64 255 / 22%);;
+  background-color: rgb(0 64 255 / 22%);
   padding: 3px 10px;
 }
 .css-1sika4is {

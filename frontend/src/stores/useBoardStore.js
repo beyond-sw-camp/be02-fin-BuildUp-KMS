@@ -19,22 +19,28 @@ export const useBoardStore = defineStore("board", {
     isBoardExist: true,
     isLoading: false,
     fromEdit: false,
-    isPageExist: true
+    isPageExist: true,
   }),
 
   actions: {
-    async createBoard(board, boardImage) {
-      const formData = new FormData();
+    async createBoard(board) {
+      // const formData = new FormData();
 
-      let json = JSON.stringify(board);
-      formData.append("board", new Blob([json], { type: "application/json" }));
-      formData.append("boardImage", boardImage);
+      // let json = JSON.stringify(board);
+      // formData.append("board", new Blob([json], { type: "application/json" }));
+
+      // if (boardImages) {
+      //   this.boardImages.forEach((base64, index) => {
+      //     const blob = this.base64ToBlob(base64);
+      //     formData.append(`boardImages`, blob, `image${index}.jpg`);
+      //   });
+      // }
 
       try {
-        let response = await axios.post(backend + `/board/create`, formData, {
+        let response = await axios.post(backend + `/board/create`, board, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
           },
         });
         if (response.data.isSuccess === true) {
@@ -47,6 +53,8 @@ export const useBoardStore = defineStore("board", {
           console.log(e.response.data);
           if (e.response.data.code === "BOARD-002") {
             alert("이미 사용중인 제목입니다. 제목을 변경해주세요.");
+          } else if(e.response.data.code === "COMMON-001") {
+            alert("카테고리, 제목은 필수로 입력하셔야 합니다.")
           }
         }
       }
@@ -76,7 +84,6 @@ export const useBoardStore = defineStore("board", {
           this.isBoardExist = true;
           this.isPageExist = true;
         }
-
       } catch (error) {
         console.error(error);
       } finally {
@@ -110,7 +117,6 @@ export const useBoardStore = defineStore("board", {
           this.isBoardExist = true;
           this.isPageExist = true;
         }
-
       } catch (error) {
         console.error(error);
       } finally {
@@ -245,7 +251,6 @@ export const useBoardStore = defineStore("board", {
             },
           }
         );
-
       } catch (e) {
         console.error(e);
         throw e;
@@ -300,7 +305,6 @@ export const useBoardStore = defineStore("board", {
           this.isBoardExist = true;
           this.isPageExist = true;
         }
-
       } catch (error) {
         console.error(error);
       } finally {
@@ -310,8 +314,7 @@ export const useBoardStore = defineStore("board", {
 
     async createBoardCategory(categoryName) {
       try {
-        let response =
-        await axios.post(
+        let response = await axios.post(
           backend + "/admin/board/create",
           { categoryName: categoryName },
           {
@@ -320,7 +323,7 @@ export const useBoardStore = defineStore("board", {
             },
           }
         );
-        if(response.data.isSuccess === true) {
+        if (response.data.isSuccess === true) {
           alert(`${categoryName} 생성 완료!`);
           this.$router.push({ path: `/admin/board/category` });
         }
@@ -329,7 +332,7 @@ export const useBoardStore = defineStore("board", {
           console.log(e.response.data);
           if (e.response.data.code === "BOARD-CATEGORY-002") {
             alert("동일한 이름의 카테고리가 이미 존재합니다.");
-          } 
+          }
         }
       }
     },
@@ -352,19 +355,13 @@ export const useBoardStore = defineStore("board", {
         this.isLoading = false;
       }
     },
-    async updateBoard(board, boardImage) {
-      const formData = new FormData();
-
-      let json = JSON.stringify(board);
-      formData.append("board", new Blob([json], { type: "application/json" }));
-      formData.append("boardImage", boardImage);
+    async updateBoard(board) {
 
       try {
-        let response = await axios.patch(`${backend}/board/update`, formData, {
+        let response = await axios.patch(`${backend}/board/update`, board, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
-            "Content-Type": "multipart/form-data",
-            // "Content-Type": "application/json",
+            "Content-Type": "application/json",
           },
         });
         if (response.data.isSuccess === true) {
@@ -414,7 +411,6 @@ export const useBoardStore = defineStore("board", {
           this.isBoardExist = true;
           this.isPageExist = true;
         }
-
       } catch (error) {
         console.error(error);
       } finally {
@@ -459,7 +455,6 @@ export const useBoardStore = defineStore("board", {
           this.isBoardExist = true;
           this.isPageExist = true;
         }
-
       } catch (e) {
         console.log(e);
       } finally {
@@ -478,25 +473,25 @@ export const useBoardStore = defineStore("board", {
 
     async updateBoardCategory(boardCategoryIdx, newCategoryName) {
       try {
-        let response =
-        await axios.patch(backend + "/admin/board/update/" + boardCategoryIdx,
-         { categoryName: newCategoryName},
-         {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        let response = await axios.patch(
+          backend + "/admin/board/update/" + boardCategoryIdx,
+          { categoryName: newCategoryName },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
         );
-        if(response.data.isSuccess === true) {
+        if (response.data.isSuccess === true) {
           alert(`카테고리 이름 수정 완료!`);
-          this.$router.push({ path: `/admin/board/update`});
+          this.$router.push({ path: `/admin/board/update` });
         }
       } catch (e) {
         if (e.response && e.response.data) {
           console.log(e.response.data);
           if (e.response.data.code === "BOARD-CATEGORY-002") {
             alert("동일한 이름의 카테고리가 이미 존재합니다.");
-          } 
+          }
         }
       }
     },
@@ -529,7 +524,6 @@ export const useBoardStore = defineStore("board", {
           this.isBoardExist = true;
           this.isPageExist = true;
         }
-
       } catch (error) {
         console.error(error);
       }
@@ -563,7 +557,6 @@ export const useBoardStore = defineStore("board", {
           this.isBoardExist = true;
           this.isPageExist = true;
         }
-
       } catch (error) {
         console.error(error);
       }

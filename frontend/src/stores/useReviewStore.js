@@ -19,18 +19,18 @@ export const useReviewStore = defineStore("review", {
     isPageExist: true
   }),
   actions: {
-    async createReview(review, reviewImage) {
-      const formData = new FormData();
+    async createReview(review) {
+      // const formData = new FormData();
 
-      let json = JSON.stringify(review);
-      formData.append("review", new Blob([json], { type: "application/json" }));
-      formData.append("reviewImage", reviewImage);
+      // let json = JSON.stringify(review);
+      // formData.append("review", new Blob([json], { type: "application/json" }));
+      // formData.append("reviewImage", reviewImage);
 
       try {
-        let response = await axios.post(backend + `/review/create`, formData, {
+        let response = await axios.post(backend + `/review/create`, review, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
           },
         });
         if (response.data.isSuccess === true) {
@@ -45,6 +45,8 @@ export const useReviewStore = defineStore("review", {
             alert(
               "후기글 제목이 이미 등록되어 있는 제목입니다. 제목을 변경해주세요."
             );
+          } else if(e.response.data.code === "COMMON-001") {
+            alert("카테고리, 제목, 별점은 필수로 입력하셔야 합니다.")
           }
         }
       }
@@ -348,18 +350,18 @@ export const useReviewStore = defineStore("review", {
       }
     },
 
-    async updateReview(review, reviewImage) {
-      const formData = new FormData();
+    async updateReview(review) {
+      // const formData = new FormData();
 
-      let json = JSON.stringify(review);
-      formData.append("review", new Blob([json], { type: "application/json" }));
-      formData.append("reviewImage", reviewImage);
+      // let json = JSON.stringify(review);
+      // formData.append("review", new Blob([json], { type: "application/json" }));
+      // formData.append("reviewImage", reviewImage);
 
       try {
-        let response = await axios.patch(`${backend}/review/update`, formData, {
+        let response = await axios.patch(`${backend}/review/update`, review, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
           },
         });
         if (response.data.isSuccess === true) {

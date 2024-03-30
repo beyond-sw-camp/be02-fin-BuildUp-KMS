@@ -92,114 +92,19 @@
           <div class="css-17wj0zk">
             <div class="">
               <div class="quill">
-                <div class="ql-container ql-snow">
-                  <div class="d-flex justify-content-center py-0 py-md-4">
-                    <div class="css-luqgif">
-                      <!-- <div class="editedQ_QContent" v-for="(image, index) in boardDetail.boardImageList" :key="index"> -->
-                      <!-- <p class="css-content">
-                    {{ boardDetail.boardContent }}
-                  </p> -->
-                      <!-- <img alt="게시판 이미지" :data-src="image" /> -->
-                    </div>
-                    <!-----이미지 들어가는 곳----->
-                    <div class="css-image" style="text-align: center">
-                      <div
-                        class="image-container"
-                        style="max-width: 100%; display: inline-block"
-                      >
-                        <img
-                          v-if="imageUrl"
-                          :src="imageUrl"
-                          alt="Uploaded Image"
-                          style="max-width: 70%; height: auto"
-                        />
-                      </div>
-                    </div>
-                    <!-----이미지 들어가는 곳----->
-                    <textarea
-                      class="ql-editor ql-blank"
-                      v-model="review.reviewContent"
-                    ></textarea>
-                    <div
-                      class="ql-clipboard"
-                      contenteditable="true"
-                      tabindex="-1"
-                    ></div>
-                    <div class="ql-tooltip ql-hidden">
-                      <a
-                        class="ql-preview"
-                        rel="noopener noreferrer"
-                        target="_blank"
-                        href="about:blank"
-                      ></a
-                      ><input
-                        type="text"
-                        data-formula="e=mc^2"
-                        data-link="https://quilljs.com"
-                        data-video="Embed URL"
-                      /><a class="ql-action"></a><a class="ql-remove"></a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div id="toolbar" class="ql-toolbar ql-snow">
-                <span class="ql-formats"
-                  ><button
-                    content="이미지 첨부"
-                    class="ql-image css-1qhzcav"
-                    type="button"
-                    @click="uploadImage()"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 20 20"
-                      fill="none"
-                    >
-                      <rect
-                        x="3.336"
-                        y="3.332"
-                        width="13.333"
-                        height="13.333"
-                        rx="1.667"
-                        stroke="#505254"
-                        stroke-width="1.75"
-                        stroke-linejoin="round"
-                      ></rect>
-                      <path
-                        d="m16.664 12.499-5-4.167-7.5 7.5"
-                        stroke="#505254"
-                        stroke-width="1.75"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></path>
-                      <rect
-                        x="5.836"
-                        y="5.832"
-                        width="2.5"
-                        height="2.5"
-                        rx="1.25"
-                        fill="#505254"
-                      ></rect>
-                    </svg></button></span
-                >
+                <quill-editor
+                  ref="quillEditor"
+                  v-model:value="state.content"
+                  :options="state.editorOption"
+                  :disabled="false"
+                  @change="onEditorChange($event)"
+                ></quill-editor>
               </div>
             </div>
-            <input
-              id="input_file"
-              type="file"
-              class="css-38lglc"
-              style="display: none"
-              @change="handleImageUpload"
-            />
           </div>
           <div class="css-lycl0a">
             <button class="css-9ns22y" @click="cancel()">취소</button>
-            <button
-              class="css-1c8gn7d"
-              @click="updateReview()"
-            >
+            <button class="css-1c8gn7d" @click="updateReview()">
               수정하기
             </button>
           </div>
@@ -212,7 +117,61 @@
 <script>
 import { mapStores } from "pinia";
 import { useReviewStore } from "../stores/useReviewStore";
-// import { useUserStore } from "../stores/useUserStore";
+import Quill from "quill";
+import axios from "axios";
+import QuillImageUploader from "quill-image-uploader";
+Quill.register("modules/image-uploader", QuillImageUploader);
+
+export function imageHandler() {
+  const storedToken = localStorage.getItem("token");
+  const quill = this.quill;
+
+  const input = document.createElement("input");
+
+  input.setAttribute("type", "file");
+  input.setAttribute("accept", "image/*");
+  input.click();
+
+  input.onchange = async () => {
+    const file = input.files[0];
+    const formData = new FormData();
+
+    formData.append("image", file);
+
+    const range = quill.getSelection(true);
+
+    quill.insertEmbed(
+      range.index,
+      "image",
+      "https://cdn.dribbble.com/users/1341307/screenshots/5377324/morph_dribbble.gif"
+    );
+
+    quill.setSelection(range.index + 1);
+
+    quill.deleteText(range.index, 1);
+
+    try {
+      let response = await axios({
+        method: "POST",
+        url: "http://192.168.0.61/api/review/image/upload",
+        // url: "http://localhost:8080/review/image/upload",
+        headers: {
+          Authorization: `Bearer ${storedToken}`,
+          "Content-Type": "multipart/form-data",
+        },
+        data: formData,
+      });
+
+      if (response.data.isSuccess === true) {
+        let imageUrl = response.data.result.imageUrl;
+        quill.insertEmbed(range.index, "image", imageUrl);
+        this.board.boardImageList.push(imageUrl);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+}
 
 export default {
   name: "ReviewUpdatePage",
@@ -224,6 +183,38 @@ export default {
   },
   data() {
     return {
+      state: {
+        content: "",
+        _content: "",
+        editorOption: {
+          placeholder: "내용을 입력해주세요",
+          modules: {
+            toolbar: {
+              container: [
+                [
+                  "bold",
+                  "underline",
+                  "code-block",
+                  "image",
+                  { header: 1 },
+                  { header: 2 },
+                  { align: [] },
+                  { list: "ordered" },
+                  { list: "bullet" },
+                  { color: [] },
+                  { background: [] },
+                  { font: [] },
+                  { header: [1, 2, 3, 4, 5, 6, false] },
+                ],
+              ],
+              handlers: {
+                image: imageHandler,
+              },
+            },
+          },
+        },
+        disabled: false,
+      },
       isEvaluationClicked: false,
       selectedEvaluation: "",
       Evaluations: [
@@ -234,8 +225,6 @@ export default {
         { name: "5점", selected: false },
       ],
       inputValue: "",
-      reviewImage: null,
-      imageUrl: null,
       buttonOpacity: 1,
 
       review: {
@@ -254,12 +243,8 @@ export default {
     this.reviewDetail = await this.reviewStore.findReviewDetailByUserIdx(
       reviewIdx
     );
-    this.review.reviewContent = this.reviewDetail.reviewContent;
+    this.state.content = this.reviewDetail.reviewContent;
     this.review.reviewTitle = this.reviewDetail.reviewTitle;
-
-    if (this.reviewDetail.reviewImageList.length > 0) {
-      this.imageUrl = this.reviewDetail.reviewImageList[0].reviewImage;
-    }
 
     const loadedEvaluation = this.reviewDetail.courseEvaluation;
     this.Evaluations.forEach((evaluation) => {
@@ -269,25 +254,14 @@ export default {
     this.selectedEvaluation = loadedEvaluation + "점";
   },
   methods: {
+    onEditorChange({ html }) {
+      this.state._content = html;
+    },
     async updateReview() {
-      await this.reviewStore.updateReview(this.review, this.reviewImage);
-    },
-    // 이미지 업로드
-    uploadImage() {
-      const input = document.getElementById("input_file");
-      input.click();
-    },
-    handleImageUpload(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      this.reviewImage = file;
-
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.imageUrl = reader.result;
-      };
-      reader.readAsDataURL(file);
+      this.review.reviewContent = this.state._content;
+      console.log("Updating with:", this.review.reviewContent);
+      
+      await this.reviewStore.updateReview(this.review);
     },
     cancel() {
       window.location.href = "/mypage";
@@ -481,7 +455,7 @@ element.style {
 }
 
 .ql-container {
-  min-height: 200px;
+  min-height: 350px;
 }
 
 .ql-snow,
@@ -758,11 +732,12 @@ button {
   display: table;
 }
 
-.ql-toolbar.ql-snow {
+::v-deep .ql-toolbar.ql-snow {
   border: 1px solid #ccc;
   box-sizing: border-box;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   padding: 8px;
+  border-radius: 10px;
 }
 
 .ql-toolbar {

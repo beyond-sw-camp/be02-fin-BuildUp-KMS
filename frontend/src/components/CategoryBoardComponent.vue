@@ -359,6 +359,9 @@ export default {
 }
 @media (min-width: 820px) {
   .css-14bssip {
+    overflow: hidden;
+    word-break: break-all;
+    text-overflow: ellipsis;
     font-family: Pretendard;
     font-style: normal;
     font-weight: 400;
@@ -371,6 +374,9 @@ export default {
 .css-14bssip {
   overflow: hidden;
   text-overflow: ellipsis;
+  word-break: break-all;
+  max-width: 850px;
+  overflow-wrap: break-word;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -382,7 +388,7 @@ export default {
   line-height: 21px;
   color: rgb(95, 102, 107);
   word-break: keep-all;
-  height: 42px;
+  height: 45px;
 }
 .css-sebsp7 {
   display: flex;

@@ -52,7 +52,8 @@ const requireAuth = () => (from, to, next) => {
     if (tokenData.exp < currentTime) {
       alert("로그인 유지시간이 만료되었습니다. 다시 로그인해주세요.");
       localStorage.removeItem("token");
-      next("/");
+      window.location.href="/";
+      // next("/");
     } else {
       next();
     }
