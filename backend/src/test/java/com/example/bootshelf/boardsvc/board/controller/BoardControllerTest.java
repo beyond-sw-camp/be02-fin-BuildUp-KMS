@@ -3,6 +3,7 @@ package com.example.bootshelf.boardsvc.board.controller;
 import com.example.bootshelf.boardsvc.board.model.response.GetBoardListByQueryRes;
 import com.example.bootshelf.boardsvc.board.model.response.GetBoardListByQueryResResult;
 import com.example.bootshelf.boardsvc.board.service.BoardService;
+import com.example.bootshelf.boardsvc.boardimage.service.BoardImageService;
 import com.example.bootshelf.common.BaseRes;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,6 +42,9 @@ class BoardControllerTest {
 
     @MockBean
     private BoardService boardService;
+
+    @MockBean
+    private BoardImageService boardImageService;
 
 
     @BeforeEach

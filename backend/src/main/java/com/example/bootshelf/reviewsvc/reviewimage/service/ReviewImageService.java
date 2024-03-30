@@ -1,28 +1,20 @@
 package com.example.bootshelf.reviewsvc.reviewimage.service;
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.example.bootshelf.boardsvc.boardimage.model.response.PostUploadBoardImageRes;
+import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.common.error.ErrorCode;
 import com.example.bootshelf.common.error.entityexception.ReviewException;
 import com.example.bootshelf.config.aws.ImageUtils;
 import com.example.bootshelf.config.aws.S3Service;
 import com.example.bootshelf.reviewsvc.review.model.entity.Review;
-import com.example.bootshelf.reviewsvc.reviewimage.model.ReviewImage;
+import com.example.bootshelf.reviewsvc.reviewimage.model.entity.ReviewImage;
+import com.example.bootshelf.reviewsvc.reviewimage.model.response.PostUploadReviewImageRes;
 import com.example.bootshelf.reviewsvc.reviewimage.repository.ReviewImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -36,37 +28,46 @@ public class ReviewImageService {
     private final ReviewImageRepository reviewImageRepository;
 
 
+    //    @Transactional(readOnly = false)
+//    public void createReviewImage(Review review, MultipartFile[] reviewImages) {
+//
+//        for (MultipartFile reviewImage : reviewImages) {
+//
+//            String savePath = ImageUtils.makeBoardImagePath(reviewImage.getOriginalFilename());
+//            savePath = s3Service.uploadBoardFile(reviewBucket, reviewImage, savePath);
+//
+//            reviewImageRepository.save(ReviewImage.builder()
+//                    .review(review)
+//                    .reviewImage(savePath)
+//                    .status(true)
+//                    .build());
+//        }
+//    }
     @Transactional(readOnly = false)
-    public void createReviewImage(Review review, MultipartFile[] reviewImages) {
-
-        for (MultipartFile reviewImage : reviewImages) {
-
-            String savePath = ImageUtils.makeBoardImagePath(reviewImage.getOriginalFilename());
-            savePath = s3Service.uploadBoardFile(reviewBucket, reviewImage, savePath);
-
-            reviewImageRepository.save(ReviewImage.builder()
-                    .review(review)
-                    .reviewImage(savePath)
-                    .status(true)
-                    .build());
-        }
-    }
-
-    @Transactional(readOnly = false)
-    public void updateReviewImage(Review review, MultipartFile reviewImage) {
-
-        Integer result = reviewImageRepository.deleteAllByReview_Idx(review.getIdx());
-
-        if(result.equals(0)) {
-            throw new ReviewException(ErrorCode.REVIEW_NOT_EXISTS, String.format("Review Idx [ %s ] is not exists.", review.getIdx()));
-        }
+    public BaseRes uploadReviewImage(MultipartFile reviewImage) {
 
         String savePath = ImageUtils.makeBoardImagePath(reviewImage.getOriginalFilename());
         savePath = s3Service.uploadBoardFile(reviewBucket, reviewImage, savePath);
 
+        PostUploadReviewImageRes postUploadReviewImageRes = PostUploadReviewImageRes.builder()
+                .imageUrl(savePath)
+                .build();
+
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("후기글 이미지 업로드 완료")
+                .result(postUploadReviewImageRes)
+                .build();
+
+        return baseRes;
+    }
+
+    @Transactional(readOnly = false)
+    public void saveImageUrl(Integer reviewIdx, String imageUrl) {
+
         reviewImageRepository.save(ReviewImage.builder()
-                .review(review)
-                .reviewImage(savePath)
+                .reviewImage(imageUrl)
+                .review(Review.builder().idx(reviewIdx).build())
                 .status(true)
                 .build());
     }

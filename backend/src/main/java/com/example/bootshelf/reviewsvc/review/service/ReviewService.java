@@ -1,8 +1,5 @@
 package com.example.bootshelf.reviewsvc.review.service;
 
-import com.example.bootshelf.boardsvc.board.model.entity.Board;
-import com.example.bootshelf.boardsvc.board.model.response.GetBoardListByQueryRes;
-import com.example.bootshelf.boardsvc.board.model.response.GetBoardListByQueryResResult;
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.common.error.ErrorCode;
 import com.example.bootshelf.common.error.entityexception.ReviewException;
@@ -13,10 +10,15 @@ import com.example.bootshelf.reviewsvc.review.model.response.*;
 import com.example.bootshelf.reviewsvc.review.repository.ReviewRepository;
 import com.example.bootshelf.reviewsvc.reviewcategory.model.ReviewCategory;
 import com.example.bootshelf.reviewsvc.reviewcomment.model.entity.ReviewComment;
-import com.example.bootshelf.reviewsvc.reviewimage.model.ReviewImage;
+import com.example.bootshelf.reviewsvc.reviewimage.model.entity.ReviewImage;
+import com.example.bootshelf.reviewsvc.reviewimage.repository.ReviewImageRepository;
 import com.example.bootshelf.reviewsvc.reviewimage.service.ReviewImageService;
 import com.example.bootshelf.user.model.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -35,10 +37,61 @@ public class ReviewService {
 
     private final ReviewImageService reviewImageService;
     private final ReviewRepository reviewRepository;
+    private final ReviewImageRepository reviewImageRepository;
 
     // 후기글 작성
+//    @Transactional(readOnly = false)
+//    public BaseRes createReview(User user, PostCreateReviewReq postCreateReviewReq, MultipartFile[] reviewImages) {
+//
+//        Optional<Review> result = reviewRepository.findByReviewTitle(postCreateReviewReq.getReviewTitle());
+//
+//        // 후기글 제목 중복에 대한 예외 처리
+//        if (result.isPresent()) {
+//            throw new ReviewException(ErrorCode.DUPLICATE_REVIEW_TITLE, String.format("Review Title [ %s ] is duplicated.", postCreateReviewReq.getReviewTitle()));
+//        }
+//
+//        Review review = Review.builder()
+//                .user(user)
+//                .reviewCategory(ReviewCategory.builder().idx(postCreateReviewReq.getReviewCategoryIdx()).build())
+//                .reviewTitle(postCreateReviewReq.getReviewTitle())
+//                .reviewContent(postCreateReviewReq.getReviewContent())
+//                .courseName(postCreateReviewReq.getCourseName())
+//                .courseEvaluation(postCreateReviewReq.getCourseEvaluation())
+//                .viewCnt(0)
+//                .upCnt(0)
+//                .scrapCnt(0)
+//                .commentCnt(0)
+//                .status(true)
+//                .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+//                .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+//                .build();
+//
+//        review = reviewRepository.save(review);
+//
+//        if (reviewImages != null && reviewImages.length > 0) {
+//            reviewImageService.createReviewImage(review, reviewImages);
+//        }
+//
+//        PostCreateReviewRes postCreateReviewRes = PostCreateReviewRes.builder()
+//                .reviewIdx(review.getIdx())
+//                .reviewCategoryIdx(postCreateReviewReq.getReviewCategoryIdx())
+//                .reviewTitle(postCreateReviewReq.getReviewTitle())
+//                .courseName(postCreateReviewReq.getCourseName())
+//                .reviewContent(postCreateReviewReq.getReviewContent())
+//                .courseEvaluation(postCreateReviewReq.getCourseEvaluation())
+//                .build();
+//
+//        BaseRes baseRes = BaseRes.builder()
+//                .isSuccess(true)
+//                .message("후기글 등록 성공")
+//                .result(postCreateReviewRes)
+//                .build();
+//
+//        return baseRes;
+//    }
+
     @Transactional(readOnly = false)
-    public BaseRes createReview(User user, PostCreateReviewReq postCreateReviewReq, MultipartFile[] reviewImages) {
+    public BaseRes createReview(User user, PostCreateReviewReq postCreateReviewReq) {
 
         Optional<Review> result = reviewRepository.findByReviewTitle(postCreateReviewReq.getReviewTitle());
 
@@ -65,8 +118,15 @@ public class ReviewService {
 
         review = reviewRepository.save(review);
 
-        if (reviewImages != null && reviewImages.length > 0) {
-            reviewImageService.createReviewImage(review, reviewImages);
+        // 게시글 본문의 html에서 img url을 뽑아내기 위해 jsoup 라이브러리 사용
+        Document doc = Jsoup.parse(postCreateReviewReq.getReviewContent());
+        Elements images = doc.select("img");
+
+        if (!images.isEmpty()) {
+            for (Element img : images) {
+                String imageUrl = img.attr("src");
+                reviewImageService.saveImageUrl(review.getIdx(), imageUrl);
+            }
         }
 
         PostCreateReviewRes postCreateReviewRes = PostCreateReviewRes.builder()
@@ -87,7 +147,14 @@ public class ReviewService {
         return baseRes;
     }
 
+    // 목록 조회 시 글만 추출
+    public static String extractText(String html) {
+        Document doc = Jsoup.parse(html);
+        return doc.text();
+    }
+
     // 인증회원 본인이 작성한 후기글 목록 조회
+    @Transactional(readOnly = true)
     public BaseRes myList(User user, Pageable pageable, Integer reviewCategoryIdx, Integer sortType) {
 
         Page<Review> reviewList = reviewRepository.findMyReviewList(user.getIdx(), pageable, reviewCategoryIdx, sortType);
@@ -96,11 +163,13 @@ public class ReviewService {
 
         for (Review review : reviewList) {
 
+            String textContent = extractText(review.getReviewContent());
+
             GetMyListReviewRes getMyListReviewRes = GetMyListReviewRes.builder()
                     .idx(review.getIdx())
                     .reviewCategoryIdx(review.getReviewCategory().getIdx())
                     .title(review.getReviewTitle())
-                    .content(review.getReviewContent())
+                    .content(textContent)
                     .courseName(review.getCourseName())
                     .courseEvaluation(review.getCourseEvaluation())
                     .viewCnt(review.getViewCnt())
@@ -149,13 +218,15 @@ public class ReviewService {
 
         for (Review review : reviewList) {
 
+            String textContent = extractText(review.getReviewContent());
+
             GetListReviewRes getListReviewRes = GetListReviewRes.builder()
                     .reviewIdx(review.getIdx())
                     .userIdx(review.getUser().getIdx())
                     .userNickName(review.getUser().getNickName())
                     .profileImage(review.getUser().getProfileImage())
                     .reviewTitle(review.getReviewTitle())
-                    .reviewContent(review.getReviewContent())
+                    .reviewContent(textContent)
                     .courseName(review.getCourseName())
                     .courseEvaluation(review.getCourseEvaluation())
                     .viewCnt(review.getViewCnt())
@@ -259,6 +330,7 @@ public class ReviewService {
         return baseRes;
     }
 
+    @Transactional(readOnly = true)
     private GetListCommentReviewRes convertToCommentReviewRes(ReviewComment reviewComment) {
 
         List<GetListCommentReviewRes> childCommentsRes = new ArrayList<>();
@@ -288,10 +360,12 @@ public class ReviewService {
 
         for (Review review : reviewList) {
 
+            String textContent = extractText(review.getReviewContent());
+
             GetReviewListByQueryRes getReviewListByQueryRes = GetReviewListByQueryRes.builder()
                     .reviewIdx(review.getIdx())
                     .reviewTitle(review.getReviewTitle())
-                    .reviewContent(review.getReviewContent())
+                    .reviewContent(textContent)
                     .reviewCategoryName(review.getReviewCategory().getCategoryName())
                     .nickName(review.getUser().getNickName())
                     .createdAt(review.getCreatedAt())
@@ -321,7 +395,7 @@ public class ReviewService {
 
     // 후기글 수정
     @Transactional(readOnly = false)
-    public BaseRes updateReview(User user, PatchUpdateReviewReq patchUpdateReviewReq, MultipartFile reviewImage) {
+    public BaseRes updateReview(User user, PatchUpdateReviewReq patchUpdateReviewReq) {
 
         Optional<Review> result = reviewRepository.findByIdxAndUserIdx(patchUpdateReviewReq.getReviewIdx(), user.getIdx());
 
@@ -342,10 +416,17 @@ public class ReviewService {
 
         review.update(patchUpdateReviewReq);
 
-        if (reviewImage != null && !reviewImage.equals("")) {
-            reviewImageService.updateReviewImage(review, reviewImage);
-        } else {
+        // 게시글 본문의 html에서 img url을 뽑아내기 위해 jsoup 라이브러리 사용
+        Document doc = Jsoup.parse(patchUpdateReviewReq.getReviewContent());
+        Elements images = doc.select("img");
 
+        if (!images.isEmpty()) {
+            reviewImageRepository.deleteAllByReview_idx(review.getIdx());
+
+            for (Element img : images) {
+                String imageUrl = img.attr("src");
+                reviewImageService.saveImageUrl(review.getIdx(), imageUrl);
+            }
         }
 
         review.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
@@ -395,6 +476,8 @@ public class ReviewService {
 
         for (Review review : reviewList) {
 
+            String textContent = extractText(review.getReviewContent());
+
             GetSearchListReviewRes getSearchListReviewRes = GetSearchListReviewRes.builder()
                     .reviewIdx(review.getIdx())
                     .userIdx(review.getUser().getIdx())
@@ -403,7 +486,7 @@ public class ReviewService {
                     .reviewCategoryIdx(review.getReviewCategory().getIdx())
                     .reviewCategoryName(review.getReviewCategory().getCategoryName())
                     .reviewTitle(review.getReviewTitle())
-                    .reviewContent(review.getReviewContent())
+                    .reviewContent(textContent)
                     .courseName(review.getCourseName())
                     .courseEvaluation(review.getCourseEvaluation())
                     .viewCnt(review.getViewCnt())
@@ -451,13 +534,15 @@ public class ReviewService {
 
         for (Review review : reviewList) {
 
+            String textContent = extractText(review.getReviewContent());
+
             GetListHotReviewRes getListHotReviewRes = GetListHotReviewRes.builder()
                     .idx(review.getIdx())
                     .userIdx(review.getUser().getIdx())
                     .nickName(review.getUser().getNickName())
                     .profileImage(review.getUser().getProfileImage())
                     .title(review.getReviewTitle())
-                    .content(review.getReviewContent())
+                    .content(textContent)
                     .courseName(review.getCourseName())
                     .courseEvaluation(review.getCourseEvaluation())
                     .viewCnt(review.getViewCnt())
@@ -506,13 +591,15 @@ public class ReviewService {
 
         for (Review review : reviewList) {
 
+            String textContent = extractText(review.getReviewContent());
+
             GetListHotReviewRes getListHotReviewRes = GetListHotReviewRes.builder()
                     .idx(review.getIdx())
                     .userIdx(review.getUser().getIdx())
                     .nickName(review.getUser().getNickName())
                     .profileImage(review.getUser().getProfileImage())
                     .title(review.getReviewTitle())
-                    .content(review.getReviewContent())
+                    .content(textContent)
                     .courseName(review.getCourseName())
                     .courseEvaluation(review.getCourseEvaluation())
                     .viewCnt(review.getViewCnt())

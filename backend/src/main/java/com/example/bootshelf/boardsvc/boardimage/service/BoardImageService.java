@@ -2,6 +2,9 @@ package com.example.bootshelf.boardsvc.boardimage.service;
 
 import com.example.bootshelf.boardsvc.boardimage.model.response.PostUploadBoardImageRes;
 import com.example.bootshelf.common.BaseRes;
+import com.example.bootshelf.common.error.ErrorCode;
+import com.example.bootshelf.common.error.entityexception.BoardException;
+import com.example.bootshelf.common.error.entityexception.ReviewException;
 import com.example.bootshelf.config.aws.S3Service;
 import com.example.bootshelf.boardsvc.board.model.entity.Board;
 import com.example.bootshelf.boardsvc.boardimage.model.entity.BoardImage;
@@ -41,29 +44,6 @@ public class BoardImageService {
 //    }
 
     @Transactional(readOnly = false)
-    public void saveImageUrl(Integer boardIdx, String imageUrl) {
-
-            boardImageRepository.save(BoardImage.builder()
-                    .boardImage(imageUrl)
-                    .board(Board.builder().idx(boardIdx).build())
-                    .status(true)
-                    .build());
-    }
-
-    @Transactional(readOnly = false)
-    public void updateBoardImage(Board board, MultipartFile boardImage) {
-
-        String savePath = ImageUtils.makeBoardImagePath(boardImage.getOriginalFilename());
-        savePath = s3Service.uploadBoardFile(boardBucket, boardImage, savePath);
-
-        boardImageRepository.save(BoardImage.builder()
-                .board(board)
-                .boardImage(savePath)
-                .status(true)
-                .build());
-    }
-
-    @Transactional(readOnly = false)
     public BaseRes uploadBoardImage(MultipartFile boardImage) {
 
         String savePath = ImageUtils.makeBoardImagePath(boardImage.getOriginalFilename());
@@ -75,11 +55,22 @@ public class BoardImageService {
 
         BaseRes baseRes = BaseRes.builder()
                 .isSuccess(true)
-                .message("이미지 업로드 완료")
+                .message("게시글 이미지 업로드 완료")
                 .result(postUploadBoardImageRes)
                 .build();
 
         return baseRes;
     }
+
+    @Transactional(readOnly = false)
+    public void saveImageUrl(Integer boardIdx, String imageUrl) {
+
+            boardImageRepository.save(BoardImage.builder()
+                    .boardImage(imageUrl)
+                    .board(Board.builder().idx(boardIdx).build())
+                    .status(true)
+                    .build());
+    }
+
 }
 

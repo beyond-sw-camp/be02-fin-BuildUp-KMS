@@ -226,10 +226,9 @@ public class BoardController {
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
     @RequestMapping(method = RequestMethod.PATCH, value = "/update")
     public ResponseEntity<BaseRes> updateBoard(
-            @RequestPart(value = "board") @Valid PatchUpdateBoardReq patchUpdateBoardReq,
-            @RequestPart(value = "boardImage", required = false) MultipartFile boardImage) {
+            @RequestBody @Valid PatchUpdateBoardReq patchUpdateBoardReq) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        BaseRes baseRes = boardService.updateBoard(user, patchUpdateBoardReq, boardImage);
+        BaseRes baseRes = boardService.updateBoard(user, patchUpdateBoardReq);
         return ResponseEntity.ok().body(baseRes);
     }
 

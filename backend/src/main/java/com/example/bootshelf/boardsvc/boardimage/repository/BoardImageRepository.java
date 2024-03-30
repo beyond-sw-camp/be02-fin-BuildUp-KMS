@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BoardImageRepository extends JpaRepository<BoardImage, Integer> {
+
+    void deleteAllByBoard_idx(Integer boardIdx);
 }

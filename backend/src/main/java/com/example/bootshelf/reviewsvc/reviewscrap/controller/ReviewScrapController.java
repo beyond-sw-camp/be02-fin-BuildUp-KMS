@@ -29,6 +29,7 @@ import javax.validation.constraints.Positive;
 @CrossOrigin("*")
 @RequestMapping("/reviewscrap")
 public class ReviewScrapController {
+
     private final ReviewScrapService reviewScrapService;
 
     @Operation(summary = "ReviewScrap 추가",
@@ -62,7 +63,6 @@ public class ReviewScrapController {
     ) {
         return ResponseEntity.ok().body(reviewScrapService.findReviewScrapListByCategory(user, reviewCategoryIdx, sortType, pageable));
     }
-
 
     @Operation(summary = "ReviewScrap 여부 조회",
             description = "게시글을 스크랩 여부를 확인하는 API입니다.")

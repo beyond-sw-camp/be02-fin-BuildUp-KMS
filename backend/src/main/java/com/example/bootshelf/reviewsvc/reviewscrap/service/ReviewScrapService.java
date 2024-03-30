@@ -13,6 +13,8 @@ import com.example.bootshelf.reviewsvc.reviewscrap.repository.ReviewScrapReposit
 import com.example.bootshelf.user.model.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -72,51 +74,6 @@ public class ReviewScrapService {
     }
 
     @Transactional(readOnly = true)
-    public BaseRes findReviewScrapListByCategory(User user, Integer reviewCategoryIdx, Integer sortIdx, Pageable pageable) {
-        Page<ReviewScrap> reviewScrapList = reviewScrapRepository.findByUserAndCategoryIdx(user, reviewCategoryIdx, sortIdx, pageable);
-//        if (reviewScrapList.isEmpty())
-//            throw new ReviewScrapException(ErrorCode.REVIEW_SCRAP_IS_EMPTY, "스크랩한 후기가 존재하지 않습니다.");
-
-        List<GetScrapListReviewRes> resultList = new ArrayList<>();
-        for (ReviewScrap reviewScrap : reviewScrapList.getContent()) {
-
-            GetScrapListReviewRes res = GetScrapListReviewRes.builder()
-                    .idx(reviewScrap.getReview().getIdx())
-                    .scrapIdx(reviewScrap.getIdx())
-                    .userIdx(reviewScrap.getUser().getIdx())
-                    .nickName(reviewScrap.getUser().getNickName())
-                    .title(reviewScrap.getReview().getReviewTitle())
-                    .content(reviewScrap.getReview().getReviewContent())
-                    .courseName(reviewScrap.getReview().getCourseName())
-                    .courseEvaluation(reviewScrap.getReview().getCourseEvaluation())
-                    .scrapCnt(reviewScrap.getReview().getScrapCnt())
-                    .upCnt(reviewScrap.getReview().getUpCnt())
-                    .commentCnt(reviewScrap.getReview().getCommentCnt())
-                    .viewCnt(reviewScrap.getReview().getViewCnt())
-                    .updatedAt(reviewScrap.getUpdatedAt())
-                    .type("review")
-                    .boardType("scrap")
-                    .build();
-
-            resultList.add(res);
-        }
-        Long totalCnt = reviewScrapList.getTotalElements();
-        Integer totalPages = reviewScrapList.getTotalPages();
-
-        GetScrapListReviewResResult result = GetScrapListReviewResResult.builder()
-                .totalCnt(totalCnt)
-                .totalPages(totalPages)
-                .list(resultList)
-                .build();
-
-
-        return BaseRes.builder()
-                .isSuccess(true)
-                .message("리뷰 카테고리 스크랩 목록 조회 성공")
-                .result(result)
-                .build();
-    }
-
     public BaseRes checkReviewScrap(User user, Integer reviewIdx) {
         ReviewScrap reviewScrapResult = reviewScrapRepository.findByUserIdxAndReviewIdx(user.getIdx(), reviewIdx);
         if (reviewScrapResult != null) {
@@ -155,6 +112,60 @@ public class ReviewScrapService {
                     .result(res)
                     .build();
         }
+    }
+
+    // 목록 조회 시 글만 추출
+    public static String extractText(String html) {
+        Document doc = Jsoup.parse(html);
+        return doc.text();
+    }
+
+    @Transactional(readOnly = true)
+    public BaseRes findReviewScrapListByCategory(User user, Integer reviewCategoryIdx, Integer sortIdx, Pageable pageable) {
+        Page<ReviewScrap> reviewScrapList = reviewScrapRepository.findByUserAndCategoryIdx(user, reviewCategoryIdx, sortIdx, pageable);
+//        if (reviewScrapList.isEmpty())
+//            throw new ReviewScrapException(ErrorCode.REVIEW_SCRAP_IS_EMPTY, "스크랩한 후기가 존재하지 않습니다.");
+
+        List<GetScrapListReviewRes> resultList = new ArrayList<>();
+        for (ReviewScrap reviewScrap : reviewScrapList.getContent()) {
+
+            String textContent = extractText(reviewScrap.getReview().getReviewContent());
+
+            GetScrapListReviewRes res = GetScrapListReviewRes.builder()
+                    .idx(reviewScrap.getReview().getIdx())
+                    .scrapIdx(reviewScrap.getIdx())
+                    .userIdx(reviewScrap.getUser().getIdx())
+                    .nickName(reviewScrap.getUser().getNickName())
+                    .title(reviewScrap.getReview().getReviewTitle())
+                    .content(textContent)
+                    .courseName(reviewScrap.getReview().getCourseName())
+                    .courseEvaluation(reviewScrap.getReview().getCourseEvaluation())
+                    .scrapCnt(reviewScrap.getReview().getScrapCnt())
+                    .upCnt(reviewScrap.getReview().getUpCnt())
+                    .commentCnt(reviewScrap.getReview().getCommentCnt())
+                    .viewCnt(reviewScrap.getReview().getViewCnt())
+                    .updatedAt(reviewScrap.getUpdatedAt())
+                    .type("review")
+                    .boardType("scrap")
+                    .build();
+
+            resultList.add(res);
+        }
+        Long totalCnt = reviewScrapList.getTotalElements();
+        Integer totalPages = reviewScrapList.getTotalPages();
+
+        GetScrapListReviewResResult result = GetScrapListReviewResResult.builder()
+                .totalCnt(totalCnt)
+                .totalPages(totalPages)
+                .list(resultList)
+                .build();
+
+
+        return BaseRes.builder()
+                .isSuccess(true)
+                .message("리뷰 카테고리 스크랩 목록 조회 성공")
+                .result(result)
+                .build();
     }
 
     @Transactional
