@@ -309,10 +309,10 @@
           </div>
           <div class="css-1hal8c">BOOTSHELF 회원들과 함께 공유해보세요!</div>
           <div direction="vertical" size="40" class="css-ygt1wz"></div>
-          <a href="http://192.168.0.61/api/oauth2/authorization/kakao" class="css-18wq8ro">
             <button
               color="#141617"
               class="css-18wq8ro"
+              @click="loginKakao()"
             >
               <svg
                 width="18"
@@ -328,7 +328,6 @@
               </svg>
               카카오로 3초만에 시작하기
             </button>
-          </a>
           <div direction="vertical" size="16" class="css-10vhklm"></div>
           <button
             color="#141617"
@@ -839,8 +838,7 @@ export default {
   methods: {
     loginKakao() {
       // window.location.href = "http://localhost:8080/oauth2/authorization/kakao";
-      window.location.href =
-        "http://192.168.0.61/api/oauth2/authorization/kakao";
+      window.location.href = "http://192.168.0.61/api/oauth2/authorization/kakao";
     },
     openLoginModal() {
       this.isLogin = true;

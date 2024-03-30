@@ -11,7 +11,9 @@ import com.example.bootshelf.boardsvc.boardcategory.model.response.PostCreateBoa
 import com.example.bootshelf.boardsvc.boardcategory.repository.BoardCategoryRepository;
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.common.error.ErrorCode;
+import com.example.bootshelf.common.error.entityexception.BoardCategoryException;
 import com.example.bootshelf.common.error.entityexception.BoardCommentException;
+import com.example.bootshelf.common.error.entityexception.BoardException;
 import com.example.bootshelf.reviewsvc.review.model.entity.Review;
 import com.example.bootshelf.user.model.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +38,13 @@ public class BoardCategoryService {
 
     // 카테고리 추가
     public BaseRes createBoardCategory(PostCreateBoardCategoryReq postCreateBoardCategoryReq) {
+
+        Optional<BoardCategory> result = boardCategoryRepository.findByCategoryName(postCreateBoardCategoryReq.getCategoryName());
+
+        if (result.isPresent()) {
+            throw new BoardException(ErrorCode.DUPLICATED_BOARD_CATEGORY, String.format("Board Category [ %s ] is duplicated.", postCreateBoardCategoryReq.getCategoryName()));
+        }
+
         if (postCreateBoardCategoryReq.getCategoryName() == null || postCreateBoardCategoryReq.getCategoryName().isEmpty()) {
             throw new BoardCommentException(ErrorCode.INVALID_INPUT_VALUE, String.format("Board Category is empty."));
         }
@@ -91,12 +100,16 @@ public class BoardCategoryService {
     // 수정
     public BaseRes updateBoardCategory(PatchUpdateBoardCategoryReq patchUpdateBoardCategoryReq, Integer boardCategoryIdx) {
         Optional<BoardCategory> result = boardCategoryRepository.findById(boardCategoryIdx);
+        Optional<BoardCategory> resultCategoryName = boardCategoryRepository.findByCategoryName(patchUpdateBoardCategoryReq.getCategoryName());
 
-//        // 수정하고자 하는 카테고리를 찾지 못할 때
-//        if(!result.isPresent()){
-//            throw new BoardCommentException(ErrorCode.BOARD_CATEGORY_NOT_EXISTS, String.format("Board Category [ idx : %s ] is not exists.", boardCategoryIdx));
-//
-//        }
+        if (resultCategoryName.isPresent()) {
+            throw new BoardException(ErrorCode.DUPLICATED_BOARD_CATEGORY, String.format("Board Category [ %s ] is duplicated.", patchUpdateBoardCategoryReq.getCategoryName()));
+        }
+
+        // 수정하고자 하는 카테고리를 찾지 못할 때
+        if(!result.isPresent()){
+            throw new BoardCategoryException(ErrorCode.BOARD_CATEGORY_NOT_EXISTS, String.format("Board Category [ idx : %s ] is not exists.", boardCategoryIdx));
+        }
 
         if(result.isPresent()) {
             BoardCategory boardCategory = result.get();
@@ -129,7 +142,7 @@ public class BoardCategoryService {
 
         // 삭제하고자 하는 카테고리를 찾지 못할 때
         if(!result.isPresent()){
-            throw new BoardCommentException(ErrorCode.BOARD_CATEGORY_NOT_EXISTS, String.format("Board Category [ idx : %s ] is not exists.", boardCategoryIdx));
+            throw new BoardCategoryException(ErrorCode.BOARD_CATEGORY_NOT_EXISTS, String.format("Board Category [ idx : %s ] is not exists.", boardCategoryIdx));
 
         }
             BoardCategory boardCategory = result.get();

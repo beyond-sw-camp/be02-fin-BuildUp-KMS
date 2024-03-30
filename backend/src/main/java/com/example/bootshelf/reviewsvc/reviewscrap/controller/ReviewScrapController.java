@@ -61,7 +61,7 @@ public class ReviewScrapController {
             @PathVariable @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") @ApiParam(value = "정렬유형 : 1 (최신순), 2 (추천수 순), 3 (조회수 순), 4 (스크랩수 순), 5 (댓글수 순)") Integer sortType,
             @PageableDefault(size = 10) Pageable pageable
     ) {
-        return ResponseEntity.ok().body(reviewScrapService.findReviewScrapListByCategory(user, reviewCategoryIdx, sortType ,pageable));
+        return ResponseEntity.ok().body(reviewScrapService.findReviewScrapListByCategory(user, reviewCategoryIdx, sortType, pageable));
     }
 
     @Operation(summary = "ReviewScrap 여부 조회",
@@ -93,7 +93,7 @@ public class ReviewScrapController {
         return ResponseEntity.ok().body(reviewScrapService.deleteReviewScrap(user, reviewScrapIdx));
     }
 
-
+    // 현재 미사용 API
 //    @Operation(summary = "ReviewScrap 목록 조회",
 //            description = "스크랩한 리뷰 게시물 목록을 조회하는 API입니다.")
 //    @ApiResponses({

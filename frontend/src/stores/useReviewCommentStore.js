@@ -48,8 +48,13 @@ export const useReviewCommentStore = defineStore("reviewComment", {
         if(response.data.isSuccess === true) {
           window.location.href = `/review/${reviewIdx}`;
         }
-      } catch (error) {
-        console.error("ERROR : ", error);
+      }  catch (e) {
+        if (e.response && e.response.data){
+          console.log(e.response.data);
+          if (e.response.data.code === "COMMON-001") {
+            alert("댓글 내용을 입력해주세요.")
+          }
+        }
       }
     },
 
@@ -76,8 +81,13 @@ export const useReviewCommentStore = defineStore("reviewComment", {
         if(response.data.isSuccess === true) {
           window.location.href = `/review/${reviewIdx}`;
         }
-      } catch (error) {
-        console.error("수정 실패 : ", error);
+      } catch (e) {
+        if (e.response && e.response.data){
+          console.log(e.response.data);
+          if (e.response.data.code === "COMMON-001"){
+            alert("수정할 내용을 입력해주세요.")
+          }
+        }
       }
     },
 
@@ -125,11 +135,15 @@ export const useReviewCommentStore = defineStore("reviewComment", {
         if(response.data.isSuccess === true) {
           window.location.href = `/review/${reviewIdx}`;
         }
-      } catch (error) {
-        console.error("ERROR : ", error);
+      } catch (e) {
+        if (e.response && e.response.data){
+          console.log(e.response.data);
+          if (e.response.data.code === "COMMON-001"){
+            alert("댓글을 입력해주세요.")
+          }
+        }
       }
     },
-
 
     // 댓글 추천
     async reviewRecommend(commentIdx) {

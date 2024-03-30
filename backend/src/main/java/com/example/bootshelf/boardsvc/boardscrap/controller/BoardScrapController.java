@@ -47,7 +47,6 @@ public class BoardScrapController {
         return ResponseEntity.ok().body(boardScrapService.createBoardScrap(user, postCreateBoardScrapReq));
     }
 
-
     @Operation(summary = "BoardScrap 여부 조회",
             description = "게시글을 스크랩 여부를 확인하는 API입니다.")
     @ApiResponses({
@@ -62,7 +61,6 @@ public class BoardScrapController {
         return ResponseEntity.ok().body(boardScrapService.checkBoardScrap(user, boardIdx));
     }
 
-
     @Operation(summary = "BoardScrap 스크랩 삭제",
             description = "스크랩한 게시판 게시글을 삭제하는 API입니다.")
     @ApiResponses({
@@ -76,7 +74,6 @@ public class BoardScrapController {
     ) {
         return ResponseEntity.ok().body(boardScrapService.deleteBoardScrap(user, boardScrapIdx));
     }
-
 
     @Operation(summary = "BoardScrap 목록 카테고리별 조회",
             description = "스크랩한 게시판 게시글 목록을 카테고리별로 조회하는 API입니다.")
@@ -94,6 +91,7 @@ public class BoardScrapController {
         return ResponseEntity.ok().body(boardScrapService.findBoardScrapListByCategory(user, boardCategoryIdx, sortType, pageable));
     }
 
+    // 현재 미사용 API
 //    @Operation(summary = "BoardScrap 목록 조회",
 //            description = "스크랩한 게시판 게시글 목록을 조회하는 API입니다.")
 //    @ApiResponses({

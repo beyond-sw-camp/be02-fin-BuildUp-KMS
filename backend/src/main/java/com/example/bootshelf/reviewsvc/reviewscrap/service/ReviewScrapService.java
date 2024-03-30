@@ -195,7 +195,8 @@ public class ReviewScrapService {
         throw new ReviewScrapException(ErrorCode.REVIEW_SCRAP_NOT_EXISTS, String.format("Review scrap idx [ %s ] is not exists.", reviewScrapIdx));
     }
 
-    //    @Transactional(readOnly = true)
+    // 현재 미사용 API
+//    @Transactional(readOnly = true)
 //    public BaseRes findReviewScrapList(User user, Pageable pageable) {
 //        Page<ReviewScrap> reviewScrapList = reviewScrapRepository.findByUser(user, pageable);
 //        if (reviewScrapList.isEmpty())

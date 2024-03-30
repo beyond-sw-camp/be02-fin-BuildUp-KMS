@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin("*")
 @RequestMapping("/boardup")
 public class BoardUpController {
+
     private final BoardUpService boardUpService;
 
     @Operation(summary = "BoardUp 게시글 추천 추가",
@@ -42,20 +43,20 @@ public class BoardUpController {
         return ResponseEntity.ok().body(boardUpService.createBoardUp(user, postCreateBoardUpReq));
     }
 
-
-    @Operation(summary = "BoardUp 게시글 추천 목록 조회",
-            description = "추천한 게시판 게시글 목록을 조회하는 API입니다.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "성공"),
-            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
-    })
-    @GetMapping("/list")
-    public ResponseEntity<BaseRes> findBoardUpList(
-            @AuthenticationPrincipal User user,
-            @PageableDefault(size = 10) Pageable pageable
-    ) {
-        return ResponseEntity.ok().body(boardUpService.findBoardUpList(user, pageable));
-    }
+    // 현재 미사용 API
+//    @Operation(summary = "BoardUp 게시글 추천 목록 조회",
+//            description = "추천한 게시판 게시글 목록을 조회하는 API입니다.")
+//    @ApiResponses({
+//            @ApiResponse(responseCode = "200", description = "성공"),
+//            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+//    })
+//    @GetMapping("/list")
+//    public ResponseEntity<BaseRes> findBoardUpList(
+//            @AuthenticationPrincipal User user,
+//            @PageableDefault(size = 10) Pageable pageable
+//    ) {
+//        return ResponseEntity.ok().body(boardUpService.findBoardUpList(user, pageable));
+//    }
 
 
     @Operation(summary = "BoardUp 게시글 추천 여부 조회",

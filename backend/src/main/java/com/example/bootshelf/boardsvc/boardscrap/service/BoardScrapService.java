@@ -206,7 +206,8 @@ public class BoardScrapService {
         throw new BoardScrapException(ErrorCode.BOARD_SCRAP_NOT_EXISTS, String.format("Board scrap idx [ %s ] is not exists.", boardScrapIdx));
     }
 
-    //    @Transactional(readOnly = true)
+// 현재 미사용 API
+//    @Transactional(readOnly = true)
 //    public BaseRes findBoardScrapList(User user, Pageable pageable) {
 //        Page<BoardScrap> boardScrapList = boardScrapRepository.findByUser(user, pageable);
 //        if (boardScrapList.isEmpty())
@@ -215,7 +216,7 @@ public class BoardScrapService {
 //        List<GetFindBoardScrapRes> resultList = new ArrayList<>();
 //        for (BoardScrap boardScrap : boardScrapList.getContent()) {
 //
-//            if(boardScrap.getStatus() == false) {
+//            if (boardScrap.getStatus() == false) {
 //                continue;
 //            }
 //
