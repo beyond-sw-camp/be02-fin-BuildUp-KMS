@@ -4,6 +4,7 @@ import VueJwtDecode from "vue-jwt-decode";
 
 const backend = "http://192.168.0.61/api";
 // const backend = "http://localhost:8080";
+
 const storedToken = localStorage.getItem("token");
 
 export const useUserStore = defineStore("user", {
@@ -22,6 +23,7 @@ export const useUserStore = defineStore("user", {
     totalCnt: 0,
     userEmail: "",
     userList: [],
+    backend: process.env.VUE_APP_BACKEND_URL,
   }),
   actions: {
     async login(email, password) {

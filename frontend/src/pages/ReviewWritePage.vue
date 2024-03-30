@@ -154,8 +154,28 @@ import { useUserStore } from "../stores/useUserStore";
 import Quill from "quill";
 import axios from "axios";
 import QuillImageUploader from "quill-image-uploader";
+import hljs from "highlight.js";
+import "highlight.js/styles/monokai-sublime.css";
 
 Quill.register("modules/image-uploader", QuillImageUploader);
+
+hljs.configure({
+  languages: [
+    "javascript",
+    "java",
+    "python",
+    "html",
+    "css",
+    "c",
+    "cpp",
+    "csharp",
+    "ruby",
+    "php",
+    "typescript",
+    "kotlin",
+    "bash",
+  ],
+});
 
 export function imageHandler() {
   const storedToken = localStorage.getItem("token");
@@ -186,10 +206,13 @@ export function imageHandler() {
     quill.deleteText(range.index, 1);
 
     try {
+      const backend = "http://192.168.0.61/api";
+      // const backend = "http://localhost:8080";
+
       let response = await axios({
         method: "POST",
-        url: "http://192.168.0.61/api/review/image/upload",
-        // url: "http://localhost:8080/review/image/upload",
+        // url: "http://192.168.0.61/api/review/image/upload",
+        url: backend + "/review/image/upload",
         headers: {
           Authorization: `Bearer ${storedToken}`,
           "Content-Type": "multipart/form-data",
@@ -218,6 +241,9 @@ export default {
         editorOption: {
           placeholder: "내용을 입력해주세요",
           modules: {
+            syntax: {
+              highlight: (text) => hljs.highlightAuto(text).value,
+            },
             toolbar: {
               container: [
                 [
@@ -1202,7 +1228,16 @@ ul {
 }
 
 ::v-deep .ql-snow .ql-editor img {
-    max-width: 300px;
-    max-height: 400px
+  max-width: 300px;
+  max-height: 400px;
+}
+
+::v-deep .ql-snow .ql-editor pre.ql-syntax {
+  background-color: #23241f;
+  color: #f8f8f2;
+  overflow: visible;
+  font-family: Monaco;
+  letter-spacing: 0.07em;
+  font-size: 12px;
 }
 </style>
