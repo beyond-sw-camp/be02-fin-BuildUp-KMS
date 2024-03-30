@@ -20,7 +20,6 @@ export const useBoardCommentStore = defineStore({
     // boardCommentContent 상태를 정의합니다.
     boardComments: [],
     commentList: null,
-    backend: process.env.VUE_APP_BACKEND_URL,
   }),
   actions: {
    /** -------------------댓글 작성--------------------- **/

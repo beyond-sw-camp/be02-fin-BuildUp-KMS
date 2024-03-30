@@ -15,7 +15,6 @@ export const useTotalStore = defineStore("total", {
     isBoardExist: true,
     isLoading: false,
     isPageExist: true,
-    backend: process.env.VUE_APP_BACKEND_URL,
   }),
   actions: {
     async getHotReviewList(reviewCategoryIdx, sortType, page = 1) {

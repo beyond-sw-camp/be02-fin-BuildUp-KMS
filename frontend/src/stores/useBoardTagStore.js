@@ -9,7 +9,6 @@ const backend = "http://192.168.0.61/api";
 export const useBoardTagStore = defineStore("boardTag", {
   state: () => ({
     hotTagList: [],
-    backend: process.env.VUE_APP_BACKEND_URL,
   }),
   actions: {
 

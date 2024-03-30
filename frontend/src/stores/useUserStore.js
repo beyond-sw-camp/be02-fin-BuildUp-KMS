@@ -23,7 +23,6 @@ export const useUserStore = defineStore("user", {
     totalCnt: 0,
     userEmail: "",
     userList: [],
-    backend: process.env.VUE_APP_BACKEND_URL,
   }),
   actions: {
     async login(email, password) {
