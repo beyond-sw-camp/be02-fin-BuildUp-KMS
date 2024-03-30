@@ -4,6 +4,7 @@ import com.example.bootshelf.boardsvc.board.model.request.PatchUpdateBoardReq;
 import com.example.bootshelf.boardsvc.board.model.request.PostCreateBoardReq;
 import com.example.bootshelf.boardsvc.board.model.response.PostCreateBoardRes;
 import com.example.bootshelf.boardsvc.board.service.BoardService;
+import com.example.bootshelf.boardsvc.boardimage.service.BoardImageService;
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.user.model.entity.User;
 import io.swagger.annotations.Api;
@@ -26,7 +27,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
-@Tag(name = "Board", description = "Board 숙소 CRUD")
+@Tag(name = "Board", description = "Board CRUD")
 @Api(tags = "Board")
 @RestController
 @RequiredArgsConstructor
@@ -34,8 +35,24 @@ import javax.validation.constraints.Positive;
 @CrossOrigin("*")
 @RequestMapping("/board")
 public class BoardController {
+
+    private final BoardImageService boardImageService;
     private final BoardService boardService;
 
+    //    @Operation(summary = "Board 게시글 등록",
+//            description = "게시판에 게시글을 등록하는 API입니다.")
+//    @ApiResponses({
+//            @ApiResponse(responseCode = "200", description = "성공"),
+//            @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
+//    @PostMapping("/create")
+//    public ResponseEntity<BaseRes> createBoard(
+//            @AuthenticationPrincipal User user,
+//            @RequestPart(value = "board") PostCreateBoardReq postCreateBoardReq,
+//            @RequestPart(value = "boardImages", required = false) MultipartFile[] boardImages
+//    ) {
+//        BaseRes baseRes = boardService.createBoard(user, postCreateBoardReq, boardImages);
+//        return ResponseEntity.ok().body(baseRes);
+//    }
     @Operation(summary = "Board 게시글 등록",
             description = "게시판에 게시글을 등록하는 API입니다.")
     @ApiResponses({
@@ -44,10 +61,17 @@ public class BoardController {
     @PostMapping("/create")
     public ResponseEntity<BaseRes> createBoard(
             @AuthenticationPrincipal User user,
-            @RequestPart(value = "board") PostCreateBoardReq postCreateBoardReq,
-            @RequestPart(value = "boardImage", required = false) MultipartFile[] boardImages
+            @RequestBody @Valid PostCreateBoardReq postCreateBoardReq
     ) {
-        BaseRes baseRes = boardService.createBoard(user, postCreateBoardReq, boardImages);
+        BaseRes baseRes = boardService.createBoard(user, postCreateBoardReq);
+        return ResponseEntity.ok().body(baseRes);
+    }
+
+    @PostMapping("/image/upload")
+    public ResponseEntity<BaseRes> uploadBoardImage(
+            @RequestPart(value = "image") MultipartFile boardImage
+    ) {
+        BaseRes baseRes = boardImageService.uploadBoardImage(boardImage);
         return ResponseEntity.ok().body(baseRes);
     }
 
@@ -203,8 +227,7 @@ public class BoardController {
     @RequestMapping(method = RequestMethod.PATCH, value = "/update")
     public ResponseEntity<BaseRes> updateBoard(
             @RequestPart(value = "board") @Valid PatchUpdateBoardReq patchUpdateBoardReq,
-            @RequestPart(value = "boardImage", required = false) MultipartFile boardImage)
-    {
+            @RequestPart(value = "boardImage", required = false) MultipartFile boardImage) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         BaseRes baseRes = boardService.updateBoard(user, patchUpdateBoardReq, boardImage);
         return ResponseEntity.ok().body(baseRes);

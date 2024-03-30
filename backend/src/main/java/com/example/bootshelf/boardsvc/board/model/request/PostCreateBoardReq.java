@@ -28,8 +28,8 @@ public class PostCreateBoardReq {
     private String boardTitle;
 
     @NotNull(message = "게시글 내용은 필수 입력 항목입니다.")
-    @Length(min=1, max=400, message = "게시글 내용은 최소 1글자 이상, 최대 400자 이하여야 합니다.")
-    @ApiModelProperty(value = "게시글 내용(400자 이하)", example = "백준이나 프로그래머스 중 모가 좋을까요...", required = true)
+    @Length(min=1, message = "게시글 내용은 최소 1글자 이상이어야 합니다.")
+    @ApiModelProperty(value = "게시글 내용", example = "백준이나 프로그래머스 중 모가 좋을까요...", required = true)
     private String boardContent;
 
     private List<String> tagList;
