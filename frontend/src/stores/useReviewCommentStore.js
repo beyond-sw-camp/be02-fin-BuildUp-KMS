@@ -10,7 +10,6 @@ export const useReviewCommentStore = defineStore("reviewComment", {
     reviewCommentList: [],
     reviewReplyList: [],
     reviewCommentUpList: [],
-    backend: process.env.VUE_APP_BACKEND_URL,
   }),
   actions: {
     // 댓글 조회

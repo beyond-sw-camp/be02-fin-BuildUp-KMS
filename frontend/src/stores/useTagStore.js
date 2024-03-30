@@ -10,7 +10,6 @@ export const useTagStore = defineStore("tag", {
     currentPage: 0,
     totalPages: 0,
     totalCnt: 0,
-    backend: process.env.VUE_APP_BACKEND_URL,
   }),
   actions: {
     async getTagList(page = 1) {

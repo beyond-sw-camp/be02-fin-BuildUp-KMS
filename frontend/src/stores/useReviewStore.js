@@ -18,7 +18,6 @@ export const useReviewStore = defineStore("review", {
     reviewDetail: [],
     isLoading: false,
     isPageExist: true,
-    backend: process.env.VUE_APP_BACKEND_URL,
   }),
   actions: {
     async createReview(review) {
