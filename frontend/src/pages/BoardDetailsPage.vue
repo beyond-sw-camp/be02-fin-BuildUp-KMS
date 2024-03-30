@@ -69,13 +69,6 @@
                     </div>
                   </div>
                 </div>
-                <!-- <ConfirmDialogComponent
-                  v-if="showMyPageConfirmDialog"
-                  :isVisible="showMyPageConfirmDialog"
-                  message="마이페이지로 이동하시겠습니까?"
-                  :onConfirm="moveMyPage"
-                  :onCancel="dontMoveMyPage"
-                /> -->
                 <div
                   v-show="isActive"
                   class="layer pop_product pop_shopping_bag"
@@ -165,11 +158,14 @@
               </div>
             </div>
             <div class="css-luqgif">
-              <div class="editedQ_QContent">
-                <p class="css-content">
+              <div
+                v-dompurify-html="boardDetail.boardContent"
+                class="editedQ_QContent"
+              >
+                <!-- <p class="css-content">
                   {{ boardDetail.boardContent }}
-                </p>
-                <div
+                </p> -->
+                <!-- <div
                   v-if="
                     boardDetail.boardImageList &&
                     boardDetail.boardImageList.length > 0
@@ -181,7 +177,7 @@
                     :alt="`이미지 ${index + 1}`"
                     :src="image.boardImage"
                   />
-                </div>
+                </div> -->
               </div>
               <div class="css-iqys2n">
                 <!-- 태그 컴포넌트 자리-->
@@ -761,9 +757,68 @@ img {
   letter-spacing: normal;
 }
 
-.editedQ_QContent img {
+::v-deep .editedQ_QContent{
+  font-size: 14px;
+  color: #505254;
+  line-height: 1.8;
+  word-break: break-all;
+  font-weight: 400;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  font-family: Pretendard, -apple-system, “system-ui”, "Malgun Gothic",
+    "맑은 고딕", sans-serif;
+}
+
+::v-deep .editedQ_QContent p {
+  font-size: 14px;
+  color: #505254;
+  line-height: 1.8;
+  word-break: break-all;
+  font-weight: 400;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  font-family: Pretendard, -apple-system, “system-ui”, "Malgun Gothic",
+    "맑은 고딕", sans-serif;
+}
+
+::v-deep .editedQ_QContent strong {
+  font-weight: 700;
+}
+
+::v-deep .editedQ_QContent img {
   margin-top: 20px;
-  max-width: 89vw;
+  max-width: 300px;
+}
+
+::v-deep .editedQ_QContent li {
+  margin-bottom: 4px;
+  line-height: 1.3;
+  font-size: 14px;
+  color: #505254;
+  font-weight: 400;
+}
+
+::v-deep .editedQ_QContent pre.ql-syntax {
+  overflow-x: auto;
+  background-color: #f4f5f6;
+  border: 1px solid #eaebed;
+  padding: 14px 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+  max-width: 90vw;
+  white-space: pre;
+  line-height: 1.42;
+}
+
+::v-deep .editedQ_QContent .ql-align-center {
+    text-align: center;
+}
+
+::v-deep .editedQ_QContent .ql-align-right {
+    text-align: right;
+}
+::v-deep .editedQ_QContent .ql-align-justify {
+    text-align: justify;
 }
 
 @media (min-width: 1024px) {
@@ -1213,5 +1268,17 @@ span.btn.black {
   align-items: center;
   gap: 4px;
   cursor: pointer;
+}
+/* 코드 블럭*/
+.editedQ_QContent pre.ql-syntax {
+  overflow-x: auto;
+  background-color: #f4f5f6;
+  border: 1px solid #eaebed;
+  padding: 14px 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+  max-width: 90vw;
+  white-space: pre;
+  line-height: 1.42;
 }
 </style>
