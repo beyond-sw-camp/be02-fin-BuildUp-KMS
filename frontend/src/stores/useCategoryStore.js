@@ -8,6 +8,7 @@ export const useCategoryStore = defineStore("category", {
   state: () => ({
     boardCategoryList: [],
     reviewCategoryList: [],
+    backend: process.env.VUE_APP_BACKEND_URL,
   }),
   actions: {
     async getBoardCategoryList() {

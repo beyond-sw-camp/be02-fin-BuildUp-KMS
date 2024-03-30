@@ -9,6 +9,7 @@ export const useAdminStore = defineStore("admin", {
   state: () => ({
     isAdminAuthenticated: false,
     adminDecodedToken: null,
+    backend: process.env.VUE_APP_BACKEND_URL,
   }),
   actions: {
     async adminSignUp(postSignUpAdminReq) {

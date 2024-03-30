@@ -3,6 +3,7 @@ import axios from "axios";
 
 const backend = "http://192.168.0.61/api";
 // const backend = "http://localhost:8080";
+
 const storedToken = localStorage.getItem("token");
 
 export const useReviewStore = defineStore("review", {
@@ -16,7 +17,8 @@ export const useReviewStore = defineStore("review", {
     reviewIdx: 0,
     reviewDetail: [],
     isLoading: false,
-    isPageExist: true
+    isPageExist: true,
+    backend: process.env.VUE_APP_BACKEND_URL,
   }),
   actions: {
     async createReview(review) {
@@ -45,8 +47,6 @@ export const useReviewStore = defineStore("review", {
             alert(
               "후기글 제목이 이미 등록되어 있는 제목입니다. 제목을 변경해주세요."
             );
-          } else if(e.response.data.code === "COMMON-001") {
-            alert("카테고리, 제목, 별점은 필수로 입력하셔야 합니다.")
           }
         }
       }

@@ -4,6 +4,7 @@ import axios from "axios";
 
 const backend = "http://192.168.0.61/api";
 // const backend = "http://localhost:8080";
+
 // boardStore를 사용하면 해당 idx 가져오기..
 // const boardIdx = useBoardStore().boardIdx;
 
@@ -19,6 +20,7 @@ export const useBoardCommentStore = defineStore({
     // boardCommentContent 상태를 정의합니다.
     boardComments: [],
     commentList: null,
+    backend: process.env.VUE_APP_BACKEND_URL,
   }),
   actions: {
    /** -------------------댓글 작성--------------------- **/

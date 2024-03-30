@@ -13,6 +13,7 @@
     "@looop/quill-image-resize-module-react": "^3.1.5",
     "axios": "^1.6.7",
     "core-js": "^3.8.3",
+    "highlight.js": "^11.9.0",
     "jest-junit": "^16.0.0",
     "lodash": "^4.17.21",
     "pinia": "^2.1.7",

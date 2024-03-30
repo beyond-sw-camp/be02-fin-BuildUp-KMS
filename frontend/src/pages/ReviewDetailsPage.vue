@@ -266,13 +266,31 @@ import { useReviewStore } from "../stores/useReviewStore";
 import { useUserStore } from "../stores/useUserStore";
 import { useReviewCommentStore } from "../stores/useReviewCommentStore";
 import ReviewCommentComponent from "../components/ReviewCommentComponent.vue";
-// import ConfirmDialogComponent from "/src/components/ConfirmDialogComponent.vue";
+import hljs from "highlight.js";
+import "highlight.js/styles/monokai-sublime.css";
+
+hljs.configure({
+  languages: [
+    "javascript",
+    "java",
+    "python",
+    "html",
+    "css",
+    "c",
+    "cpp",
+    "csharp",
+    "ruby",
+    "php",
+    "typescript",
+    "kotlin",
+    "bash",
+  ],
+});
 
 export default {
   name: "ReviewDetailsPage",
   components: {
     ReviewCommentComponent,
-    // ConfirmDialogComponent,
   },
   data() {
     return {
@@ -313,8 +331,18 @@ export default {
   async mounted() {
     await this.checkReviewUp();
     await this.checkReviewScrap();
+
+    this.highlightCode();
   },
   methods: {
+    highlightCode() {
+      this.$nextTick(() => {
+        document.querySelectorAll('pre').forEach((block) => {
+          hljs.highlightBlock(block);
+        });
+      });
+    },
+
     async submitComment() {
       const reviewIdx = this.$route.params.idx;
       try {
@@ -780,7 +808,7 @@ img {
 
 ::v-deep .editedQ_QContent pre.ql-syntax {
   overflow-x: auto;
-  background-color: #f4f5f6;
+  background-color: black;
   border: 1px solid #eaebed;
   padding: 14px 20px;
   border-radius: 8px;
@@ -788,6 +816,9 @@ img {
   max-width: 90vw;
   white-space: pre;
   line-height: 1.42;
+  font-family: Monaco;
+  letter-spacing: 0.07em;
+  font-size: 12px;
 }
 
 ::v-deep .editedQ_QContent .ql-align-center {
