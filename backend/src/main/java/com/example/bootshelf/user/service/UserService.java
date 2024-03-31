@@ -49,7 +49,7 @@ public class UserService {
     private String secretKey;
     @Value("${jwt.token.expired-time-ms}")
     private Long expiredTimeMs;
-    @Value("${jwt.token.refresh-expiration-hours}")
+    @Value("${jwt.token.refresh-expiration-ms}")
     private Long refreshTime;
     @Value("${cloud.aws.s3.profile-bucket}")
     private String profileBucket;

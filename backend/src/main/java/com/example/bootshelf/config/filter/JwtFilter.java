@@ -6,7 +6,10 @@ import com.example.bootshelf.common.error.ErrorResponse;
 import com.example.bootshelf.config.utils.JwtUtils;
 import com.example.bootshelf.common.error.entityexception.UserException;
 import com.example.bootshelf.user.model.entity.User;
+import com.example.bootshelf.user.model.entity.UserRefreshToken;
+import com.example.bootshelf.user.repository.UserRefreshTokenRepository;
 import com.example.bootshelf.user.repository.UserRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,20 +32,22 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private UserRepository userRepository;
 
-    private JwtUtils jwtUtils;
+    private UserRefreshTokenRepository userRefreshTokenRepository;
 
     @Value("${jwt.secret-key}")
     private String secretKey;
 
-    @Value("${jwt.token.refresh-expiration-hours}")
+    @Value("${jwt.token.refresh-expiration-ms}")
     private Long refreshTime;
 
     @Value("${jwt.token.expired-time-ms}")
     private Long expiredTimeMs;
 
-    public JwtFilter(String secretKey, UserRepository userRepository){
+    public JwtFilter(String secretKey, UserRepository userRepository, Long refreshTime, Long expiredTimeMs){
         this.userRepository = userRepository;
         this.secretKey = secretKey;
+        this.refreshTime = refreshTime;
+        this.expiredTimeMs = expiredTimeMs;
     }
 
     public Long reissueLimit(Long expiredTimeMs, Long refreshTime){
@@ -102,16 +107,15 @@ public class JwtFilter extends OncePerRequestFilter {
                     }
                 }
             }
+        } catch (ExpiredJwtException e){
+            reissueAccessToken(request, response, filterChain, e, expiredTimeMs, refreshTime);
         } catch (UserException e) {
             // JwtUtils에서 던진 UserAccountException 처리
             handleJwtException(response, e);
         } catch (ServletException e) {
             // Spring Security 예외 처리
             handleJwtException(response, new UserException(ErrorCode.UNAUTHORIZED, e.getMessage()));
-        } catch (ExpiredJwtException e){
-            reissueAccessToken(request, response, filterChain, e);
         }
-
     }
     private String parseBearerToken(HttpServletRequest request, String headerName) {
         return Optional.ofNullable(request.getHeader(headerName))
@@ -119,16 +123,18 @@ public class JwtFilter extends OncePerRequestFilter {
                 .map(token -> token.substring(7))
                 .orElse(null);
     }
-    private void reissueAccessToken(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain ,Exception exception) {
+    private void reissueAccessToken(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain ,Exception exception, Long expiredTimeMs, Long refreshTime) {
         try {
             String refreshToken = parseBearerToken(request, "Refresh-Token");
             if (refreshToken == null) {
                 throw exception;
             }
-            Long reissueLimit = reissueLimit(expiredTimeMs,refreshTime);
+
             String oldAccessToken = parseBearerToken(request, HttpHeaders.AUTHORIZATION);
-            jwtUtils.validateRefreshToken(refreshToken, oldAccessToken, secretKey, reissueLimit);
-            String newAccessToken = jwtUtils.recreateAccessToken(oldAccessToken,secretKey,expiredTimeMs, reissueLimit);
+            Integer userIdx= JwtUtils.validateRefreshToken(refreshToken, oldAccessToken, secretKey);
+            upReissueCount(userIdx, expiredTimeMs,refreshTime);
+
+            String newAccessToken = recreateAccessToken(userIdx, secretKey,expiredTimeMs,refreshTime);
             String authority = JwtUtils.getAuthority(newAccessToken, secretKey);
 
 
@@ -153,5 +159,28 @@ public class JwtFilter extends OncePerRequestFilter {
         } catch (Exception e) {
             request.setAttribute("exception", e);
         }
+    }
+
+    public void upReissueCount (Integer userIdx, Long expiredTimeMs, Long refreshTime){
+        Long reissueLimit = reissueLimit(expiredTimeMs, refreshTime);
+        if(userRefreshTokenRepository.findByUserIdxAndReissueCountLessThan(userIdx,reissueLimit).isPresent()){
+            UserRefreshToken refreshToken = userRefreshTokenRepository.findByUserIdxAndReissueCountLessThan(userIdx,reissueLimit).get();
+            refreshToken.increaseReissueCount(); // 재발급 횟수 증가
+            userRefreshTokenRepository.save(refreshToken); // 변경 내용 저장
+        } else {
+            throw new ExpiredJwtException(null, null, "Refresh token expired.");
+        }
+    }
+
+    public String recreateAccessToken(Integer userIdx, String secretKey, Long expiredTimeMs, Long refreshTime) throws JsonProcessingException {
+
+        Optional<User> result = userRepository.findByIdx(userIdx);
+        if(!result.isPresent()){
+            throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("User idx [ %s ] is not exists.", userIdx));
+        }
+        User user = result.get();
+        upReissueCount(userIdx,expiredTimeMs,refreshTime);
+
+        return JwtUtils.generateAccessToken(user,secretKey, expiredTimeMs);
     }
 }

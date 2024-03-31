@@ -25,6 +25,12 @@ public class SecurityConfig {
     @Value("${jwt.secret-key}")
     private String secretKey;
 
+    @Value("${jwt.token.refresh-expiration-ms}")
+    private Long refreshTime;
+
+    @Value("${jwt.token.expired-time-ms}")
+    private Long expiredTimeMs;
+
     private final UserRepository userRepository;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final UserOAuth2Service userOAuth2Service;
@@ -81,7 +87,7 @@ public class SecurityConfig {
 //                    .authenticationEntryPoint(customAuthenticationEntryPoint) // 인증에 대한 예외 처리
                     .and()
                     .formLogin().disable()
-                    .addFilterBefore(new JwtFilter(secretKey, userRepository), UsernamePasswordAuthenticationFilter.class)
+                    .addFilterBefore(new JwtFilter(secretKey, userRepository , refreshTime, expiredTimeMs), UsernamePasswordAuthenticationFilter.class)
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                     // OAuth 2.0 로그인 처리
