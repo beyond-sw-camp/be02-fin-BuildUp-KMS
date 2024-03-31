@@ -11,6 +11,7 @@ import com.example.bootshelf.boardsvc.board.repository.BoardRepository;
 import com.example.bootshelf.boardsvc.boardcategory.model.entity.BoardCategory;
 import com.example.bootshelf.boardsvc.boardcomment.model.entity.BoardComment;
 import com.example.bootshelf.boardsvc.boardimage.model.entity.BoardImage;
+import com.example.bootshelf.boardsvc.boardimage.repository.BoardImageRepository;
 import com.example.bootshelf.boardsvc.boardimage.service.BoardImageService;
 import com.example.bootshelf.boardsvc.boardscrap.model.response.GetFindBoardScrapRes;
 import com.example.bootshelf.boardsvc.boardscrap.model.response.GetFindBoardScrapResResult;
@@ -26,6 +27,10 @@ import com.example.bootshelf.reviewsvc.reviewcomment.model.entity.ReviewComment;
 import com.example.bootshelf.user.model.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -51,10 +56,60 @@ public class BoardService {
     private final BoardTagService boardTagService;
     private final BoardImageService boardImageService;
     private final ReviewRepository reviewRepository;
+    private final BoardImageRepository boardImageRepository;
 
 
+    //    @Transactional(readOnly = false)
+//    public BaseRes createBoard(User user, PostCreateBoardReq request, MultipartFile[] boardImages) {
+//
+//        Optional<Board> result = boardRepository.findByBoardTitle(request.getBoardTitle());
+//
+//        if (result.isPresent()) {
+//            throw new BoardException(ErrorCode.DUPICATED_BOARD_TITLE, String.format("Board Title [ %s ] is duplicated.", request.getBoardTitle()));
+//        }
+//
+//        Board board = Board.builder()
+//                .boardTitle(request.getBoardTitle())
+//                .boardContent(request.getBoardContent())
+//                .boardCategory(BoardCategory.builder().idx(request.getBoardCategoryIdx()).build())
+//                .user(user)
+//                .status(true)
+//                .viewCnt(0)
+//                .upCnt(0)
+//                .commentCnt(0)
+//                .scrapCnt(0)
+//                .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+//                .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+//                .build();
+//
+//        board = boardRepository.save(board);
+//
+//        if (boardImages != null && boardImages.length > 0) {
+//            boardImageService.createBoardImage(board.getIdx(), boardImages);
+//        }
+//
+//        if (request.getTagList() != null) {
+//            boardTagService.saveBoardTag(request.getTagList(), board.getIdx());
+//        }
+//
+//        PostCreateBoardRes response = PostCreateBoardRes.builder()
+//                .boardIdx(board.getIdx())
+//                .boardtitle(board.getBoardTitle())
+//                .boardcontent(board.getBoardContent())
+//                .boardCategoryIdx(board.getBoardCategory().getIdx())
+//                .boardTagList(request.getTagList())
+//                .build();
+//
+//        BaseRes baseRes = BaseRes.builder()
+//                .isSuccess(true)
+//                .message("게시글 등록 성공")
+//                .result(response)
+//                .build();
+//
+//        return baseRes;
+//    }
     @Transactional(readOnly = false)
-    public BaseRes createBoard(User user, PostCreateBoardReq request, MultipartFile[] boardImages) {
+    public BaseRes createBoard(User user, PostCreateBoardReq request) {
 
         Optional<Board> result = boardRepository.findByBoardTitle(request.getBoardTitle());
 
@@ -78,8 +133,15 @@ public class BoardService {
 
         board = boardRepository.save(board);
 
-        if (boardImages != null && boardImages.length > 0) {
-            boardImageService.createBoardImage(board.getIdx(), boardImages);
+        // 게시글 본문의 html에서 img url을 뽑아내기 위해 jsoup 라이브러리 사용
+        Document doc = Jsoup.parse(request.getBoardContent());
+        Elements images = doc.select("img");
+
+        if (!images.isEmpty()) {
+            for (Element img : images) {
+                String imageUrl = img.attr("src");
+                boardImageService.saveImageUrl(board.getIdx(), imageUrl);
+            }
         }
 
         if (request.getTagList() != null) {
@@ -131,7 +193,7 @@ public class BoardService {
         List<BoardTag> boardTagList = board.getBoardTagList();
         List<String> tagNames = new ArrayList<>();
 
-        if(!boardTagList.isEmpty()) {
+        if (!boardTagList.isEmpty()) {
             for (BoardTag boardTag : boardTagList) {
                 String tagName = boardTag.getTag().getTagName();
                 tagNames.add(tagName);
@@ -203,6 +265,11 @@ public class BoardService {
                 .build();
     }
 
+    // 목록 조회 시 글만 추출
+    public static String extractText(String html) {
+        Document doc = Jsoup.parse(html);
+        return doc.text();
+    }
 
     // 내 작성글 조회
     @Transactional(readOnly = true)
@@ -220,12 +287,14 @@ public class BoardService {
                 tagNames.add(tagName);
             }
 
+            String textContent = extractText(board.getBoardContent());
+
             GetListBoardRes getListBoardRes = GetListBoardRes.builder()
                     .idx(board.getIdx())
                     .nickName(user.getNickName())
                     .userProfileImage(user.getProfileImage())
                     .title(board.getBoardTitle())
-                    .content(board.getBoardContent())
+                    .content(textContent)
                     .boardCategoryIdx(board.getBoardCategory().getIdx())
                     .tagNameList(tagNames)
                     .viewCnt(board.getViewCnt())
@@ -273,12 +342,14 @@ public class BoardService {
                 tagNames.add(tagName);
             }
 
+            String textContent = extractText(board.getBoardContent());
+
             GetListBoardRes getListBoardRes = GetListBoardRes.builder()
                     .idx(board.getIdx())
                     .nickName(board.getUser().getNickName())
                     .userProfileImage(user.getProfileImage())
                     .title(board.getBoardTitle())
-                    .content(board.getBoardContent())
+                    .content(textContent)
                     .boardCategoryIdx(board.getBoardCategory().getIdx())
                     .tagNameList(tagNames)
                     .viewCnt(board.getViewCnt())
@@ -337,12 +408,14 @@ public class BoardService {
                 tagNames.add(tagName);
             }
 
+            String textContent = extractText(board.getBoardContent());
+
             GetListBoardRes getListBoardRes = GetListBoardRes.builder()
                     .idx(board.getIdx())
                     .nickName(board.getUser().getNickName())
                     .userProfileImage(board.getUser().getProfileImage())
                     .title(board.getBoardTitle())
-                    .content(board.getBoardContent())
+                    .content(textContent)
                     .boardCategoryIdx(board.getBoardCategory().getIdx())
                     .tagNameList(tagNames)
                     .viewCnt(board.getViewCnt())
@@ -401,12 +474,14 @@ public class BoardService {
                 tagNames.add(tagName);
             }
 
+            String textContent = extractText(board.getBoardContent());
+
             GetListBoardRes getListBoardRes = GetListBoardRes.builder()
                     .idx(board.getIdx())
                     .nickName(board.getUser().getNickName())
                     .userProfileImage(board.getUser().getProfileImage())
                     .title(board.getBoardTitle())
-                    .content(board.getBoardContent())
+                    .content(textContent)
                     .boardCategoryIdx(board.getBoardCategory().getIdx())
                     .tagNameList(tagNames)
                     .viewCnt(board.getViewCnt())
@@ -465,12 +540,14 @@ public class BoardService {
                 tagNames.add(tagName);
             }
 
+            String textContent = extractText(board.getBoardContent());
+
             GetListBoardRes getListBoardRes = GetListBoardRes.builder()
                     .idx(board.getIdx())
                     .nickName(board.getUser().getNickName())
                     .userProfileImage(board.getUser().getProfileImage())
                     .title(board.getBoardTitle())
-                    .content(board.getBoardContent())
+                    .content(textContent)
                     .boardCategoryIdx(board.getBoardCategory().getIdx())
                     .tagNameList(tagNames)
                     .viewCnt(board.getViewCnt())
@@ -522,10 +599,12 @@ public class BoardService {
 
         for (Board board : boardList) {
 
+            String textContent = extractText(board.getBoardContent());
+
             GetBoardListByQueryRes getBoardListByQueryRes = GetBoardListByQueryRes.builder()
                     .idx(board.getIdx())
                     .title(board.getBoardTitle())
-                    .content(board.getBoardContent())
+                    .content(textContent)
                     .nickName(board.getUser().getNickName())
                     .createdAt(board.getCreatedAt())
                     .updatedAt(board.getUpdatedAt())
@@ -571,10 +650,12 @@ public class BoardService {
                 tagNames.add(tagName);
             }
 
+            String textContent = extractText(board.getBoardContent());
+
             GetBoardListByQueryRes getBoardListByQueryRes = GetBoardListByQueryRes.builder()
                     .idx(board.getIdx())
                     .title(board.getBoardTitle())
-                    .content(board.getBoardContent())
+                    .content(textContent)
                     .nickName(board.getUser().getNickName())
                     .createdAt(board.getCreatedAt())
                     .updatedAt(board.getUpdatedAt())
@@ -672,7 +753,7 @@ public class BoardService {
 
     // 게시글 수정
     @Transactional(readOnly = false)
-    public BaseRes updateBoard(User user, PatchUpdateBoardReq patchUpdateBoardReq, MultipartFile boardImage) {
+    public BaseRes updateBoard(User user, PatchUpdateBoardReq patchUpdateBoardReq) {
         Optional<Board> result = boardRepository.findByIdxAndUserIdx(patchUpdateBoardReq.getBoardIdx(), user.getIdx());
 
         if (!result.isPresent()) {
@@ -680,7 +761,7 @@ public class BoardService {
         }
         Board board = result.get();
 
-        if(!board.getBoardTitle().equals(patchUpdateBoardReq.getBoardTitle())) {
+        if (!board.getBoardTitle().equals(patchUpdateBoardReq.getBoardTitle())) {
             Optional<Board> resultTitle = boardRepository.findByBoardTitle(patchUpdateBoardReq.getBoardTitle());
 
             if (resultTitle.isPresent()) {
@@ -690,8 +771,16 @@ public class BoardService {
 
         boardTagService.updateBoardTag(patchUpdateBoardReq.getTagList(), patchUpdateBoardReq.getBoardIdx());
 
-        if (boardImage != null && boardImage.equals("")) {
-            boardImageService.updateBoardImage(board, boardImage);
+        // 게시글 본문의 html에서 img url을 뽑아내기 위해 jsoup 라이브러리 사용
+        Document doc = Jsoup.parse(patchUpdateBoardReq.getBoardContent());
+        Elements images = doc.select("img");
+
+        if (!images.isEmpty()) {
+            boardImageRepository.deleteAllByBoard_idx(board.getIdx());
+            for (Element img : images) {
+                String imageUrl = img.attr("src");
+                boardImageService.saveImageUrl(board.getIdx(), imageUrl);
+            }
         }
 
         board.setBoardTitle(patchUpdateBoardReq.getBoardTitle());
@@ -800,13 +889,15 @@ public class BoardService {
                 tagNames.add(tagName);
             }
 
+            String textContent = extractText(board.getBoardContent());
+
             GetListHotBoardRes getListHotBoardRes = GetListHotBoardRes.builder()
                     .idx(board.getIdx())
                     .userIdx(board.getUser().getIdx())
                     .nickName(board.getUser().getNickName())
                     .profileImage(board.getUser().getProfileImage())
                     .title(board.getBoardTitle())
-                    .content(board.getBoardContent())
+                    .content(textContent)
                     .tagNameList(tagNames)
                     .viewCnt(board.getViewCnt())
                     .upCnt(board.getUpCnt())
@@ -865,13 +956,15 @@ public class BoardService {
                 tagNames.add(tagName);
             }
 
+            String textContent = extractText(board.getBoardContent());
+
             GetListHotBoardRes getListHotBoardRes = GetListHotBoardRes.builder()
                     .idx(board.getIdx())
                     .userIdx(board.getUser().getIdx())
                     .nickName(board.getUser().getNickName())
                     .profileImage(board.getUser().getProfileImage())
                     .title(board.getBoardTitle())
-                    .content(board.getBoardContent())
+                    .content(textContent)
                     .tagNameList(tagNames)
                     .viewCnt(board.getViewCnt())
                     .upCnt(board.getUpCnt())

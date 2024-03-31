@@ -12,5 +12,5 @@ import java.util.Optional;
 @Repository
 public interface BoardCategoryRepository extends JpaRepository<BoardCategory, Integer> {
     Optional<BoardCategory> findByIdx(Integer idx);
-
+    Optional<BoardCategory> findByCategoryName(String categoryName);
 }

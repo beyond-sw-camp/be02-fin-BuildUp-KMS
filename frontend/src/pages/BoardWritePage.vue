@@ -21,7 +21,7 @@
           <div class="css-r8q25b">
             {{
               selectedCategory
-                ? "[ " + selectedCategory + "] 게시글 작성하기"
+                ? "[" + selectedCategory + "] 게시글 작성하기"
                 : "게시글 작성하기"
             }}
           </div>
@@ -118,103 +118,16 @@
           <div class="css-17wj0zk">
             <div class="">
               <div class="quill">
-                <div class="ql-container ql-snow">
-                  <!-----이미지 들어가는 곳----->
-                  <div class="css-image" style="text-align: center">
-                    <div
-                      class="image-container"
-                      style="max-width: 100%; display: inline-block"
-                    >
-                      <img
-                        v-if="imageUrl"
-                        :src="imageUrl"
-                        alt="Uploaded Image"
-                        style="max-width: 70%; height: auto"
-                      />
-                    </div>
-                  </div>
-                  <!-----이미지 들어가는 곳----->
-                  <textarea
-                    class="ql-editor ql-blank"
-                    placeholder="내용을 입력하세요
-
- • 게시판 특성에 맞지 않는 내용(분란성 글 및 댓글) 작성 시 별도의
- &nbsp;&nbsp;통보 없이 활동 정지, 글 이동 및 삭제될 수 있습니다."
-                    v-model="board.boardContent"
-                  ></textarea>
-                  <div
-                    class="ql-clipboard"
-                    contenteditable="true"
-                    tabindex="-1"
-                  ></div>
-                  <div class="ql-tooltip ql-hidden">
-                    <a
-                      class="ql-preview"
-                      rel="noopener noreferrer"
-                      target="_blank"
-                      href="about:blank"
-                    ></a
-                    ><input
-                      type="text"
-                      data-formula="e=mc^2"
-                      data-link="https://quilljs.com"
-                      data-video="Embed URL"
-                    /><a class="ql-action"></a><a class="ql-remove"></a>
-                  </div>
-                </div>
+                <quill-editor
+                  ref="quillEditor"
+                  v-model:value="state.content"
+                  :options="state.editorOption"
+                  :disabled="false"
+                  @change="onEditorChange($event)"
+                ></quill-editor>
               </div>
             </div>
-            <div id="toolbar" class="ql-toolbar ql-snow">
-              <span class="ql-formats"
-                ><button
-                  content="이미지 첨부"
-                  class="ql-image css-1qhzcav"
-                  type="button"
-                  @click="uploadImage()"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                  >
-                    <rect
-                      x="3.336"
-                      y="3.332"
-                      width="13.333"
-                      height="13.333"
-                      rx="1.667"
-                      stroke="#505254"
-                      stroke-width="1.75"
-                      stroke-linejoin="round"
-                    ></rect>
-                    <path
-                      d="m16.664 12.499-5-4.167-7.5 7.5"
-                      stroke="#505254"
-                      stroke-width="1.75"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    ></path>
-                    <rect
-                      x="5.836"
-                      y="5.832"
-                      width="2.5"
-                      height="2.5"
-                      rx="1.25"
-                      fill="#505254"
-                    ></rect>
-                  </svg></button
-              ></span>
-            </div>
           </div>
-          <input
-            id="input_file"
-            type="file"
-            class="css-38lglc"
-            style="display: none"
-            @change="handleImageUpload"
-          />
           <div class="css-lycl0a">
             <button class="css-9ns22y" @click="cancelCreateBoard()">
               취소
@@ -229,11 +142,125 @@
 <script>
 import { mapStores } from "pinia";
 import { useBoardStore } from "../stores/useBoardStore";
+import Quill from "quill";
+import axios from "axios";
+import QuillImageUploader from "quill-image-uploader";
+import hljs from "highlight.js";
+import "highlight.js/styles/monokai-sublime.css";
+
+Quill.register("modules/image-uploader", QuillImageUploader);
+
+hljs.configure({
+  languages: [
+    "javascript",
+    "java",
+    "python",
+    "html",
+    "css",
+    "c",
+    "cpp",
+    "csharp",
+    "ruby",
+    "php",
+    "typescript",
+    "kotlin",
+    "bash",
+  ],
+});
+
+export function imageHandler() {
+  const storedToken = localStorage.getItem("token");
+  const quill = this.quill;
+
+  const input = document.createElement("input");
+
+  input.setAttribute("type", "file");
+  input.setAttribute("accept", "image/*");
+  input.click();
+
+  input.onchange = async () => {
+    const file = input.files[0];
+    const formData = new FormData();
+
+    formData.append("image", file);
+
+    const range = quill.getSelection(true);
+
+    quill.insertEmbed(
+      range.index,
+      "image",
+      "https://cdn.dribbble.com/users/1341307/screenshots/5377324/morph_dribbble.gif"
+    );
+
+    quill.setSelection(range.index + 1);
+
+    quill.deleteText(range.index, 1);
+
+    try {
+      const backend = "http://192.168.0.61/api";
+      // const backend = "http://localhost:8080";
+
+      let response = await axios({
+        method: "POST",
+        // url: "http://192.168.0.61/api/board/image/upload",
+        url: backend + "/board/image/upload",
+        headers: {
+          Authorization: `Bearer ${storedToken}`,
+          "Content-Type": "multipart/form-data",
+        },
+        data: formData,
+      });
+
+      if (response.data.isSuccess === true) {
+        let imageUrl = response.data.result.imageUrl;
+        quill.insertEmbed(range.index, "image", imageUrl);
+        this.board.boardImageList.push(imageUrl);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+}
 
 export default {
   name: "BoardWritePage",
   data() {
     return {
+      state: {
+        content: "",
+        _content: "",
+        editorOption: {
+          placeholder: "내용을 입력해주세요",
+          modules: {
+            syntax: {
+              highlight: (text) => hljs.highlightAuto(text).value,
+            },
+            toolbar: {
+              container: [
+                [
+                  "bold",
+                  "underline",
+                  "code-block",
+                  "image",
+                  { header: 1 },
+                  { header: 2 },
+                  { align: [] },
+                  { list: "ordered" },
+                  { list: "bullet" },
+                  { color: [] },
+                  { background: [] },
+                  { font: [] },
+                  { header: [1, 2, 3, 4, 5, 6, false] },
+                ],
+              ],
+              handlers: {
+                image: imageHandler,
+              },
+            },
+          },
+        },
+        disabled: false,
+      },
       isClicked: false,
       selectedCategory: "",
       categories: [
@@ -241,8 +268,6 @@ export default {
         { name: "QnA", selected: false },
         { name: "스터디", selected: false },
       ],
-      imageUrl: null,
-      boardImage: null,
       tags: [],
       inputValue: "",
       board: {
@@ -256,6 +281,11 @@ export default {
   computed: {
     ...mapStores(useBoardStore),
   },
+  created() {
+    setTimeout(() => {
+      this.state.disabled = true;
+    }, 2000);
+  },
   watch: {
     inputValue(newValue) {
       if (newValue && !newValue.startsWith("#")) {
@@ -264,6 +294,9 @@ export default {
     },
   },
   methods: {
+    onEditorChange({ html }) {
+      this.state._content = html;
+    },
     // 카테고리 선택
     showCategory() {
       this.isClicked = !this.isClicked;
@@ -288,23 +321,6 @@ export default {
         : selectedCategory === "스터디"
         ? 3
         : null;
-    },
-    // 이미지 업로드
-    uploadImage() {
-      const input = document.getElementById("input_file");
-      input.click();
-    },
-    handleImageUpload(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      this.boardImage = file;
-
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.imageUrl = reader.result;
-      };
-      reader.readAsDataURL(file);
     },
     // 태그 추가
     addTag() {
@@ -333,14 +349,16 @@ export default {
         this.inputValue = "# ";
       }
     },
+    // 게시글 등록
     async createBoard() {
       this.boardStore.fromEdit = true;
-
+      this.board.boardContent = this.state.content;
       this.board.tagList = this.tags;
-      await this.boardStore.createBoard(this.board, this.boardImage);
+
+      await this.boardStore.createBoard(this.board);
     },
-    cancelCreateReview() {
-      window.location.href = "/board";
+    cancelCreateBoard() {
+      window.location.href = "/board/knowledge";
     },
   },
 };
@@ -782,11 +800,12 @@ button {
   display: table;
 }
 
-.ql-toolbar.ql-snow {
+::v-deep .ql-toolbar.ql-snow {
   border: 1px solid #ccc;
   box-sizing: border-box;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   padding: 8px;
+  border-radius: 10px;
 }
 
 .ql-toolbar {
@@ -1090,5 +1109,31 @@ ul {
 
 .css-16kqrm:focus-visible {
   outline: 2px solid rgb(58, 62, 65);
+}
+
+.ql-container {
+  min-height: 350px;
+}
+
+.ql-toolbar.ql-snow {
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  padding: 8px;
+  border-radius: 10px;
+}
+
+::v-deep .ql-snow .ql-editor img {
+  max-width: 300px;
+  max-height: 400px;
+}
+
+::v-deep .ql-snow .ql-editor pre.ql-syntax {
+  background-color: #23241f;
+  color: #f8f8f2;
+  overflow: visible;
+  font-family: Monaco;
+  letter-spacing: 0.07em;
+  font-size: 12px;
 }
 </style>

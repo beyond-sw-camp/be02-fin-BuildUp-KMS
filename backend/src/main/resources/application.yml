@@ -1,4 +1,11 @@
 spring:
+  data:
+    elasticsearch:
+      repositories:
+        enabled: true
+
+
+
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
@@ -13,7 +20,7 @@ spring:
               - profile_nickname
               - profile_image
             authorization-grant-type: authorization_code
-            redirect-uri:  http://localhost:8080/login/oauth2/code/kakao
+            redirect-uri:  http://192.168.0.61/api/logino/oauth2/code/kaka
             client-name: Kakao
             client-authentication-method: POST
         provider:
@@ -56,7 +63,7 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.MariaDB103Dialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
       naming:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl

@@ -305,6 +305,7 @@ export default {
 .css-14bssip {
   overflow: hidden;
   text-overflow: ellipsis;
+  word-break: break-all;
   margin-bottom: 10px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -314,18 +315,21 @@ export default {
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
-  line-height: 21px;
+  line-height: 20px;
   color: rgb(95, 102, 107);
   word-break: keep-all;
   height: 38px;
 }
 @media (min-width: 820px) {
   .css-14bssip {
+    overflow: hidden;
+    word-break: break-all;
+    text-overflow: ellipsis;
     font-family: Pretendard;
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
-    line-height: 21px;
+    line-height: 20px;
     color: rgb(95, 102, 107);
   }
 }
@@ -584,18 +588,18 @@ span.btn.black {
 }
 
 .css-myjkxi {
-    position: absolute;
-    top: 18px;
-    right: 16px;
-    font-family: Pretendard;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 26px;
-    color: rgb(58, 62, 65);
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    cursor: pointer;
+  position: absolute;
+  top: 18px;
+  right: 16px;
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 26px;
+  color: rgb(58, 62, 65);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
 }
 </style>

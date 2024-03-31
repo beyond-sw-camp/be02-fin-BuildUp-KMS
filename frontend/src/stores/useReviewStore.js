@@ -1,9 +1,10 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 
-// const backend = "http://192.168.0.61/api";
-const backend = "http://localhost:8080";
-const storedToken = localStorage.getItem("accessToken");
+const backend = "http://192.168.0.61/api";
+// const backend = "http://localhost:8080";
+
+const storedToken = localStorage.getItem("token");
 
 export const useReviewStore = defineStore("review", {
   state: () => ({
@@ -16,21 +17,21 @@ export const useReviewStore = defineStore("review", {
     reviewIdx: 0,
     reviewDetail: [],
     isLoading: false,
-    isPageExist: true
+    isPageExist: true,
   }),
   actions: {
-    async createReview(review, reviewImage) {
-      const formData = new FormData();
+    async createReview(review) {
+      // const formData = new FormData();
 
-      let json = JSON.stringify(review);
-      formData.append("review", new Blob([json], { type: "application/json" }));
-      formData.append("reviewImage", reviewImage);
+      // let json = JSON.stringify(review);
+      // formData.append("review", new Blob([json], { type: "application/json" }));
+      // formData.append("reviewImage", reviewImage);
 
       try {
-        let response = await axios.post(backend + `/review/create`, formData, {
+        let response = await axios.post(backend + `/review/create`, review, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
           },
         });
         if (response.data.isSuccess === true) {
@@ -149,7 +150,7 @@ export const useReviewStore = defineStore("review", {
       }
     },
 
-    async createReviewUp(accessToken, requestBody) {
+    async createReviewUp(token, requestBody) {
       try {
         let response = await axios.post(
           backend + "/reviewup/create",
@@ -157,7 +158,7 @@ export const useReviewStore = defineStore("review", {
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
+              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -169,7 +170,7 @@ export const useReviewStore = defineStore("review", {
       }
     },
 
-    async createReviewScrap(accessToken, requestBody) {
+    async createReviewScrap(token, requestBody) {
       try {
         let response = await axios.post(
           backend + "/reviewscrap/create",
@@ -177,7 +178,7 @@ export const useReviewStore = defineStore("review", {
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
+              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -189,13 +190,13 @@ export const useReviewStore = defineStore("review", {
       }
     },
 
-    async checkReviewUp(accessToken, reviewIdx) {
+    async checkReviewUp(token, reviewIdx) {
       try {
         let response = await axios.get(
           `${backend}/reviewup/check/${reviewIdx}`,
           {
             headers: {
-              Authorization: `Bearer ${accessToken}`,
+              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -209,13 +210,13 @@ export const useReviewStore = defineStore("review", {
       }
     },
 
-    async checkReviewScrap(accessToken, reviewIdx) {
+    async checkReviewScrap(token, reviewIdx) {
       try {
         let response = await axios.get(
           `${backend}/reviewscrap/check/${reviewIdx}`,
           {
             headers: {
-              Authorization: `Bearer ${accessToken}`,
+              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -229,14 +230,14 @@ export const useReviewStore = defineStore("review", {
       }
     },
 
-    async cancelReviewUp(accessToken, reviewUpIdx) {
+    async cancelReviewUp(token, reviewUpIdx) {
       try {
         await axios.patch(
           `${backend}/reviewup/delete/${reviewUpIdx}`,
           {},
           {
             headers: {
-              Authorization: `Bearer ${accessToken}`,
+              Authorization: `Bearer ${token}`,
               "Content-Type": "application/json",
             },
           }
@@ -247,14 +248,14 @@ export const useReviewStore = defineStore("review", {
       }
     },
 
-    async cancelReviewScrap(accessToken, reviewScrapIdx) {
+    async cancelReviewScrap(token, reviewScrapIdx) {
       try {
         await axios.patch(
           `${backend}/reviewscrap/delete/${reviewScrapIdx}`,
           {},
           {
             headers: {
-              Authorization: `Bearer ${accessToken}`,
+              Authorization: `Bearer ${token}`,
               "Content-Type": "application/json",
             },
           }
@@ -267,6 +268,7 @@ export const useReviewStore = defineStore("review", {
 
     async createReviewCategory(categoryName) {
       try {
+        let response =
         await axios.post(
           backend + "/admin/review/create",
           { categoryName: categoryName },
@@ -276,17 +278,29 @@ export const useReviewStore = defineStore("review", {
             },
           }
         );
+        if(response.data.isSuccess === true){
+          alert(`${categoryName} 생성 완료!`);
+          this.$router.push({ path: `/admin/review/category/register`});
+        }
       } catch (e) {
-        console.error(e);
-        throw e;
+        if (e.response && e.response.data) {
+          console.log(e.response.data);
+          if (e.response.data.code === "REVIEW-CATEGORY-002") {
+            alert("동일한 이름의 카테고리가 이미 존재합니다.");
+          } 
+        }
       }
     },
 
     async deleteReviewCategory(reviewCategoryIdx) {
       try {
-        await axios.delete(
-          backend + "/admin/review/delete" + reviewCategoryIdx
+        let response = await axios.delete(
+          backend + "/admin/review/delete/" + reviewCategoryIdx
         );
+
+        if(response.data.isSuccess === true) {
+          window.location.href="/admin/review/category"
+        }
       } catch (e) {
         console.error(e);
         throw e;
@@ -295,15 +309,26 @@ export const useReviewStore = defineStore("review", {
 
     async updateReviewCategory(reviewCategoryIdx, newCategoryName) {
       try {
+        let response =
         await axios.patch(
           backend + "/admin/review/update/" + reviewCategoryIdx,
-          {
-            categoryName: newCategoryName,
-          }
+          {categoryName: newCategoryName},
+          {headers: {
+            "Content-Type": "application/json",
+          },
+        }
         );
+        if(response.data.isSuccess === true) {
+          alert(`카테고리 이름 수정 완료!`);
+          this.$router.push({ path: `/admin/review/update`});
+        }
       } catch (e) {
-        console.error(e);
-        throw e;
+        if(e.response && e.response.data){
+          console.log(e.response.data);
+          if (e.response.data.code === "REVIEW-CATEGORY-002"){
+            alert("동일한 이름의 카테고리가 이미 존재합니다.");
+          }
+        }
       }
     },
     async findReviewDetailByUserIdx(reviewIdx) {
@@ -324,18 +349,18 @@ export const useReviewStore = defineStore("review", {
       }
     },
 
-    async updateReview(review, reviewImage) {
-      const formData = new FormData();
+    async updateReview(review) {
+      // const formData = new FormData();
 
-      let json = JSON.stringify(review);
-      formData.append("review", new Blob([json], { type: "application/json" }));
-      formData.append("reviewImage", reviewImage);
+      // let json = JSON.stringify(review);
+      // formData.append("review", new Blob([json], { type: "application/json" }));
+      // formData.append("reviewImage", reviewImage);
 
       try {
-        let response = await axios.patch(`${backend}/review/update`, formData, {
+        let response = await axios.patch(`${backend}/review/update`, review, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
           },
         });
         if (response.data.isSuccess === true) {

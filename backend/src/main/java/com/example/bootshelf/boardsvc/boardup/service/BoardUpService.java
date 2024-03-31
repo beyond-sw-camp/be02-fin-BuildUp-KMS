@@ -93,7 +93,7 @@ public class BoardUpService {
 
         return BaseRes.builder()
                 .isSuccess(true)
-                .message("게시글 스크랩 목록 조회 성공")
+                .message("게시글 추천 목록 조회 성공")
                 .result(resultList)
                 .build();
     }
@@ -158,6 +158,7 @@ public class BoardUpService {
                 return BaseRes.builder()
                         .isSuccess(true)
                         .message("게시글 추천 삭제 성공")
+                        .result("게시글 추천 삭제 완료")
                         .build();
             }
             throw new BoardUpException(ErrorCode.UNAUTHORIZED_BOARD_UP,

@@ -1,4 +1,4 @@
-package com.example.bootshelf.reviewsvc.reviewimage.model;
+package com.example.bootshelf.reviewsvc.reviewimage.model.entity;
 
 import com.example.bootshelf.reviewsvc.review.model.entity.Review;
 import lombok.*;

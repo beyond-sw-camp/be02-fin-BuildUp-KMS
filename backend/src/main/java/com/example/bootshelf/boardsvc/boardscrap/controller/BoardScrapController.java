@@ -29,6 +29,7 @@ import javax.validation.constraints.Positive;
 @CrossOrigin("*")
 @RequestMapping("/boardscrap")
 public class BoardScrapController {
+
     private final BoardScrapService boardScrapService;
 
     @Operation(summary = "BoardScrap 추가",
@@ -46,22 +47,6 @@ public class BoardScrapController {
         return ResponseEntity.ok().body(boardScrapService.createBoardScrap(user, postCreateBoardScrapReq));
     }
 
-
-
-    @Operation(summary = "BoardScrap 목록 조회",
-            description = "스크랩한 게시판 게시글 목록을 조회하는 API입니다.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "성공"),
-            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
-    })
-    @GetMapping("/list")
-    public ResponseEntity<BaseRes> findBoardScrapList(
-            @AuthenticationPrincipal User user,
-            @PageableDefault(size = 5) Pageable pageable
-    ) {
-        return ResponseEntity.ok().body(boardScrapService.findBoardScrapList(user, pageable));
-    }
-
     @Operation(summary = "BoardScrap 여부 조회",
             description = "게시글을 스크랩 여부를 확인하는 API입니다.")
     @ApiResponses({
@@ -75,7 +60,6 @@ public class BoardScrapController {
     ) {
         return ResponseEntity.ok().body(boardScrapService.checkBoardScrap(user, boardIdx));
     }
-
 
     @Operation(summary = "BoardScrap 스크랩 삭제",
             description = "스크랩한 게시판 게시글을 삭제하는 API입니다.")
@@ -106,4 +90,19 @@ public class BoardScrapController {
     ) {
         return ResponseEntity.ok().body(boardScrapService.findBoardScrapListByCategory(user, boardCategoryIdx, sortType, pageable));
     }
+
+    // 현재 미사용 API
+//    @Operation(summary = "BoardScrap 목록 조회",
+//            description = "스크랩한 게시판 게시글 목록을 조회하는 API입니다.")
+//    @ApiResponses({
+//            @ApiResponse(responseCode = "200", description = "성공"),
+//            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+//    })
+//    @GetMapping("/list")
+//    public ResponseEntity<BaseRes> findBoardScrapList(
+//            @AuthenticationPrincipal User user,
+//            @PageableDefault(size = 5) Pageable pageable
+//    ) {
+//        return ResponseEntity.ok().body(boardScrapService.findBoardScrapList(user, pageable));
+//    }
 }

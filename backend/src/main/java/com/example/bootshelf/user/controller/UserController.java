@@ -5,7 +5,9 @@ import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.config.naver.NaverOcrApi;
 import com.example.bootshelf.user.model.entity.User;
 import com.example.bootshelf.user.model.request.*;
+import com.example.bootshelf.user.model.response.GetEmailVerifyRes;
 import com.example.bootshelf.user.service.EmailVerifyService;
+import com.example.bootshelf.user.service.SendEmailService;
 import com.example.bootshelf.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,11 +26,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.io.IOException;
-import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -39,6 +42,7 @@ public class UserController {
 
     private final UserService userService;
     private final EmailVerifyService emailVerifyService;
+    private final SendEmailService sendEmailService;
 
     @Operation(summary = "회원 가입",
             description = "회원이 회원 정보를 입력하여 회원 가입을 진행한다.")
@@ -68,10 +72,10 @@ public class UserController {
         if (emailVerifyService.verify(getEmailVerifyReq)) {
             userService.updateStatus(getEmailVerifyReq.getEmail()); // 이메일 인증이 완료되면 회원의 status를 바꿔줌
 
-            return new RedirectView("http://localhost:8081/");
+            return new RedirectView("http://192.168.0.61/");
         } else {
 
-            return new RedirectView("http://localhost:8081/email/verify");
+            return new RedirectView("http://192.168.0.61/email/verify");
         }
     }
 
@@ -191,6 +195,26 @@ public class UserController {
                 .isSuccess(true)
                 .message("Naver Clova Ocr Success")
                 .result(result)
+                .build();
+
+        return ResponseEntity.ok().body(baseRes);
+    }
+    // 이메일 찾기
+    @RequestMapping(method = RequestMethod.POST, value = "/find/email")
+    public ResponseEntity<BaseRes> findEmail(@RequestBody @Valid GetFindEmailUserReq getFindEmailUserReq) {
+        BaseRes baseRes = userService.findEmail(getFindEmailUserReq);
+
+        return ResponseEntity.ok().body(baseRes);
+    }
+    //등록된 이메일로 임시비밀번호를 발송하고 발송된 임시비밀번호로 사용자의 pw를 변경하는 컨트롤러
+    @RequestMapping(method = RequestMethod.PATCH, value = "/find/password")
+    public  ResponseEntity findPassword(@RequestBody @Valid PatchFindPasswordUserReq patchFindPasswordUserReq) throws MessagingException {
+        sendEmailService.findPassword(patchFindPasswordUserReq.getEmail(),patchFindPasswordUserReq.getName());
+
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("비밀번호 찾기 요청 성공")
+                .result("임시 비밀번호 메일 발송 완료")
                 .build();
 
         return ResponseEntity.ok().body(baseRes);

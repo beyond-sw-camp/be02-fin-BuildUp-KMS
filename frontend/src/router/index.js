@@ -23,6 +23,7 @@ import BoardUpdatePage from "@/pages/BoardUpdatePage.vue";
 import HotListPage from "@/pages/HotListPage.vue";
 import TagBoardListPage from "@/pages/TagBoardListPage.vue";
 import ReviewUpdatePage from "@/pages/ReviewUpdatePage.vue";
+import NotFoundPage from "@/pages/NotFoundPage.vue";
 
 import AdminMainPage from "@/pages/AdminMainPage.vue";
 import AdminWithdrawPage from "@/pages/AdminWithdrawPage.vue";
@@ -40,7 +41,7 @@ import AdminBoardCategoryUpdatePage from "@/pages/AdminBoardCategoryUpdatePage";
 import AdminTagUpdatePage from "@/pages/AdminTagUpdatePage";
 
 const requireAuth = () => (from, to, next) => {
-  const storedToken = window.localStorage.getItem("accessToken");
+  const storedToken = window.localStorage.getItem("token");
   if (storedToken === null) {
     alert("로그인 후 이용할 수 있습니다.");
     next("/");
@@ -50,8 +51,9 @@ const requireAuth = () => (from, to, next) => {
 
     if (tokenData.exp < currentTime) {
       alert("로그인 유지시간이 만료되었습니다. 다시 로그인해주세요.");
-      localStorage.removeItem("accessToken");
-      next("/");
+      localStorage.removeItem("token");
+      window.location.href="/";
+      // next("/");
     } else {
       next();
     }
@@ -59,7 +61,7 @@ const requireAuth = () => (from, to, next) => {
 };
 
 const requireUserAuth = () => (from, to, next) => {
-  const storedToken = window.localStorage.getItem("accessToken");
+  const storedToken = window.localStorage.getItem("token");
 
   if (storedToken === null) {
     alert("로그인 후 이용할 수 있습니다.");
@@ -70,7 +72,7 @@ const requireUserAuth = () => (from, to, next) => {
 
     if (tokenData.exp < currentTime) {
       alert("로그인 유지시간이 만료되었습니다. 다시 로그인해주세요.");
-      localStorage.removeItem("accessToken");
+      localStorage.removeItem("token");
       next("/");
     } else if (tokenData.ROLE !== "ROLE_AUTHUSER") {
       alert("인증회원만 후기글을 작성할 수 있습니다.");
@@ -149,6 +151,7 @@ const routes = [
   { path: "/select/signup", component: SelectSignupPage },
   { path: "/email/verify", component: EmailValidationPage },
   { path: "/notice", component: NoticeBoardListPage },
+  { path: "/not/found", component: NotFoundPage },
   { path: "/board/mywrite/:boardIdx", component: BoardUpdatePage },
   { path: "/review/mywrite/:reviewIdx", component: ReviewUpdatePage},
   { path: "/admin", component: AdminMainPage, beforeEnter: requireAdminAuth() },

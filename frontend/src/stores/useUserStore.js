@@ -2,20 +2,10 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import VueJwtDecode from "vue-jwt-decode";
 
-// const backend = "http://192.168.0.61/api";
-const backend = "http://localhost:8080"; 
-const storedToken = localStorage.getItem("accessToken");
-const refreshToken = localStorage.getItem("refreshToken");
-// let storedToken = "";
-// if(accessToken!==null){
-//   const tokenData = VueJwtDecode.decode(accessToken);
-//   const currentTime = Math.floor(Date.now() / 1000);
-//   if (tokenData.exp < currentTime){
-//     storedToken = refreshToken;
-//   } else {
-//     storedToken = accessToken;
-//   }
-// }
+const backend = "http://192.168.0.61/api";
+// const backend = "http://localhost:8080";
+
+const storedToken = localStorage.getItem("token");
 
 export const useUserStore = defineStore("user", {
   state: () => ({
@@ -23,6 +13,7 @@ export const useUserStore = defineStore("user", {
     decodedToken: null,
     user: {},
     isSuccess: false,
+    isFindEmailSuccess: false,
     isLoading: false,
     checkPasswordError: false,
     isPossibleUpdate: true,
@@ -30,6 +21,7 @@ export const useUserStore = defineStore("user", {
     currentPage: 0,
     totalPages: 0,
     totalCnt: 0,
+    userEmail: "",
     userList: [],
   }),
   actions: {
@@ -39,15 +31,12 @@ export const useUserStore = defineStore("user", {
 
         let response = await axios.post(backend + "/user/login", loginUser);
 
-        if (response.data.isSuccess && response.data.result.accessToken && response.data.result.refreshToken) {
-          let accessToken = response.data.result.accessToken;
-          console.log(accessToken);
-          let refreshToken = response.data.result.refreshToken;
-          
-          let userClaims = VueJwtDecode.decode(accessToken);
+        if (response.data.isSuccess && response.data.result.token) {
+          let token = response.data.result.token;
 
-          window.localStorage.setItem("accessToken", accessToken);
-          window.localStorage.setItem("refreshToken", refreshToken);
+          let userClaims = VueJwtDecode.decode(token);
+
+          window.localStorage.setItem("token", token);
           this.setDecodedToken(userClaims);
 
           this.isAuthenticated = true;
@@ -57,11 +46,15 @@ export const useUserStore = defineStore("user", {
       } catch (e) {
         if (e.response && e.response.data) {
           if (e.response.data.code === "USER-003") {
-            alert("이메일을 찾을 수 없습니다. 가입한 이메일인지 다시 확인해주세요.");
+            alert(
+              "이메일을 찾을 수 없습니다. 가입한 이메일인지 다시 확인해주세요."
+            );
           } else if (e.response.data.code === "USER-004") {
             alert("비밀번호가 틀렸습니다. 다시 입력해주세요.");
           } else if (e.response.data.code === "COMMON-001") {
-            alert("이메일과 비밀번호를 다시 확인해주세요. 입력양식이 잘못되었습니다.");
+            alert(
+              "이메일과 비밀번호를 다시 확인해주세요. 입력양식이 잘못되었습니다."
+            );
           }
         }
       }
@@ -72,9 +65,9 @@ export const useUserStore = defineStore("user", {
     },
 
     decodeToken() {
-      const accessToken = localStorage.getItem("accessToken");
-      if (accessToken) {
-        const decoded = VueJwtDecode.decode(accessToken);
+      const token = localStorage.getItem("token");
+      if (token) {
+        const decoded = VueJwtDecode.decode(token);
         if (decoded.exp < Date.now() / 1000) {
           this.logout();
         } else {
@@ -85,8 +78,7 @@ export const useUserStore = defineStore("user", {
     },
 
     logout() {
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("token");
       this.isAuthenticated = false;
       this.decodedToken = null;
 
@@ -98,12 +90,15 @@ export const useUserStore = defineStore("user", {
         let response = await axios.get(backend + `/user/read`, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
-            "Refresh-Token": `Bearer ${refreshToken}`
           },
         });
         this.user = response.data.result;
       } catch (e) {
-        console.log(e);
+        if (e.response && e.response.data) {
+          if (e.response.data.code === "USER-003") {
+            alert("회원정보를 찾을 수 없습니다.");
+          }
+        }
       }
     },
 
@@ -257,12 +252,15 @@ export const useUserStore = defineStore("user", {
           alert(
             '회원 탈퇴가 성공적으로 처리되었습니다. 그동안 "BOOTSHELF" 를 이용해주셔서 감사합니다.'
           );
-          sessionStorage.removeItem("accessToken");
+          sessionStorage.removeItem("token");
           window.location.href = "/";
         }
       } catch (e) {
-        console.log(e);
-        alert("회원정보를 찾을 수 없습니다.");
+        if (e.response && e.response.data) {
+          if (e.response.data.code === "USER-003") {
+            alert("회원 정보를 찾을 수 없습니다.");
+          }
+        }
       }
     },
 
@@ -295,11 +293,62 @@ export const useUserStore = defineStore("user", {
         }
       }
     },
+    // 회원 이메일 찾기
+    async findEmail(name, nickName) {
+      try {
+        let user = { name: name, nickName: nickName };
+
+        let response = await axios.post(backend + "/user/find/email", user);
+
+        if (response.data.isSuccess === true) {
+          this.userEmail = response.data.result.email;
+          this.isFindEmailSuccess = true;
+        }
+      } catch (e) {
+        if (e.response && e.response.data) {
+          if (e.response.data.code === "USER-003") {
+            alert(
+              "회원정보를 찾을 수 없습니다. 이름과 닉네임을 다시 확인해주세요."
+            );
+          } else if (e.response.data.code === "COMMON-001") {
+            alert("이름과 닉네임은 필수 입력항목입니다.");
+          }
+        }
+      }
+    },
+    // 회원 비밀번호 찾기
+    async findPassword(email, name) {
+      try {
+        this.isLoading = true;
+        let user = { email: email, name: name };
+
+        let response = await axios.patch(backend + "/user/find/password", user);
+
+        if (response.data.isSuccess === true) {
+          this.isFindPasswordSuccess = true;
+          this.isLoading = false;
+        }
+      } catch (e) {
+        if (e.response && e.response.data) {
+          if (e.response.data.code === "USER-003") {
+            alert(
+              "회원정보를 찾을 수 없습니다. 이메일과 이름을 다시 확인해주세요."
+            );
+            this.isLoading = false;
+          } else if (e.response.data.code === "COMMON-001") {
+            alert("이메일과 이름은 필수 입력항목입니다.");
+            this.isLoading = false;
+          }
+        }
+      }
+    },
 
     // [관리자] 회원 목록 조회
     async getUserList(page = 1) {
       try {
-        let response = await axios.get(backend + "/user/list/?page=" + (page - 1));
+        let response = await axios.get(
+          backend + "/user/list/?page=" + (page - 1)
+        );
 
         this.userList = response.data.result.list;
         this.totalPages = response.data.result.totalPages;
@@ -312,10 +361,13 @@ export const useUserStore = defineStore("user", {
 
     async deleteUser(userIdx) {
       try {
-        await axios.delete(backend + "/user/delete/" + userIdx);
+        await axios.patch(backend + "/user/delete/" + userIdx);
       } catch (e) {
-        console.error(e);
-        throw e;
+        if (e.response && e.response.data) {
+          if (e.response.data.code === "USER-003") {
+            alert("회원 정보를 찾을 수 없습니다.");
+          }
+        }
       }
     },
   },

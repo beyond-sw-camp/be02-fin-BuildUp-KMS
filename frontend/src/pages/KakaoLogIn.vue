@@ -15,10 +15,11 @@ export default {
     console.log("token", receivedToken);
     if (receivedToken) {
       localStorage.setItem("token", receivedToken);
+      // window.location.href="/";
       router.push({ path: "/" });
     } else {
       window.alert("로그인에 실패하였습니다.");
-      router.push({ path: "/" });
+      // window.location.href="/";
     }
   },
 };

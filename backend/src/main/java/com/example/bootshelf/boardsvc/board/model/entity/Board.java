@@ -55,7 +55,7 @@ public class Board {
     @Column(nullable = false, length = 500)
     private String boardTitle;
 
-    @Column(nullable = false, length = 1000)
+    @Column(nullable = false, length = 5000)
     private String boardContent;
 
     @Column(nullable = false)

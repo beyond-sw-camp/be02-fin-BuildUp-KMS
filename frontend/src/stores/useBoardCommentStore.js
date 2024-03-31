@@ -2,15 +2,16 @@ import { defineStore } from "pinia";
 import axios from "axios";
 // import VueJwtDecode from "vue-jwt-decode";
 
-// const backend = "http://192.168.0.61/api";
-const backend = "http://localhost:8080";
+const backend = "http://192.168.0.61/api";
+// const backend = "http://localhost:8080";
+
 // boardStore를 사용하면 해당 idx 가져오기..
 // const boardIdx = useBoardStore().boardIdx;
 
 // 토큰값 가져오기
-// let accessToken = VueJwtDecode.decode(localStorage.getItem("accessToken")).id;
+// let token = VueJwtDecode.decode(localStorage.getItem("token")).id;
 
-let accessToken = (localStorage.getItem("accessToken"));
+let token = (localStorage.getItem("token"));
 
 
 export const useBoardCommentStore = defineStore({
@@ -24,13 +25,13 @@ export const useBoardCommentStore = defineStore({
    /** -------------------댓글 작성--------------------- **/
    async createBoardComment(boardCommentContent, boardIdx) {
     try {
-      console.log(accessToken);
+      console.log(token);
       const response = await axios.post(
         backend + `/board/${boardIdx}/comment/create`,
         { boardCommentContent: boardCommentContent },
         {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }
@@ -39,8 +40,13 @@ export const useBoardCommentStore = defineStore({
         window.location.href = `/board/${boardIdx}`;
       }
 
-    } catch (error) {
-      console.error("ERROR : ", error);
+    } catch (e) {
+      if (e.response && e.response.data){
+        console.log(e.response.data);
+        if (e.response.data.code === "COMMON-001") {
+          alert("댓글 내용을 입력해주세요.")
+        }
+      }
     }
   },
 
@@ -48,7 +54,7 @@ export const useBoardCommentStore = defineStore({
 
   async updateBoardComment(boardCommentContent, commentIdx, boardIdx) {
     try {
-      if (!accessToken) {
+      if (!token) {
         throw new Error(
           "토큰이 없습니다. 사용자가 로그인되었는지 확인하세요."
         );
@@ -58,7 +64,7 @@ export const useBoardCommentStore = defineStore({
         { boardCommentContent: boardCommentContent },
         {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }
@@ -69,8 +75,13 @@ export const useBoardCommentStore = defineStore({
         window.location.href = `/board/${boardIdx}`;
       }
 
-    } catch (error) {
-      console.error("댓글 수정 실패 : ", error);
+    } catch (e) {
+      if (e.response && e.response.data){
+        console.log(e.response.data);
+        if (e.response.data.code === "COMMON-001"){
+          alert("수정할 내용을 입력해주세요.")
+        }
+      }
     }
   },
 
@@ -78,7 +89,7 @@ export const useBoardCommentStore = defineStore({
 
   async deleteBoardComment(commentIdx, boardIdx, userIdx) {
     try {
-      if (!accessToken) {
+      if (!token) {
         throw new Error(
           "토큰이 없습니다. 사용자가 로그인되었는지 확인하세요."
         );
@@ -88,7 +99,7 @@ export const useBoardCommentStore = defineStore({
         {userIdx : userIdx},
         {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         } 
@@ -111,7 +122,7 @@ export const useBoardCommentStore = defineStore({
         console.log(this.commentList);
 
         for (let comment of this.commentList) {
-          let checkResponse = await this.checkBoardCommentUp(accessToken, comment.idx);
+          let checkResponse = await this.checkBoardCommentUp(token, comment.idx);
           if (checkResponse.data && checkResponse.data.result) {
             comment.isCommentRecommended = checkResponse.data.result.status;
           } else {
@@ -132,7 +143,7 @@ export const useBoardCommentStore = defineStore({
               { boardReplyContent: boardReplyContent },
               {
                 headers: {
-                  Authorization: `Bearer ${accessToken}`,
+                  Authorization: `Bearer ${token}`,
                   "Content-Type": "application/json",
                 },
               }
@@ -142,17 +153,22 @@ export const useBoardCommentStore = defineStore({
               window.location.href = `/board/${boardIdx}`;
             }
 
-          } catch (error) {
-            console.error("ERROR : ", error);
+          } catch (e) {
+            if (e.response && e.response.data){
+              console.log(e.response.data);
+              if (e.response.data.code === "COMMON-001"){
+                alert("댓글을 입력해주세요.")
+              }
+            }
           }
         },
 
-    // async createBoardCommentUp(accessToken, requestBody) {
+    // async createBoardCommentUp(token, requestBody) {
     //   try {
     //     let response = await axios.post(backend + "/boardcomment/up/create", requestBody, {
     //       headers: {
     //         "Content-Type": "application/json",
-    //         Authorization: `Bearer ${accessToken}`,
+    //         Authorization: `Bearer ${token}`,
     //       }
     //     })
     //     return response;
@@ -169,7 +185,7 @@ export const useBoardCommentStore = defineStore({
     //     { boardCommentIdx: commentIdx }, {
     //       headers: {
     //         "Content-Type": "application/json",
-    //         Authorization: `Bearer ${accessToken}`,
+    //         Authorization: `Bearer ${token}`,
     //       }
     //     })
     //     return response;
@@ -180,11 +196,11 @@ export const useBoardCommentStore = defineStore({
     //   }
     // },
 
-    // async checkBoardCommentUp(accessToken, boardCommentIdx) {
+    // async checkBoardCommentUp(token, boardCommentIdx) {
     //   try {
     //     let response = await axios.get(`${backend}/boardcomment/check/${boardCommentIdx}`, {
     //       headers: {
-    //         Authorization: `Bearer ${accessToken}`,
+    //         Authorization: `Bearer ${token}`,
     //       },
     //     });
     //     console.log(response);
@@ -198,11 +214,11 @@ export const useBoardCommentStore = defineStore({
     //   }
     // },
 
-    // async cancelBoardCommentUp(accessToken, boardCommentIdx) {
+    // async cancelBoardCommentUp(token, boardCommentIdx) {
     //   try {
     //     let response = await axios.patch(`${backend}/boardcomment/delete/${boardCommentIdx}`, {}, {
     //       headers: {
-    //         Authorization: `Bearer ${accessToken}`,
+    //         Authorization: `Bearer ${token}`,
     //         "Content-Type": "application/json"
     //       },
     //     });

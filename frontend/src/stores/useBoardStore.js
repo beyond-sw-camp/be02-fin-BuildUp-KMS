@@ -1,9 +1,10 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 
-// const backend = "http://192.168.0.61/api";
-const backend = "http://localhost:8080";
-const storedToken = localStorage.getItem("accessToken");
+const backend = "http://192.168.0.61/api";
+// const backend = "http://localhost:8080";
+
+const storedToken = localStorage.getItem("token");
 
 export const useBoardStore = defineStore("board", {
   state: () => ({
@@ -19,22 +20,28 @@ export const useBoardStore = defineStore("board", {
     isBoardExist: true,
     isLoading: false,
     fromEdit: false,
-    isPageExist: true
+    isPageExist: true,
   }),
 
   actions: {
-    async createBoard(board, boardImage) {
-      const formData = new FormData();
+    async createBoard(board) {
+      // const formData = new FormData();
 
-      let json = JSON.stringify(board);
-      formData.append("board", new Blob([json], { type: "application/json" }));
-      formData.append("boardImage", boardImage);
+      // let json = JSON.stringify(board);
+      // formData.append("board", new Blob([json], { type: "application/json" }));
+
+      // if (boardImages) {
+      //   this.boardImages.forEach((base64, index) => {
+      //     const blob = this.base64ToBlob(base64);
+      //     formData.append(`boardImages`, blob, `image${index}.jpg`);
+      //   });
+      // }
 
       try {
-        let response = await axios.post(backend + `/board/create`, formData, {
+        let response = await axios.post(backend + `/board/create`, board, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
           },
         });
         if (response.data.isSuccess === true) {
@@ -47,6 +54,8 @@ export const useBoardStore = defineStore("board", {
           console.log(e.response.data);
           if (e.response.data.code === "BOARD-002") {
             alert("이미 사용중인 제목입니다. 제목을 변경해주세요.");
+          } else if(e.response.data.code === "COMMON-001") {
+            alert("카테고리, 제목은 필수로 입력하셔야 합니다.")
           }
         }
       }
@@ -76,7 +85,6 @@ export const useBoardStore = defineStore("board", {
           this.isBoardExist = true;
           this.isPageExist = true;
         }
-
       } catch (error) {
         console.error(error);
       } finally {
@@ -110,7 +118,6 @@ export const useBoardStore = defineStore("board", {
           this.isBoardExist = true;
           this.isPageExist = true;
         }
-
       } catch (error) {
         console.error(error);
       } finally {
@@ -160,7 +167,7 @@ export const useBoardStore = defineStore("board", {
         console.log(e);
       }
     },
-    async createBoardUp(accessToken, requestBody) {
+    async createBoardUp(token, requestBody) {
       try {
         let response = await axios.post(
           backend + "/boardup/create",
@@ -168,7 +175,7 @@ export const useBoardStore = defineStore("board", {
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
+              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -179,7 +186,7 @@ export const useBoardStore = defineStore("board", {
         throw e;
       }
     },
-    async createBoardScrap(accessToken, requestBody) {
+    async createBoardScrap(token, requestBody) {
       try {
         let response = await axios.post(
           backend + "/boardscrap/create",
@@ -187,7 +194,7 @@ export const useBoardStore = defineStore("board", {
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
+              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -198,11 +205,11 @@ export const useBoardStore = defineStore("board", {
         throw e;
       }
     },
-    async checkBoardUp(accessToken, boardIdx) {
+    async checkBoardUp(token, boardIdx) {
       try {
         let response = await axios.get(`${backend}/boardup/check/${boardIdx}`, {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${token}`,
           },
         });
 
@@ -214,13 +221,13 @@ export const useBoardStore = defineStore("board", {
         throw e;
       }
     },
-    async checkBoardScrap(accessToken, boardIdx) {
+    async checkBoardScrap(token, boardIdx) {
       try {
         let response = await axios.get(
           `${backend}/boardscrap/check/${boardIdx}`,
           {
             headers: {
-              Authorization: `Bearer ${accessToken}`,
+              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -233,32 +240,31 @@ export const useBoardStore = defineStore("board", {
         throw e;
       }
     },
-    async cancelBoardUp(accessToken, boardUpIdx) {
+    async cancelBoardUp(token, boardUpIdx) {
       try {
         await axios.patch(
           `${backend}/boardup/delete/${boardUpIdx}`,
           {},
           {
             headers: {
-              Authorization: `Bearer ${accessToken}`,
+              Authorization: `Bearer ${token}`,
               "Content-Type": "application/json",
             },
           }
         );
-
       } catch (e) {
         console.error(e);
         throw e;
       }
     },
-    async cancelBoardScrap(accessToken, boardScrapIdx) {
+    async cancelBoardScrap(token, boardScrapIdx) {
       try {
         await axios.patch(
           `${backend}/boardscrap/delete/${boardScrapIdx}`,
           {},
           {
             headers: {
-              Authorization: `Bearer ${accessToken}`,
+              Authorization: `Bearer ${token}`,
               "Content-Type": "application/json",
             },
           }
@@ -300,7 +306,6 @@ export const useBoardStore = defineStore("board", {
           this.isBoardExist = true;
           this.isPageExist = true;
         }
-
       } catch (error) {
         console.error(error);
       } finally {
@@ -310,7 +315,7 @@ export const useBoardStore = defineStore("board", {
 
     async createBoardCategory(categoryName) {
       try {
-        await axios.post(
+        let response = await axios.post(
           backend + "/admin/board/create",
           { categoryName: categoryName },
           {
@@ -319,9 +324,17 @@ export const useBoardStore = defineStore("board", {
             },
           }
         );
+        if (response.data.isSuccess === true) {
+          alert(`${categoryName} 생성 완료!`);
+          this.$router.push({ path: `/admin/board/category` });
+        }
       } catch (e) {
-        console.error(e);
-        throw e;
+        if (e.response && e.response.data) {
+          console.log(e.response.data);
+          if (e.response.data.code === "BOARD-CATEGORY-002") {
+            alert("동일한 이름의 카테고리가 이미 존재합니다.");
+          }
+        }
       }
     },
 
@@ -343,19 +356,13 @@ export const useBoardStore = defineStore("board", {
         this.isLoading = false;
       }
     },
-    async updateBoard(board, boardImage) {
-      const formData = new FormData();
-
-      let json = JSON.stringify(board);
-      formData.append("board", new Blob([json], { type: "application/json" }));
-      formData.append("boardImage", boardImage);
+    async updateBoard(board) {
 
       try {
-        let response = await axios.patch(`${backend}/board/update`, formData, {
+        let response = await axios.patch(`${backend}/board/update`, board, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
-            "Content-Type": "multipart/form-data",
-            // "Content-Type": "application/json",
+            "Content-Type": "application/json",
           },
         });
         if (response.data.isSuccess === true) {
@@ -405,7 +412,6 @@ export const useBoardStore = defineStore("board", {
           this.isBoardExist = true;
           this.isPageExist = true;
         }
-
       } catch (error) {
         console.error(error);
       } finally {
@@ -450,7 +456,6 @@ export const useBoardStore = defineStore("board", {
           this.isBoardExist = true;
           this.isPageExist = true;
         }
-
       } catch (e) {
         console.log(e);
       } finally {
@@ -469,12 +474,26 @@ export const useBoardStore = defineStore("board", {
 
     async updateBoardCategory(boardCategoryIdx, newCategoryName) {
       try {
-        await axios.patch(backend + "/admin/board/update/" + boardCategoryIdx, {
-          categoryName: newCategoryName,
-        });
+        let response = await axios.patch(
+          backend + "/admin/board/update/" + boardCategoryIdx,
+          { categoryName: newCategoryName },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (response.data.isSuccess === true) {
+          alert(`카테고리 이름 수정 완료!`);
+          this.$router.push({ path: `/admin/board/update` });
+        }
       } catch (e) {
-        console.error(e);
-        throw e;
+        if (e.response && e.response.data) {
+          console.log(e.response.data);
+          if (e.response.data.code === "BOARD-CATEGORY-002") {
+            alert("동일한 이름의 카테고리가 이미 존재합니다.");
+          }
+        }
       }
     },
     async findMyBoardListByCategory(boardCategoryIdx, option, page = 1) {
@@ -506,7 +525,6 @@ export const useBoardStore = defineStore("board", {
           this.isBoardExist = true;
           this.isPageExist = true;
         }
-
       } catch (error) {
         console.error(error);
       }
@@ -540,7 +558,6 @@ export const useBoardStore = defineStore("board", {
           this.isBoardExist = true;
           this.isPageExist = true;
         }
-
       } catch (error) {
         console.error(error);
       }

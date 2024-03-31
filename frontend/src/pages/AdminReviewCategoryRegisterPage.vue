@@ -41,7 +41,6 @@ export default {
         const createReviewCategory = async (categoryName) => {
             try {
                 await reviewStore.createReviewCategory(categoryName);
-                alert(`${categoryName} 생성 완료!`);
                 router.push("/admin/review/category");
             } catch (e) {
                 console.error(e);

@@ -15,18 +15,15 @@ import com.example.bootshelf.course.Course;
 import com.example.bootshelf.common.error.entityexception.CourseException;
 import com.example.bootshelf.course.repository.CourseRepository;
 import com.example.bootshelf.common.error.entityexception.UserException;
+import com.example.bootshelf.tag.model.response.GetListTagResResult;
 import com.example.bootshelf.user.model.entity.User;
-import com.example.bootshelf.user.model.entity.UserRefreshToken;
-import com.example.bootshelf.user.model.request.PatchUpdateUserReq;
-import com.example.bootshelf.user.model.request.PostCheckPasswordReq;
-import com.example.bootshelf.user.model.request.PostLoginUserReq;
-import com.example.bootshelf.user.model.request.PostSignUpUserReq;
+import com.example.bootshelf.user.model.request.*;
 import com.example.bootshelf.user.model.response.*;
-import com.example.bootshelf.user.repository.UserRefreshTokenRepository;
 import com.example.bootshelf.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -49,8 +46,6 @@ public class UserService {
     private String secretKey;
     @Value("${jwt.token.expired-time-ms}")
     private Long expiredTimeMs;
-    @Value("${jwt.token.refresh-expiration-ms}")
-    private Long refreshTime;
     @Value("${cloud.aws.s3.profile-bucket}")
     private String profileBucket;
 
@@ -62,7 +57,6 @@ public class UserService {
     private final JavaMailSender emailSender;
     private final EmailVerifyService emailVerifyService;
     private final JwtUtils jwtUtils;
-    private final UserRefreshTokenRepository userRefreshTokenRepository;
 
     @Transactional(readOnly = false)
     public User saveUser(PostSignUpUserReq postSignUpUserReq, MultipartFile profileImage) {
@@ -200,28 +194,7 @@ public class UserService {
 
         User user = result.get();
         if (passwordEncoder.matches(postLoginUserReq.getPassword(), user.getPassword()) && user.getStatus().equals(true)) {
-            PostLoginUserRes postLogInUserRes = PostLoginUserRes.builder()
-                    .accessToken(jwtUtils.generateAccessToken(user, secretKey, expiredTimeMs))
-                    .build();
-
-            Optional<UserRefreshToken> userRefreshTokenOptional = userRefreshTokenRepository.findById(user.getIdx());
-
-            if (!userRefreshTokenOptional.isPresent()) {
-                // 리프레시 토큰이 없는 경우 새로 생성
-                String refreshToken = jwtUtils.generateRefreshToken(secretKey, refreshTime);
-
-                // 새로 생성한 리프레시 토큰을 데이터베이스에 저장
-                UserRefreshToken newRefreshToken = new UserRefreshToken(user, refreshToken);
-                userRefreshTokenRepository.save(newRefreshToken);
-
-                // 응답에 새로 생성한 리프레시 토큰 추가
-                postLogInUserRes.setRefreshToken(refreshToken);
-            } else {
-                // 리프레시 토큰이 이미 존재하는 경우 데이터베이스에서 해당 토큰을 가져와서 응답에 추가
-                String existingRefreshToken = userRefreshTokenOptional.get().getRefreshToken();
-                postLogInUserRes.setRefreshToken(existingRefreshToken);
-            }
-
+            PostLoginUserRes postLogInUserRes = PostLoginUserRes.builder().token(jwtUtils.generateAccessToken(user, secretKey, expiredTimeMs)).build();
 
             return BaseRes.builder().isSuccess(true).message("로그인에 성공하였습니다.").result(postLogInUserRes).build();
         } else {
@@ -254,7 +227,12 @@ public class UserService {
             String imagePath = "https://github.com/hyungdoyou/devops/assets/148875644/f9dc322f-9d41-455d-b35c-e3cfcd7c008d";
 
             // HTML 문자열에 이미지 포함
-            String content = "<html><body style= 'font-family: Arial, sans-serif;'>" + "<img src='" + imagePath + "' style='width: auto; height: auto;'/>" + "<p style='color: rgb(84, 29, 122); margin-bottom: 15px; height: 100%; margin: 0; text-align: center; font-size: 30px; line-height: 3;'>" + "<strong>BOOTSHELF</strong> 에 가입해주셔서 감사합니다" + "</p>" + "<p style='color: #333; margin-bottom: 15px; height: 100%; margin: 0; text-align: center; font-size: 20px; line-height: 3;'>" + "이메일 인증 완료 후 회원들과 지식을 공유해보세요" + "</p>" + "<div style='text-align: center;'>\n" + "    <a href='" + url + "' style='color: #fff; text-decoration: none; background-color: rgb(84, 29, 122); padding: 10px 20px; border-radius: 5px; border: 2px solid rgb(84, 29, 122); display: inline-block; font-size: 15px; line-height: 2;'>\n" + "        이메일 인증하기\n" + "    </a>\n" + "</div>" + "</body></html>";
+            String content = "<html><body style= 'font-family: Pretendard; font-style: normal; font-weight: 500'>" +
+                    "<p style='color: rgb(84, 29, 122); height: 100%; margin: 0; text-align: center; font-size: 30px; line-height: 3;'>" +
+                    "<img src='" + imagePath + "' style='width: auto; height: auto;'/> <br/>" +
+                    "<strong>BOOTSHELF</strong> 에 가입해주셔서 감사합니다" +
+                    "</p>" + "<p style='color: #333; height: 100%; margin: 0; text-align: center; font-size: 25px; line-height: 3;'>" +
+                    "이메일 인증 완료 후 회원들과 지식을 공유해보세요" + "</p>" + "<div style='text-align: center;'>\n" + "    <a href='" + url + "' style='color: #fff; text-decoration: none; background-color: rgb(84, 29, 122); padding: 10px 20px; border-radius: 5px; border: 2px solid rgb(84, 29, 122); display: inline-block; font-size: 20px; line-height: 2;'>\n" + "        이메일 인증하기\n" + "    </a>\n" + "</div>" + "</body></html>";
             helper.setText(content, true); // true는 HTML 메일임을 의미합니다.
             emailSender.send(message);
             emailVerifyService.create(postSignUpUserReq.getEmail(), uuid);
@@ -412,5 +390,67 @@ public class UserService {
 
         return baseRes;
     }
+    // 비밀번호 찾기시 임시 비밀번호로 DB 업데이트
+    public String updatePassword(String email, String name) {
 
+        Optional<User> result = userRepository.findByEmailAndName(email, name);
+        if (result.isEmpty()) {
+            throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("UserEmail [ %s ] is not exists.", email));
+        }
+            User user = result.get();
+            String pw = getTempPassword();
+            user.setPassword(passwordEncoder.encode(pw));
+
+            user.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+            userRepository.save(user);
+            return pw;
+    }
+
+    public String getTempPassword() {
+        char[] charSet = new char[]{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+                'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+
+        char[] charSet2 = new char[]{'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s',
+        't','u','v','w','x','y','z'};
+
+        char[] charSet3 = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+
+        String str = "";
+
+        int idx1 = 0;
+        int idx2 = 0;
+        int idx3 = 0;
+
+        for (int i = 0; i < 3; i++) {
+            idx1 = (int) (charSet.length * Math.random());
+            idx2 = (int) (charSet2.length * Math.random());
+            idx3 = (int) (charSet3.length * Math.random());
+            str += charSet[idx1];
+            str += charSet2[idx2];
+            str += charSet3[idx3];
+        }
+        str += "@";
+        return str;
+    }
+
+    public BaseRes findEmail(GetFindEmailUserReq getFindEmailUserReq) {
+        Optional<User> result = userRepository.findByNameAndNickName(getFindEmailUserReq.getName(),getFindEmailUserReq.getNickName());
+        if (!result.isPresent()) {
+            throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("User Name [ %s ], NickNmae [ %s ] is not exists.", getFindEmailUserReq.getName(), getFindEmailUserReq.getNickName()));
+        }
+
+        User user = result.get();
+
+        GetFindEmailUserRes getFindEmailUserRes = GetFindEmailUserRes.builder()
+                .email(user.getEmail())
+                .build();
+
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("회원 이메일 찾기 성공")
+                .result(getFindEmailUserRes)
+                .build();
+
+        return baseRes;
+    }
 }
