@@ -5,6 +5,17 @@ import VueJwtDecode from "vue-jwt-decode";
 // const backend = "http://192.168.0.61/api";
 const backend = "http://localhost:8080"; 
 const storedToken = localStorage.getItem("accessToken");
+const refreshToken = localStorage.getItem("refreshToken");
+// let storedToken = "";
+// if(accessToken!==null){
+//   const tokenData = VueJwtDecode.decode(accessToken);
+//   const currentTime = Math.floor(Date.now() / 1000);
+//   if (tokenData.exp < currentTime){
+//     storedToken = refreshToken;
+//   } else {
+//     storedToken = accessToken;
+//   }
+// }
 
 export const useUserStore = defineStore("user", {
   state: () => ({
@@ -87,6 +98,7 @@ export const useUserStore = defineStore("user", {
         let response = await axios.get(backend + `/user/read`, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
+            "Refresh-Token": `Bearer ${refreshToken}`
           },
         });
         this.user = response.data.result;
