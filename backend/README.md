@@ -116,9 +116,9 @@
 	 <details>
          <summary><b>KMS_024_REVIEW_001. 후기 작성</b></summary>
                   <br>
-         <p><b> ➡️ 인증회원이 후기 카테고리 2개 ( 과정 후기, 강사 후기 ) 중 1개를 선택할 수 있다.
-                ➡️ 인증회원이 수강중인 또는 수강했던 과정명을 입력할 수 있다.
-                ➡️ 선택한 카테고리에 대한 후기를 [ 제목, 평점, 내용 ] 을 입력하여 작성할 수 있다.
+         <p><b> ➡️ 인증회원이 후기 카테고리 2개 ( 과정 후기, 강사 후기 ) 중 1개를 선택할 수 있다.<br>
+                ➡️ 인증회원이 수강중인 또는 수강했던 과정명을 입력할 수 있다.<br>
+                ➡️ 선택한 카테고리에 대한 후기를 [ 제목, 평점, 내용 ] 을 입력하여 작성할 수 있다.<br>
                 ➡️ 후기 작성 시 이미지 첨부도 가능하다.</b></p><br>
          <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/2a6d9e3b-b636-4525-8119-4401b8d10d40"/></p>
          </details><br>
@@ -131,28 +131,28 @@
 	 <details>
          <summary><b>KMS_026_REVIEW_003. 후기 카테고리 별 조회</b></summary>
                   <br>
-         <p><b> ➡️ 모든 사용자가 후기 카테고리별 게시글을 최신순으로 조회할 수 있다. 
+         <p><b> ➡️ 모든 사용자가 후기 카테고리별 게시글을 최신순으로 조회할 수 있다. <br>
                 ➡️ 카테고리 목록 : 과정 후기, 강사 후기</b></p><br>
          <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/c3355682-fc7a-4eb3-a6ef-04ababc95fae"/></p>
          </details><br>
 	 <details>
          <summary><b>KMS_027_REVIEW_004. 카테고리 별 본인 후기 목록 조회</b></summary>
                   <br>
-         <p><b> ➡️ 인증회원이 자신이 작성한 후기글의 목록을 "마이페이지" 에서 카테고리 별로 조회할 수 있다.
+         <p><b> ➡️ 인증회원이 자신이 작성한 후기글의 목록을 "마이페이지" 에서 카테고리 별로 조회할 수 있다.<br>
                 ➡️ 카테고리 목록 : 과정 후기, 강사 후기</b></p><br>
          <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/adda2859-6528-4ea0-bcb4-84ff692d7242"/></p>
          </details><br>
 	 <details>
          <summary><b>KMS_032_REVIEW_009. 후기 수정</b></summary>
                   <br>
-         <p><b> ➡️ 인증회원이 등록한 후기를 수정할 수 있다.
+         <p><b> ➡️ 인증회원이 등록한 후기를 수정할 수 있다.<br>
                 ➡️ 부트캠프 과정명, 후기 및 평점을 입력하지 않으면 후기가 수정되지 않는다.</b></p><br>
          <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/2ba89eda-7507-4705-84ba-567d48750e27"/></p>
          </details><br>
 	 <details>
     <summary><b>KMS_033_REVIEW_010. 후기 삭제</b></summary>
                   <br>
-         <p><b> ➡️ 인증회원 이 등록한 후기를 삭제할 수 있다.
+         <p><b> ➡️ 인증회원 이 등록한 후기를 삭제할 수 있다.<br>
                 ➡️ 삭제한 후기는 DB에서 status가 true -> false 로 변경된다.</b></p><br>
          <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/fad9a5a6-6c3a-40ac-aaf5-ef8067c3f769"/></p>
          </details><br>
@@ -184,7 +184,7 @@
          <summary><b>KMS_042_SCRAP_003. [ 게시글 ] 스크랩 여부 조회</b>
          </summary>
                   <br>
-         <p><b>    ➡️ 회원(인증회원, 일반회원) 이 게시글 스크랩을 했는지 여부를 조회할 수 있다.
+         <p><b>    ➡️ 회원(인증회원, 일반회원) 이 게시글 스크랩을 했는지 여부를 조회할 수 있다.<br>
  ➡️ 비회원은 조회를 할 수 없다.</b>
        </p><br>
          <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/5b85af29-5bff-4311-8035-f52ece97ab9d"/></p>
@@ -193,7 +193,7 @@
          <summary><b>KMS_043_SCRAP_004. [ 게시글 ] 스크랩 삭제</b>
          </summary>
                   <br>
-         <p><b>     ➡️ 회원(인증회원, 일반회원) 이 게시글 상세 페이지에서 게시글에 대한 스크랩을 삭제할 수 있다.
+         <p><b>     ➡️ 회원(인증회원, 일반회원) 이 게시글 상세 페이지에서 게시글에 대한 스크랩을 삭제할 수 있다.<br>
  ➡️ 회원(인증회원, 일반회원) 이 내 활동내역에서 게시글에 대한 스크랩을 삭제할 수 있다.</b>
        </p><br>
          <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/716194cc-c595-4bf4-990c-cbdafd72e107"/></p>
@@ -202,7 +202,7 @@
          <summary><b>KMS_044_SCRAP_005. [ 후기글 ] 스크랩 등록</b>
          </summary>
                   <br>
-         <p><b>      ➡️ 회원(인증회원, 일반회원) 이 후기글 상세 페이지에서 나중에 다시 보고싶은 후기글을 스크랩할 수 있다.
+         <p><b>      ➡️ 회원(인증회원, 일반회원) 이 후기글 상세 페이지에서 나중에 다시 보고싶은 후기글을 스크랩할 수 있다.<br>
  ➡️ 스크랩한 후기글은 내 활동내역에서 확인 할 수 있다.</b>
        </p><br>
          <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/10f24fd6-6624-4872-bea5-a44da48c013c"/></p>
@@ -211,8 +211,8 @@
          <summary><b>KMS_045_SCRAP_006. [ 후기글 ] 스크랩 목록 조회</b>
          </summary>
                   <br>
-         <p><b>       ➡️ 회원(인증회원, 일반회원) 이 나의 활동내역에서 스크랩한 후기글 목록을 카테고리별로 조회할 수 있다.
- ➡️ 카테고리 목록 : 과정 후기, 강사 후기
+         <p><b>       ➡️ 회원(인증회원, 일반회원) 이 나의 활동내역에서 스크랩한 후기글 목록을 카테고리별로 조회할 수 있다.<br>
+ ➡️ 카테고리 목록 : 과정 후기, 강사 후기<br>
  ➡️ 비회원은 조회를 할 수 없다.</b>
        </p><br>
          <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/a2315106-e192-4e87-8d2c-5c7d7d9bfd95"/></p>
@@ -221,7 +221,7 @@
          <summary><b>KMS_046_SCRAP_007. [ 후기글 ] 스크랩 여부 조회</b>
          </summary>
                   <br>
-         <p><b>        ➡️ 회원(인증회원, 일반회원) 이 후기글 스크랩을 했는지 여부를 조회할 수 있다.
+         <p><b>        ➡️ 회원(인증회원, 일반회원) 이 후기글 스크랩을 했는지 여부를 조회할 수 있다.<br>
  ➡️ 비회원은 조회를 할 수 없다.</b>
        </p><br>
          <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/b213201e-03e1-4f02-99c2-8b8229d81e42"/></p>
@@ -230,7 +230,7 @@
          <summary><b>KMS_047_SCRAP_008. [ 후기글 ] 스크랩 삭제</b>
          </summary>
                   <br>
-         <p><b>         ➡️ 회원(인증회원, 일반회원) 이 후기글 상세 페이지에서 후기글에 대한 스크랩을 삭제할 수 있다.
+         <p><b>         ➡️ 회원(인증회원, 일반회원) 이 후기글 상세 페이지에서 후기글에 대한 스크랩을 삭제할 수 있다.<br>
  ➡️ 회원(인증회원, 일반회원) 이 내 활동내역에서 후기글에 대한 스크랩을 삭제할 수 있다.</b>
        </p><br>
          <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/a4a84222-440f-4c98-a70a-c684ec58db38"/></p>
@@ -244,7 +244,7 @@
          <summary><b>KMS_048_UP_001. [ 게시글 ] 추천 클릭</b>
          </summary>
                   <br>
-         <p><b> ➡️ 회원(인증회원, 일반회원) 이 게시글에 추천 버튼을 클릭할 수 있다.
+         <p><b> ➡️ 회원(인증회원, 일반회원) 이 게시글에 추천 버튼을 클릭할 수 있다.<br>
  ➡️ 비회원은 추천 버튼을 클릭할 수 없다.
  ➡️ 추천은 1회만 가능하다.</b>
        </p><br>
@@ -254,7 +254,7 @@
          <summary><b>KMS_049_UP_002. [ 게시글 ] 추천 여부 조회</b>
          </summary>
                   <br>
-         <p><b>  ➡️ 회원(인증회원, 일반회원) 이 게시글 추천을 했는지 여부를 조회할 수 있다.
+         <p><b>  ➡️ 회원(인증회원, 일반회원) 이 게시글 추천을 했는지 여부를 조회할 수 있다.<br>
  ➡️ 비회원은 조회를 할 수 없다.</b>
        </p><br>
          <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/8d55e6ac-bcf4-4efa-bb23-385af6668949"/></p>
@@ -263,7 +263,7 @@
          <summary><b>KMS_050_UP_003. [ 게시글 ] 추천 취소</b>
          </summary>
                   <br>
-         <p><b> ➡️ 회원(인증회원, 일반회원) 이 게시글에 클릭한 추천 버튼을 취소할 수 있다.
+         <p><b> ➡️ 회원(인증회원, 일반회원) 이 게시글에 클릭한 추천 버튼을 취소할 수 있다.<br>
  ➡️ 비회원은 추천 버튼을 클릭 취소할 수 없다.</b>
        </p><br>
          <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/16058172-9101-4d41-9ea7-3a5187997190"/></p>
@@ -272,7 +272,7 @@
          <summary><b>KMS_051_UP_004. [ 후기글 ] 추천 클릭</b>
          </summary>
                   <br>
-         <p><b>  ➡️ 회원(인증회원, 일반회원) 이 후기글에 추천 버튼을 클릭할 수 있다.
+         <p><b>  ➡️ 회원(인증회원, 일반회원) 이 후기글에 추천 버튼을 클릭할 수 있다.<br>
  ➡️ 비회원은 추천 버튼을 클릭할 수 없다.
  ➡️ 추천은 1회만 가능하다.</b>
        </p><br>
@@ -282,7 +282,7 @@
          <summary><b>KMS_052_UP_005. [ 후기글 ] 추천 여부 조회</b>
          </summary>
                   <br>
-         <p><b>  ➡️ 회원(인증회원, 일반회원) 이 후기글 추천을 했는지 여부를 조회할 수 있다.
+         <p><b>  ➡️ 회원(인증회원, 일반회원) 이 후기글 추천을 했는지 여부를 조회할 수 있다.<br>
  ➡️ 비회원은 조회를 할 수 없다.</b>
        </p><br>
          <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/5e18837a-b271-4913-b4e4-dd5f881b0b18"/></p>
@@ -291,7 +291,7 @@
          <summary><b>KMS_053_UP_006. [ 후기글 ] 추천 취소</b>
          </summary>
                   <br>
-         <p><b>   ➡️ 회원(인증회원, 일반회원) 이 후기글에 클릭한 추천 버튼을 취소할 수 있다.
+         <p><b>   ➡️ 회원(인증회원, 일반회원) 이 후기글에 클릭한 추천 버튼을 취소할 수 있다.<br>
  ➡️ 비회원은 추천 버튼을 클릭 취소할 수 없다.</b>
        </p><br>
          <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/8bbc9984-f04e-47da-9fab-c3d370afdca3"/></p>
@@ -305,7 +305,7 @@
          <summary><b>KMS_054_COMMENT_001. [ 게시글 ] 댓글 작성</b>
          </summary>
                   <br>
-         <p><b>    ➡️ 회원(인증회원, 일반회원) 이 게시글에 댓글을 작성할 수 있다.
+         <p><b>    ➡️ 회원(인증회원, 일반회원) 이 게시글에 댓글을 작성할 수 있다.<br>
  ➡️ 비회원은 댓글을 작성할 수 없다.</b>
        </p><br>
          <p><img src=""/></p>
@@ -348,11 +348,9 @@
          <summary><b>KMS_067_ADMIN_003. 회원 삭제</b>
          </summary>
                   <br>
-         <p><b>    ➡️ 관리자가 회원의 상태를 DB에서 false로 변경할 수 있다. 
-
- ➡️ 회원이 허위 인증을 하거나 과도한 비방, 욕설 등의 게시글, 댓글 등을 남기는 경우 관리자가 비활성화 
-      처리할 수 있다.</b>
-       </p><br>
+         <p><b>    ➡️ 관리자가 회원의 상태를 DB에서 false로 변경할 수 있다.<br>
+                     ➡️ 회원이 허위 인증을 하거나 과도한 비방, 욕설 등의 게시글, 댓글 등을 남기는 경우 관리자가 비활성화 처리할 수 있다.</b>
+</p><br>
          <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/00b76dd9-79e0-4541-9bae-5b984341035b"/></p>
          </details><br>
     <details>
@@ -433,7 +431,7 @@
                   <br>
          <p><b>  ➡️ 관리자가 태그를 등록할 수 있다. ( EX : #백엔드 )</b>
        </p><br>
-         <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/ac8cfa4d-2326-4800-96b6-2cd179ee6ffa"/></p>
+         <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/da067cbc-c460-4f12-867b-7298508e4504"/></p>
          </details><br>
                       <details>
          <summary><b>KMS_078_ADMIN_014. 태그목록 조회</b>
@@ -441,7 +439,7 @@
                   <br>
          <p><b>  ➡️ 관리자가 태그 목록을 조회할 수 있다.</b>
        </p><br>
-         <p><img src=""/></p>
+         <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/177b8be9-4b7f-4e71-8a73-87b0b6b89734"/></p>
          </details><br>
                                <details>
          <summary><b>KMS_079_ADMIN_015. 태그 수정</b>
@@ -449,7 +447,7 @@
                   <br>
          <p><b>   ➡️ 관리자가 태그를 수정할 수 있다.</b>
        </p><br>
-         <p><img src=""/></p>
+         <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/0296b6b5-5fab-41ab-aa16-26dfde97b313"/></p>
          </details><br>
                              <details>
          <summary><b>KMS_080_ADMIN_016. 태그 삭제</b>
@@ -457,12 +455,5 @@
                   <br>
          <p><b> ➡️ 관리자가 태그를 삭제할 수 있다.</b>
        </p><br>
-         <p><img src=""/></p>
+         <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/cd913c63-7051-4a68-8867-645043ef7192"/></p>
          </details><br>
-
-
-
-
-
-
-
