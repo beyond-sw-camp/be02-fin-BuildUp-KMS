@@ -474,9 +474,9 @@ export default {
   },
   methods: {
     checkRole() {
-      const token = localStorage.getItem("token");
-      if (token) {
-        const role = VueJwtDecode.decode(token).ROLE;
+      const accessToken = localStorage.getItem("accessToken");
+      if (accessToken) {
+        const role = VueJwtDecode.decode(accessToken).ROLE;
         this.userRole = role;
       }
     },

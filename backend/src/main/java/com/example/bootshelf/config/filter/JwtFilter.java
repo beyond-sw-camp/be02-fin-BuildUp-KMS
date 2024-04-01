@@ -6,12 +6,20 @@ import com.example.bootshelf.common.error.ErrorResponse;
 import com.example.bootshelf.config.utils.JwtUtils;
 import com.example.bootshelf.common.error.entityexception.UserException;
 import com.example.bootshelf.user.model.entity.User;
+import com.example.bootshelf.user.model.entity.UserRefreshToken;
+import com.example.bootshelf.user.repository.UserRefreshTokenRepository;
 import com.example.bootshelf.user.repository.UserRepository;
+import com.example.bootshelf.user.service.RefreshTokenService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.ExpiredJwtException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -25,14 +33,19 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private UserRepository userRepository;
 
+    private RefreshTokenService refreshTokenService;
+
+
     @Value("${jwt.secret-key}")
     private String secretKey;
 
-    public JwtFilter(String secretKey, UserRepository userRepository) {
-        this.secretKey = secretKey;
-        this.userRepository = userRepository;
 
+    public JwtFilter(String secretKey, UserRepository userRepository){
+        this.userRepository = userRepository;
+        this.secretKey = secretKey;
     }
+
+
 
     // 필터에서 예외를 다루기 위한 처리
     private void handleJwtException(HttpServletResponse response, UserException exception) throws IOException {
@@ -85,6 +98,9 @@ public class JwtFilter extends OncePerRequestFilter {
                     }
                 }
             }
+        }catch (ExpiredJwtException e){
+            //access토큰 재발급과정 넣기
+            reissueAccessToken(request, response,e);
         } catch (UserException e) {
             // JwtUtils에서 던진 UserAccountException 처리
             handleJwtException(response, e);
@@ -92,6 +108,46 @@ public class JwtFilter extends OncePerRequestFilter {
             // Spring Security 예외 처리
             handleJwtException(response, new UserException(ErrorCode.UNAUTHORIZED, e.getMessage()));
         }
+    }
 
+    private String parseBearerToken(HttpServletRequest request, String headerName) {
+        String headerValue = request.getHeader(headerName);
+        if (headerValue != null && headerValue.startsWith("Bearer ")) {
+            return headerValue.substring(7);
+        } else {
+            return null;
+        }
+    }
+
+    private void reissueAccessToken(HttpServletRequest request, HttpServletResponse response, Exception exception) {
+        try {
+            String refreshToken = parseBearerToken(request, "Refresh-Token");
+            if (refreshToken == null) {
+                throw exception;
+            }
+            String oldAccessToken = parseBearerToken(request, HttpHeaders.AUTHORIZATION);
+            //Try Catch 연장선
+            refreshTokenService.validateRefreshToken(refreshToken, oldAccessToken);
+            String newAccessToken = refreshTokenService.recreateAccessToken(oldAccessToken);
+            String authority = JwtUtils.getAuthority(newAccessToken, secretKey);
+            if (authority.equals("ROLE_USER") || authority.equals("ROLE_ADMIN") || authority.equals("ROLE_AUTHUSER") || authority.equals("ROLE_KAKAO")){
+                String userEmail = JwtUtils.getUserEmail(newAccessToken, secretKey);
+                if (userEmail != null) {
+                    Optional<User> result = userRepository.findByEmail(userEmail);
+                    if (result.isPresent()) {
+                        User user = result.get();
+
+                        // 인가하는 코드
+                        AbstractAuthenticationToken authenticated = UsernamePasswordAuthenticationToken.authenticated(user, newAccessToken, user.getAuthorities());
+                        authenticated.setDetails(new WebAuthenticationDetails(request));
+                        SecurityContextHolder.getContext().setAuthentication(authenticated);
+
+                        response.setHeader("New-Access-Token", newAccessToken);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            request.setAttribute("exception", e);
+        }
     }
 }

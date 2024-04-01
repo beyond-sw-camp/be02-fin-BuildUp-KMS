@@ -812,7 +812,7 @@ export default {
       return store.decodedToken;
     },
     isLoggedIn() {
-      return !!localStorage.getItem("token");
+      return !!localStorage.getItem("accessToken");
     },
     userProfileImage() {
       const store = useUserStore();
@@ -823,10 +823,10 @@ export default {
     },
   },
   mounted() {
-    const token = localStorage.getItem("token");
+    const accessToken = localStorage.getItem("accessToken");
 
-    if (token) {
-      const role = VueJwtDecode.decode(token).ROLE;
+    if (accessToken) {
+      const role = VueJwtDecode.decode(accessToken).ROLE;
       if (role === "ROLE_ADMIN") {
         this.isAdminLogin = true;
       } else {
@@ -906,7 +906,8 @@ export default {
       window.location.href = "/select/signup";
     },
     logout() {
-      window.localStorage.removeItem("token");
+      window.localStorage.removeItem("accessToken");
+      window.localStorage.removeItem("refreshToken");
       const store = useUserStore();
       store.isAuthenticated = false;
       store.decodedToken = {};
@@ -925,8 +926,8 @@ export default {
     goAdminPage() {
       window.location.href = "/admin/login";
     },
-    decodeToken(token) {
-      const base64Url = token.split(".")[1];
+    decodeToken(accessToken) {
+      const base64Url = accessToken.split(".")[1];
       const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
       const jsonPayload = decodeURIComponent(
         atob(base64)
@@ -976,9 +977,9 @@ export default {
     },
   },
   created() {
-    const token = window.localStorage.getItem("token");
-    if (token) {
-      const decoded = this.decodeToken(token);
+    const accessToken = window.localStorage.getItem("accessToken");
+    if (accessToken) {
+      const decoded = this.decodeToken(accessToken);
       const store = useUserStore();
       store.setDecodedToken(decoded);
       store.isAuthenticated = true;

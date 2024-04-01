@@ -2,6 +2,7 @@ package com.example.bootshelf.common.error.exception;
 
 import com.example.bootshelf.common.error.ErrorCode;
 import com.example.bootshelf.common.error.ErrorResponse;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -44,7 +45,6 @@ public class GlobalExceptionHandler {
         ErrorResponse response = new ErrorResponse(errorCode.getCode(), e.getMessage());
         return new ResponseEntity<>(response, errorCode.getStatus());
     }
-
 
     // 제약조건에 대한 예외
     @ExceptionHandler(ConstraintViolationException.class)

@@ -86,6 +86,7 @@ jwt:
   secret-key: ${JWT_SECRET_KEY}
   token:
     expired-time-ms: ${EXPIRED_TIME}
+    refresh-expiration-ms: ${REFRESH_TIME}
 
 cloud:
   aws:

@@ -381,9 +381,9 @@ export default {
       }
     },
     async createBoardUp() {
-      let token = window.localStorage.getItem("token");
+      let accessToken = window.localStorage.getItem("accessToken");
 
-      if (token == null) {
+      if (accessToken == null) {
         alert("로그인 후 이용해주세요.");
       } else {
         let requestBody = {
@@ -392,14 +392,14 @@ export default {
 
         try {
           if (this.isRecommended) {
-            await this.boardStore.cancelBoardUp(token, this.boardUpIdx);
+            await this.boardStore.cancelBoardUp(accessToken, this.boardUpIdx);
             console.log("게시글 추천 취소 성공");
             this.isRecommended = false;
 
             window.location.reload();
           } else {
             const response = await this.boardStore.createBoardUp(
-              token,
+              accessToken,
               requestBody
             );
 
@@ -418,9 +418,9 @@ export default {
       }
     },
     async createBoardScrap() {
-      let token = window.localStorage.getItem("token");
+      let accessToken = window.localStorage.getItem("accessToken");
 
-      if (token == null) {
+      if (accessToken == null) {
         alert("로그인 후 이용해주세요.");
       } else {
         let requestBody = {
@@ -429,14 +429,14 @@ export default {
 
         try {
           if (this.isScrapped) {
-            await this.boardStore.cancelBoardScrap(token, this.boardScrapIdx);
+            await this.boardStore.cancelBoardScrap(accessToken, this.boardScrapIdx);
             console.log("게시글 스크랩 취소 성공");
             this.isScrapped = false;
 
             window.location.reload();
           } else {
             const response = await this.boardStore.createBoardScrap(
-              token,
+              accessToken,
               requestBody
             );
 
@@ -464,8 +464,8 @@ export default {
     },
     async checkBoardUp() {
       try {
-        let token = window.localStorage.getItem("token");
-        let response = await this.boardStore.checkBoardUp(token, this.boardIdx);
+        let accessToken = window.localStorage.getItem("accessToken");
+        let response = await this.boardStore.checkBoardUp(accessToken, this.boardIdx);
 
         if (response.data && response.data.result.status === true) {
           this.isRecommended = true;
@@ -479,9 +479,9 @@ export default {
     },
     async checkBoardScrap() {
       try {
-        let token = window.localStorage.getItem("token");
+        let accessToken = window.localStorage.getItem("accessToken");
         let response = await this.boardStore.checkBoardScrap(
-          token,
+          accessToken,
           this.boardIdx
         );
 

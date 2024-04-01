@@ -25,6 +25,12 @@ public class SecurityConfig {
     @Value("${jwt.secret-key}")
     private String secretKey;
 
+    @Value("${jwt.token.refresh-expiration-ms}")
+    private Long refreshTime;
+
+    @Value("${jwt.token.expired-time-ms}")
+    private Long expiredTimeMs;
+
     private final UserRepository userRepository;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final UserOAuth2Service userOAuth2Service;

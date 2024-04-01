@@ -19,7 +19,9 @@ import com.example.bootshelf.tag.model.response.GetListTagResResult;
 import com.example.bootshelf.user.model.entity.User;
 import com.example.bootshelf.user.model.request.*;
 import com.example.bootshelf.user.model.response.*;
+import com.example.bootshelf.user.repository.UserRefreshTokenRepository;
 import com.example.bootshelf.user.repository.UserRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -46,6 +48,8 @@ public class UserService {
     private String secretKey;
     @Value("${jwt.token.expired-time-ms}")
     private Long expiredTimeMs;
+    @Value("${jwt.token.refresh-expiration-ms}")
+    private Long expiredRefreshTokenTimeMs;
     @Value("${cloud.aws.s3.profile-bucket}")
     private String profileBucket;
 
@@ -57,6 +61,7 @@ public class UserService {
     private final JavaMailSender emailSender;
     private final EmailVerifyService emailVerifyService;
     private final JwtUtils jwtUtils;
+    private final UserRefreshTokenRepository userRefreshTokenRepository;
 
     @Transactional(readOnly = false)
     public User saveUser(PostSignUpUserReq postSignUpUserReq, MultipartFile profileImage) {
@@ -194,8 +199,14 @@ public class UserService {
 
         User user = result.get();
         if (passwordEncoder.matches(postLoginUserReq.getPassword(), user.getPassword()) && user.getStatus().equals(true)) {
-            PostLoginUserRes postLogInUserRes = PostLoginUserRes.builder().token(jwtUtils.generateAccessToken(user, secretKey, expiredTimeMs)).build();
-
+            PostLoginUserRes postLogInUserRes = PostLoginUserRes.builder().accessToken(jwtUtils.generateAccessToken(user, secretKey, expiredTimeMs)).expiredTimeMs(expiredTimeMs).build();
+            // 로그인 시 리프레시 토큰이 존재할 때 지워준다.
+            if(userRefreshTokenRepository.findByUserIdx(user.getIdx()).isPresent()){
+                userRefreshTokenRepository.deleteByUserIdx(user.getIdx());
+                postLogInUserRes.setRefreshToken(jwtUtils.generateRefreshToken(secretKey,expiredRefreshTokenTimeMs));
+            } else {
+                postLogInUserRes.setRefreshToken(jwtUtils.generateRefreshToken(secretKey,expiredRefreshTokenTimeMs));
+            }
             return BaseRes.builder().isSuccess(true).message("로그인에 성공하였습니다.").result(postLogInUserRes).build();
         } else {
             throw new UserException(ErrorCode.DIFFERENT_USER_PASSWORD, String.format("User Password [ %s ] is different.", postLoginUserReq.getPassword()));
@@ -453,4 +464,8 @@ public class UserService {
 
         return baseRes;
     }
+    //access토큰 만료시 refresh토큰으로 검증
+//    public String recreateAccessToken(String oldAccessToken) throws JsonProcessingException {
+//        String subject = decodeJwt
+//    }
 }
