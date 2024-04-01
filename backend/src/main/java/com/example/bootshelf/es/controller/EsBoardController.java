@@ -57,15 +57,6 @@ public class EsBoardController {
         return esBoardService.titleContentSearchByStudy(title, pageable);
     }
 
-    // 제목+내용(공지사항)
-    @GetMapping("/search/notice")
-    @ResponseBody
-    public SearchHits<EsBoard> titleContentSearchByNotice(
-            @RequestParam String title,
-            @PageableDefault(size = 20) Pageable pageable
-    ) {
-        return esBoardService.titleContentSearchByStudy(title, pageable);
-    }
 
 //    // 제목 검색, EsRepository 사용
 //    @GetMapping("/search2")
