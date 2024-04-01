@@ -1,0 +1,47 @@
+
+server:
+  port: 8082
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+spring:
+  application:
+    name: board-search-service
+  kafka:
+    consumer:
+      bootstrap-servers: 10.10.10.200:9092
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ddarahakit2023
+    password: ucoqxsnseyleeukl
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+            required: true
+          auth: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+
+  datasource:
+    url: jdbc:mysql://10.10.10.100/test
+    username: sjb
+    password: qwer1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
