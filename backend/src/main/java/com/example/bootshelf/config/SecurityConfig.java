@@ -87,7 +87,7 @@ public class SecurityConfig {
 //                    .authenticationEntryPoint(customAuthenticationEntryPoint) // 인증에 대한 예외 처리
                     .and()
                     .formLogin().disable()
-                    .addFilterBefore(new JwtFilter(secretKey, userRepository , refreshTime, expiredTimeMs), UsernamePasswordAuthenticationFilter.class)
+                    .addFilterBefore(new JwtFilter(secretKey, userRepository), UsernamePasswordAuthenticationFilter.class)
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                     // OAuth 2.0 로그인 처리

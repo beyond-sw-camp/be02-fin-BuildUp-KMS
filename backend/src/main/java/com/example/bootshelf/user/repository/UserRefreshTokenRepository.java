@@ -7,5 +7,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface UserRefreshTokenRepository extends JpaRepository<UserRefreshToken, Integer> {
-    Optional<UserRefreshToken> findByUserIdxAndReissueCountLessThan(Integer idx, long count);
+    Optional<UserRefreshToken> findByUserIdx(Integer idx);
+    Optional<UserRefreshToken> deleteByUserIdx(Integer idx);
 }

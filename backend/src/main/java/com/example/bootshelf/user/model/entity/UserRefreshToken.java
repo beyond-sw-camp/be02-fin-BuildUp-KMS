@@ -7,33 +7,24 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.UUID;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
 @Entity
+@Getter
 public class UserRefreshToken {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idx;
+
     private Integer userIdx;
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    @JoinColumn(name = "user_idx")
-    private User user;
+
     private String refreshToken;
-    private int reissueCount = 0;
 
-    public UserRefreshToken(User user, String refreshToken) {
-        this.user = user;
-        this.refreshToken = refreshToken;
-    }
-
-    public void updateRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
-    }
-
-    public boolean validateRefreshToken(String refreshToken) {
+    public boolean validateRefreshToken(String refreshToken){
         return this.refreshToken.equals(refreshToken);
     }
 
-    public void increaseReissueCount() {
-        reissueCount++;
+    public UserRefreshToken(Integer userIdx, String token) {
+        this.userIdx = userIdx;
+        this.refreshToken = token;
     }
 }

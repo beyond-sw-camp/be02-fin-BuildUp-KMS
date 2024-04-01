@@ -9,6 +9,7 @@ import com.example.bootshelf.user.model.entity.User;
 import com.example.bootshelf.user.model.entity.UserRefreshToken;
 import com.example.bootshelf.user.repository.UserRefreshTokenRepository;
 import com.example.bootshelf.user.repository.UserRepository;
+import com.example.bootshelf.user.service.RefreshTokenService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -32,28 +33,18 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private UserRepository userRepository;
 
-    private UserRefreshTokenRepository userRefreshTokenRepository;
+    private RefreshTokenService refreshTokenService;
+
 
     @Value("${jwt.secret-key}")
     private String secretKey;
 
-    @Value("${jwt.token.refresh-expiration-ms}")
-    private Long refreshTime;
 
-    @Value("${jwt.token.expired-time-ms}")
-    private Long expiredTimeMs;
-
-    public JwtFilter(String secretKey, UserRepository userRepository, Long refreshTime, Long expiredTimeMs){
+    public JwtFilter(String secretKey, UserRepository userRepository){
         this.userRepository = userRepository;
         this.secretKey = secretKey;
-        this.refreshTime = refreshTime;
-        this.expiredTimeMs = expiredTimeMs;
     }
 
-    public Long reissueLimit(Long expiredTimeMs, Long refreshTime){
-        Long reissueLimit = this.refreshTime * 3600000 / this.expiredTimeMs;
-        return reissueLimit;
-    }
 
 
     // 필터에서 예외를 다루기 위한 처리
@@ -107,8 +98,9 @@ public class JwtFilter extends OncePerRequestFilter {
                     }
                 }
             }
-        } catch (ExpiredJwtException e){
-            reissueAccessToken(request, response, filterChain, e, expiredTimeMs, refreshTime);
+        }catch (ExpiredJwtException e){
+            //access토큰 재발급과정 넣기
+            reissueAccessToken(request, response,e);
         } catch (UserException e) {
             // JwtUtils에서 던진 UserAccountException 처리
             handleJwtException(response, e);
@@ -117,70 +109,45 @@ public class JwtFilter extends OncePerRequestFilter {
             handleJwtException(response, new UserException(ErrorCode.UNAUTHORIZED, e.getMessage()));
         }
     }
+
     private String parseBearerToken(HttpServletRequest request, String headerName) {
-        return Optional.ofNullable(request.getHeader(headerName))
-                .filter(token -> token.substring(0, 7).equalsIgnoreCase("Bearer "))
-                .map(token -> token.substring(7))
-                .orElse(null);
+        String headerValue = request.getHeader(headerName);
+        if (headerValue != null && headerValue.startsWith("Bearer ")) {
+            return headerValue.substring(7);
+        } else {
+            return null;
+        }
     }
-    private void reissueAccessToken(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain ,Exception exception, Long expiredTimeMs, Long refreshTime) {
+
+    private void reissueAccessToken(HttpServletRequest request, HttpServletResponse response, Exception exception) {
         try {
             String refreshToken = parseBearerToken(request, "Refresh-Token");
             if (refreshToken == null) {
                 throw exception;
             }
-
             String oldAccessToken = parseBearerToken(request, HttpHeaders.AUTHORIZATION);
-            Integer userIdx= JwtUtils.validateRefreshToken(refreshToken, oldAccessToken, secretKey);
-            upReissueCount(userIdx, expiredTimeMs,refreshTime);
-
-            String newAccessToken = recreateAccessToken(userIdx, secretKey,expiredTimeMs,refreshTime);
+            //Try Catch 연장선
+            refreshTokenService.validateRefreshToken(refreshToken, oldAccessToken);
+            String newAccessToken = refreshTokenService.recreateAccessToken(oldAccessToken);
             String authority = JwtUtils.getAuthority(newAccessToken, secretKey);
-
-
             if (authority.equals("ROLE_USER") || authority.equals("ROLE_ADMIN") || authority.equals("ROLE_AUTHUSER") || authority.equals("ROLE_KAKAO")){
                 String userEmail = JwtUtils.getUserEmail(newAccessToken, secretKey);
                 if (userEmail != null) {
                     Optional<User> result = userRepository.findByEmail(userEmail);
-
                     if (result.isPresent()) {
                         User user = result.get();
 
                         // 인가하는 코드
-                        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                                user, null,
-                                user.getAuthorities()
-                        );
-                        SecurityContextHolder.getContext().setAuthentication(authentication);
-                        filterChain.doFilter(request, response);
+                        AbstractAuthenticationToken authenticated = UsernamePasswordAuthenticationToken.authenticated(user, newAccessToken, user.getAuthorities());
+                        authenticated.setDetails(new WebAuthenticationDetails(request));
+                        SecurityContextHolder.getContext().setAuthentication(authenticated);
+
+                        response.setHeader("New-Access-Token", newAccessToken);
                     }
                 }
             }
         } catch (Exception e) {
             request.setAttribute("exception", e);
         }
-    }
-
-    public void upReissueCount (Integer userIdx, Long expiredTimeMs, Long refreshTime){
-        Long reissueLimit = reissueLimit(expiredTimeMs, refreshTime);
-        if(userRefreshTokenRepository.findByUserIdxAndReissueCountLessThan(userIdx,reissueLimit).isPresent()){
-            UserRefreshToken refreshToken = userRefreshTokenRepository.findByUserIdxAndReissueCountLessThan(userIdx,reissueLimit).get();
-            refreshToken.increaseReissueCount(); // 재발급 횟수 증가
-            userRefreshTokenRepository.save(refreshToken); // 변경 내용 저장
-        } else {
-            throw new ExpiredJwtException(null, null, "Refresh token expired.");
-        }
-    }
-
-    public String recreateAccessToken(Integer userIdx, String secretKey, Long expiredTimeMs, Long refreshTime) throws JsonProcessingException {
-
-        Optional<User> result = userRepository.findByIdx(userIdx);
-        if(!result.isPresent()){
-            throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("User idx [ %s ] is not exists.", userIdx));
-        }
-        User user = result.get();
-        upReissueCount(userIdx,expiredTimeMs,refreshTime);
-
-        return JwtUtils.generateAccessToken(user,secretKey, expiredTimeMs);
     }
 }
