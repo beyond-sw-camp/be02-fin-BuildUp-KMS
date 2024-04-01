@@ -1,6 +1,7 @@
 ## 🔥 STACKS
 
 <br>
+<div align=center>
 &nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/Spring Security-6DB33F?style=flat&logo=springsecurity&logoColor=white&color=darkgreen"/></a></a>
 &nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=flat&logo=springBoot&logoColor=white&color=green"/></a></a>
 &nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/Spring JPA-6DB33F?style=flat&logo=spring JPA&logoColor=white&color=green"/></a></a>
@@ -8,6 +9,7 @@
 &nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/Amazon AWS-232F3E?style=flat&logo=AmazonAWS&logoColor=black&color=orange"/></a></a>
 &nbsp;&nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/Amazon S3-569A31?style=flat&logo=Amazon S3&logoColor=white&color=red"/></a></a>
 <br>
+</div>
 
 ### 📌 API 테스트 결과
 
@@ -17,8 +19,7 @@
          <details>
          <summary><b>KMS_001_USER_001. 회원 가입</b></summary>
                   <br>
-         <p><b>➡️ 회원이 회원 정보 [ 이메일, 패스워드, 이름, 닉네임 ] 를<br>
- &nbsp;&nbsp;&nbsp;　입력하여 회원 가입을 진행한다.</b></p><br>
+         <p><b>➡️ 회원이 회원 정보 [ 이메일, 패스워드, 이름, 닉네임 ] 를 입력하여 회원 가입을 진행한다.</b></p><br>
          <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/76ebda5a-aec9-4cfc-a1c7-aab563364a4e"/></p>
          </details><br>
           <details>
