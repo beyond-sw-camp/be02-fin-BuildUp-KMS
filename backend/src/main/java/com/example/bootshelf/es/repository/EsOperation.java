@@ -19,22 +19,34 @@ public class EsOperation {
     private final ElasticsearchOperations operations;
 
 
-    // 제목검색
-    public SearchHits<EsBoard> keywordSearchByElastic(String title, Pageable pageable) {
+    // 제목 검색(메인)
+    public SearchHits<EsBoard> titleSearchByMain(String title, Pageable pageable) {
 
         MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("boardTitle", title);
 
-//        MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(boardCategory, title,
-//                "boardCategory", "boardTitle");
-
-//        TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery("status", "true" );
-
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
-                .filter(QueryBuilders.termQuery("status", "true"))
-                .filter(QueryBuilders.termQuery("boardCategory", 1));
+                .filter(QueryBuilders.termQuery("status", "true"));
 
         NativeSearchQuery build = new NativeSearchQueryBuilder()
                 .withQuery(matchQueryBuilder)
+                .withFilter(boolQueryBuilder)
+                .withPageable(pageable)
+                .build();
+
+        return operations.search(build, EsBoard.class);
+    }
+
+    // 제목+내용 검색(메인)
+    public SearchHits<EsBoard> titleContentSearchByMain(String title, Pageable pageable) {
+
+        MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(title,
+                "boardTitle", "boardContent");
+
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
+                .filter(QueryBuilders.termQuery("status", "true"));
+
+        NativeSearchQuery build = new NativeSearchQueryBuilder()
+                .withQuery(multiMatchQueryBuilder)
                 .withFilter(boolQueryBuilder)
                 .withPageable(pageable)
                 .build();
