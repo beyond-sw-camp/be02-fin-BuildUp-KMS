@@ -7,7 +7,7 @@ import com.example.bootshelf.common.error.entityexception.ReviewException;
 import com.example.bootshelf.reviewsvc.review.model.entity.QReview;
 import com.example.bootshelf.reviewsvc.review.model.entity.Review;
 import com.example.bootshelf.reviewsvc.reviewcategory.model.QReviewCategory;
-import com.example.bootshelf.reviewsvc.reviewimage.model.QReviewImage;
+import com.example.bootshelf.reviewsvc.reviewimage.model.entity.QReviewImage;
 import com.example.bootshelf.user.model.entity.QUser;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
