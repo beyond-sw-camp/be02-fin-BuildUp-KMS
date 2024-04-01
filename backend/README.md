@@ -1,16 +1,12 @@
 ## 🔥 STACKS
 
 <br>
-
-&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/L i n u x-FCC624?style=flat&logo=linux&logoColor=black"></a>
-&nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/MySQL InnoDB-4479A1?style=flat&logo=MySQL&logoColor=white"/></a>
-&nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/CentOS   8-262577?style=flat&logo=centos&logoColor=white&color=purple"/></a></a>
-&nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=flat&logo=springBoot&logoColor=white&color=green"/></a></a>
-&nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/Spring Cloud-6DB33F?style=flat&logo=spring&logoColor=white&color=dargreen"/></a></a>
 &nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/Spring Security-6DB33F?style=flat&logo=springsecurity&logoColor=white&color=darkgreen"/></a></a>
-&nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/Apache kafka-231F20F?style=flat&logo=ApacheKafka&logoColor=black&color=white"/></a></a>
+&nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=flat&logo=springBoot&logoColor=white&color=green"/></a></a>
+&nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/Spring JPA-6DB33F?style=flat&logo=spring JPA&logoColor=white&color=green"/></a></a>
+&nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/QueryDSL-%231785D1.svg?&style=flat&logo=QueryDSL&logoColor=white" alt="QueryDSL"/></a>
 &nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/Amazon AWS-232F3E?style=flat&logo=AmazonAWS&logoColor=black&color=orange"/></a></a>
-
+&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/Amazon S3-569A31?style=flat&logo=Amazon S3&logoColor=white&color=red"/></a></a>
 <br>
 
 ### 📌 API 테스트 결과
@@ -296,8 +292,7 @@
        </p><br>
          <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/8bbc9984-f04e-47da-9fab-c3d370afdca3"/></p>
          </details><br>
-       </details>
-
+        </details>
 <br>
 <details>
 <summary><b>🗨️ 댓&nbsp;&nbsp;&nbsp;&nbsp;글</b></summary><br>
@@ -308,10 +303,86 @@
          <p><b>    ➡️ 회원(인증회원, 일반회원) 이 게시글에 댓글을 작성할 수 있다.<br>
  ➡️ 비회원은 댓글을 작성할 수 없다.</b>
        </p><br>
-         <p><img src=""/></p>
+         <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/628e057d-bc7c-4f56-81ec-55fe247f4f1f"/></p>
          </details><br>
-  </details>
-
+            <details>
+         <summary><b>KMS_055_COMMENT_002. [ 게시글 ] 대댓글 작성</b>
+         </summary>
+                  <br>
+         <p><b>     ➡️ 회원(인증회원, 일반회원) 이 게시글 댓글에 대댓글을 작성할 수 있다.<br>
+ ➡️ 비회원은 댓글을 작성할 수 없다.</b>
+       </p><br>
+         <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/f6dce0f6-4b94-4487-b657-6b7ca334a3b7"/></p>
+         </details><br>
+                   <details>
+         <summary><b>KMS_056_COMMENT_003. [ 게시글 ] 댓글 조회</b>
+         </summary>
+                  <br>
+         <p><b>      ➡️ 회원(인증회원, 일반회원) 또는 비회원이 게시글에 달린 댓글 목록을 조회할 수 있다.</b>
+       </p><br>
+         <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/7ccba43a-1d7f-473d-bc81-b79c4b94f9e8"/></p>
+         </details><br>
+                     <details>
+         <summary><b>KMS_057_COMMENT_004. [ 게시글 ] 댓글 수정</b>
+         </summary>
+                  <br>
+         <p><b>       ➡️ 회원(인증회원, 일반회원) 이 게시글에 등록한 댓글을 수정할 수 있다.</b>
+       </p><br>
+         <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/8547a644-c62a-42a0-863a-87f722512038"/></p>
+         </details><br>
+                              <details>
+         <summary><b>KMS_058_COMMENT_005. [ 게시글 ] 댓글 삭제</b>
+         </summary>
+                  <br>
+         <p><b>       ➡️ 회원(인증회원, 일반회원) 이 게시글에 등록한 댓글을 삭제할 수 있다.<br>
+ ➡️ 삭제한 댓글은 되돌릴 수 없다.</b>
+       </p><br>
+         <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/2aaa466f-ee8c-41aa-bb23-520c21fd402a"/></p>
+         </details><br>
+                                   <details>
+         <summary><b>KMS_059_COMMENT_006. [ 후기글 ] 댓글 작성</b>
+         </summary>
+                  <br>
+         <p><b> ➡️ 회원(인증회원, 일반회원) 이 후기글에 댓글을 작성할 수 있다.<br>
+ ➡️ 비회원은 댓글을 작성할 수 없다.</b>
+       </p><br>
+         <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/65d95504-cdeb-4c12-b521-bd1e08f6a140"/></p>
+         </details><br>
+                                   <details>
+         <summary><b>KMS_060_COMMENT_007. [ 후기글 ] 대댓글 작성</b>
+         </summary>
+                  <br>
+         <p><b>  ➡️ 회원(인증회원, 일반회원) 이 후기글 댓글에 대댓글을 작성할 수 있다. <br>
+ ➡️ 비회원은 댓글을 작성할 수 없다.</b>
+       </p><br>
+         <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/70af2bd9-6790-4597-bb15-64d5ae6be6a8"/></p>
+         </details><br>
+                                     <details>
+         <summary><b>KMS_061_COMMENT_008. [ 후기글 ] 댓글 조회</b>
+         </summary>
+                  <br>
+         <p><b> ➡️ 회원(인증회원, 일반회원) 또는 비회원이 후기글에 달린 댓글 목록을 조회할 수 있다.</b>
+       </p><br>
+         <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/ed97716e-ea85-482f-83fc-fbe4b8c2d46e"/></p>
+         </details><br>
+                                            <details>
+         <summary><b>KMS_062_COMMENT_009. [ 후기글 ] 댓글 수정</b>
+         </summary>
+                  <br>
+         <p><b>  ➡️ 회원(인증회원, 일반회원) 이 후기글에 등록한 댓글을 수정할 수 있다.</b>
+       </p><br>
+         <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/7b515939-c75b-4142-a9db-b64f04b22f45"/></p>
+         </details><br>
+                                                     <details>
+         <summary><b>KMS_063_COMMENT_010. [ 후기글 ] 댓글 삭제</b>
+         </summary>
+                  <br>
+         <p><b> ➡️ 회원(인증회원, 일반회원) 이 후기글에 등록한 댓글을 삭제할 수 있다. <br>
+ ➡️ 삭제한 댓글은 되돌릴 수 없다.</b>
+       </p><br>
+         <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/2bf5c09a-ce2c-4f59-a626-5fba8a98153c"/></p>
+         </details><br>
+          </details>
 <br>
 <details>
 <summary><b>🏷️ 태그&nbsp;&nbsp;기능</b></summary><br>
