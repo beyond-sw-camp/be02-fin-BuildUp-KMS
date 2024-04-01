@@ -1,16 +1,12 @@
 package com.example.bootshelf.es.controller;
 
-import com.example.bootshelf.boardsvc.board.model.response.GetBoardListByQueryRes;
-import com.example.bootshelf.common.BaseRes;
-import com.example.bootshelf.es.model.EsBoard;
+import com.example.bootshelf.es.model.entity.EsBoard;
 import com.example.bootshelf.es.service.EsBoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,7 +18,7 @@ public class EsBoardController {
     private final EsBoardService esBoardService;
 
     // 제목으로 검색
-    @GetMapping("/search")
+    @GetMapping("/search/title")
     @ResponseBody
     public SearchHits<EsBoard> search(
             @RequestParam String title,
@@ -31,13 +27,53 @@ public class EsBoardController {
         return esBoardService.searchWordByElastic(title, pageable);
     }
 
-    // 제목+내용 검색
-    @GetMapping("/search/content")
+    // 제목+내용 (지식공유)
+    @GetMapping("/search/knowledge")
     @ResponseBody
-    public SearchHits<EsBoard> titleContentSearch(
+    public SearchHits<EsBoard> titleContentSearchByKnowledge(
             @RequestParam String title,
             @PageableDefault(size = 20) Pageable pageable
     ) {
-        return esBoardService.titleContentSearchByElastic(title, pageable);
+        return esBoardService.titleContentSearchByKnowledge(title, pageable);
     }
+
+    // 제목+내용(QnA)
+    @GetMapping("/search/qna")
+    @ResponseBody
+    public SearchHits<EsBoard> titleContentSearchByQnA(
+            @RequestParam String title,
+            @PageableDefault(size = 20) Pageable pageable
+    ) {
+        return esBoardService.titleContentSearchByQnA(title, pageable);
+    }
+
+    // 제목+내용(QnA)
+    @GetMapping("/search/study")
+    @ResponseBody
+    public SearchHits<EsBoard> titleContentSearchByStudy(
+            @RequestParam String title,
+            @PageableDefault(size = 20) Pageable pageable
+    ) {
+        return esBoardService.titleContentSearchByStudy(title, pageable);
+    }
+
+    // 제목+내용(공지사항)
+    @GetMapping("/search/notice")
+    @ResponseBody
+    public SearchHits<EsBoard> titleContentSearchByNotice(
+            @RequestParam String title,
+            @PageableDefault(size = 20) Pageable pageable
+    ) {
+        return esBoardService.titleContentSearchByStudy(title, pageable);
+    }
+
+//    // 제목 검색, EsRepository 사용
+//    @GetMapping("/search2")
+//    @ResponseBody
+//    public Page<EsBoard> titleContentSearch2(
+//            @RequestParam String title,
+//            @PageableDefault(size = 20) Pageable pageable
+//    ) {
+//        return esBoardService.titleContentSearchByElastic2(title, pageable);
+//    }
 }

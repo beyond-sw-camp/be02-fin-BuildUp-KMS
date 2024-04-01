@@ -1,4 +1,4 @@
-package com.example.bootshelf.es.model;
+package com.example.bootshelf.es.model.entity;
 
 import lombok.*;
 import org.springframework.data.elasticsearch.annotations.*;
@@ -24,10 +24,10 @@ public class EsBoard {
     @Field(type = FieldType.Integer)
     private Integer boardCategory;
 
-    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Text, analyzer = "nori")
     private String boardTitle;
 
-    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Text, analyzer = "nori")
     private String boardContent;
 
     @Field(type = FieldType.Integer)

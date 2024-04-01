@@ -1,11 +1,9 @@
 package com.example.bootshelf.es.service;
 
-import com.example.bootshelf.es.model.EsBoard;
+import com.example.bootshelf.es.model.entity.EsBoard;
 import com.example.bootshelf.es.repository.EsBoardRepository;
 import com.example.bootshelf.es.repository.EsOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.stereotype.Service;
@@ -24,9 +22,27 @@ public class EsBoardService {
         return searchHits;
     }
 
-    // 제목+내용 검색
-    public SearchHits<EsBoard> titleContentSearchByElastic(@NotNull String title, Pageable pageable) {
-        SearchHits<EsBoard> searchHits = esOperation.titleContentSearchByElastic(title, pageable);
+    // 제목+내용 검색 (지식공유)
+    public SearchHits<EsBoard> titleContentSearchByKnowledge(@NotNull String title, Pageable pageable) {
+        SearchHits<EsBoard> searchHits = esOperation.titleContentSearchByKnowledge(title, pageable);
         return searchHits;
     }
+
+    // 제목+내용 검색 (QaA)
+    public SearchHits<EsBoard> titleContentSearchByQnA(@NotNull String title, Pageable pageable) {
+        SearchHits<EsBoard> searchHits = esOperation.titleContentSearchByQnA(title, pageable);
+        return searchHits;
+    }
+
+    // 제목+내용 검색 (스터디)
+    public SearchHits<EsBoard> titleContentSearchByStudy(@NotNull String title, Pageable pageable) {
+        SearchHits<EsBoard> searchHits = esOperation.titleContentSearchByStudy(title, pageable);
+        return searchHits;
+    }
+
+//    // EsRepository 사용
+//    public Page<EsBoard> titleContentSearchByElastic2(@NotNull String title, Pageable pageable) {
+//        Page<EsBoard> result = esBoardRepository.findByBoardTitle(title, pageable);
+//        return result;
+//    }
 }
