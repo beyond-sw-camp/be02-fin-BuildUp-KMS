@@ -16,9 +16,15 @@ public class EsBoardService {
     private final EsBoardRepository esBoardRepository;
     private final EsOperation esOperation;
 
-    // 제목으로 검색
-    public SearchHits<EsBoard> searchWordByElastic(@NotNull String title, Pageable pageable) {
-        SearchHits<EsBoard> searchHits = esOperation.keywordSearchByElastic(title, pageable);
+    // 제목으로 검색(메인)
+    public SearchHits<EsBoard> titleSearchByMain(@NotNull String title, Pageable pageable) {
+        SearchHits<EsBoard> searchHits = esOperation.titleSearchByMain(title, pageable);
+        return searchHits;
+    }
+
+    // 제목+내용으로 검색(메인)
+    public SearchHits<EsBoard> titleContentSearchByMain(@NotNull String title, Pageable pageable) {
+        SearchHits<EsBoard> searchHits = esOperation.titleContentSearchByMain(title, pageable);
         return searchHits;
     }
 
