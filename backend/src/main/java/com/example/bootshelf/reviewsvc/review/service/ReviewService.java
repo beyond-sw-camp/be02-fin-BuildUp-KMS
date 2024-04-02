@@ -39,56 +39,6 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final ReviewImageRepository reviewImageRepository;
 
-    // 후기글 작성
-//    @Transactional(readOnly = false)
-//    public BaseRes createReview(User user, PostCreateReviewReq postCreateReviewReq, MultipartFile[] reviewImages) {
-//
-//        Optional<Review> result = reviewRepository.findByReviewTitle(postCreateReviewReq.getReviewTitle());
-//
-//        // 후기글 제목 중복에 대한 예외 처리
-//        if (result.isPresent()) {
-//            throw new ReviewException(ErrorCode.DUPLICATE_REVIEW_TITLE, String.format("Review Title [ %s ] is duplicated.", postCreateReviewReq.getReviewTitle()));
-//        }
-//
-//        Review review = Review.builder()
-//                .user(user)
-//                .reviewCategory(ReviewCategory.builder().idx(postCreateReviewReq.getReviewCategoryIdx()).build())
-//                .reviewTitle(postCreateReviewReq.getReviewTitle())
-//                .reviewContent(postCreateReviewReq.getReviewContent())
-//                .courseName(postCreateReviewReq.getCourseName())
-//                .courseEvaluation(postCreateReviewReq.getCourseEvaluation())
-//                .viewCnt(0)
-//                .upCnt(0)
-//                .scrapCnt(0)
-//                .commentCnt(0)
-//                .status(true)
-//                .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
-//                .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
-//                .build();
-//
-//        review = reviewRepository.save(review);
-//
-//        if (reviewImages != null && reviewImages.length > 0) {
-//            reviewImageService.createReviewImage(review, reviewImages);
-//        }
-//
-//        PostCreateReviewRes postCreateReviewRes = PostCreateReviewRes.builder()
-//                .reviewIdx(review.getIdx())
-//                .reviewCategoryIdx(postCreateReviewReq.getReviewCategoryIdx())
-//                .reviewTitle(postCreateReviewReq.getReviewTitle())
-//                .courseName(postCreateReviewReq.getCourseName())
-//                .reviewContent(postCreateReviewReq.getReviewContent())
-//                .courseEvaluation(postCreateReviewReq.getCourseEvaluation())
-//                .build();
-//
-//        BaseRes baseRes = BaseRes.builder()
-//                .isSuccess(true)
-//                .message("후기글 등록 성공")
-//                .result(postCreateReviewRes)
-//                .build();
-//
-//        return baseRes;
-//    }
 
     @Transactional(readOnly = false)
     public BaseRes createReview(User user, PostCreateReviewReq postCreateReviewReq) {
@@ -181,12 +131,12 @@ public class ReviewService {
                     .updatedAt(review.getUpdatedAt())
                     .build();
 
-            List<ReviewImage> reviewImageList = review.getReviewImageList();
-            if (!reviewImageList.isEmpty()) {
-                ReviewImage reviewImage = reviewImageList.get(0);
-                String image = reviewImage.getReviewImage();
-                getMyListReviewRes.setReviewImage(image);
-            }
+//            List<ReviewImage> reviewImageList = review.getReviewImageList();
+//            if (!reviewImageList.isEmpty()) {
+//                ReviewImage reviewImage = reviewImageList.get(0);
+//                String image = reviewImage.getReviewImage();
+//                getMyListReviewRes.setReviewImage(image);
+//            }
             getMyListReviewResList.add(getMyListReviewRes);
         }
 
@@ -236,11 +186,17 @@ public class ReviewService {
                     .updatedAt(review.getUpdatedAt())
                     .build();
 
-            List<ReviewImage> reviewImageList = review.getReviewImageList();
-            if (!reviewImageList.isEmpty()) {
-                ReviewImage reviewImage = reviewImageList.get(0);
-                String image = reviewImage.getReviewImage();
-                getListReviewRes.setReviewImage(image);
+//            List<ReviewImage> reviewImageList = review.getReviewImageList();
+//            if (!reviewImageList.isEmpty()) {
+//                ReviewImage reviewImage = reviewImageList.get(0);
+//                String image = reviewImage.getReviewImage();
+//                getListReviewRes.setReviewImage(image);
+//            }
+            Document doc = Jsoup.parse(review.getReviewContent());
+            Elements images = doc.select("img");
+
+            if (!images.isEmpty()) {
+                getListReviewRes.setReviewImage(images.get(0).attr("src"));
             }
 
             getListReviewResList.add(getListReviewRes);
@@ -289,19 +245,19 @@ public class ReviewService {
             }
         }
 
-        // 이미지 조회
-        List<GetListImageReviewRes> getListImageReviewResList = new ArrayList<>();
-
-        if (!review.getReviewImageList().isEmpty()) {
-            for (ReviewImage reviewImage : review.getReviewImageList()) {
-                GetListImageReviewRes getListImageReviewRes = GetListImageReviewRes.builder()
-                        .reviewImageIdx(reviewImage.getIdx())
-                        .reviewImage(reviewImage.getReviewImage())
-                        .build();
-
-                getListImageReviewResList.add(getListImageReviewRes);
-            }
-        }
+//        // 이미지 조회
+//        List<GetListImageReviewRes> getListImageReviewResList = new ArrayList<>();
+//
+//        if (!review.getReviewImageList().isEmpty()) {
+//            for (ReviewImage reviewImage : review.getReviewImageList()) {
+//                GetListImageReviewRes getListImageReviewRes = GetListImageReviewRes.builder()
+//                        .reviewImageIdx(reviewImage.getIdx())
+//                        .reviewImage(reviewImage.getReviewImage())
+//                        .build();
+//
+//                getListImageReviewResList.add(getListImageReviewRes);
+//            }
+//        }
 
         GetReadReviewRes getReadReviewRes = GetReadReviewRes.builder()
                 .reviewIdx(review.getIdx())
@@ -317,7 +273,7 @@ public class ReviewService {
                 .scrapCnt(review.getScrapCnt())
                 .commentCnt(review.getCommentCnt())
                 .updatedAt(review.getUpdatedAt())
-                .reviewImageList(getListImageReviewResList)
+//                .reviewImageList(getListImageReviewResList)
                 .reviewCommentList(getListCommentReviewResList)
                 .build();
 
@@ -496,11 +452,17 @@ public class ReviewService {
                     .updatedAt(review.getUpdatedAt())
                     .build();
 
-            List<ReviewImage> reviewImageList = review.getReviewImageList();
-            if (!reviewImageList.isEmpty()) {
-                ReviewImage reviewImage = reviewImageList.get(0);
-                String image = reviewImage.getReviewImage();
-                getSearchListReviewRes.setReviewImage(image);
+//            List<ReviewImage> reviewImageList = review.getReviewImageList();
+//            if (!reviewImageList.isEmpty()) {
+//                ReviewImage reviewImage = reviewImageList.get(0);
+//                String image = reviewImage.getReviewImage();
+//                getSearchListReviewRes.setReviewImage(image);
+//            }
+            Document doc = Jsoup.parse(review.getReviewContent());
+            Elements images = doc.select("img");
+
+            if (!images.isEmpty()) {
+                getSearchListReviewRes.setReviewImage(images.get(0).attr("src"));
             }
 
             getSearchListReviewResList.add(getSearchListReviewRes);
@@ -554,11 +516,17 @@ public class ReviewService {
                     .type("review")
                     .build();
 
-            List<ReviewImage> reviewImageList = review.getReviewImageList();
-            if (!reviewImageList.isEmpty()) {
-                ReviewImage reviewImage = reviewImageList.get(0);
-                String image = reviewImage.getReviewImage();
-                getListHotReviewRes.setImage(image);
+//            List<ReviewImage> reviewImageList = review.getReviewImageList();
+//            if (!reviewImageList.isEmpty()) {
+//                ReviewImage reviewImage = reviewImageList.get(0);
+//                String image = reviewImage.getReviewImage();
+//                getListHotReviewRes.setImage(image);
+//            }
+            Document doc = Jsoup.parse(review.getReviewContent());
+            Elements images = doc.select("img");
+
+            if (!images.isEmpty()) {
+                getListHotReviewRes.setImage(images.get(0).attr("src"));
             }
 
             getListHotReviewResList.add(getListHotReviewRes);
@@ -611,11 +579,17 @@ public class ReviewService {
                     .type("review")
                     .build();
 
-            List<ReviewImage> reviewImageList = review.getReviewImageList();
-            if (!reviewImageList.isEmpty()) {
-                ReviewImage reviewImage = reviewImageList.get(0);
-                String image = reviewImage.getReviewImage();
-                getListHotReviewRes.setImage(image);
+//            List<ReviewImage> reviewImageList = review.getReviewImageList();
+//            if (!reviewImageList.isEmpty()) {
+//                ReviewImage reviewImage = reviewImageList.get(0);
+//                String image = reviewImage.getReviewImage();
+//                getListHotReviewRes.setImage(image);
+//            }
+            Document doc = Jsoup.parse(review.getReviewContent());
+            Elements images = doc.select("img");
+
+            if (!images.isEmpty()) {
+                getListHotReviewRes.setImage(images.get(0).attr("src"));
             }
 
             getListHotReviewResList.add(getListHotReviewRes);
@@ -649,19 +623,19 @@ public class ReviewService {
 
         Review review = result.get();
 
-        List<GetListImageReviewRes> reviewImages = new ArrayList<>();
-
-        if (!review.getReviewImageList().isEmpty()) {
-            for (ReviewImage reviewImage : review.getReviewImageList()) {
-
-                GetListImageReviewRes getListImageReviewRes = GetListImageReviewRes.builder()
-                        .reviewImageIdx(reviewImage.getIdx())
-                        .reviewImage(reviewImage.getReviewImage())
-                        .build();
-
-                reviewImages.add(getListImageReviewRes);
-            }
-        }
+//        List<GetListImageReviewRes> reviewImages = new ArrayList<>();
+//
+//        if (!review.getReviewImageList().isEmpty()) {
+//            for (ReviewImage reviewImage : review.getReviewImageList()) {
+//
+//                GetListImageReviewRes getListImageReviewRes = GetListImageReviewRes.builder()
+//                        .reviewImageIdx(reviewImage.getIdx())
+//                        .reviewImage(reviewImage.getReviewImage())
+//                        .build();
+//
+//                reviewImages.add(getListImageReviewRes);
+//            }
+//        }
 
         GetReadReviewRes getReadReviewRes = GetReadReviewRes.builder()
                 .reviewIdx(review.getIdx())
@@ -669,7 +643,7 @@ public class ReviewService {
                 .reviewCategoryIdx(review.getReviewCategory().getIdx())
                 .reviewTitle(review.getReviewTitle())
                 .reviewContent(review.getReviewContent())
-                .reviewImageList(reviewImages)
+//                .reviewImageList(reviewImages)
                 .courseName(review.getCourseName())
                 .courseEvaluation(review.getCourseEvaluation())
                 .build();
