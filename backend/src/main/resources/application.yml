@@ -3,6 +3,11 @@ spring:
     elasticsearch:
       repositories:
         enabled: true
+      url: ${ES_URL}
+
+    redis:
+      host: ${REDIS_URL}
+      port: ${REDIS_PORT}
 
 
 
