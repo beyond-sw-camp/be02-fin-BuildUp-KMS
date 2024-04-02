@@ -1,14 +1,16 @@
 package com.example.bootshelf.user.model.entity;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Builder
 public class UserRefreshToken {
 
     @Id
@@ -21,10 +23,5 @@ public class UserRefreshToken {
 
     public boolean validateRefreshToken(String refreshToken){
         return this.refreshToken.equals(refreshToken);
-    }
-
-    public UserRefreshToken(Integer userIdx, String token) {
-        this.userIdx = userIdx;
-        this.refreshToken = token;
     }
 }

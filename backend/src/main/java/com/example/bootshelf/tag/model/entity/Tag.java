@@ -22,7 +22,7 @@ public class Tag {
     @OneToMany(mappedBy = "tag", fetch = FetchType.LAZY)
     private List<BoardTag> boardTagList = new ArrayList<>();
 
-    @Column(nullable = false, length = 45)
+    @Column(nullable = false, length = 500)
     private String tagName;
 
     @Column(nullable = false)
