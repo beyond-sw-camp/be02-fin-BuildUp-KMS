@@ -834,7 +834,7 @@ export default {
       }
     }
 
-    if(token == null) {
+    if(accessToken == null) {
       this.isAuthenticated = false;
     }
   },
