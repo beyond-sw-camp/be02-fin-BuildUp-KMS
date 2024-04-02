@@ -32,17 +32,15 @@ import java.util.Optional;
 public class JwtFilter extends OncePerRequestFilter {
 
     private UserRepository userRepository;
-
     private RefreshTokenService refreshTokenService;
-
-
     @Value("${jwt.secret-key}")
     private String secretKey;
 
 
-    public JwtFilter(String secretKey, UserRepository userRepository){
+    public JwtFilter(String secretKey, UserRepository userRepository, RefreshTokenService refreshTokenService){
         this.userRepository = userRepository;
         this.secretKey = secretKey;
+        this.refreshTokenService =refreshTokenService;
     }
 
 
@@ -121,7 +119,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private void reissueAccessToken(HttpServletRequest request, HttpServletResponse response, Exception exception) {
         try {
-            String refreshToken = parseBearerToken(request, "Refresh-Token");
+            String refreshToken = parseBearerToken(request, "Refreshtoken");
             if (refreshToken == null) {
                 throw exception;
             }

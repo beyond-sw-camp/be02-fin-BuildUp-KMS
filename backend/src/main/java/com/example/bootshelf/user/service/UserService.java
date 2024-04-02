@@ -17,11 +17,13 @@ import com.example.bootshelf.course.repository.CourseRepository;
 import com.example.bootshelf.common.error.entityexception.UserException;
 import com.example.bootshelf.tag.model.response.GetListTagResResult;
 import com.example.bootshelf.user.model.entity.User;
+import com.example.bootshelf.user.model.entity.UserRefreshToken;
 import com.example.bootshelf.user.model.request.*;
 import com.example.bootshelf.user.model.response.*;
 import com.example.bootshelf.user.repository.UserRefreshTokenRepository;
 import com.example.bootshelf.user.repository.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -203,8 +205,12 @@ public class UserService {
             // 로그인 시 리프레시 토큰이 존재할 때 지워준다.
             if(userRefreshTokenRepository.findByUserIdx(user.getIdx()).isPresent()){
                 userRefreshTokenRepository.deleteByUserIdx(user.getIdx());
-                postLogInUserRes.setRefreshToken(jwtUtils.generateRefreshToken(secretKey,expiredRefreshTokenTimeMs));
+                String newRefreshToken = jwtUtils.generateRefreshToken(secretKey,expiredRefreshTokenTimeMs);
+                userRefreshTokenRepository.save(UserRefreshToken.builder().userIdx(user.getIdx()).refreshToken(newRefreshToken).build());
+                postLogInUserRes.setRefreshToken(newRefreshToken);
             } else {
+                String newRefreshToken = jwtUtils.generateRefreshToken(secretKey,expiredRefreshTokenTimeMs);
+                userRefreshTokenRepository.save(UserRefreshToken.builder().userIdx(user.getIdx()).refreshToken(newRefreshToken).build());
                 postLogInUserRes.setRefreshToken(jwtUtils.generateRefreshToken(secretKey,expiredRefreshTokenTimeMs));
             }
             return BaseRes.builder().isSuccess(true).message("로그인에 성공하였습니다.").result(postLogInUserRes).build();
