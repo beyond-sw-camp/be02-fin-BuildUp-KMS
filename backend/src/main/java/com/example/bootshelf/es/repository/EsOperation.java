@@ -1,5 +1,6 @@
 package com.example.bootshelf.es.repository;
 
+import com.example.bootshelf.boardsvc.board.model.response.GetBoardListByQueryRes;
 import com.example.bootshelf.es.model.entity.EsBoard;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -23,40 +24,7 @@ public class EsOperation {
     private final ElasticsearchOperations operations;
 
 
-    // 제목 검색(메인)
-    public SearchHits<EsBoard> titleSearchByMain(String title, Pageable pageable) {
 
-        MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("boardTitle", title);
-
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
-                .filter(QueryBuilders.termQuery("status", "true"));
-
-        NativeSearchQuery build = new NativeSearchQueryBuilder()
-                .withQuery(matchQueryBuilder)
-                .withFilter(boolQueryBuilder)
-                .withPageable(pageable)
-                .build();
-
-        return operations.search(build, EsBoard.class);
-    }
-
-    // 제목+내용 검색(메인)
-    public SearchHits<EsBoard> titleContentSearchByMain(String title, Pageable pageable) {
-
-        MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(title,
-                "boardTitle", "boardContent");
-
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
-                .filter(QueryBuilders.termQuery("status", "true"));
-
-        NativeSearchQuery build = new NativeSearchQueryBuilder()
-                .withQuery(multiMatchQueryBuilder)
-                .withFilter(boolQueryBuilder)
-                .withPageable(pageable)
-                .build();
-
-        return operations.search(build, EsBoard.class);
-    }
 
 //    // 제목+내용 검색(지식공유)
 //    public SearchHits<EsBoard> titleContentSearchByKnowledge(String title, Pageable pageable) {
@@ -133,7 +101,7 @@ public class EsOperation {
                 .withSort(SortBuilders.fieldSort(sortField).order(SortOrder.ASC))
                 .build();
 
-        return operations.search(build, EsBoard.class);
+                return operations.search(build, EsBoard.class);
     }
 
     // 제목+내용+정렬 검색(QnA)
@@ -185,6 +153,26 @@ public class EsOperation {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
                 .filter(QueryBuilders.termQuery("status", "true"))
                 .filter(QueryBuilders.termQuery("boardCategory", 3));
+
+        NativeSearchQuery build = new NativeSearchQueryBuilder()
+                .withQuery(multiMatchQueryBuilder)
+                .withFilter(boolQueryBuilder)
+                .withPageable(pageable)
+                .withSort(SortBuilders.fieldSort(sortField).order(SortOrder.ASC))
+                .build();
+
+        return operations.search(build, EsBoard.class);
+    }
+
+    // 제목+내용+정렬 검색(통합)
+    public SearchHits<EsBoard> titleContentSearch(Integer categoryIdx ,String sortField, String title, Pageable pageable) {
+
+        MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(title,
+                "boardTitle", "boardContent");
+
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
+                .filter(QueryBuilders.termQuery("status", "true"))
+                .filter(QueryBuilders.termQuery("boardCategory", categoryIdx));
 
         NativeSearchQuery build = new NativeSearchQueryBuilder()
                 .withQuery(multiMatchQueryBuilder)
