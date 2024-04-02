@@ -130,18 +130,17 @@ export const useUserStore = defineStore("user", {
           },
         });
 
-        console.log(response.headers["New-Access-Token"]);
-        if(response.headers["New-Access-Token"] != null) {
-          if(response.headers ["New-Access-Token"] != localStorage.getItem("accessToken")) {
+        console.log(response.headers["token"]);
+        if(response.headers["token"] != null) {
+          if(response.headers ["token"] != localStorage.getItem("accessToken")) {
             localStorage.setItem("accessToken", "")
-            localStorage.setItem("accessToken", response.headers["New-Access-Token"])
+            localStorage.setItem("accessToken", response.headers["token"])
           }
         }
-        
 
         this.user = response.data.result;
       } catch (e) {
-
+        console.log(e);
         if (e.response && e.response.data) {
           if (e.response.data.code === "USER-003") {
             alert("회원정보를 찾을 수 없습니다.");

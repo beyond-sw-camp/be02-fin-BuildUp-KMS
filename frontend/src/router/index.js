@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import VueJwtDecode from "vue-jwt-decode";
+
 
 import MainPage from "@/pages/MainPage.vue";
 import AuthSignupPage from "@/pages/AuthSignupPage.vue";
@@ -40,67 +40,6 @@ import AdminReviewCategoryUpdatePage from "@/pages/AdminReviewCategoryUpdatePage
 import AdminBoardCategoryUpdatePage from "@/pages/AdminBoardCategoryUpdatePage";
 import AdminTagUpdatePage from "@/pages/AdminTagUpdatePage";
 
-const requireAuth = () => (from, to, next) => {
-  const storedToken = window.localStorage.getItem("accessToken");
-  if (storedToken === null) {
-    alert("로그인 후 이용할 수 있습니다.");
-    next("/");
-  } else {
-    const tokenData = VueJwtDecode.decode(storedToken);
-    const currentTime = Math.floor(Date.now() / 1000);
-
-    if (tokenData.exp < currentTime) {
-      alert("로그인 유지시간이 만료되었습니다. 다시 로그인해주세요.");
-      localStorage.removeItem("accessToken");
-      window.location.href="/";
-      // next("/");
-    } else {
-      next();
-    }
-  }
-};
-
-const requireUserAuth = () => (from, to, next) => {
-  const storedToken = window.localStorage.getItem("accessToken");
-
-  if (storedToken === null) {
-    alert("로그인 후 이용할 수 있습니다.");
-    next("/");
-  } else {
-    const tokenData = VueJwtDecode.decode(storedToken);
-    const currentTime = Math.floor(Date.now() / 1000);
-
-    if (tokenData.exp < currentTime) {
-      alert("로그인 유지시간이 만료되었습니다. 다시 로그인해주세요.");
-      localStorage.removeItem("accessToken");
-      next("/");
-    } else if (tokenData.ROLE !== "ROLE_AUTHUSER") {
-      alert("인증회원만 후기글을 작성할 수 있습니다.");
-      next("/review");
-    } else {
-      next();
-    }
-  }
-};
-
-const requireAdminAuth = () => (from, to, next) => {
-  const token = window.localStorage.getItem("a_token");
-  if (token === null) {
-    alert("로그인 후 이용할 수 있습니다.");
-    next("/admin/login");
-  } else {
-    const tokenData = VueJwtDecode.decode(token);
-    const currentTime = Math.floor(Date.now() / 1000);
-
-    if (tokenData.exp < currentTime) {
-      alert("로그인 유지시간이 만료되었습니다. 다시 로그인해주세요.");
-      localStorage.removeItem("a_token");
-      next("/admin/login");
-    } else {
-      next();
-    }
-  }
-};
 
 const routes = [
   { path: "/", component: MainPage },
@@ -131,14 +70,13 @@ const routes = [
   { path: "/auth/signup", component: AuthSignupPage },
   { path: "/KakaoLogIn", component: KakaoLogIn },
   { path: "/signup", component: SignupPage },
-  { path: "/profile", component: MyProfilePage, beforeEnter: requireAuth() },
-  { path: "/mypage", component: MyPage, beforeEnter: requireAuth() },
+  { path: "/profile", component: MyProfilePage,},
+  { path: "/mypage", component: MyPage, },
   { path: "/result", component: SearchResultPage },
-  { path: "/board/new", component: BoardWritePage, beforeEnter: requireAuth() },
+  { path: "/board/new", component: BoardWritePage,},
   {
     path: "/review/new",
     component: ReviewWritePage,
-    beforeEnter: requireUserAuth(),
   },
   { path: "/board/:idx", component: BoardDetailsPage },
   { path: "/review/:idx", component: ReviewDetailsPage },
@@ -154,18 +92,18 @@ const routes = [
   { path: "/not/found", component: NotFoundPage },
   { path: "/board/mywrite/:boardIdx", component: BoardUpdatePage },
   { path: "/review/mywrite/:reviewIdx", component: ReviewUpdatePage},
-  { path: "/admin", component: AdminMainPage, beforeEnter: requireAdminAuth() },
-  { path: "/admin/withdraw", component: AdminWithdrawPage, beforeEnter: requireAdminAuth() },
-  { path: "/admin/board/category/register", component: AdminBoardCategoryRegisterPage, beforeEnter: requireAdminAuth() },
-  { path: "/admin/review/category/register", component: AdminReviewCategoryRegisterPage, beforeEnter: requireAdminAuth() },
-  { path: "/admin/board/category/update", component: AdminBoardCategoryUpdatePage, beforeEnter: requireAdminAuth() },
-  { path: "/admin/review/category/update", component: AdminReviewCategoryUpdatePage, beforeEnter: requireAdminAuth() },
-  { path: "/admin/tag/update", component: AdminTagUpdatePage, beforeEnter: requireAdminAuth() },
-  { path: "/admin/tag/register", component: AdminTagRegisterPage, beforeEnter: requireAdminAuth() },
-  { path: "/admin/board/category", component: AdminBoardCategoryListPage, beforeEnter: requireAdminAuth() },
-  { path: "/admin/review/category", component: AdminReviewCategoryListPage, beforeEnter: requireAdminAuth() },
-  { path: "/admin/tag", component: AdminTagListPage, beforeEnter: requireAdminAuth() },
-  { path: "/admin/user", component: AdminUserListPage, beforeEnter: requireAdminAuth() },
+  { path: "/admin", component: AdminMainPage, },
+  { path: "/admin/withdraw", component: AdminWithdrawPage, },
+  { path: "/admin/board/category/register", component: AdminBoardCategoryRegisterPage, },
+  { path: "/admin/review/category/register", component: AdminReviewCategoryRegisterPage, },
+  { path: "/admin/board/category/update", component: AdminBoardCategoryUpdatePage,  },
+  { path: "/admin/review/category/update", component: AdminReviewCategoryUpdatePage, },
+  { path: "/admin/tag/update", component: AdminTagUpdatePage,  },
+  { path: "/admin/tag/register", component: AdminTagRegisterPage,  },
+  { path: "/admin/board/category", component: AdminBoardCategoryListPage,  },
+  { path: "/admin/review/category", component: AdminReviewCategoryListPage, },
+  { path: "/admin/tag", component: AdminTagListPage, },
+  { path: "/admin/user", component: AdminUserListPage,  },
   { path: "/admin/signup", component: AdminSignUpPage },
   { path: "/admin/login", component: AdminLoginPage },
   { path: "/review/mywrite/:reviewIdx", component: ReviewUpdatePage },

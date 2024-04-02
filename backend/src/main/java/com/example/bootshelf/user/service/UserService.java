@@ -203,15 +203,29 @@ public class UserService {
         if (passwordEncoder.matches(postLoginUserReq.getPassword(), user.getPassword()) && user.getStatus().equals(true)) {
             PostLoginUserRes postLogInUserRes = PostLoginUserRes.builder().accessToken(jwtUtils.generateAccessToken(user, secretKey, expiredTimeMs)).expiredTimeMs(expiredTimeMs).build();
             // 로그인 시 리프레시 토큰이 존재할 때 지워준다.
-            if(userRefreshTokenRepository.findByUserIdx(user.getIdx()).isPresent()){
-                userRefreshTokenRepository.deleteByUserIdx(user.getIdx());
+
+            Optional<UserRefreshToken> oldToken = userRefreshTokenRepository.findByUserIdx(user.getIdx());
+
+            if(oldToken.isPresent()) {
+                UserRefreshToken userRefreshToken = oldToken.get();
                 String newRefreshToken = jwtUtils.generateRefreshToken(secretKey,expiredRefreshTokenTimeMs);
-                userRefreshTokenRepository.save(UserRefreshToken.builder().userIdx(user.getIdx()).refreshToken(newRefreshToken).build());
+
+                userRefreshToken.setRefreshToken(newRefreshToken);
+                userRefreshTokenRepository.save(userRefreshToken);
+
                 postLogInUserRes.setRefreshToken(newRefreshToken);
             } else {
+
                 String newRefreshToken = jwtUtils.generateRefreshToken(secretKey,expiredRefreshTokenTimeMs);
-                userRefreshTokenRepository.save(UserRefreshToken.builder().userIdx(user.getIdx()).refreshToken(newRefreshToken).build());
-                postLogInUserRes.setRefreshToken(jwtUtils.generateRefreshToken(secretKey,expiredRefreshTokenTimeMs));
+
+                UserRefreshToken userRefreshToken = UserRefreshToken.builder()
+                        .refreshToken(newRefreshToken)
+                        .userIdx(user.getIdx())
+                        .build();
+
+                userRefreshTokenRepository.save(userRefreshToken);
+
+                postLogInUserRes.setRefreshToken(newRefreshToken);
             }
             return BaseRes.builder().isSuccess(true).message("로그인에 성공하였습니다.").result(postLogInUserRes).build();
         } else {
