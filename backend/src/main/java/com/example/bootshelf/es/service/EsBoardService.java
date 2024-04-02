@@ -46,6 +46,12 @@ public class EsBoardService {
         return searchHits;
     }
 
+    // 제목+내용 검색 (Hot Tag)
+    public SearchHits<EsBoard> titleContentSearchByHotTog(@NotNull Integer tagIdx, String title, Pageable pageable) {
+        SearchHits<EsBoard> searchHits = esOperation.titleContentSearchByHotTog(tagIdx, title, pageable);
+        return searchHits;
+    }
+
 //    // EsRepository 사용
 //    public Page<EsBoard> titleContentSearchByElastic2(@NotNull String title, Pageable pageable) {
 //        Page<EsBoard> result = esBoardRepository.findByBoardTitle(title, pageable);

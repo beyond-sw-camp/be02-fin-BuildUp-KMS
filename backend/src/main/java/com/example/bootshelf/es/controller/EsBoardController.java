@@ -58,7 +58,7 @@ public class EsBoardController {
         return esBoardService.titleContentSearchByQnA(title, pageable);
     }
 
-    // 제목+내용(QnA)
+    // 제목+내용(스터디)
     @GetMapping("/search/study")
     @ResponseBody
     public SearchHits<EsBoard> titleContentSearchByStudy(
@@ -66,6 +66,17 @@ public class EsBoardController {
             @PageableDefault(size = 20) Pageable pageable
     ) {
         return esBoardService.titleContentSearchByStudy(title, pageable);
+    }
+
+    // 제목+내용(인기글 검색)
+    @GetMapping("/search/hottag")
+    @ResponseBody
+    public SearchHits<EsBoard> titleContentSearchByHotTog(
+            Integer tagIdx,
+            @RequestParam String title,
+            @PageableDefault(size = 20) Pageable pageable
+    ) {
+        return esBoardService.titleContentSearchByHotTog(tagIdx, title, pageable);
     }
 
 

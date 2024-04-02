@@ -11,6 +11,8 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
 @Getter
@@ -110,4 +112,26 @@ public class EsOperation {
 
         return operations.search(build, EsBoard.class);
     }
+
+     // 제목+내용(Hot Tag)
+    public SearchHits<EsBoard> titleContentSearchByHotTog(Integer tagIdx, String title, Pageable pageable) {
+
+        MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(title,
+                "boardTitle", "boardContent");
+
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
+                .filter(QueryBuilders.termQuery("status", "true"))
+                .filter(QueryBuilders.termQuery("boardCategory", 1));
+
+
+        NativeSearchQuery build = new NativeSearchQueryBuilder()
+                .withQuery(multiMatchQueryBuilder)
+                .withFilter(boolQueryBuilder)
+                .withPageable(pageable)
+                .build();
+
+        return operations.search(build, EsBoard.class);
+    }
+
+
 }
