@@ -271,7 +271,7 @@ public class BoardService {
         return doc.text();
     }
 
-    // 내 작성글 조회
+    // 내 작성글 조회.
     @Transactional(readOnly = true)
     public BaseRes findMyBoardList(User user, Pageable pageable, Integer sortIdx) {
         Page<Board> boardList = boardRepository.findMyBoardList(user.getIdx(), pageable, sortIdx);

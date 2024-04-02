@@ -5,7 +5,7 @@ import axios from "axios";
 const backend = "http://192.168.0.61/api";
 // const backend = "http://localhost:8080";
 
-// boardStore를 사용하면 해당 idx 가져오기..
+// boardStore를 사용하면 해당 idx 가져오기...
 // const boardIdx = useBoardStore().boardIdx;
 
 // 토큰값 가져오기

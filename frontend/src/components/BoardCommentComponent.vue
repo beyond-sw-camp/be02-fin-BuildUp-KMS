@@ -170,9 +170,9 @@ export default {
     },
 
     showBtn(commentUserIdx) {
-      let token = localStorage.getItem("token");
-      if (!token) return false; // 토큰이 없으면 버튼을 보이지 않음
-      let decodedToken = VueJwtDecode.decode(token).idx;
+      let accessToken = localStorage.getItem("accessToken");
+      if (!accessToken) return false; // 토큰이 없으면 버튼을 보이지 않음
+      let decodedToken = VueJwtDecode.decode(accessToken).idx;
       return commentUserIdx === decodedToken;
     },
 
