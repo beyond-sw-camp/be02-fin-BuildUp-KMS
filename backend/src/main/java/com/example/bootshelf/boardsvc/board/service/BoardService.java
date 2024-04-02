@@ -176,6 +176,7 @@ public class BoardService {
 
         Board board = result.get();
         board.increaseViewCnt();
+        board.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
         boardRepository.save(board);
 
         // 댓글 조회
@@ -243,7 +244,6 @@ public class BoardService {
     }
 
     // 게시글 댓글 조회
-    @Transactional(readOnly = true)
     private GetListCommentBoardRes convertToCommentBoardRes(BoardComment boardComment) {
 
         List<GetListCommentBoardRes> childCommentsRes = new ArrayList<>();
@@ -810,6 +810,7 @@ public class BoardService {
 
         Board board = result.get();
         board.setStatus(false);
+        board.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
         boardRepository.save(board);
 
         BaseRes baseRes = BaseRes.builder()

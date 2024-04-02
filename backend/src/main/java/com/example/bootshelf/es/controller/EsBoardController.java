@@ -37,47 +37,87 @@ public class EsBoardController {
         return esBoardService.titleContentSearchByMain(title, pageable);
     }
 
+//    // 제목+내용 (지식공유)
+//    @GetMapping("/search/knowledge")
+//    @ResponseBody
+//    public SearchHits<EsBoard> titleContentSearchByKnowledge(
+//            @RequestParam String title,
+//            @PageableDefault(size = 20) Pageable pageable
+//    ) {
+//        return esBoardService.titleContentSearchByKnowledge(title, pageable);
+//    }
+//
+//    // 제목+내용(QnA)
+//    @GetMapping("/search/qna")
+//    @ResponseBody
+//    public SearchHits<EsBoard> titleContentSearchByQnA(
+//            @RequestParam String title,
+//            @PageableDefault(size = 20) Pageable pageable
+//    ) {
+//        return esBoardService.titleContentSearchByQnA(title, pageable);
+//    }
+//
+//    // 제목+내용(스터디)
+//    @GetMapping("/search/study")
+//    @ResponseBody
+//    public SearchHits<EsBoard> titleContentSearchByStudy(
+//            @RequestParam String title,
+//            @PageableDefault(size = 20) Pageable pageable
+//    ) {
+//        return esBoardService.titleContentSearchByStudy(title, pageable);
+//    }
 
-    // 제목+내용 (지식공유)
+
+
+    // 제목+내용+정렬 (지식공유)
     @GetMapping("/search/knowledge")
     @ResponseBody
     public SearchHits<EsBoard> titleContentSearchByKnowledge(
+            @RequestParam Integer sortType,
             @RequestParam String title,
             @PageableDefault(size = 20) Pageable pageable
     ) {
-        return esBoardService.titleContentSearchByKnowledge(title, pageable);
+        return esBoardService.titleContentSearchByKnowledge(sortType ,title, pageable);
     }
 
-    // 제목+내용(QnA)
+    // 제목+내용+정렬 (QnA)
     @GetMapping("/search/qna")
     @ResponseBody
     public SearchHits<EsBoard> titleContentSearchByQnA(
+            @RequestParam Integer sortType,
             @RequestParam String title,
             @PageableDefault(size = 20) Pageable pageable
     ) {
-        return esBoardService.titleContentSearchByQnA(title, pageable);
+        return esBoardService.titleContentSearchByQnA(sortType ,title, pageable);
     }
 
-    // 제목+내용(스터디)
+    // 제목+내용+정렬 (스터디)
     @GetMapping("/search/study")
     @ResponseBody
     public SearchHits<EsBoard> titleContentSearchByStudy(
+            @RequestParam Integer sortType,
             @RequestParam String title,
             @PageableDefault(size = 20) Pageable pageable
     ) {
-        return esBoardService.titleContentSearchByStudy(title, pageable);
+        return esBoardService.titleContentSearchByStudy(sortType ,title, pageable);
     }
 
-    // 제목+내용(인기글 검색)
-    @GetMapping("/search/hottag")
+    // 제목+내용+정렬 (인기글)
+    @GetMapping("/search/hot")
     @ResponseBody
-    public SearchHits<EsBoard> titleContentSearchByHotTog(
-            Integer tagIdx,
+    public SearchHits<EsBoard> titleContentSearchByHot(
+            @RequestParam Integer sortType,
             @RequestParam String title,
             @PageableDefault(size = 20) Pageable pageable
     ) {
-        return esBoardService.titleContentSearchByHotTog(tagIdx, title, pageable);
+        return esBoardService.titleContentSearchByHot(sortType ,title, pageable);
     }
+
+
+
+
+
+
 
 
 //    // 제목 검색, EsRepository 사용
