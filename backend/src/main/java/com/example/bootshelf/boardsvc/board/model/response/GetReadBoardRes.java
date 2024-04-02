@@ -32,7 +32,7 @@ public class GetReadBoardRes {
 
     private String updatedAt;
 
-    private List<GetListImageBoardRes> boardImageList;
+    private List<String> boardImageList;
 
     private List<GetListCommentBoardRes> boardCommentList;
 

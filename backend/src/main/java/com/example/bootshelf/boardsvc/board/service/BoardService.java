@@ -59,55 +59,6 @@ public class BoardService {
     private final BoardImageRepository boardImageRepository;
 
 
-    //    @Transactional(readOnly = false)
-//    public BaseRes createBoard(User user, PostCreateBoardReq request, MultipartFile[] boardImages) {
-//
-//        Optional<Board> result = boardRepository.findByBoardTitle(request.getBoardTitle());
-//
-//        if (result.isPresent()) {
-//            throw new BoardException(ErrorCode.DUPICATED_BOARD_TITLE, String.format("Board Title [ %s ] is duplicated.", request.getBoardTitle()));
-//        }
-//
-//        Board board = Board.builder()
-//                .boardTitle(request.getBoardTitle())
-//                .boardContent(request.getBoardContent())
-//                .boardCategory(BoardCategory.builder().idx(request.getBoardCategoryIdx()).build())
-//                .user(user)
-//                .status(true)
-//                .viewCnt(0)
-//                .upCnt(0)
-//                .commentCnt(0)
-//                .scrapCnt(0)
-//                .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
-//                .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
-//                .build();
-//
-//        board = boardRepository.save(board);
-//
-//        if (boardImages != null && boardImages.length > 0) {
-//            boardImageService.createBoardImage(board.getIdx(), boardImages);
-//        }
-//
-//        if (request.getTagList() != null) {
-//            boardTagService.saveBoardTag(request.getTagList(), board.getIdx());
-//        }
-//
-//        PostCreateBoardRes response = PostCreateBoardRes.builder()
-//                .boardIdx(board.getIdx())
-//                .boardtitle(board.getBoardTitle())
-//                .boardcontent(board.getBoardContent())
-//                .boardCategoryIdx(board.getBoardCategory().getIdx())
-//                .boardTagList(request.getTagList())
-//                .build();
-//
-//        BaseRes baseRes = BaseRes.builder()
-//                .isSuccess(true)
-//                .message("게시글 등록 성공")
-//                .result(response)
-//                .build();
-//
-//        return baseRes;
-//    }
     @Transactional(readOnly = false)
     public BaseRes createBoard(User user, PostCreateBoardReq request) {
 
@@ -201,19 +152,19 @@ public class BoardService {
             }
         }
 
-        // 이미지 조회
-        List<GetListImageBoardRes> getListImageBoardResList = new ArrayList<>();
-
-        if (!board.getBoardImageList().isEmpty()) {
-            for (BoardImage boardImage : board.getBoardImageList()) {
-                GetListImageBoardRes getListImageReviewRes = GetListImageBoardRes.builder()
-                        .boardImageIdx(boardImage.getIdx())
-                        .boardImage(boardImage.getBoardImage())
-                        .build();
-
-                getListImageBoardResList.add(getListImageReviewRes);
-            }
-        }
+//        // 이미지 조회
+//        List<GetListImageBoardRes> getListImageBoardResList = new ArrayList<>();
+//
+//        if (!board.getBoardImageList().isEmpty()) {
+//            for (BoardImage boardImage : board.getBoardImageList()) {
+//                GetListImageBoardRes getListImageReviewRes = GetListImageBoardRes.builder()
+//                        .boardImageIdx(boardImage.getIdx())
+//                        .boardImage(boardImage.getBoardImage())
+//                        .build();
+//
+//                getListImageBoardResList.add(getListImageReviewRes);
+//            }
+//        }
 
         GetReadBoardRes getReadBoardRes = GetReadBoardRes.builder()
                 .idx(board.getIdx())
@@ -230,7 +181,7 @@ public class BoardService {
                 .scrapCnt(board.getScrapCnt())
                 .createdAt(board.getCreatedAt())
                 .updatedAt(board.getUpdatedAt())
-                .boardImageList(getListImageBoardResList)
+//                .boardImageList(getListImageBoardResList)
                 .boardCommentList(getListCommentBoardResList)
                 .build();
 
@@ -304,15 +255,15 @@ public class BoardService {
                     .createdAt(board.getCreatedAt())
                     .build();
 
-            List<BoardImage> boardImageList = board.getBoardImageList();
-            List<String> fileNames = new ArrayList<>();
-            if (!boardImageList.isEmpty()) {
-                for (BoardImage boardImage : boardImageList) {
-                    String fileName = boardImage.getBoardImage();
-                    fileNames.add(fileName);
-                }
-                getListBoardRes.setBoardImg(fileNames.get(0));
-            }
+//            List<BoardImage> boardImageList = board.getBoardImageList();
+//            List<String> fileNames = new ArrayList<>();
+//            if (!boardImageList.isEmpty()) {
+//                for (BoardImage boardImage : boardImageList) {
+//                    String fileName = boardImage.getBoardImage();
+//                    fileNames.add(fileName);
+//                }
+//                getListBoardRes.setBoardImg(fileNames.get(0));
+//            }
 
             getListBoardResList.add(getListBoardRes);
         }
@@ -362,15 +313,15 @@ public class BoardService {
                     .updatedAt(board.getUpdatedAt())
                     .build();
 
-            List<BoardImage> boardImageList = board.getBoardImageList();
-            List<String> fileNames = new ArrayList<>();
-            if (!boardImageList.isEmpty()) {
-                for (BoardImage boardImage : boardImageList) {
-                    String fileName = boardImage.getBoardImage();
-                    fileNames.add(fileName);
-                }
-                getListBoardRes.setBoardImg(fileNames.get(0));
-            }
+//            List<BoardImage> boardImageList = board.getBoardImageList();
+//            List<String> fileNames = new ArrayList<>();
+//            if (!boardImageList.isEmpty()) {
+//                for (BoardImage boardImage : boardImageList) {
+//                    String fileName = boardImage.getBoardImage();
+//                    fileNames.add(fileName);
+//                }
+//                getListBoardRes.setBoardImg(fileNames.get(0));
+//            }
 
             getListBoardResList.add(getListBoardRes);
         }
@@ -426,14 +377,21 @@ public class BoardService {
                     .updatedAt(board.getUpdatedAt())
                     .build();
 
-            List<BoardImage> boardImageList = board.getBoardImageList();
-            List<String> fileNames = new ArrayList<>();
-            if (!boardImageList.isEmpty()) {
-                for (BoardImage boardImage : boardImageList) {
-                    String fileName = boardImage.getBoardImage();
-                    fileNames.add(fileName);
-                }
-                getListBoardRes.setBoardImg(fileNames.get(0));
+//            List<BoardImage> boardImageList = board.getBoardImageList();
+//            List<String> fileNames = new ArrayList<>();
+//            if (!boardImageList.isEmpty()) {
+//                for (BoardImage boardImage : boardImageList) {
+//                    String fileName = boardImage.getBoardImage();
+//                    fileNames.add(fileName);
+//                }
+//                getListBoardRes.setBoardImg(fileNames.get(0));
+//            }
+
+            Document doc = Jsoup.parse(board.getBoardContent());
+            Elements images = doc.select("img");
+
+            if (!images.isEmpty()) {
+                getListBoardRes.setBoardImg(images.get(0).attr("src"));
             }
 
             getListBoardResList.add(getListBoardRes);
@@ -492,14 +450,20 @@ public class BoardService {
                     .updatedAt(board.getUpdatedAt())
                     .build();
 
-            List<BoardImage> boardImageList = board.getBoardImageList();
-            List<String> fileNames = new ArrayList<>();
-            if (!boardImageList.isEmpty()) {
-                for (BoardImage boardImage : boardImageList) {
-                    String fileName = boardImage.getBoardImage();
-                    fileNames.add(fileName);
-                }
-                getListBoardRes.setBoardImg(fileNames.get(0));
+//            List<BoardImage> boardImageList = board.getBoardImageList();
+//            List<String> fileNames = new ArrayList<>();
+//            if (!boardImageList.isEmpty()) {
+//                for (BoardImage boardImage : boardImageList) {
+//                    String fileName = boardImage.getBoardImage();
+//                    fileNames.add(fileName);
+//                }
+//                getListBoardRes.setBoardImg(fileNames.get(0));
+//            }
+            Document doc = Jsoup.parse(board.getBoardContent());
+            Elements images = doc.select("img");
+
+            if (!images.isEmpty()) {
+                getListBoardRes.setBoardImg(images.get(0).attr("src"));
             }
 
             getListBoardResList.add(getListBoardRes);
@@ -558,14 +522,20 @@ public class BoardService {
                     .updatedAt(board.getUpdatedAt())
                     .build();
 
-            List<BoardImage> boardImageList = board.getBoardImageList();
-            List<String> fileNames = new ArrayList<>();
-            if (!boardImageList.isEmpty()) {
-                for (BoardImage boardImage : boardImageList) {
-                    String fileName = boardImage.getBoardImage();
-                    fileNames.add(fileName);
-                }
-                getListBoardRes.setBoardImg(fileNames.get(0));
+//            List<BoardImage> boardImageList = board.getBoardImageList();
+//            List<String> fileNames = new ArrayList<>();
+//            if (!boardImageList.isEmpty()) {
+//                for (BoardImage boardImage : boardImageList) {
+//                    String fileName = boardImage.getBoardImage();
+//                    fileNames.add(fileName);
+//                }
+//                getListBoardRes.setBoardImg(fileNames.get(0));
+//            }
+            Document doc = Jsoup.parse(board.getBoardContent());
+            Elements images = doc.select("img");
+
+            if (!images.isEmpty()) {
+                getListBoardRes.setBoardImg(images.get(0).attr("src"));
             }
 
             getListBoardResList.add(getListBoardRes);
@@ -666,14 +636,20 @@ public class BoardService {
                     .userProfileImage(board.getUser().getProfileImage())
                     .build();
 
-            List<BoardImage> boardImageList = board.getBoardImageList();
-            List<String> fileNames = new ArrayList<>();
-            if (!boardImageList.isEmpty()) {
-                for (BoardImage boardImage : boardImageList) {
-                    String fileName = boardImage.getBoardImage();
-                    fileNames.add(fileName);
-                }
-                getBoardListByQueryRes.setBoardImg(fileNames.get(0));
+//            List<BoardImage> boardImageList = board.getBoardImageList();
+//            List<String> fileNames = new ArrayList<>();
+//            if (!boardImageList.isEmpty()) {
+//                for (BoardImage boardImage : boardImageList) {
+//                    String fileName = boardImage.getBoardImage();
+//                    fileNames.add(fileName);
+//                }
+//                getBoardListByQueryRes.setBoardImg(fileNames.get(0));
+//            }
+            Document doc = Jsoup.parse(board.getBoardContent());
+            Elements images = doc.select("img");
+
+            if (!images.isEmpty()) {
+                getBoardListByQueryRes.setBoardImg(images.get(0).attr("src"));
             }
 
             getBoardListByQueryResList.add(getBoardListByQueryRes);
@@ -842,18 +818,18 @@ public class BoardService {
         }
 
         // 이미지 조회
-        List<GetListImageBoardRes> getListImageBoardResList = new ArrayList<>();
-
-        if (!board.getBoardImageList().isEmpty()) {
-            for (BoardImage boardImage : board.getBoardImageList()) {
-                GetListImageBoardRes getListImageReviewRes = GetListImageBoardRes.builder()
-                        .boardImageIdx(boardImage.getIdx())
-                        .boardImage(boardImage.getBoardImage())
-                        .build();
-
-                getListImageBoardResList.add(getListImageReviewRes);
-            }
-        }
+//        List<GetListImageBoardRes> getListImageBoardResList = new ArrayList<>();
+//
+//        if (!board.getBoardImageList().isEmpty()) {
+//            for (BoardImage boardImage : board.getBoardImageList()) {
+//                GetListImageBoardRes getListImageReviewRes = GetListImageBoardRes.builder()
+//                        .boardImageIdx(boardImage.getIdx())
+//                        .boardImage(boardImage.getBoardImage())
+//                        .build();
+//
+//                getListImageBoardResList.add(getListImageReviewRes);
+//            }
+//        }
 
         GetReadBoardRes getReadBoardRes = GetReadBoardRes.builder()
                 .idx(board.getIdx())
@@ -862,7 +838,7 @@ public class BoardService {
                 .boardTitle(board.getBoardTitle())
                 .boardContent(board.getBoardContent())
                 .tagList(tags)
-                .boardImageList(getListImageBoardResList)
+//                .boardImageList(getListImageBoardResList)
                 .build();
 
         BaseRes baseRes = BaseRes.builder()
@@ -909,14 +885,23 @@ public class BoardService {
                     .type("board")
                     .build();
 
-            List<BoardImage> boardImageList = board.getBoardImageList();
-            List<String> fileNames = new ArrayList<>();
-            if (!boardImageList.isEmpty()) {
-                for (BoardImage boardImage : boardImageList) {
-                    String fileName = boardImage.getBoardImage();
-                    fileNames.add(fileName);
-                }
-                getListHotBoardRes.setImage(fileNames.get(0));
+//            List<BoardImage> boardImageList = board.getBoardImageList();
+//            List<String> fileNames = new ArrayList<>();
+//            if (!boardImageList.isEmpty()) {
+//                for (BoardImage boardImage : boardImageList) {
+//                    String fileName = boardImage.getBoardImage();
+//                    fileNames.add(fileName);
+//                }
+//                getListHotBoardRes.setImage(fileNames.get(0));
+//            }
+//
+//            getListResListHotBoard.add(getListHotBoardRes);
+
+            Document doc = Jsoup.parse(board.getBoardContent());
+            Elements images = doc.select("img");
+
+            if (!images.isEmpty()) {
+                getListHotBoardRes.setImage(images.get(0).attr("src"));
             }
 
             getListResListHotBoard.add(getListHotBoardRes);
@@ -976,17 +961,25 @@ public class BoardService {
                     .type("board")
                     .build();
 
-            List<BoardImage> boardImageList = board.getBoardImageList();
-            List<String> fileNames = new ArrayList<>();
-            if (!boardImageList.isEmpty()) {
-                for (BoardImage boardImage : boardImageList) {
-                    String fileName = boardImage.getBoardImage();
-                    fileNames.add(fileName);
-                }
-                getListHotBoardRes.setImage(fileNames.get(0));
+//            List<BoardImage> boardImageList = board.getBoardImageList();
+//            List<String> fileNames = new ArrayList<>();
+//            if (!boardImageList.isEmpty()) {
+//                for (BoardImage boardImage : boardImageList) {
+//                    String fileName = boardImage.getBoardImage();
+//                    fileNames.add(fileName);
+//                }
+//                getListHotBoardRes.setImage(fileNames.get(0));
+//            }
+
+            Document doc = Jsoup.parse(board.getBoardContent());
+            Elements images = doc.select("img");
+
+            if (!images.isEmpty()) {
+                getListHotBoardRes.setImage(images.get(0).attr("src"));
             }
 
             getListResListHotBoard.add(getListHotBoardRes);
+
         }
 
         Long totalCnt = boardList.getTotalElements();
