@@ -44,15 +44,13 @@ public class RefreshTokenService {
 
     private final UserRepository userRepository;
 
-    private final UserRefreshToken userRefreshToken;
-
     private final UserRefreshTokenRepository userRefreshTokenRepository;
 
     private final JwtUtils jwtUtils;
 
     @Transactional
     public String recreateAccessToken(String oldAccessToken) throws JsonProcessingException {
-        Integer userIdx = JwtUtils.getUserIdx(oldAccessToken, secretKey);
+        Integer userIdx = extractIdxFromAccessToken(oldAccessToken);
 
         if(userRefreshTokenRepository.findByUserIdx(userIdx).isPresent()){
             Optional<User> result = userRepository.findByIdx(userIdx);

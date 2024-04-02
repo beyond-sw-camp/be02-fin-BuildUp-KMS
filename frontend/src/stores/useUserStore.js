@@ -2,10 +2,11 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import VueJwtDecode from "vue-jwt-decode";
 
-const backend = "http://192.168.0.61/api";
-// const backend = "http://localhost:8080";
+// const backend = "http://192.168.0.61/api";
+const backend = "http://localhost:8080";
 
-const storedToken = localStorage.getItem("token");
+const storedToken = localStorage.getItem("accessToken");
+const refreshToken = localStorage.getItem("refreshToken");
 
 export const useUserStore = defineStore("user", {
   state: () => ({
@@ -25,18 +26,53 @@ export const useUserStore = defineStore("user", {
     userList: [],
   }),
   actions: {
+    // async refreshTokenIfNeeded() {
+    //   const accessToken = localStorage.getItem("accessToken");
+    //   const refreshToken = localStorage.getItem("refreshToken");
+    //   if (!accessToken || !refreshToken) return;
+
+    //   const decodedAccessToken = VueJwtDecode.decode(accessToken);
+    //   const expirationTime = decodedAccessToken.exp * 1000; // ms로 변환
+
+    //   // Access 토큰 만료 30초 전이면 리프레시 토큰을 이용하여 새로운 Access 토큰 발급
+    //   if (expirationTime - Date.now() < 30000) {
+    //     try {
+    //       const response = await axios.get(backend + '/user/read', {
+    //         headers: {
+    //           Authorization: `Bearer ${accessToken}`,
+    //           RefreshToken: `Bearer ${refreshToken}`
+    //         }
+    //       });
+    //       const newAccessToken = response.data.result.accessToken;
+        
+    //       // 새로운 Access 토큰과 만료 시간을 저장
+    //       localStorage.setItem("accessToken", newAccessToken);
+
+    //       // 새로운 토큰으로 인증 상태 업데이트
+    //       this.isAuthenticated = true;
+
+    //     } catch (error) {
+    //       console.error("토큰 발급 실패:", error);
+    //       // 토큰 발급 실패 처리
+    //     }
+    //   }
+    // },
+
     async login(email, password) {
       try {
         let loginUser = { email: email, password: password };
 
         let response = await axios.post(backend + "/user/login", loginUser);
 
-        if (response.data.isSuccess && response.data.result.token) {
-          let token = response.data.result.token;
+        if (response.data.isSuccess && response.data.result.accessToken) {
+          let accessToken = response.data.result.accessToken;
+          let refreshToken = response.data.result.refreshToken;
+          
 
-          let userClaims = VueJwtDecode.decode(token);
-
-          window.localStorage.setItem("token", token);
+          let userClaims = VueJwtDecode.decode(accessToken);
+          
+          window.localStorage.setItem("accessToken", accessToken);
+          window.localStorage.setItem("refreshToken", refreshToken);
           this.setDecodedToken(userClaims);
 
           this.isAuthenticated = true;
@@ -65,9 +101,9 @@ export const useUserStore = defineStore("user", {
     },
 
     decodeToken() {
-      const token = localStorage.getItem("token");
-      if (token) {
-        const decoded = VueJwtDecode.decode(token);
+      const accessToken = localStorage.getItem("accessToken");
+      if (accessToken) {
+        const decoded = VueJwtDecode.decode(accessToken);
         if (decoded.exp < Date.now() / 1000) {
           this.logout();
         } else {
@@ -78,7 +114,7 @@ export const useUserStore = defineStore("user", {
     },
 
     logout() {
-      localStorage.removeItem("token");
+      localStorage.removeItem("accessToken");
       this.isAuthenticated = false;
       this.decodedToken = null;
 
@@ -90,10 +126,22 @@ export const useUserStore = defineStore("user", {
         let response = await axios.get(backend + `/user/read`, {
           headers: {
             Authorization: `Bearer ${storedToken}`,
+            RefreshToken: `Bearer ${refreshToken}`
           },
         });
+
+        console.log(response.headers["New-Access-Token"]);
+        if(response.headers["New-Access-Token"] != null) {
+          if(response.headers ["New-Access-Token"] != localStorage.getItem("accessToken")) {
+            localStorage.setItem("accessToken", "")
+            localStorage.setItem("accessToken", response.headers["New-Access-Token"])
+          }
+        }
+        
+
         this.user = response.data.result;
       } catch (e) {
+
         if (e.response && e.response.data) {
           if (e.response.data.code === "USER-003") {
             alert("회원정보를 찾을 수 없습니다.");
@@ -252,7 +300,7 @@ export const useUserStore = defineStore("user", {
           alert(
             '회원 탈퇴가 성공적으로 처리되었습니다. 그동안 "BOOTSHELF" 를 이용해주셔서 감사합니다.'
           );
-          sessionStorage.removeItem("token");
+          sessionStorage.removeItem("accessToken");
           window.location.href = "/";
         }
       } catch (e) {

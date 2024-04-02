@@ -1,8 +1,8 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 
-// const backend = "http://192.168.0.61/api";
-const backend = "http://localhost:8080";
+const backend = "http://192.168.0.61/api";
+// const backend = "http://localhost:8080";
 let accessToken = localStorage.getItem("accessToken");
 
 export const useReviewCommentStore = defineStore("reviewComment", {

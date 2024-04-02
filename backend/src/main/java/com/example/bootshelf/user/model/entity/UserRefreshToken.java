@@ -1,12 +1,10 @@
 package com.example.bootshelf.user.model.entity;
 
 import lombok.*;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import javax.persistence.*;
 import java.util.UUID;
 
-@EntityScan
 @Entity
 @Getter
 @Setter
@@ -19,8 +17,10 @@ public class UserRefreshToken {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idx;
 
+    @Column(nullable = false, unique = true)
     private Integer userIdx;
 
+    @Column(nullable = false)
     private String refreshToken;
 
 //    public boolean validateRefreshToken(String refreshToken){
