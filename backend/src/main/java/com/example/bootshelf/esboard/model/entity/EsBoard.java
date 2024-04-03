@@ -44,9 +44,9 @@ public class EsBoard {
     @Field(type = FieldType.Boolean)
     private Boolean status;
 
-    @Field(type = FieldType.Date, format = DateFormat.custom, pattern = "yyyy-MM-dd")
+//    @Field(type = FieldType.Date, format = DateFormat.custom, pattern = "yyyy-MM-dd")
     private String createdAt;
 
-    @Field(type = FieldType.Date, format = DateFormat.custom, pattern = "yyyy-MM-dd")
+//    @Field(type = FieldType.Date, format = DateFormat.custom, pattern = "yyyy-MM-dd")
     private String updatedAt;
 }
