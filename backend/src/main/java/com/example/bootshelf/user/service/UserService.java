@@ -15,17 +15,15 @@ import com.example.bootshelf.course.Course;
 import com.example.bootshelf.common.error.entityexception.CourseException;
 import com.example.bootshelf.course.repository.CourseRepository;
 import com.example.bootshelf.common.error.entityexception.UserException;
-import com.example.bootshelf.tag.model.response.GetListTagResResult;
 import com.example.bootshelf.user.model.entity.User;
+import com.example.bootshelf.user.model.entity.UserRefreshToken;
 import com.example.bootshelf.user.model.request.*;
 import com.example.bootshelf.user.model.response.*;
 import com.example.bootshelf.user.repository.UserRefreshTokenRepository;
 import com.example.bootshelf.user.repository.UserRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -106,10 +104,10 @@ public class UserService {
                     .isSuccess(true)
                     .message("회원가입에 성공하였습니다.")
                     .result(
-                    PostSignUpUserRes.builder()
-                            .userEmail(user.getEmail())
-                            .userName(user.getName())
-                            .build())
+                            PostSignUpUserRes.builder()
+                                    .userEmail(user.getEmail())
+                                    .userName(user.getName())
+                                    .build())
                     .build();
 
             return baseRes;
@@ -199,13 +197,31 @@ public class UserService {
 
         User user = result.get();
         if (passwordEncoder.matches(postLoginUserReq.getPassword(), user.getPassword()) && user.getStatus().equals(true)) {
-            PostLoginUserRes postLogInUserRes = PostLoginUserRes.builder().accessToken(jwtUtils.generateAccessToken(user, secretKey, expiredTimeMs)).expiredTimeMs(expiredTimeMs).build();
+            PostLoginUserRes postLogInUserRes = PostLoginUserRes.builder().accessToken(jwtUtils.generateAccessToken(user, secretKey, expiredTimeMs)).build();
             // 로그인 시 리프레시 토큰이 존재할 때 지워준다.
-            if(userRefreshTokenRepository.findByUserIdx(user.getIdx()).isPresent()){
-                userRefreshTokenRepository.deleteByUserIdx(user.getIdx());
-                postLogInUserRes.setRefreshToken(jwtUtils.generateRefreshToken(secretKey,expiredRefreshTokenTimeMs));
+
+            Optional<UserRefreshToken> oldToken = userRefreshTokenRepository.findByUserIdx(user.getIdx());
+
+            if(oldToken.isPresent()) {
+                UserRefreshToken userRefreshToken = oldToken.get();
+                String newRefreshToken = jwtUtils.generateRefreshToken(secretKey,expiredRefreshTokenTimeMs);
+
+                userRefreshToken.setRefreshToken(newRefreshToken);
+                userRefreshTokenRepository.save(userRefreshToken);
+
+                postLogInUserRes.setRefreshToken(newRefreshToken);
             } else {
-                postLogInUserRes.setRefreshToken(jwtUtils.generateRefreshToken(secretKey,expiredRefreshTokenTimeMs));
+
+                String newRefreshToken = jwtUtils.generateRefreshToken(secretKey,expiredRefreshTokenTimeMs);
+
+                UserRefreshToken userRefreshToken = UserRefreshToken.builder()
+                        .refreshToken(newRefreshToken)
+                        .userIdx(user.getIdx())
+                        .build();
+
+                userRefreshTokenRepository.save(userRefreshToken);
+
+                postLogInUserRes.setRefreshToken(newRefreshToken);
             }
             return BaseRes.builder().isSuccess(true).message("로그인에 성공하였습니다.").result(postLogInUserRes).build();
         } else {
@@ -408,13 +424,13 @@ public class UserService {
         if (result.isEmpty()) {
             throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("UserEmail [ %s ] is not exists.", email));
         }
-            User user = result.get();
-            String pw = getTempPassword();
-            user.setPassword(passwordEncoder.encode(pw));
+        User user = result.get();
+        String pw = getTempPassword();
+        user.setPassword(passwordEncoder.encode(pw));
 
-            user.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
-            userRepository.save(user);
-            return pw;
+        user.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+        userRepository.save(user);
+        return pw;
     }
 
     public String getTempPassword() {
@@ -422,7 +438,7 @@ public class UserService {
                 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 
         char[] charSet2 = new char[]{'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s',
-        't','u','v','w','x','y','z'};
+                't','u','v','w','x','y','z'};
 
         char[] charSet3 = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 

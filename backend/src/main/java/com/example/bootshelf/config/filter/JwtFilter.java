@@ -6,14 +6,10 @@ import com.example.bootshelf.common.error.ErrorResponse;
 import com.example.bootshelf.config.utils.JwtUtils;
 import com.example.bootshelf.common.error.entityexception.UserException;
 import com.example.bootshelf.user.model.entity.User;
-import com.example.bootshelf.user.model.entity.UserRefreshToken;
-import com.example.bootshelf.user.repository.UserRefreshTokenRepository;
 import com.example.bootshelf.user.repository.UserRepository;
 import com.example.bootshelf.user.service.RefreshTokenService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -32,17 +28,15 @@ import java.util.Optional;
 public class JwtFilter extends OncePerRequestFilter {
 
     private UserRepository userRepository;
-
     private RefreshTokenService refreshTokenService;
-
-
     @Value("${jwt.secret-key}")
     private String secretKey;
 
 
-    public JwtFilter(String secretKey, UserRepository userRepository){
+    public JwtFilter(String secretKey, UserRepository userRepository, RefreshTokenService refreshTokenService){
         this.userRepository = userRepository;
         this.secretKey = secretKey;
+        this.refreshTokenService =refreshTokenService;
     }
 
 
@@ -94,13 +88,12 @@ public class JwtFilter extends OncePerRequestFilter {
                                 user.getAuthorities()
                         );
                         SecurityContextHolder.getContext().setAuthentication(authentication);
-                        filterChain.doFilter(request, response);
                     }
                 }
             }
         }catch (ExpiredJwtException e){
             //access토큰 재발급과정 넣기
-            reissueAccessToken(request, response,e);
+            reissueAccessToken(request, response, e);
         } catch (UserException e) {
             // JwtUtils에서 던진 UserAccountException 처리
             handleJwtException(response, e);
@@ -108,6 +101,7 @@ public class JwtFilter extends OncePerRequestFilter {
             // Spring Security 예외 처리
             handleJwtException(response, new UserException(ErrorCode.UNAUTHORIZED, e.getMessage()));
         }
+        filterChain.doFilter(request, response);
     }
 
     private String parseBearerToken(HttpServletRequest request, String headerName) {
@@ -121,7 +115,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private void reissueAccessToken(HttpServletRequest request, HttpServletResponse response, Exception exception) {
         try {
-            String refreshToken = parseBearerToken(request, "Refresh-Token");
+            String refreshToken = parseBearerToken(request, "Refreshtoken");
             if (refreshToken == null) {
                 throw exception;
             }
@@ -141,8 +135,7 @@ public class JwtFilter extends OncePerRequestFilter {
                         AbstractAuthenticationToken authenticated = UsernamePasswordAuthenticationToken.authenticated(user, newAccessToken, user.getAuthorities());
                         authenticated.setDetails(new WebAuthenticationDetails(request));
                         SecurityContextHolder.getContext().setAuthentication(authenticated);
-
-                        response.setHeader("New-Access-Token", newAccessToken);
+                        response.setHeader("new-access-token", newAccessToken);
                     }
                 }
             }

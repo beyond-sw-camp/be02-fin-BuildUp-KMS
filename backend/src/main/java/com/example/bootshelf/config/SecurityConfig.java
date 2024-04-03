@@ -5,6 +5,7 @@ import com.example.bootshelf.config.handler.OAuth2AuthenticationSuccessHandler;
 import com.example.bootshelf.user.exception.security.CustomAccessDeniedHandler;
 import com.example.bootshelf.user.exception.security.CustomAuthenticationEntryPoint;
 import com.example.bootshelf.user.repository.UserRepository;
+import com.example.bootshelf.user.service.RefreshTokenService;
 import com.example.bootshelf.user.service.UserOAuth2Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,6 +37,7 @@ public class SecurityConfig {
     private final UserOAuth2Service userOAuth2Service;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final RefreshTokenService refreshTokenService;
 
 
     @Bean
@@ -87,7 +89,7 @@ public class SecurityConfig {
 //                    .authenticationEntryPoint(customAuthenticationEntryPoint) // 인증에 대한 예외 처리
                     .and()
                     .formLogin().disable()
-                    .addFilterBefore(new JwtFilter(secretKey, userRepository), UsernamePasswordAuthenticationFilter.class)
+                    .addFilterBefore(new JwtFilter(secretKey, userRepository, refreshTokenService), UsernamePasswordAuthenticationFilter.class)
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                     // OAuth 2.0 로그인 처리

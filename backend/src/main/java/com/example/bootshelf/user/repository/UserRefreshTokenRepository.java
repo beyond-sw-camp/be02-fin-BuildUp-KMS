@@ -4,9 +4,7 @@ import com.example.bootshelf.user.model.entity.UserRefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
-import java.util.UUID;
 
 public interface UserRefreshTokenRepository extends JpaRepository<UserRefreshToken, Integer> {
     Optional<UserRefreshToken> findByUserIdx(Integer idx);
-    Optional<UserRefreshToken> deleteByUserIdx(Integer idx);
 }
