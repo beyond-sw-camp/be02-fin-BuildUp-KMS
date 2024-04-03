@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 public class ImageUtils {
-    public static String makeBoardImagePath(String originalName){
+    public static String makeImagePath(String originalName){
         String str = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
 
         String folderPath = str;

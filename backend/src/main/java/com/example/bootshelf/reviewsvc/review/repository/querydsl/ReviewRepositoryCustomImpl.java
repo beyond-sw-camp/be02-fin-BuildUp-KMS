@@ -1,13 +1,10 @@
 package com.example.bootshelf.reviewsvc.review.repository.querydsl;
 
-import com.example.bootshelf.boardsvc.board.model.entity.Board;
-import com.example.bootshelf.boardsvc.board.model.entity.QBoard;
 import com.example.bootshelf.common.error.ErrorCode;
 import com.example.bootshelf.common.error.entityexception.ReviewException;
 import com.example.bootshelf.reviewsvc.review.model.entity.QReview;
 import com.example.bootshelf.reviewsvc.review.model.entity.Review;
 import com.example.bootshelf.reviewsvc.reviewcategory.model.QReviewCategory;
-import com.example.bootshelf.reviewsvc.reviewimage.model.entity.QReviewImage;
 import com.example.bootshelf.user.model.entity.QUser;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -32,12 +29,10 @@ public class ReviewRepositoryCustomImpl extends QuerydslRepositorySupport implem
         QReview review = new QReview("review");
         QUser user = new QUser("user");
         QReviewCategory reviewCategory = new QReviewCategory("reviewCategory");
-        QReviewImage reviewImage = new QReviewImage("reviewImage");
 
-                OrderSpecifier[] orderSpecifiers = createOrderSpecifier(sortType, review);
+        OrderSpecifier[] orderSpecifiers = createOrderSpecifier(sortType, review);
 
         List<Review> result = from(review)
-                .leftJoin(review.reviewImageList, reviewImage).fetchJoin()
                 .leftJoin(review.user, user).fetchJoin()
                 .where(review.user.idx.eq(userIdx).and(review.reviewCategory.idx.eq(reviewCategoryIdx)).and(review.status.eq(true)))
                 .orderBy(orderSpecifiers)
@@ -55,17 +50,6 @@ public class ReviewRepositoryCustomImpl extends QuerydslRepositorySupport implem
 
         return new PageImpl<>(result, pageable, total);
 
-
-//        List<Review> result = from(review)
-//                .leftJoin(review.reviewImageList, reviewImage).fetchJoin()
-//                .leftJoin(review.reviewCategory, reviewCategory).fetchJoin()
-//                .where(review.user.idx.eq(userIdx))
-//                .distinct()
-//                .offset(pageable.getOffset())
-//                .limit(pageable.getPageSize())
-//                .fetch().stream().distinct().collect(Collectors.toList());
-//
-//        return new PageImpl<>(result, pageable, result.size());
     }
 
     // 정렬 조건 별 후기글 목록 조회
@@ -73,14 +57,12 @@ public class ReviewRepositoryCustomImpl extends QuerydslRepositorySupport implem
     public Page<Review> findReviewList(Integer reviewCategoryIdx, Integer sortType, Pageable pageable) {
 
         QReview review = new QReview("review");
-        QReviewImage reviewImage = new QReviewImage("reviewImage");
         QUser user = new QUser("user");
         QReviewCategory reviewCategory = new QReviewCategory("reviewCategory");
 
         OrderSpecifier[] orderSpecifiers = createOrderSpecifier(sortType, review);
 
         List<Review> result = from(review)
-                .leftJoin(review.reviewImageList, reviewImage).fetchJoin()
                 .leftJoin(review.user, user).fetchJoin()
                 .where(review.reviewCategory.idx.eq(reviewCategoryIdx).and(review.status.eq(true)))
                 .orderBy(orderSpecifiers)

@@ -73,8 +73,8 @@ public class UserService {
             savePath = "https://bootshelf-profile.s3.ap-northeast-2.amazonaws.com/2024/03/14/6a0ac29b-55c8-4fd0-808a-fcd1b9deda76_default.png";
         } else {
             // 프로필 이미지가 있는 경우 S3에 업로드
-            savePath = ImageUtils.makeBoardImagePath(profileImage.getOriginalFilename());
-            savePath = s3Service.uploadBoardFile(profileBucket, profileImage, savePath);
+            savePath = ImageUtils.makeImagePath(profileImage.getOriginalFilename());
+            savePath = s3Service.uploadFile(profileBucket, profileImage, savePath);
         }
 
         User user = User.builder().password(passwordEncoder.encode(postSignUpUserReq.getPassword())).name(postSignUpUserReq.getName()).email(postSignUpUserReq.getEmail()).nickName(postSignUpUserReq.getNickName()).profileImage(savePath).authority("ROLE_USER").createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))).updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))).status(false).build();
@@ -338,8 +338,8 @@ public class UserService {
 
         User user = result.get();
         // 프로필 이미지가 있는 경우 S3에 업로드
-        String savePath = ImageUtils.makeBoardImagePath(profileImage.getOriginalFilename());
-        savePath = s3Service.uploadBoardFile(profileBucket, profileImage, savePath);
+        String savePath = ImageUtils.makeImagePath(profileImage.getOriginalFilename());
+        savePath = s3Service.uploadFile(profileBucket, profileImage, savePath);
 
         user.setProfileImage(savePath);
         user.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
