@@ -12,11 +12,10 @@ import com.example.bootshelf.tag.model.entity.Tag;
 import com.example.bootshelf.tag.repository.TagRepository;
 import com.example.bootshelf.tag.service.TagService;
 import lombok.RequiredArgsConstructor;
+import org.joda.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -50,8 +49,8 @@ public class BoardTagService {
                     .tag(tag)
                     .board(Board.builder().idx(idx).build())
                     .status(true)
-                    .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
-                    .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+                    .createdAt(LocalDateTime.now())
+                    .updatedAt(LocalDateTime.now())
                     .build();
 
             boardTagRepository.save(boardTag);

@@ -22,6 +22,7 @@ import com.example.bootshelf.user.model.response.*;
 import com.example.bootshelf.user.repository.UserRefreshTokenRepository;
 import com.example.bootshelf.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,7 +35,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -75,7 +75,7 @@ public class UserService {
             savePath = s3Service.uploadFile(profileBucket, profileImage, savePath);
         }
 
-        User user = User.builder().password(passwordEncoder.encode(postSignUpUserReq.getPassword())).name(postSignUpUserReq.getName()).email(postSignUpUserReq.getEmail()).nickName(postSignUpUserReq.getNickName()).profileImage(savePath).authority("ROLE_USER").createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))).updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))).status(false).build();
+        User user = User.builder().password(passwordEncoder.encode(postSignUpUserReq.getPassword())).name(postSignUpUserReq.getName()).email(postSignUpUserReq.getEmail()).nickName(postSignUpUserReq.getNickName()).profileImage(savePath).authority("ROLE_USER").createdAt(LocalDateTime.now()).updatedAt(LocalDateTime.now()).status(false).build();
 
         userRepository.save(user);
 
@@ -120,7 +120,7 @@ public class UserService {
 
             User user = saveUser(postSignUpUserReq, profileImage);
 
-            Certification certification = Certification.builder().user(user).course(Course.builder().idx(resultCourse.get().getIdx()).build()).status(true).createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))).updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))).build();
+            Certification certification = Certification.builder().user(user).course(Course.builder().idx(resultCourse.get().getIdx()).build()).status(true).createdAt(LocalDateTime.now()).updatedAt(LocalDateTime.now()).build();
 
             certificationRepository.save(certification);
 
@@ -288,7 +288,7 @@ public class UserService {
     @Transactional
     public void kakaoSignup(String nickName, String profileImage) {
 
-        User user = User.builder().email(nickName + "@kakao.com").password(passwordEncoder.encode("kakao")).nickName(nickName).name(nickName).profileImage(profileImage).authority("ROLE_KAKAO").createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))).updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))).status(true).build();
+        User user = User.builder().email(nickName + "@kakao.com").password(passwordEncoder.encode("kakao")).nickName(nickName).name(nickName).profileImage(profileImage).authority("ROLE_KAKAO").createdAt(LocalDateTime.now()).updatedAt(LocalDateTime.now()).status(true).build();
 
         user = userRepository.save(user);
 
@@ -336,7 +336,7 @@ public class UserService {
             user.update(patchUpdateUserReq, null);
         }
 
-        user.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+        user.setUpdatedAt(LocalDateTime.now());
         userRepository.save(user);
 
         return BaseRes.builder().isSuccess(true).message("회원정보 수정 성공").result(user.getNickName()).build();
@@ -358,7 +358,7 @@ public class UserService {
         savePath = s3Service.uploadFile(profileBucket, profileImage, savePath);
 
         user.setProfileImage(savePath);
-        user.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+        user.setUpdatedAt(LocalDateTime.now());
         userRepository.save(user);
 
         BaseRes baseRes = BaseRes.builder().isSuccess(true).message("프로필 이미지 수정 성공").result("요청 성공").build();
@@ -409,7 +409,7 @@ public class UserService {
             throw new AdminException(ErrorCode.DUPLICATE_SIGNUP_EMAIL, String.format("SignUp Email [ %s ] is duplicated.", postSignUpAdminReq.getEmail()));
         }
 
-        User user = User.builder().password(passwordEncoder.encode(postSignUpAdminReq.getPassword())).name(postSignUpAdminReq.getName()).email(postSignUpAdminReq.getEmail()).authority("ROLE_ADMIN").createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))).updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))).status(true).build();
+        User user = User.builder().password(passwordEncoder.encode(postSignUpAdminReq.getPassword())).name(postSignUpAdminReq.getName()).email(postSignUpAdminReq.getEmail()).authority("ROLE_ADMIN").createdAt(LocalDateTime.now()).updatedAt(LocalDateTime.now()).status(true).build();
 
         userRepository.save(user);
 
@@ -428,8 +428,9 @@ public class UserService {
         String pw = getTempPassword();
         user.setPassword(passwordEncoder.encode(pw));
 
-        user.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+        user.setUpdatedAt(LocalDateTime.now());
         userRepository.save(user);
+        
         return pw;
     }
 

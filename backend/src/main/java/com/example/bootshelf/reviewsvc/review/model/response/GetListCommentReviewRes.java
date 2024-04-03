@@ -1,6 +1,7 @@
 package com.example.bootshelf.reviewsvc.review.model.response;
 
 import lombok.*;
+import org.joda.time.LocalDateTime;
 
 import java.util.List;
 
@@ -17,6 +18,6 @@ public class GetListCommentReviewRes {
     private String profileImage;
     private String reviewCommentContent;
     private Integer upCnt;
-    private String updatedAt;
+    private LocalDateTime updatedAt;
     private List<GetListCommentReviewRes> children; // 대댓글 목록을 위한 필드 추가
 }

@@ -1,8 +1,5 @@
 package com.example.bootshelf.reviewsvc.reviewcomment.service;
 
-import com.example.bootshelf.boardsvc.board.model.entity.Board;
-import com.example.bootshelf.boardsvc.board.repository.BoardRepository;
-import com.example.bootshelf.boardsvc.boardcomment.model.entity.BoardComment;
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.common.error.ErrorCode;
 import com.example.bootshelf.common.error.entityexception.BoardCommentException;
@@ -23,10 +20,10 @@ import com.example.bootshelf.reviewsvc.reviewcommentup.model.entity.ReviewCommen
 import com.example.bootshelf.reviewsvc.reviewcommentup.repository.ReviewCommentUpRepository;
 import com.example.bootshelf.user.model.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.joda.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,8 +59,8 @@ public class ReviewCommentService {
                 .reviewCommentContent(postCreateReviewCommentReq.getReviewCommentContent())
                 .status(true)
                 .upCnt(0)
-                .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-                .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
 
         reviewCommentRepository.save(reviewComment);
@@ -152,7 +149,7 @@ public class ReviewCommentService {
             }
 
             ReviewComment reviewComment = result.get();
-            reviewComment.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            reviewComment.setUpdatedAt(LocalDateTime.now());
             reviewComment.setReviewCommentContent(patchUpdateReviewCommentReq.getReviewCommentContent());
 
             reviewCommentRepository.save(reviewComment);
@@ -253,8 +250,8 @@ public class ReviewCommentService {
                 .parent(parentReviewComment.get())  // 부모 댓글 설정
                 .reviewCommentContent(postCreateReviewReplyReq.getReviewReplyContent())
                 .status(true)
-                .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-                .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
 
         parentReviewComment.get().getChildren().add(childrenReviewComment);

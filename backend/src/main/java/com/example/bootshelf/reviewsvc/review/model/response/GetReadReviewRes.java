@@ -1,6 +1,7 @@
 package com.example.bootshelf.reviewsvc.review.model.response;
 
 import lombok.*;
+import org.joda.time.LocalDateTime;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class GetReadReviewRes {
     private Integer scrapCnt;
     private Integer upCnt;
     private Integer commentCnt;
-    private String updatedAt;
+    private LocalDateTime updatedAt;
     private List<GetListCommentReviewRes> reviewCommentList;
 
 }

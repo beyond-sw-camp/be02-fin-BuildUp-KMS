@@ -1,6 +1,7 @@
 package com.example.bootshelf.boardsvc.boardcomment.model.response;
 
 import lombok.*;
+import org.joda.time.LocalDateTime;
 
 import java.util.List;
 
@@ -17,8 +18,8 @@ public class GetListBoardCommentRes {
     private String profileImage;
     private String boardCommnetContent;
     private Integer upCnt;
-    private String createAt;
-    private String updateAt;
+    private LocalDateTime createAt;
+    private LocalDateTime updateAt;
     private Boolean status;
     private List<GetListBoardCommentRes> children; // 자식 댓글 목록
 

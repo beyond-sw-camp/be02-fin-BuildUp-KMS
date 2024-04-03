@@ -1,6 +1,7 @@
 package com.example.bootshelf.reviewsvc.reviewcomment.model.response;
 
 import lombok.*;
+import org.joda.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -13,7 +14,7 @@ public class PatchUpdateReviewCommentRes {
     private Integer userIdx;
     private String nickName;
     private String reviewCommentContent;
-    private String createAt;
-    private String updateAt;
+    private LocalDateTime createAt;
+    private LocalDateTime updateAt;
 
 }

@@ -1,6 +1,7 @@
 package com.example.bootshelf.boardsvc.board.model.response;
 
 import lombok.*;
+import org.joda.time.LocalDateTime;
 
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class GetListBoardRes {
 
     private String boardType;
 
-    private String createdAt;
+    private LocalDateTime createdAt;
 
-    private String updatedAt;
+    private LocalDateTime updatedAt;
 }
