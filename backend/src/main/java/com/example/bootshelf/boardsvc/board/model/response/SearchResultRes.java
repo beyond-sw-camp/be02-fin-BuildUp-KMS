@@ -1,6 +1,7 @@
 package com.example.bootshelf.boardsvc.board.model.response;
 
 import lombok.*;
+import org.joda.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -13,7 +14,7 @@ public class SearchResultRes {
     private String content;
     private String categoryName;
     private String nickName;
-    private String createdAt;
+    private LocalDateTime createdAt;
     private Integer viewCnt;
     private Integer commentCnt;
     private Integer upCnt;

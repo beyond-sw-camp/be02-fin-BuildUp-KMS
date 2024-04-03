@@ -10,32 +10,26 @@ import com.example.bootshelf.boardsvc.board.model.response.PostCreateBoardRes;
 import com.example.bootshelf.boardsvc.board.repository.BoardRepository;
 import com.example.bootshelf.boardsvc.boardcategory.model.entity.BoardCategory;
 import com.example.bootshelf.boardsvc.boardcomment.model.entity.BoardComment;
-import com.example.bootshelf.boardsvc.boardscrap.model.response.GetFindBoardScrapRes;
-import com.example.bootshelf.boardsvc.boardscrap.model.response.GetFindBoardScrapResResult;
 import com.example.bootshelf.boardsvc.boardtag.model.entity.BoardTag;
 import com.example.bootshelf.boardsvc.boardtag.service.BoardTagService;
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.common.error.ErrorCode;
 import com.example.bootshelf.common.error.entityexception.BoardException;
 import com.example.bootshelf.reviewsvc.review.model.entity.Review;
-import com.example.bootshelf.reviewsvc.review.model.response.GetListCommentReviewRes;
 import com.example.bootshelf.reviewsvc.review.repository.ReviewRepository;
-import com.example.bootshelf.reviewsvc.reviewcomment.model.entity.ReviewComment;
 import com.example.bootshelf.user.model.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.joda.time.LocalDateTime;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -73,8 +67,8 @@ public class BoardService {
                 .upCnt(0)
                 .commentCnt(0)
                 .scrapCnt(0)
-                .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
-                .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
 
         board = boardRepository.save(board);
@@ -111,7 +105,7 @@ public class BoardService {
 
         Board board = result.get();
         board.increaseViewCnt();
-        board.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+        board.setUpdatedAt(LocalDateTime.now());
         boardRepository.save(board);
 
         // 댓글 조회
@@ -661,7 +655,7 @@ public class BoardService {
 
         board.setBoardTitle(patchUpdateBoardReq.getBoardTitle());
         board.setBoardContent(patchUpdateBoardReq.getBoardContent());
-        board.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+        board.setUpdatedAt(LocalDateTime.now());
 
         boardRepository.save(board);
 
@@ -686,7 +680,7 @@ public class BoardService {
 
         Board board = result.get();
         board.setStatus(false);
-        board.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+        board.setUpdatedAt(LocalDateTime.now());
         boardRepository.save(board);
 
         BaseRes baseRes = BaseRes.builder()

@@ -15,5 +15,4 @@ public class PostCreateReviewRes {
     private String courseName;
     private String reviewContent;
     private Integer courseEvaluation;
-
 }

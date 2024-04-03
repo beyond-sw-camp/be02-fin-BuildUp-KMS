@@ -2,6 +2,7 @@ package com.example.bootshelf.boardsvc.boardcategory.model.entity;
 
 import com.example.bootshelf.boardsvc.board.model.entity.Board;
 import lombok.*;
+import org.joda.time.LocalDateTime;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -29,9 +30,9 @@ public class BoardCategory {
     private Boolean status;
 
     @Column(nullable = false)
-    private String createdAt;
+    private LocalDateTime createdAt;
 
     @Column(nullable = false)
-    private String updatedAt;
+    private LocalDateTime updatedAt;
 
 }

@@ -1,14 +1,5 @@
 package com.example.bootshelf.reviewsvc.reviewcategory.service;
 
-import com.example.bootshelf.boardsvc.board.model.entity.Board;
-import com.example.bootshelf.boardsvc.board.repository.BoardRepository;
-import com.example.bootshelf.boardsvc.boardcategory.model.entity.BoardCategory;
-import com.example.bootshelf.boardsvc.boardcategory.model.request.PatchUpdateBoardCategoryReq;
-import com.example.bootshelf.boardsvc.boardcategory.model.request.PostCreateBoardCategoryReq;
-import com.example.bootshelf.boardsvc.boardcategory.model.response.GetListBoardCategoryRes;
-import com.example.bootshelf.boardsvc.boardcategory.model.response.PatchUpdateBoardCategoryRes;
-import com.example.bootshelf.boardsvc.boardcategory.model.response.PostCreateBoardCategoryRes;
-import com.example.bootshelf.boardsvc.boardcategory.repository.BoardCategoryRepository;
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.common.error.ErrorCode;
 import com.example.bootshelf.common.error.entityexception.BoardCommentException;
@@ -24,12 +15,12 @@ import com.example.bootshelf.reviewsvc.reviewcategory.model.response.PatchUpdate
 import com.example.bootshelf.reviewsvc.reviewcategory.model.response.PostCreateReviewCategoryRes;
 import com.example.bootshelf.reviewsvc.reviewcategory.repository.ReviewCategoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.joda.time.LocalDateTime;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,8 +47,8 @@ public class ReviewCategoryService {
 
         reviewCategoryRepository.save(ReviewCategory.builder()
                 .categoryName(postCreateReviewCategoryReq.getCategoryName())
-                .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-                .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .status(true)
                 .build());
 
@@ -116,7 +107,7 @@ public class ReviewCategoryService {
         }
 
         ReviewCategory reviewCategory = result.get();
-        reviewCategory.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        reviewCategory.setUpdatedAt(LocalDateTime.now());
         reviewCategory.setCategoryName(patchUpdateReviewCategoryReq.getCategoryName());
 
         reviewCategoryRepository.save(reviewCategory);

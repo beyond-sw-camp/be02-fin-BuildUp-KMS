@@ -1,6 +1,7 @@
 package com.example.bootshelf.reviewsvc.review.model.response;
 
 import lombok.*;
+import org.joda.time.LocalDateTime;
 
 import java.util.List;
 
@@ -23,8 +24,8 @@ public class GetListHotReviewRes {
     private Integer upCnt;
     private Integer scrapCnt;
     private Integer commentCnt;
-    private String createdAt;
-    private String updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private List<String> tagNameList;
     private String type;
 }

@@ -1,6 +1,7 @@
 package com.example.bootshelf.boardsvc.board.model.response;
 
 import lombok.*;
+import org.joda.time.LocalDateTime;
 
 import java.util.List;
 
@@ -15,12 +16,12 @@ public class GetBoardListByQueryRes {
     private String content;
     private String boardCategoryName;
     private String nickName;
-    private String createdAt;
+    private LocalDateTime createdAt;
     private Integer viewCnt;
     private Integer commentCnt;
     private Integer upCnt;
     private String boardImg;
     private String userProfileImage;
     private List<String> tagNameList;
-    private String updatedAt;
+    private LocalDateTime updatedAt;
 }
