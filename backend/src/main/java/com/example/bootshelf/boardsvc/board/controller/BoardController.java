@@ -3,8 +3,8 @@ package com.example.bootshelf.boardsvc.board.controller;
 import com.example.bootshelf.boardsvc.board.model.request.PatchUpdateBoardReq;
 import com.example.bootshelf.boardsvc.board.model.request.PostCreateBoardReq;
 import com.example.bootshelf.boardsvc.board.model.response.PostCreateBoardRes;
+import com.example.bootshelf.boardsvc.board.service.BoardImageService;
 import com.example.bootshelf.boardsvc.board.service.BoardService;
-import com.example.bootshelf.boardsvc.boardimage.service.BoardImageService;
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.user.model.entity.User;
 import io.swagger.annotations.Api;
@@ -36,23 +36,9 @@ import javax.validation.constraints.Positive;
 @RequestMapping("/board")
 public class BoardController {
 
-    private final BoardImageService boardImageService;
     private final BoardService boardService;
+    private final BoardImageService boardImageService;
 
-    //    @Operation(summary = "Board 게시글 등록",
-//            description = "게시판에 게시글을 등록하는 API입니다.")
-//    @ApiResponses({
-//            @ApiResponse(responseCode = "200", description = "성공"),
-//            @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
-//    @PostMapping("/create")
-//    public ResponseEntity<BaseRes> createBoard(
-//            @AuthenticationPrincipal User user,
-//            @RequestPart(value = "board") PostCreateBoardReq postCreateBoardReq,
-//            @RequestPart(value = "boardImages", required = false) MultipartFile[] boardImages
-//    ) {
-//        BaseRes baseRes = boardService.createBoard(user, postCreateBoardReq, boardImages);
-//        return ResponseEntity.ok().body(baseRes);
-//    }
     @Operation(summary = "Board 게시글 등록",
             description = "게시판에 게시글을 등록하는 API입니다.")
     @ApiResponses({

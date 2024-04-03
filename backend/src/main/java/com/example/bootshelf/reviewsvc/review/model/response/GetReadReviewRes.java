@@ -25,7 +25,6 @@ public class GetReadReviewRes {
     private Integer upCnt;
     private Integer commentCnt;
     private String updatedAt;
-    private List<GetListImageReviewRes> reviewImageList;
     private List<GetListCommentReviewRes> reviewCommentList;
 
 }

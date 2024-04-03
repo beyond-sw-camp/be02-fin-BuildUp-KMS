@@ -4,7 +4,6 @@ import com.example.bootshelf.reviewsvc.review.model.request.PatchUpdateReviewReq
 import com.example.bootshelf.reviewsvc.reviewcategory.model.ReviewCategory;
 import com.example.bootshelf.reviewsvc.reviewcomment.model.entity.ReviewComment;
 import com.example.bootshelf.reviewsvc.reviewhistory.model.ReviewHistory;
-import com.example.bootshelf.reviewsvc.reviewimage.model.entity.ReviewImage;
 import com.example.bootshelf.reviewsvc.reviewscrap.model.entity.ReviewScrap;
 import com.example.bootshelf.reviewsvc.reviewup.model.entity.ReviewUp;
 import com.example.bootshelf.user.model.entity.User;
@@ -39,9 +38,6 @@ public class Review {
 
     @OneToMany(mappedBy = "review")
     private List<ReviewScrap> reviewScrapList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "review")
-    private List<ReviewImage> reviewImageList = new ArrayList<>();
 
     @OneToMany(mappedBy = "review")
     private List<ReviewHistory> reviewHistoryList = new ArrayList<>();
