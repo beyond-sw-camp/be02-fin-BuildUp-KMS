@@ -1,7 +1,6 @@
-package com.example.bootshelf.es.repository;
+package com.example.bootshelf.esboard.repository;
 
-import com.example.bootshelf.boardsvc.board.model.response.GetBoardListByQueryRes;
-import com.example.bootshelf.es.model.entity.EsBoard;
+import com.example.bootshelf.esboard.model.entity.EsBoard;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.elasticsearch.index.query.*;
@@ -14,8 +13,6 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 @RequiredArgsConstructor
 @Getter
@@ -26,24 +23,26 @@ public class EsOperation {
 
 
 
-//    // 제목+내용 검색(지식공유)
-//    public SearchHits<EsBoard> titleContentSearchByKnowledge(String title, Pageable pageable) {
-//
-//        MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(title,
-//                "boardTitle", "boardContent");
-//
-//        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
-//                .filter(QueryBuilders.termQuery("status", "true"))
-//                .filter(QueryBuilders.termQuery("boardCategory", 1));
-//
-//        NativeSearchQuery build = new NativeSearchQueryBuilder()
-//                .withQuery(multiMatchQueryBuilder)
-//                .withFilter(boolQueryBuilder)
-//                .withPageable(pageable)
-//                .build();
-//
-//        return operations.search(build, EsBoard.class);
-//    }
+    // 제목+내용 검색(지식공유)
+    public SearchHits<EsBoard> titleContentSearchByKnowledge(String title, Pageable pageable) {
+
+
+        MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(title,
+                "boardTitle", "boardContent");
+
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
+                .filter(QueryBuilders.termQuery("status", "true"))
+                .filter(QueryBuilders.termQuery("boardCategory", 1));
+
+        NativeSearchQuery build = new NativeSearchQueryBuilder()
+                .withQuery(multiMatchQueryBuilder)
+                .withFilter(boolQueryBuilder)
+                .withPageable(pageable)
+                .build();
+
+
+        return operations.search(build, EsBoard.class);
+    }
 //
 //    // 제목+내용 검색(QnA)
 //    public SearchHits<EsBoard> titleContentSearchByQnA(String title, Pageable pageable) {
@@ -84,25 +83,25 @@ public class EsOperation {
 //    }
 
 
-    // 제목+내용+정렬 검색(지식공유)
-    public SearchHits<EsBoard> titleContentSearchByKnowledge(String sortField, String title, Pageable pageable) {
-
-        MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(title,
-                "boardTitle", "boardContent");
-
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
-                .filter(QueryBuilders.termQuery("status", "true"))
-                .filter(QueryBuilders.termQuery("boardCategory", 1));
-
-        NativeSearchQuery build = new NativeSearchQueryBuilder()
-                .withQuery(multiMatchQueryBuilder)
-                .withFilter(boolQueryBuilder)
-                .withPageable(pageable)
-                .withSort(SortBuilders.fieldSort(sortField).order(SortOrder.ASC))
-                .build();
-
-                return operations.search(build, EsBoard.class);
-    }
+//    // 제목+내용+정렬 검색(지식공유)
+//    public SearchHits<EsBoard> titleContentSearchByKnowledge(String sortField, String title, Pageable pageable) {
+//
+//        MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(title,
+//                "boardTitle", "boardContent");
+//
+//        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
+//                .filter(QueryBuilders.termQuery("status", "true"))
+//                .filter(QueryBuilders.termQuery("boardCategory", 1));
+//
+//        NativeSearchQuery build = new NativeSearchQueryBuilder()
+//                .withQuery(multiMatchQueryBuilder)
+//                .withFilter(boolQueryBuilder)
+//                .withPageable(pageable)
+//                .withSort(SortBuilders.fieldSort(sortField).order(SortOrder.ASC))
+//                .build();
+//
+//                return operations.search(build, EsBoard.class);
+//    }
 
     // 제목+내용+정렬 검색(QnA)
     public SearchHits<EsBoard> titleContentSearchByQnA(String sortField, String title, Pageable pageable) {

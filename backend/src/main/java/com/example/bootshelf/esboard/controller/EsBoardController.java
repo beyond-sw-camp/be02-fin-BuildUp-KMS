@@ -1,8 +1,8 @@
-package com.example.bootshelf.es.controller;
+package com.example.bootshelf.esboard.controller;
 
 import com.example.bootshelf.common.BaseRes;
-import com.example.bootshelf.es.model.entity.EsBoard;
-import com.example.bootshelf.es.service.EsBoardService;
+import com.example.bootshelf.esboard.model.entity.EsBoard;
+import com.example.bootshelf.esboard.service.EsBoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -21,15 +21,15 @@ public class EsBoardController {
 
 
 
-//    // 제목+내용 (지식공유)
-//    @GetMapping("/search/knowledge")
-//    @ResponseBody
-//    public SearchHits<EsBoard> titleContentSearchByKnowledge(
-//            @RequestParam String title,
-//            @PageableDefault(size = 20) Pageable pageable
-//    ) {
-//        return esBoardService.titleContentSearchByKnowledge(title, pageable);
-//    }
+    // 제목+내용 (지식공유)
+    @GetMapping("/search/knowledge")
+    @ResponseBody
+    public SearchHits<EsBoard> titleContentSearchByKnowledge(
+            @RequestParam String title,
+            @PageableDefault(size = 20) Pageable pageable
+    ) {
+        return esBoardService.titleContentSearchByKnowledge(title, pageable);
+    }
 //
 //    // 제목+내용(QnA)
 //    @GetMapping("/search/qna")
@@ -53,18 +53,18 @@ public class EsBoardController {
 
 
 
-    // 제목+내용+정렬 (지식공유)
-    @GetMapping("/search/knowledge")
-    @ResponseBody
-    public ResponseEntity titleContentSearchByKnowledge(
-            @RequestParam Integer sortType,
-            @RequestParam String title,
-            @PageableDefault(size = 20) Pageable pageable
-    ) {
-        BaseRes baseRes =  esBoardService.titleContentSearchByKnowledge(sortType ,title, pageable);
-
-        return ResponseEntity.ok().body(baseRes);
-    }
+//    // 제목+내용+정렬 (지식공유)
+//    @GetMapping("/search/knowledge")
+//    @ResponseBody
+//    public ResponseEntity titleContentSearchByKnowledge(
+//            @RequestParam Integer sortType,
+//            @RequestParam String title,
+//            @PageableDefault(size = 20) Pageable pageable
+//    ) {
+//        BaseRes baseRes =  esBoardService.titleContentSearchByKnowledge(sortType ,title, pageable);
+//
+//        return ResponseEntity.ok().body(baseRes);
+//    }
 
     // 제목+내용+정렬 (QnA)
     @GetMapping("/search/qna")

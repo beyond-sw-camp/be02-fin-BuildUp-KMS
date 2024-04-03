@@ -1,19 +1,17 @@
-package com.example.bootshelf.esReview.model.entity;
+package com.example.bootshelf.esboard.model.entity;
 
 import lombok.*;
-import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.*;
 
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Document(indexName = "review")
-public class EsReview {
+@Document(indexName = "board")
+public class EsBoard {
 
     @Id
     @Field(type = FieldType.Keyword)
@@ -23,13 +21,13 @@ public class EsReview {
     private Integer user;
 
     @Field(type = FieldType.Integer)
-    private Integer reviewCategory;
+    private Integer boardCategory;
 
     @Field(type = FieldType.Text, analyzer = "nori")
-    private String reviewTitle;
+    private String boardTitle;
 
     @Field(type = FieldType.Text, analyzer = "nori")
-    private String reviewContent;
+    private String boardContent;
 
     @Field(type = FieldType.Integer)
     private Integer viewCnt;
@@ -46,11 +44,9 @@ public class EsReview {
     @Field(type = FieldType.Boolean)
     private Boolean status;
 
-    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Date, format = DateFormat.custom, pattern = "yyyy-MM-dd")
     private String createdAt;
 
-    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Date, format = DateFormat.custom, pattern = "yyyy-MM-dd")
     private String updatedAt;
-
-
 }

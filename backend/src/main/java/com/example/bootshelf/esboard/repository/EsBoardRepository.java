@@ -1,6 +1,6 @@
-package com.example.bootshelf.es.repository;
+package com.example.bootshelf.esboard.repository;
 
-import com.example.bootshelf.es.model.entity.EsBoard;
+import com.example.bootshelf.esboard.model.entity.EsBoard;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.annotations.Query;
