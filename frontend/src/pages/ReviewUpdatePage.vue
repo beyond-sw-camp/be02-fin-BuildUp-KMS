@@ -175,7 +175,7 @@ export function imageHandler() {
     try {
       const backend = "http://192.168.0.61/api";
       // const backend = "http://localhost:8080";
-      
+
       let response = await axios({
         method: "POST",
         // url: "http://192.168.0.61/api/review/image/upload",
@@ -189,18 +189,18 @@ export function imageHandler() {
       });
 
       if (response.headers["new-access-token"] != null) {
-          if (
-            response.headers["new-access-token"] !=
-            localStorage.getItem("accessToken")
-          ) {
-            localStorage.setItem("accessToken", "");
-            localStorage.setItem(
-              "accessToken",
-              response.headers["new-access-token"]
-            );
-          }
+        if (
+          response.headers["new-access-token"] !=
+          localStorage.getItem("accessToken")
+        ) {
+          localStorage.setItem("accessToken", "");
+          localStorage.setItem(
+            "accessToken",
+            response.headers["new-access-token"]
+          );
         }
-        
+      }
+
       if (response.data.isSuccess === true) {
         let imageUrl = response.data.result.imageUrl;
         quill.insertEmbed(range.index, "image", imageUrl);
@@ -302,7 +302,7 @@ export default {
     async updateReview() {
       this.review.reviewContent = this.state._content;
       console.log("Updating with:", this.review.reviewContent);
-      
+
       await this.reviewStore.updateReview(this.review);
     },
     cancel() {

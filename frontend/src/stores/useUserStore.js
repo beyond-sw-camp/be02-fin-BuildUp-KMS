@@ -2,8 +2,8 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import VueJwtDecode from "vue-jwt-decode";
 
-// const backend = "http://192.168.0.61/api";
-const backend = "http://localhost:8080";
+const backend = "http://192.168.0.61/api";
+// const backend = "http://localhost:8080";
 
 const accessToken = localStorage.getItem("accessToken");
 const refreshToken = localStorage.getItem("refreshToken");
@@ -68,6 +68,8 @@ export const useUserStore = defineStore("user", {
             );
           } else if (e.response.data.code === "USER-004") {
             alert("비밀번호가 틀렸습니다. 다시 입력해주세요.");
+          } else if (e.response.data.code === "USER-005") {
+            alert("이메일 인증을 완료 해주세요.");
           } else if (e.response.data.code === "COMMON-001") {
             alert(
               "이메일과 비밀번호를 다시 확인해주세요. 입력양식이 잘못되었습니다."
@@ -299,11 +301,11 @@ export const useUserStore = defineStore("user", {
           ? {
               Authorization: `Bearer ${accessToken}`,
               RefreshToken: `Bearer ${refreshToken}`,
-              "Content-Type": "application/json",
+              "Content-Type": "multipart/form-data",
             }
           : {
               Authorization: `Bearer ${accessToken}`,
-              "Content-Type": "application/json",
+              "Content-Type": "multipart/form-data",
             };
 
         let response = await axios.patch(
@@ -367,7 +369,8 @@ export const useUserStore = defineStore("user", {
           alert(
             '회원 탈퇴가 성공적으로 처리되었습니다. 그동안 "BOOTSHELF" 를 이용해주셔서 감사합니다.'
           );
-          sessionStorage.removeItem("accessToken");
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
           window.location.href = "/";
         }
 

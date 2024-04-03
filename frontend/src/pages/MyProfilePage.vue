@@ -480,6 +480,7 @@ a {
   background-color: #ffffff;
   border-color: #3a3e41;
   font-size: 15px;
+  cursor: pointer;
 }
 .Button_button___Dadr.Button_secondary__A1XYJ {
   font-size: 12px;
@@ -778,5 +779,9 @@ button:not(:disabled) {
   font-size: 14px;
   line-height: 22px;
   color: rgb(20, 22, 23);
+}
+
+.Button_contentWrapper__ek4Um {
+  cursor: pointer;
 }
 </style>

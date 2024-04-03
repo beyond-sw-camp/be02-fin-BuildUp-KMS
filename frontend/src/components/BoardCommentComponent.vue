@@ -12,7 +12,7 @@
           <div class="css-dyzp2y">
             <div class="css-wqf8ry">{{ comment.nickName }}</div>
             <div class="css-emxp16"></div>
-            <div class="css-emxp16">{{ comment.createAt }}</div>
+            <div class="css-emxp16">{{ this.$moment(comment.createAt).format('YYYY-MM-DD HH:mm:ss') }}</div>
           </div>
           <div class="css-dyzp2y-001" v-if="showBtn(comment.userIdx)">
             <div class="css-emxp17" @click="toggleEditMode(comment)">수정</div>
@@ -74,7 +74,7 @@
               <div class="css-dyzp2y">
                 <div class="css-wqf8ry-001">{{ childComment.nickName }}</div>
                 <div class="css-emxp16-001"></div>
-                <div class="css-emxp16-001">{{ childComment.createAt }}</div>
+                <div class="css-emxp16-001">{{ this.$moment(childComment.createAt).format('YYYY-MM-DD HH:mm:ss') }}</div>
               </div>
               <div class="css-dyzp2y-002" v-if="showBtn(childComment.userIdx)">
                 <div class="css-emxp17-001" @click="toggleEditMode(childComment)">수정</div>

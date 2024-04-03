@@ -924,7 +924,7 @@ export default {
       window.location.href = "/mypage";
     },
     goAdminPage() {
-      window.location.href = "/admin/login";
+      window.location.href = "/admin/";
     },
     decodeToken(accessToken) {
       const base64Url = accessToken.split(".")[1];

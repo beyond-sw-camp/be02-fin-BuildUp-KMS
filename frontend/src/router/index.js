@@ -88,6 +88,7 @@ const requireUserAuth = () => (from, to, next) => {
   } else {
 
     const tokenData = VueJwtDecode.decode(refreshToken);
+    const userAuth = VueJwtDecode.decode(accessToken);
     const currentTime = Math.floor(Date.now() / 1000);
 
     if (tokenData.exp < currentTime) {
@@ -99,10 +100,9 @@ const requireUserAuth = () => (from, to, next) => {
 
       window.location.href="/";
 
-    } else if (tokenData.ROLE !== "ROLE_AUTHUSER") {
+    } else if (userAuth.ROLE !== "ROLE_AUTHUSER") {
 
       alert("인증회원만 후기글을 작성할 수 있습니다.");
-      next("/review");
 
     } else {
       next();
@@ -117,7 +117,7 @@ const requireAdminAuth = () => (from, to, next) => {
 
   if (accessToken === null || refreshToken === null) {
     
-    alert("로그인 후 이용할 수 있습니다.");
+    alert("관리자 로그인 후 이용할 수 있습니다.");
     
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
@@ -127,6 +127,7 @@ const requireAdminAuth = () => (from, to, next) => {
   } else {
 
     const tokenData = VueJwtDecode.decode(refreshToken);
+    const userAuth = VueJwtDecode.decode(accessToken);
     const currentTime = Math.floor(Date.now() / 1000);
 
     if (tokenData.exp < currentTime) {
@@ -136,6 +137,10 @@ const requireAdminAuth = () => (from, to, next) => {
       localStorage.removeItem("refreshToken");
 
       next("/admin/login");
+    } else if (userAuth.ROLE !== "ROLE_ADMIN") {
+
+      alert("관리자만 이용하실 수 있습니다.");
+
     } else {
       next();
     }
