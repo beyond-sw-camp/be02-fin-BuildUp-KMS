@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>BOOTSHELF</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/quickMenu.css" />
+  </head>
+  <body>
+    <div class="quickmenu">
+      <div class="inner-quickmenu">
+        <button
+          class="quickmenuback btn btn-top active"
+          type="button"
+          aria-label="페이지 맨위로 이동"
+        >
+          <svg
+            viewBox="0 0 42 42"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            class="up-icon"
+          >
+            <rect
+              x="0.5"
+              y="0.5"
+              width="41"
+              height="41"
+              rx="20.5"
+              fill="#fff"
+              stroke="#E9E9E9"
+            ></rect>
+            <path
+              d="m15 24 6-6 6 6"
+              stroke="#000"
+              stroke-width="1.3"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
+        </button>
+        <button
+          class="quickmenuback btn btn-bottom active"
+          type="button"
+          aria-label="페이지 맨아래로 이동"
+        >
+          <svg
+            viewBox="0 0 42 42"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            class="down-icon"
+          >
+            <rect
+              x="0.5"
+              y="0.5"
+              width="41"
+              height="41"
+              rx="20.5"
+              fill="#fff"
+              stroke="#E9E9E9"
+            ></rect>
+            <path
+              d="m15 19 6 6 6-6"
+              stroke="#000"
+              stroke-width="1.3"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <script>
+      // 퀵메뉴 버튼 기능(맨위, 맨아래로 이동) 설정
+      document.addEventListener("DOMContentLoaded", function () {
+        // querySelector : 매칭되는 첫번째 요소를 반환
+        // querySelectorAll : 매칭되는 모든 요소를 반환
+        let scrollToTopButton = document.querySelector(
+          ".quickmenuback.btn-top"
+        );
+        let scrollToBottomButton = document.querySelector(
+          ".quickmenuback.btn-bottom"
+        );
+
+        function scrollTo(destination) {
+          window.scrollTo({
+            top: destination,
+            behavior: "smooth",
+          });
+        }
+
+        scrollToTopButton.addEventListener("click", function () {
+          // 웹페이지의 맨 위로 스크롤
+          scrollTo(0);
+        });
+
+        scrollToBottomButton.addEventListener("click", function () {
+          // 웹페이지의 맨 아래로 스크롤
+          scrollTo(document.body.scrollHeight);
+        });
+      });
+    </script>
+  </body>
+</html>

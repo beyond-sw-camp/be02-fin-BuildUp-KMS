@@ -1,0 +1,9 @@
+{
+  "terminal.integrated.automationProfile.linux": {},
+  "eslint.workingDirectories": [
+    {
+      "mode": "auto"
+    }
+  ],
+  "liveServer.settings.port": 5501
+}
