@@ -10,8 +10,10 @@ export const useTagStore = defineStore("tag", {
     currentPage: 0,
     totalPages: 0,
     totalCnt: 0,
+    isTokenExpired: false,
   }),
   actions: {
+
     async getTagList(page = 1) {
       try {
         let response = await axios.get(backend + "/admin/tag/list?page=" + (page - 1));

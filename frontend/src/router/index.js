@@ -41,19 +41,30 @@ import AdminBoardCategoryUpdatePage from "@/pages/AdminBoardCategoryUpdatePage";
 import AdminTagUpdatePage from "@/pages/AdminTagUpdatePage";
 
 const requireAuth = () => (from, to, next) => {
-  const storedToken = window.localStorage.getItem("token");
-  if (storedToken === null) {
+
+  const accessToken = window.localStorage.getItem("accessToken");
+  const refreshToken = window.localStorage.getItem("refreshToken");
+
+  if (accessToken === null || refreshToken === null) {
+
     alert("로그인 후 이용할 수 있습니다.");
-    next("/");
+
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+
+    window.location.href="/";
+
   } else {
-    const tokenData = VueJwtDecode.decode(storedToken);
+    const tokenData = VueJwtDecode.decode(refreshToken);
     const currentTime = Math.floor(Date.now() / 1000);
 
     if (tokenData.exp < currentTime) {
       alert("로그인 유지시간이 만료되었습니다. 다시 로그인해주세요.");
-      localStorage.removeItem("token");
+
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
       window.location.href="/";
-      // next("/");
+
     } else {
       next();
     }
@@ -61,22 +72,38 @@ const requireAuth = () => (from, to, next) => {
 };
 
 const requireUserAuth = () => (from, to, next) => {
-  const storedToken = window.localStorage.getItem("token");
 
-  if (storedToken === null) {
+  const accessToken = window.localStorage.getItem("accessToken");
+  const refreshToken = window.localStorage.getItem("refreshToken");
+
+  if (accessToken === null || refreshToken === null) {
+
     alert("로그인 후 이용할 수 있습니다.");
-    next("/");
+
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+
+    window.location.href="/";
+  
   } else {
-    const tokenData = VueJwtDecode.decode(storedToken);
+
+    const tokenData = VueJwtDecode.decode(refreshToken);
     const currentTime = Math.floor(Date.now() / 1000);
 
     if (tokenData.exp < currentTime) {
+
       alert("로그인 유지시간이 만료되었습니다. 다시 로그인해주세요.");
-      localStorage.removeItem("token");
-      next("/");
+
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+
+      window.location.href="/";
+
     } else if (tokenData.ROLE !== "ROLE_AUTHUSER") {
+
       alert("인증회원만 후기글을 작성할 수 있습니다.");
       next("/review");
+
     } else {
       next();
     }
@@ -84,17 +111,30 @@ const requireUserAuth = () => (from, to, next) => {
 };
 
 const requireAdminAuth = () => (from, to, next) => {
-  const token = window.localStorage.getItem("a_token");
-  if (token === null) {
+
+  const accessToken = window.localStorage.getItem("accessToken");
+  const refreshToken = window.localStorage.getItem("refreshToken");
+
+  if (accessToken === null || refreshToken === null) {
+    
     alert("로그인 후 이용할 수 있습니다.");
+    
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+  
     next("/admin/login");
+  
   } else {
-    const tokenData = VueJwtDecode.decode(token);
+
+    const tokenData = VueJwtDecode.decode(refreshToken);
     const currentTime = Math.floor(Date.now() / 1000);
 
     if (tokenData.exp < currentTime) {
       alert("로그인 유지시간이 만료되었습니다. 다시 로그인해주세요.");
-      localStorage.removeItem("a_token");
+
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+
       next("/admin/login");
     } else {
       next();

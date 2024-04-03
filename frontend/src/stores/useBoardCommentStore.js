@@ -1,17 +1,12 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-// import VueJwtDecode from "vue-jwt-decode";
+import VueJwtDecode from "vue-jwt-decode";
 
-const backend = "http://192.168.0.61/api";
-// const backend = "http://localhost:8080";
+// const backend = "http://192.168.0.61/api";
+const backend = "http://localhost:8080";
 
-// boardStore를 사용하면 해당 idx 가져오기...
-// const boardIdx = useBoardStore().boardIdx;
-
-// 토큰값 가져오기
-// let token = VueJwtDecode.decode(localStorage.getItem("token")).id;
-
-let token = (localStorage.getItem("token"));
+const accessToken = localStorage.getItem("accessToken");
+const refreshToken = localStorage.getItem("refreshToken");
 
 
 export const useBoardCommentStore = defineStore({
@@ -20,22 +15,61 @@ export const useBoardCommentStore = defineStore({
     // boardCommentContent 상태를 정의합니다.
     boardComments: [],
     commentList: null,
+    isTokenExpired: false,
   }),
   actions: {
+
+    validateToken() {
+      const decodedAccessToken = VueJwtDecode.decode(accessToken);
+      const expirationTime = decodedAccessToken.exp;
+      const currentTime = Math.floor(Date.now() / 1000);
+
+      if (expirationTime - currentTime < 30) {
+        this.isTokenExpired = true;
+      } else {
+        this.isTokenExpired = false;
+      }
+    },
+
    /** -------------------댓글 작성--------------------- **/
    async createBoardComment(boardCommentContent, boardIdx) {
     try {
-      console.log(token);
+
+      this.validateToken();
+
+      const headers = this.isTokenExpired
+        ? {
+            Authorization: `Bearer ${accessToken}`,
+            RefreshToken: `Bearer ${refreshToken}`,
+            "Content-Type": "application/json",
+          }
+        : {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          };
+
+      console.log(accessToken);
       const response = await axios.post(
         backend + `/board/${boardIdx}/comment/create`,
         { boardCommentContent: boardCommentContent },
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
+          headers
         }
       );
+
+      if (response.headers["new-access-token"] != null) {
+        if (
+          response.headers["new-access-token"] !=
+          localStorage.getItem("accessToken")
+        ) {
+          localStorage.setItem("accessToken", "");
+          localStorage.setItem(
+            "accessToken",
+            response.headers["new-access-token"]
+          );
+        }
+      }
+
       if(response.data.isSuccess === true) {
         window.location.href = `/board/${boardIdx}`;
       }
@@ -54,7 +88,21 @@ export const useBoardCommentStore = defineStore({
 
   async updateBoardComment(boardCommentContent, commentIdx, boardIdx) {
     try {
-      if (!token) {
+
+      this.validateToken();
+
+      const headers = this.isTokenExpired
+        ? {
+            Authorization: `Bearer ${accessToken}`,
+            RefreshToken: `Bearer ${refreshToken}`,
+            "Content-Type": "application/json",
+          }
+        : {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          };
+
+      if (!accessToken) {
         throw new Error(
           "토큰이 없습니다. 사용자가 로그인되었는지 확인하세요."
         );
@@ -63,14 +111,23 @@ export const useBoardCommentStore = defineStore({
       const response = await axios.patch(`${backend}/board/${boardIdx}/update/${commentIdx}`,
         { boardCommentContent: boardCommentContent },
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
+          headers
         }
       );
-      
 
+      if (response.headers["new-access-token"] != null) {
+        if (
+          response.headers["new-access-token"] !=
+          localStorage.getItem("accessToken")
+        ) {
+          localStorage.setItem("accessToken", "");
+          localStorage.setItem(
+            "accessToken",
+            response.headers["new-access-token"]
+          );
+        }
+      }
+      
       if(response.data.isSuccess === true) {
         window.location.href = `/board/${boardIdx}`;
       }
@@ -89,7 +146,21 @@ export const useBoardCommentStore = defineStore({
 
   async deleteBoardComment(commentIdx, boardIdx, userIdx) {
     try {
-      if (!token) {
+
+      this.validateToken();
+
+      const headers = this.isTokenExpired
+        ? {
+            Authorization: `Bearer ${accessToken}`,
+            RefreshToken: `Bearer ${refreshToken}`,
+            "Content-Type": "application/json",
+          }
+        : {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          };
+
+      if (!accessToken) {
         throw new Error(
           "토큰이 없습니다. 사용자가 로그인되었는지 확인하세요."
         );
@@ -98,12 +169,22 @@ export const useBoardCommentStore = defineStore({
       const response = await axios.patch(`${backend}/board/${boardIdx}/delete/${commentIdx}`,
         {userIdx : userIdx},
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
+          headers
         } 
       );
+
+      if (response.headers["new-access-token"] != null) {
+        if (
+          response.headers["new-access-token"] !=
+          localStorage.getItem("accessToken")
+        ) {
+          localStorage.setItem("accessToken", "");
+          localStorage.setItem(
+            "accessToken",
+            response.headers["new-access-token"]
+          );
+        }
+      }
 
       if(response.data.isSuccess === true) {
         window.location.href = `/board/${boardIdx}`;
@@ -122,7 +203,7 @@ export const useBoardCommentStore = defineStore({
         console.log(this.commentList);
 
         for (let comment of this.commentList) {
-          let checkResponse = await this.checkBoardCommentUp(token, comment.idx);
+          let checkResponse = await this.checkBoardCommentUp(accessToken, comment.idx);
           if (checkResponse.data && checkResponse.data.result) {
             comment.isCommentRecommended = checkResponse.data.result.status;
           } else {
@@ -138,17 +219,41 @@ export const useBoardCommentStore = defineStore({
         //  대댓글 작성
         async createBoardReply(boardReplyContent,commentIdx, boardIdx, ) {
           try {
+
+            this.validateToken();
+
+            const headers = this.isTokenExpired
+              ? {
+                  Authorization: `Bearer ${accessToken}`,
+                  RefreshToken: `Bearer ${refreshToken}`,
+                  "Content-Type": "application/json",
+                }
+              : {
+                  Authorization: `Bearer ${accessToken}`,
+                  "Content-Type": "application/json",
+                };
+
             const response = await axios.post(
               backend + `/board/${boardIdx}/comment/create/${commentIdx}`,
               { boardReplyContent: boardReplyContent },
               {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                  "Content-Type": "application/json",
-                },
+                headers
               }
             );
 
+            if (response.headers["new-access-token"] != null) {
+              if (
+                response.headers["new-access-token"] !=
+                localStorage.getItem("accessToken")
+              ) {
+                localStorage.setItem("accessToken", "");
+                localStorage.setItem(
+                  "accessToken",
+                  response.headers["new-access-token"]
+                );
+              }
+            }
+            
             if(response.data.isSuccess === true) {
               window.location.href = `/board/${boardIdx}`;
             }
