@@ -14,16 +14,13 @@ import com.example.bootshelf.common.error.ErrorCode;
 import com.example.bootshelf.common.error.entityexception.BoardCategoryException;
 import com.example.bootshelf.common.error.entityexception.BoardCommentException;
 import com.example.bootshelf.common.error.entityexception.BoardException;
-import com.example.bootshelf.reviewsvc.review.model.entity.Review;
-import com.example.bootshelf.user.model.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.joda.time.LocalDateTime;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,8 +48,8 @@ public class BoardCategoryService {
 
         boardCategoryRepository.save(BoardCategory.builder()
                 .categoryName(postCreateBoardCategoryReq.getCategoryName())
-                .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-                .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .status(true)
                 .build());
 
@@ -113,7 +110,7 @@ public class BoardCategoryService {
 
         if(result.isPresent()) {
             BoardCategory boardCategory = result.get();
-            boardCategory.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            boardCategory.setUpdatedAt(LocalDateTime.now());
             boardCategory.setCategoryName(patchUpdateBoardCategoryReq.getCategoryName());
 
             boardCategoryRepository.save(boardCategory);

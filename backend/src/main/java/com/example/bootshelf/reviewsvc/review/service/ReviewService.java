@@ -12,17 +12,15 @@ import com.example.bootshelf.reviewsvc.reviewcategory.model.ReviewCategory;
 import com.example.bootshelf.reviewsvc.reviewcomment.model.entity.ReviewComment;
 import com.example.bootshelf.user.model.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.joda.time.LocalDateTime;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,8 +54,8 @@ public class ReviewService {
                 .scrapCnt(0)
                 .commentCnt(0)
                 .status(true)
-                .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
-                .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
 
         review = reviewRepository.save(review);
@@ -244,7 +242,7 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    private GetListCommentReviewRes convertToCommentReviewRes(ReviewComment reviewComment) {
+    public GetListCommentReviewRes convertToCommentReviewRes(ReviewComment reviewComment) {
 
         List<GetListCommentReviewRes> childCommentsRes = new ArrayList<>();
 
@@ -329,7 +327,7 @@ public class ReviewService {
 
         review.update(patchUpdateReviewReq);
 
-        review.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+        review.setUpdatedAt(LocalDateTime.now());
         reviewRepository.save(review);
 
         BaseRes baseRes = BaseRes.builder()
@@ -354,7 +352,7 @@ public class ReviewService {
 
         Review review = result.get();
         review.setStatus(false);
-        review.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+        review.setUpdatedAt(LocalDateTime.now());
         reviewRepository.save(review);
 
         BaseRes baseRes = BaseRes.builder()

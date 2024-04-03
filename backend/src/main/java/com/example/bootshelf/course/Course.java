@@ -2,6 +2,7 @@ package com.example.bootshelf.course;
 
 import com.example.bootshelf.certification.Certification;
 import lombok.*;
+import org.joda.time.LocalDateTime;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -29,8 +30,8 @@ public class Course {
     private String programName;
 
     @Column(nullable = false)
-    private String startDate;
+    private LocalDateTime startDate;
 
     @Column(nullable = false)
-    private String endDate;
+    private LocalDateTime endDate;
 }

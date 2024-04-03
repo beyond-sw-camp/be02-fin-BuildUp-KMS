@@ -2,6 +2,7 @@ package com.example.bootshelf.reviewsvc.reviewcategory.model;
 
 import com.example.bootshelf.reviewsvc.review.model.entity.Review;
 import lombok.*;
+import org.joda.time.LocalDateTime;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -20,8 +21,8 @@ public class ReviewCategory {
 
     private String categoryName;
     private Boolean status;
-    private String createdAt;
-    private String updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "reviewCategory")
     private List<Review> reviewList = new ArrayList<>();

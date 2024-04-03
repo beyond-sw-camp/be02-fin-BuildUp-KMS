@@ -3,11 +3,11 @@ package com.example.bootshelf.reviewsvc.review.model.entity;
 import com.example.bootshelf.reviewsvc.review.model.request.PatchUpdateReviewReq;
 import com.example.bootshelf.reviewsvc.reviewcategory.model.ReviewCategory;
 import com.example.bootshelf.reviewsvc.reviewcomment.model.entity.ReviewComment;
-import com.example.bootshelf.reviewsvc.reviewhistory.model.ReviewHistory;
 import com.example.bootshelf.reviewsvc.reviewscrap.model.entity.ReviewScrap;
 import com.example.bootshelf.reviewsvc.reviewup.model.entity.ReviewUp;
 import com.example.bootshelf.user.model.entity.User;
 import lombok.*;
+import org.joda.time.LocalDateTime;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -40,9 +40,6 @@ public class Review {
     private List<ReviewScrap> reviewScrapList = new ArrayList<>();
 
     @OneToMany(mappedBy = "review")
-    private List<ReviewHistory> reviewHistoryList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "review")
     private List<ReviewComment> reviewCommentList = new ArrayList<>();
 
     @Column(nullable = false, length = 500)
@@ -73,10 +70,10 @@ public class Review {
     private Boolean status;
 
     @Column(nullable = false)
-    private String createdAt;
+    private LocalDateTime createdAt;
 
     @Column(nullable = false)
-    private String updatedAt;
+    private LocalDateTime updatedAt;
 
     public void increaseScrapCnt() {
         this.scrapCnt += 1;

@@ -1,6 +1,7 @@
 package com.example.bootshelf.boardsvc.boardscrap.model.response;
 
 import lombok.*;
+import org.joda.time.LocalDateTime;
 
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class GetListBoardResByScrap {
 
     private String boardType;  // write, scrap
 
-    private String createdAt;
+    private LocalDateTime createdAt;
 
-    private String updatedAt;
+    private LocalDateTime updatedAt;
 }
