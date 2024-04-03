@@ -60,12 +60,8 @@ public class BoardTagService {
     @Transactional(readOnly = false)
     public void updateBoardTag(List<String> reqTagList, Integer idx) {
 
+        boardTagRepository.deleteAllByBoard_Idx(idx);
 
-        Integer result = boardTagRepository.deleteAllByBoard_Idx(idx);
-
-        if(result.equals(0)) {
-            throw new BoardTagException(ErrorCode.BOARD_TAG_NOT_EXISTS, String.format("Board [ %s ] does not have BoardTag", idx));
-        }
         saveBoardTag(reqTagList, idx);
     }
 

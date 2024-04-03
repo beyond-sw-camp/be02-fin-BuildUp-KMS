@@ -196,7 +196,11 @@ public class UserService {
         }
 
         User user = result.get();
-        if (passwordEncoder.matches(postLoginUserReq.getPassword(), user.getPassword()) && user.getStatus().equals(true)) {
+        if (passwordEncoder.matches(postLoginUserReq.getPassword(), user.getPassword())) {
+
+            if(user.getStatus() == false) {
+                throw new UserException(ErrorCode.NO_EMAIL_VERIFY, String.format("User email [ %s ] is not email verified.", user.getEmail()));
+            }
             PostLoginUserRes postLogInUserRes = PostLoginUserRes.builder().accessToken(jwtUtils.generateAccessToken(user, secretKey, expiredTimeMs)).build();
             // 로그인 시 리프레시 토큰이 존재할 때 지워준다.
 
