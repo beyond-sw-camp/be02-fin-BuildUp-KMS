@@ -10,5 +10,4 @@ import lombok.*;
 public class PostLoginUserRes {
     private String accessToken;
     private String refreshToken;
-    private Long expiredTimeMs;
 }
