@@ -1,0 +1,35 @@
+server:
+  port: 9999
+
+# SCG(스프링 클라우드 게이트웨이)
+# route : 어떤 URL로 오면 어떤 서버를 실행시켜 주겠다. predicates와 filter로 구성되어 있고, predicates에 일치하는 요청을 URI로 전달
+# predicates : SCG로 들어온 요청에서 확인할 조건
+# filter : SCG로 들어오는 요청에 대해 선처리 및 후처리할 때 사용하는 기능
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      routes:
+        - id: board-search-service
+          uri: lb://BOARD-SEARCH-SERVICE
+          predicates:
+            - Path=/board-search-service/**
+
+#        - id: product-service
+#          uri: lb://PRODUCT-SERVICE
+#          predicates:
+#            - Path=/product/**
+#          filters:
+#            - AuthorizationHeaderFilter
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+jwt:
+  secret-key: ${JWT_SECRET_KEY}

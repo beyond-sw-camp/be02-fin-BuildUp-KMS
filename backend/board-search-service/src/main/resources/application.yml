@@ -12,36 +12,33 @@ eureka:
 spring:
   application:
     name: board-search-service
-  kafka:
-    consumer:
-      bootstrap-servers: 10.10.10.200:9092
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: ddarahakit2023
-    password: ucoqxsnseyleeukl
-    properties:
-      mail:
-        smtp:
-          starttls:
-            enable: true
-            required: true
-          auth: true
-          connectiontimeout: 5000
-          timeout: 5000
-          writetimeout: 5000
+#  kafka:
+#    consumer:
+#      bootstrap-servers: 10.10.10.200:9092
 
   datasource:
-    url: jdbc:mysql://10.10.10.100/test
-    username: sjb
-    password: qwer1234
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: ${MASTER_URL}
+    username: ${MASTER}
+    password: ${MASTER_PW}
+
+    slaves:
+      slave1:
+        name: slave1
+        driver-class-name: org.mariadb.jdbc.Driver
+        url: ${SLAVE_URL}
+        username: ${SLAVE}
+        password: ${SLAVE_PW}
 
   jpa:
-    database: mysql
+    database-platform: org.hibernate.dialect.MariaDB103Dialect
     hibernate:
       ddl-auto: update
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       hibernate:
+        default_batch_fetch_size: 1000
         format_sql: true
     show-sql: true
