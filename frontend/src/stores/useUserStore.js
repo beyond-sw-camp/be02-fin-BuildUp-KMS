@@ -2,10 +2,11 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import VueJwtDecode from "vue-jwt-decode";
 
-const backend = "http://192.168.0.61/api";
-// const backend = "http://localhost:8080";
+// const backend = "http://192.168.0.61/api";
+const backend = "http://localhost:8080";
 
-const storedToken = localStorage.getItem("token");
+const accessToken = localStorage.getItem("accessToken");
+const refreshToken = localStorage.getItem("refreshToken");
 
 export const useUserStore = defineStore("user", {
   state: () => ({
@@ -23,20 +24,36 @@ export const useUserStore = defineStore("user", {
     totalCnt: 0,
     userEmail: "",
     userList: [],
+    isTokenExpired: false,
   }),
   actions: {
+
+    validateToken() {
+      const decodedAccessToken = VueJwtDecode.decode(accessToken);
+      const expirationTime = decodedAccessToken.exp;
+      const currentTime = Math.floor(Date.now() / 1000);
+
+      if (expirationTime - currentTime < 30) {
+        this.isTokenExpired = true;
+      } else {
+        this.isTokenExpired = false;
+      }
+    },
+
     async login(email, password) {
       try {
         let loginUser = { email: email, password: password };
 
         let response = await axios.post(backend + "/user/login", loginUser);
 
-        if (response.data.isSuccess && response.data.result.token) {
-          let token = response.data.result.token;
+        if (response.data.isSuccess && response.data.result.accessToken) {
+          let accessToken = response.data.result.accessToken;
+          let refreshToken = response.data.result.refreshToken;
 
-          let userClaims = VueJwtDecode.decode(token);
+          let userClaims = VueJwtDecode.decode(accessToken);
 
-          window.localStorage.setItem("token", token);
+          window.localStorage.setItem("accessToken", accessToken);
+          window.localStorage.setItem("refreshToken", refreshToken);
           this.setDecodedToken(userClaims);
 
           this.isAuthenticated = true;
@@ -64,21 +81,9 @@ export const useUserStore = defineStore("user", {
       this.decodedToken = decodedToken;
     },
 
-    decodeToken() {
-      const token = localStorage.getItem("token");
-      if (token) {
-        const decoded = VueJwtDecode.decode(token);
-        if (decoded.exp < Date.now() / 1000) {
-          this.logout();
-        } else {
-          this.isAuthenticated = true;
-          this.decodedToken = decodeURIComponent(escape(decoded));
-        }
-      }
-    },
-
     logout() {
-      localStorage.removeItem("token");
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
       this.isAuthenticated = false;
       this.decodedToken = null;
 
@@ -87,11 +92,37 @@ export const useUserStore = defineStore("user", {
 
     async getUserInfo() {
       try {
+
+        this.validateToken();
+
+        const headers = this.isTokenExpired
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+              RefreshToken: `Bearer ${refreshToken}`,
+              "Content-Type": "application/json",
+            }
+          : {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
+
         let response = await axios.get(backend + `/user/read`, {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-          },
+          headers,
         });
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
+
         this.user = response.data.result;
       } catch (e) {
         if (e.response && e.response.data) {
@@ -143,16 +174,39 @@ export const useUserStore = defineStore("user", {
     // 회원정보 수정-1(비밀번호 확인)
     async checkPassword(currentPassword) {
       try {
+        this.validateToken();
+
+        const headers = this.isTokenExpired
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+              RefreshToken: `Bearer ${refreshToken}`,
+              "Content-Type": "application/json",
+            }
+          : {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
+
         let response = await axios.post(
           backend + "/user/checkpw",
           currentPassword,
           {
-            headers: {
-              Authorization: `Bearer ${storedToken}`,
-              "Content-Type": "application/json",
-            },
+            headers,
           }
         );
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
 
         if (response.data === true) {
           this.isSuccess = true;
@@ -179,16 +233,41 @@ export const useUserStore = defineStore("user", {
       };
       if (data.nickName !== null || data.password !== null) {
         try {
+
+          this.validateToken();
+
+          const headers = this.isTokenExpired
+            ? {
+                Authorization: `Bearer ${accessToken}`,
+                RefreshToken: `Bearer ${refreshToken}`,
+                "Content-Type": "application/json",
+              }
+            : {
+                Authorization: `Bearer ${accessToken}`,
+                "Content-Type": "application/json",
+              };
+
           let response = await axios.patch(backend + "/user/update", data, {
-            headers: {
-              Authorization: `Bearer ${storedToken}`,
-              "Content-Type": "application/json",
-            },
+            headers
           });
           if (response.data.isSuccess === true) {
             alert("회원정보를 수정하였습니다.");
             window.location.href = "/profile";
           }
+
+          if (response.headers["new-access-token"] != null) {
+            if (
+              response.headers["new-access-token"] !=
+              localStorage.getItem("accessToken")
+            ) {
+              localStorage.setItem("accessToken", "");
+              localStorage.setItem(
+                "accessToken",
+                response.headers["new-access-token"]
+              );
+            }
+          }
+
         } catch (e) {
           if (e.response && e.response.data) {
             if (e.response.data.code === "USER-002") {
@@ -213,19 +292,44 @@ export const useUserStore = defineStore("user", {
       formData.append("profileImage", profileImage);
 
       try {
+
+        this.validateToken();
+
+        const headers = this.isTokenExpired
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+              RefreshToken: `Bearer ${refreshToken}`,
+              "Content-Type": "application/json",
+            }
+          : {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
+
         let response = await axios.patch(
           backend + "/user/update/image",
           formData,
           {
-            headers: {
-              Authorization: `Bearer ${storedToken}`,
-              "Content-Type": "multipart/form-data",
-            },
+            headers
           }
         );
+
         if (response.data.isSuccess === true) {
           alert("회원 프로필 이미지를 수정하였습니다.");
           window.location.href = "/profile";
+        }
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
         }
       } catch (e) {
         if (e.response && e.response.data) {
@@ -241,19 +345,43 @@ export const useUserStore = defineStore("user", {
     // 회원탈퇴
     async submitCancel() {
       try {
+
+        this.validateToken();
+
+        const headers = this.isTokenExpired
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+              RefreshToken: `Bearer ${refreshToken}`,
+              "Content-Type": "application/json",
+            }
+          : {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
+
         let response = await axios.delete(backend + "/user/cancel", {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-            "Content-Type": "application/json",
-          },
+          headers
         });
 
         if (response.data.isSuccess === true) {
           alert(
             '회원 탈퇴가 성공적으로 처리되었습니다. 그동안 "BOOTSHELF" 를 이용해주셔서 감사합니다.'
           );
-          sessionStorage.removeItem("token");
+          sessionStorage.removeItem("accessToken");
           window.location.href = "/";
+        }
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
         }
       } catch (e) {
         if (e.response && e.response.data) {

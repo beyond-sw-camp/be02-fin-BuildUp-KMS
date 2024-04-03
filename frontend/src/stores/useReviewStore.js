@@ -1,10 +1,12 @@
 import { defineStore } from "pinia";
 import axios from "axios";
+import VueJwtDecode from "vue-jwt-decode";
 
-const backend = "http://192.168.0.61/api";
-// const backend = "http://localhost:8080";
+// const backend = "http://192.168.0.61/api";
+const backend = "http://localhost:8080";
 
-const storedToken = localStorage.getItem("token");
+const accessToken = localStorage.getItem("accessToken");
+const refreshToken = localStorage.getItem("refreshToken");
 
 export const useReviewStore = defineStore("review", {
   state: () => ({
@@ -18,22 +20,56 @@ export const useReviewStore = defineStore("review", {
     reviewDetail: [],
     isLoading: false,
     isPageExist: true,
+    isTokenExpired: false,
   }),
   actions: {
-    async createReview(review) {
-      // const formData = new FormData();
 
-      // let json = JSON.stringify(review);
-      // formData.append("review", new Blob([json], { type: "application/json" }));
-      // formData.append("reviewImage", reviewImage);
+    validateToken() {
+      const decodedAccessToken = VueJwtDecode.decode(accessToken);
+      const expirationTime = decodedAccessToken.exp;
+      const currentTime = Math.floor(Date.now() / 1000);
+
+      if (expirationTime - currentTime < 30) {
+        this.isTokenExpired = true;
+      } else {
+        this.isTokenExpired = false;
+      }
+    },
+
+    async createReview(review) {
 
       try {
+
+        this.validateToken();
+
+        const headers = this.isTokenExpired
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+              RefreshToken: `Bearer ${refreshToken}`,
+              "Content-Type": "application/json",
+            }
+          : {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
+
         let response = await axios.post(backend + `/review/create`, review, {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-            "Content-Type": "application/json",
-          },
+          headers
         });
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
+
         if (response.data.isSuccess === true) {
           this.isSuccess = true;
           alert("후기글이 등록되었습니다.");
@@ -150,18 +186,42 @@ export const useReviewStore = defineStore("review", {
       }
     },
 
-    async createReviewUp(token, requestBody) {
+    async createReviewUp(accessToken, requestBody) {
       try {
+
+        this.validateToken();
+
+        const headers = this.isTokenExpired
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+              RefreshToken: `Bearer ${refreshToken}`,
+              "Content-Type": "application/json",
+            }
+          : {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
+
         let response = await axios.post(
           backend + "/reviewup/create",
           requestBody,
           {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
+            headers
           }
         );
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
 
         return response;
       } catch (e) {
@@ -170,18 +230,42 @@ export const useReviewStore = defineStore("review", {
       }
     },
 
-    async createReviewScrap(token, requestBody) {
+    async createReviewScrap(accessToken, requestBody) {
       try {
+
+        this.validateToken();
+
+        const headers = this.isTokenExpired
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+              RefreshToken: `Bearer ${refreshToken}`,
+              "Content-Type": "application/json",
+            }
+          : {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
+
         let response = await axios.post(
           backend + "/reviewscrap/create",
           requestBody,
           {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
+            headers
           }
         );
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
 
         return response;
       } catch (e) {
@@ -190,16 +274,41 @@ export const useReviewStore = defineStore("review", {
       }
     },
 
-    async checkReviewUp(token, reviewIdx) {
+    async checkReviewUp(accessToken, reviewIdx) {
       try {
+
+        this.validateToken();
+
+        const headers = this.isTokenExpired
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+              RefreshToken: `Bearer ${refreshToken}`,
+              "Content-Type": "application/json",
+            }
+          : {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
+
         let response = await axios.get(
           `${backend}/reviewup/check/${reviewIdx}`,
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            headers
           }
         );
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
 
         this.isRecommended = response.data.result.status;
 
@@ -210,16 +319,41 @@ export const useReviewStore = defineStore("review", {
       }
     },
 
-    async checkReviewScrap(token, reviewIdx) {
+    async checkReviewScrap(accessToken, reviewIdx) {
       try {
+
+        this.validateToken();
+
+        const headers = this.isTokenExpired
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+              RefreshToken: `Bearer ${refreshToken}`,
+              "Content-Type": "application/json",
+            }
+          : {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
+
         let response = await axios.get(
           `${backend}/reviewscrap/check/${reviewIdx}`,
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            headers
           }
         );
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
 
         this.isScrapped = response.data.result.status;
 
@@ -230,36 +364,86 @@ export const useReviewStore = defineStore("review", {
       }
     },
 
-    async cancelReviewUp(token, reviewUpIdx) {
+    async cancelReviewUp(accessToken, reviewUpIdx) {
       try {
-        await axios.patch(
+
+        this.validateToken();
+
+        const headers = this.isTokenExpired
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+              RefreshToken: `Bearer ${refreshToken}`,
+              "Content-Type": "application/json",
+            }
+          : {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
+
+        let response = await axios.patch(
           `${backend}/reviewup/delete/${reviewUpIdx}`,
           {},
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
+            headers
           }
         );
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
+
       } catch (e) {
         console.error(e);
         throw e;
       }
     },
 
-    async cancelReviewScrap(token, reviewScrapIdx) {
+    async cancelReviewScrap(accessToken, reviewScrapIdx) {
       try {
-        await axios.patch(
+
+        this.validateToken();
+
+        const headers = this.isTokenExpired
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+              RefreshToken: `Bearer ${refreshToken}`,
+              "Content-Type": "application/json",
+            }
+          : {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
+
+        let response = await axios.patch(
           `${backend}/reviewscrap/delete/${reviewScrapIdx}`,
           {},
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
+            headers
           }
         );
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
+
       } catch (e) {
         console.error(e);
         throw e;
@@ -268,16 +452,42 @@ export const useReviewStore = defineStore("review", {
 
     async createReviewCategory(categoryName) {
       try {
+
+        this.validateToken();
+
+        const headers = this.isTokenExpired
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+              RefreshToken: `Bearer ${refreshToken}`,
+              "Content-Type": "application/json",
+            }
+          : {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
+
         let response =
         await axios.post(
           backend + "/admin/review/create",
           { categoryName: categoryName },
           {
-            headers: {
-              "Content-Type": "application/json",
-            },
+            headers
           }
         );
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
+
         if(response.data.isSuccess === true){
           alert(`${categoryName} 생성 완료!`);
           this.$router.push({ path: `/admin/review/category/register`});
@@ -333,14 +543,40 @@ export const useReviewStore = defineStore("review", {
     },
     async findReviewDetailByUserIdx(reviewIdx) {
       try {
+
+        this.validateToken();
+
+        const headers = this.isTokenExpired
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+              RefreshToken: `Bearer ${refreshToken}`,
+              "Content-Type": "application/json",
+            }
+          : {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
+
         let response = await axios.get(
           `${backend}/review/mywrite/${reviewIdx}`,
           {
-            headers: {
-              Authorization: `Bearer ${storedToken}`,
-            },
+            headers
           }
         );
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
+
         this.reviewDetail = response.data.result;
 
         return this.reviewDetail;
@@ -350,19 +586,39 @@ export const useReviewStore = defineStore("review", {
     },
 
     async updateReview(review) {
-      // const formData = new FormData();
-
-      // let json = JSON.stringify(review);
-      // formData.append("review", new Blob([json], { type: "application/json" }));
-      // formData.append("reviewImage", reviewImage);
 
       try {
+
+        this.validateToken();
+
+        const headers = this.isTokenExpired
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+              RefreshToken: `Bearer ${refreshToken}`,
+              "Content-Type": "application/json",
+            }
+          : {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
+
         let response = await axios.patch(`${backend}/review/update`, review, {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-            "Content-Type": "application/json",
-          },
+          headers
         });
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
+        
         if (response.data.isSuccess === true) {
           alert("후기글을 수정하였습니다.");
           window.location.href = "/review/" + review.reviewIdx;
