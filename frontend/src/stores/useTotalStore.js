@@ -5,7 +5,6 @@ import axios from "axios";
 const backend = "http://localhost:8080";
 
 const storedToken = localStorage.getItem("accessToken");
-const refreshToken = localStorage.getItem("refreshToken");
 
 export const useTotalStore = defineStore("total", {
   state: () => ({
@@ -172,7 +171,6 @@ export const useTotalStore = defineStore("total", {
           {
             headers: {
               Authorization: `Bearer ${storedToken}`,
-              RefreshToken: `Bearer ${refreshToken}`,
               "Content-Type": "application/json",
             },
           }
@@ -181,14 +179,6 @@ export const useTotalStore = defineStore("total", {
         this.totalPages = response.data.result.totalPages;
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
-
-        console.log(response.headers["new-access-token"]);
-        if(response.headers["new-access-token"] != null) {
-          if(response.headers ["new-access-token"] != localStorage.getItem("accessToken")) {
-            localStorage.setItem("accessToken", "")
-            localStorage.setItem("accessToken", response.headers["new-access-token"])
-          }
-        }
 
         if (this.totalList.length === 0) {
           this.isBoardExist = false;
@@ -215,7 +205,6 @@ export const useTotalStore = defineStore("total", {
           {
             headers: {
               Authorization: `Bearer ${storedToken}`,
-              RefreshToken: `Bearer ${refreshToken}`,
               "Content-Type": "application/json",
             },
           }
@@ -225,13 +214,6 @@ export const useTotalStore = defineStore("total", {
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
-        console.log(response.headers["new-access-token"]);
-        if(response.headers["new-access-token"] != null) {
-          if(response.headers ["new-access-token"] != localStorage.getItem("accessToken")) {
-            localStorage.setItem("accessToken", "")
-            localStorage.setItem("accessToken", response.headers["new-access-token"])
-          }
-        }
         if (this.totalList.length === 0) {
           this.isBoardExist = false;
           this.isPageExist = false;
@@ -254,19 +236,10 @@ export const useTotalStore = defineStore("total", {
           {
             headers: {
               Authorization: `Bearer ${storedToken}`,
-              RefreshToken: `Bearer ${refreshToken}`,
               "Content-Type": "application/json",
             },
           }
         );
-
-        console.log(response.headers["new-access-token"]);
-        if(response.headers["new-access-token"] != null) {
-          if(response.headers ["new-access-token"] != localStorage.getItem("accessToken")) {
-            localStorage.setItem("accessToken", "")
-            localStorage.setItem("accessToken", response.headers["new-access-token"])
-          }
-        }
 
         this.totalList = response.data.result.list;
         this.totalPages = response.data.result.totalPages;
@@ -297,7 +270,6 @@ export const useTotalStore = defineStore("total", {
           {
             headers: {
               Authorization: `Bearer ${storedToken}`,
-              RefreshToken: `Bearer ${refreshToken}`,
               "Content-Type": "application/json",
             },
           }
@@ -306,14 +278,6 @@ export const useTotalStore = defineStore("total", {
         this.totalPages = response.data.result.totalPages;
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
-
-        console.log(response.headers["new-access-token"]);
-        if(response.headers["new-access-token"] != null) {
-          if(response.headers ["new-access-token"] != localStorage.getItem("accessToken")) {
-            localStorage.setItem("accessToken", "")
-            localStorage.setItem("accessToken", response.headers["new-access-token"])
-          }
-        }
 
         if (this.totalList.length === 0) {
           this.isBoardExist = false;
