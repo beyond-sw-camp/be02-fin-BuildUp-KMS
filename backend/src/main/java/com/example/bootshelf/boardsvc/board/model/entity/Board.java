@@ -2,16 +2,14 @@ package com.example.bootshelf.boardsvc.board.model.entity;
 
 import com.example.bootshelf.boardsvc.boardcategory.model.entity.BoardCategory;
 import com.example.bootshelf.boardsvc.boardcomment.model.entity.BoardComment;
-import com.example.bootshelf.boardsvc.boardhistory.model.entity.BoardHistory;
-import com.example.bootshelf.boardsvc.boardimage.model.entity.BoardImage;
 import com.example.bootshelf.boardsvc.boardscrap.model.entity.BoardScrap;
 import com.example.bootshelf.boardsvc.boardtag.model.entity.BoardTag;
 import com.example.bootshelf.boardsvc.boardup.model.entity.BoardUp;
 import com.example.bootshelf.user.model.entity.User;
 import lombok.*;
+import org.joda.time.LocalDateTime;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,13 +33,7 @@ public class Board {
     private BoardCategory boardCategory;
 
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
-    private List<BoardHistory> boardHistoryList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
     private List<BoardComment> boardCommentList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
-    private List<BoardImage> boardImageList = new ArrayList<>();
 
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
     private List<BoardScrap> boardScrapList = new ArrayList<>();
@@ -74,10 +66,10 @@ public class Board {
     private Boolean status;
 
     @Column(nullable = false)
-    private String createdAt;
+    private LocalDateTime createdAt;
 
     @Column(nullable = false)
-    private String updatedAt;
+    private LocalDateTime updatedAt;
 
     public void increaseViewCnt() {
         this.viewCnt += 1;

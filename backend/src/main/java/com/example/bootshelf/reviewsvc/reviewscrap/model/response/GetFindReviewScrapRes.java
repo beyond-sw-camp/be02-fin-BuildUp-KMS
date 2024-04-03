@@ -2,6 +2,7 @@ package com.example.bootshelf.reviewsvc.reviewscrap.model.response;
 
 import lombok.Builder;
 import lombok.Data;
+import org.joda.time.LocalDateTime;
 
 @Data
 @Builder
@@ -12,5 +13,5 @@ public class GetFindReviewScrapRes {
     private String categoryName;
     private String reviewTitle;
     private String courseName;
-    private String createdAt;
+    private LocalDateTime createdAt;
 }

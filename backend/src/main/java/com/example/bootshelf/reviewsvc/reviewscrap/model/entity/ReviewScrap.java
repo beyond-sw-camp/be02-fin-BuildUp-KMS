@@ -4,9 +4,9 @@ import com.example.bootshelf.reviewsvc.review.model.entity.Review;
 import com.example.bootshelf.reviewsvc.reviewscrap.model.request.PostCreateReviewScrapReq;
 import com.example.bootshelf.user.model.entity.User;
 import lombok.*;
+import org.joda.time.LocalDateTime;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Entity
@@ -31,17 +31,17 @@ public class ReviewScrap {
     private Boolean status;
 
     @Column(updatable = false, nullable = false)
-    private String createdAt;
+    private LocalDateTime createdAt;
 
-    private String updatedAt;
+    private LocalDateTime updatedAt;
 
     public static ReviewScrap toEntity(User user, PostCreateReviewScrapReq req) {
         return ReviewScrap.builder()
                 .user(User.builder().idx(user.getIdx()).build())
                 .review(Review.builder().idx(req.getReviewIdx()).build())
                 .status(true)
-                .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
-                .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
     }
 }

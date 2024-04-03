@@ -5,6 +5,7 @@ import com.example.bootshelf.reviewsvc.reviewcommentup.model.entity.ReviewCommen
 import com.example.bootshelf.user.model.entity.User;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.joda.time.LocalDateTime;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -51,9 +52,9 @@ public class ReviewComment {
     private Boolean status;
 
     @Column(updatable = false, nullable = false)
-    private String createdAt;
+    private LocalDateTime createdAt;
 
-    private String updatedAt;
+    private LocalDateTime updatedAt;
 
     public void increaseUpCnt() {
         this.upCnt += 1;

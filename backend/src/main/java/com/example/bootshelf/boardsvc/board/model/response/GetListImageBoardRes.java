@@ -9,7 +9,6 @@ import lombok.*;
 @Builder
 public class GetListImageBoardRes {
 
-    private Integer boardImageIdx;
     private String boardImage;
 
 }

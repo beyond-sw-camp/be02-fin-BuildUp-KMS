@@ -1,4 +1,4 @@
-package com.example.bootshelf.boardsvc.boardimage.model.response;
+package com.example.bootshelf.reviewsvc.review.model.response;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PostUploadBoardImageRes {
-
+public class PostUploadReviewImageRes {
     String imageUrl;
+
 }
