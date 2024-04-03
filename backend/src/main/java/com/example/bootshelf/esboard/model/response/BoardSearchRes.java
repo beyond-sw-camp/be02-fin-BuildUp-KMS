@@ -1,8 +1,6 @@
-package com.example.bootshelf.es.model.response;
+package com.example.bootshelf.esboard.model.response;
 
 import lombok.*;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -23,5 +21,4 @@ public class BoardSearchRes {
     private Integer scrapCnt;
     private String updatedAt;
     private Boolean status;
-    private Long totalHits;
 }

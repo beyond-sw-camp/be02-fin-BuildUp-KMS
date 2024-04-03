@@ -1,12 +1,11 @@
-package com.example.bootshelf.es.service;
+package com.example.bootshelf.esboard.service;
 
-import com.example.bootshelf.boardsvc.board.model.entity.Board;
-import com.example.bootshelf.boardsvc.board.model.response.GetBoardListByQueryRes;
 import com.example.bootshelf.common.BaseRes;
-import com.example.bootshelf.es.model.entity.EsBoard;
-import com.example.bootshelf.es.model.response.BoardSearchRes;
-import com.example.bootshelf.es.repository.EsBoardRepository;
-import com.example.bootshelf.es.repository.EsOperation;
+import com.example.bootshelf.esboard.model.entity.EsBoard;
+import com.example.bootshelf.esboard.model.response.BoardSearchRes;
+import com.example.bootshelf.esboard.model.response.BoardSearchResResult;
+import com.example.bootshelf.esboard.repository.EsBoardRepository;
+import com.example.bootshelf.esboard.repository.EsOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.SearchHit;
@@ -24,12 +23,12 @@ public class EsBoardService {
     private final EsBoardRepository esBoardRepository;
     private final EsOperation esOperation;
 
-//    // 제목+내용 검색 (지식공유)
-//    public SearchHits<EsBoard> titleContentSearchByKnowledge(@NotNull String title, Pageable pageable) {
-//
-//            SearchHits<EsBoard> searchHits = esOperation.titleContentSearchByKnowledge(title, pageable);
-//            return searchHits;
-//    }
+    // 제목+내용 검색 (지식공유)
+    public SearchHits<EsBoard> titleContentSearchByKnowledge(@NotNull String title, Pageable pageable) {
+
+            SearchHits<EsBoard> searchHits = esOperation.titleContentSearchByKnowledge(title, pageable);
+            return searchHits;
+    }
 //        // 제목+내용 검색 (QaA)
 //        public SearchHits<EsBoard> titleContentSearchByQnA(@NotNull String title, Pageable pageable) {
 //            SearchHits<EsBoard> searchHits = esOperation.titleContentSearchByQnA(title, pageable);
@@ -43,48 +42,48 @@ public class EsBoardService {
 //        }
 
 
-    // 제목+내용+정렬 검색 (지식공유)
-    public BaseRes titleContentSearchByKnowledge(@NotNull Integer sortType, String title, Pageable pageable) {
-        String[] fields = {"createdAt", "upCnt", "viewCnt", "scrapCnt", "commentCnt"}; // 필드 이름 배열
-
-        if (sortType >= 1 && sortType <= fields.length) {
-            String sortField = fields[sortType - 1];
-
-            SearchHits<EsBoard> searchHits = esOperation.titleContentSearchByKnowledge(sortField, title, pageable);
-
-            List<EsBoard> searchContent = searchHits.get().map(SearchHit::getContent).collect(Collectors.toList());
-            List<BoardSearchRes> boardSearchRes = new ArrayList<>();
-
-            for (EsBoard result : searchContent) {
-                BoardSearchRes response = BoardSearchRes.builder()
-                        .idx(Integer.valueOf(result.getId()))
-                        .user(result.getUser())
-                        .boardCategory(result.getBoardCategory())
-                        .boardTitle(result.getBoardTitle())
-                        .boardContent(result.getBoardContent())
-                        .viewCnt(result.getViewCnt())
-                        .upCnt(result.getUpCnt())
-                        .scrapCnt(result.getScrapCnt())
-                        .commentCnt(result.getCommentCnt())
-                        .status(result.getStatus())
-                        .createdAt(result.getCreatedAt())
-                        .updatedAt(result.getUpdatedAt())
-                        .totalHits(searchHits.getTotalHits())
-                        .build();
-
-                boardSearchRes.add(response);
-            }
-
-            BaseRes baseRes = BaseRes.builder()
-                    .isSuccess(true)
-                    .message("ES 검색 성공")
-                    .result(boardSearchRes)
-                    .build();
-
-            return baseRes;
-        }
-        return null;
-    }
+//    // 제목+내용+정렬 검색 (지식공유)
+//    public BaseRes titleContentSearchByKnowledge(@NotNull Integer sortType, String title, Pageable pageable) {
+//        String[] fields = {"createdAt", "upCnt", "viewCnt", "scrapCnt", "commentCnt"}; // 필드 이름 배열
+//
+//        if (sortType >= 1 && sortType <= fields.length) {
+//            String sortField = fields[sortType - 1];
+//
+//            SearchHits<EsBoard> searchHits = esOperation.titleContentSearchByKnowledge(sortField, title, pageable);
+//
+//            List<EsBoard> searchContent = searchHits.get().map(SearchHit::getContent).collect(Collectors.toList());
+//            List<BoardSearchRes> boardSearchRes = new ArrayList<>();
+//
+//            for (EsBoard result : searchContent) {
+//                BoardSearchRes response = BoardSearchRes.builder()
+//                        .idx(Integer.valueOf(result.getId()))
+//                        .user(result.getUser())
+//                        .boardCategory(result.getBoardCategory())
+//                        .boardTitle(result.getBoardTitle())
+//                        .boardContent(result.getBoardContent())
+//                        .viewCnt(result.getViewCnt())
+//                        .upCnt(result.getUpCnt())
+//                        .scrapCnt(result.getScrapCnt())
+//                        .commentCnt(result.getCommentCnt())
+//                        .status(result.getStatus())
+//                        .createdAt(result.getCreatedAt())
+//                        .updatedAt(result.getUpdatedAt())
+//                        .totalHits(searchHits.getTotalHits())
+//                        .build();
+//
+//                boardSearchRes.add(response);
+//            }
+//
+//            BaseRes baseRes = BaseRes.builder()
+//                    .isSuccess(true)
+//                    .message("ES 검색 성공")
+//                    .result(boardSearchRes)
+//                    .build();
+//
+//            return baseRes;
+//        }
+//        return null;
+//    }
 
 
     // 제목+내용+정렬 검색 (QnA)
@@ -153,16 +152,20 @@ public class EsBoardService {
                         .status(result.getStatus())
                         .createdAt(result.getCreatedAt())
                         .updatedAt(result.getUpdatedAt())
-                        .totalHits(searchHits.getTotalHits())
                         .build();
 
                 boardSearchRes.add(response);
             }
+            BoardSearchResResult result = BoardSearchResResult.builder()
+                    .totalHits(searchHits.getTotalHits())
+                    //.totalPages() 페이지 추가하기..
+                    .list(boardSearchRes)
+                    .build();
 
             BaseRes baseRes = BaseRes.builder()
                     .isSuccess(true)
-                    .message("ES 검색 성공")
-                    .result(boardSearchRes)
+                    .message("ES 게시판 categoryIdx=" + categoryIdx + " 검색 성공")
+                    .result(result)
                     .build();
 
             return baseRes;

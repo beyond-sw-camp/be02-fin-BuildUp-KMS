@@ -1,7 +1,6 @@
-package com.example.bootshelf.esReview.repository;
+package com.example.bootshelf.esreview.repository;
 
-import com.example.bootshelf.es.model.entity.EsBoard;
-import com.example.bootshelf.esReview.model.entity.EsReview;
+import com.example.bootshelf.esreview.model.entity.EsReview;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -97,4 +96,25 @@ public class EsReviewRepository {
 
         return operations.search(build, EsReview.class);
     }
+
+    // 제목+내용+정렬 검색(통합)
+    public SearchHits<EsReview> titleContentSearch(Integer categoryIdx ,String sortField, String title, Pageable pageable) {
+
+        MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(title,
+                "reviewTitle", "reviewContent");
+
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
+                .filter(QueryBuilders.termQuery("status", "true"))
+                .filter(QueryBuilders.termQuery("reviewCategory", categoryIdx));
+
+        NativeSearchQuery build = new NativeSearchQueryBuilder()
+                .withQuery(multiMatchQueryBuilder)
+                .withFilter(boolQueryBuilder)
+                .withPageable(pageable)
+                .withSort(SortBuilders.fieldSort(sortField).order(SortOrder.ASC))
+                .build();
+
+        return operations.search(build, EsReview.class);
+    }
+
 }

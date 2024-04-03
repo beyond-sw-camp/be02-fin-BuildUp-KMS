@@ -1,13 +1,14 @@
-package com.example.bootshelf.esReview.controller;
+package com.example.bootshelf.esreview.controller;
 
-import com.example.bootshelf.es.model.entity.EsBoard;
-import com.example.bootshelf.esReview.model.entity.EsReview;
-import com.example.bootshelf.esReview.service.EsReviewService;
+import com.example.bootshelf.common.BaseRes;
+import com.example.bootshelf.esreview.model.entity.EsReview;
+import com.example.bootshelf.esreview.service.EsReviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,23 +21,27 @@ public class EsReviewController {
     private final EsReviewService esReviewService;
 
     // 제목으로 검색(메인)
-    @GetMapping("/search")
+    @GetMapping("/search/main/title")
     @ResponseBody
-    public SearchHits<EsReview> titleSearchByMain(
+    public ResponseEntity titleContentSearch(
             @RequestParam String title,
             @PageableDefault(size = 20) Pageable pageable
     ) {
-        return esReviewService.titleSearchByMain(title, pageable);
+        BaseRes baseRes =  esReviewService.titleSearchByMain(title, pageable);
+
+        return ResponseEntity.ok().body(baseRes);
     }
 
     // 제목+내용 (메인)
-    @GetMapping("/search/title/content")
+    @GetMapping("/search/main/titlecontent")
     @ResponseBody
-    public SearchHits<EsReview> titleContentSearchByMain(
+    public ResponseEntity titleContentSearchByMain(
             @RequestParam String title,
             @PageableDefault(size = 20) Pageable pageable
     ) {
-        return esReviewService.titleContentSearchByMain(title, pageable);
+        BaseRes baseRes =  esReviewService.titleContentSearchByMain(title, pageable);
+
+        return ResponseEntity.ok().body(baseRes);
     }
 
     // 제목+내용+정렬 (과정후기)
@@ -59,6 +64,20 @@ public class EsReviewController {
             @PageableDefault(size = 20) Pageable pageable
     ) {
         return esReviewService.titleContentSearchByTeacher(sortType ,title, pageable);
+    }
+
+    // 제목+내용+정렬 (통합)
+    @GetMapping("/search")
+    @ResponseBody
+    public ResponseEntity titleContentSearch(
+            @RequestParam Integer categoryIdx,
+            @RequestParam Integer sortType,
+            @RequestParam String title,
+            @PageableDefault(size = 20) Pageable pageable
+    ) {
+        BaseRes baseRes =  esReviewService.titleContentSearch(categoryIdx, sortType ,title, pageable);
+
+        return ResponseEntity.ok().body(baseRes);
     }
 
 }
