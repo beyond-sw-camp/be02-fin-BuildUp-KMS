@@ -10,9 +10,6 @@ import com.example.bootshelf.boardsvc.board.model.response.PostCreateBoardRes;
 import com.example.bootshelf.boardsvc.board.repository.BoardRepository;
 import com.example.bootshelf.boardsvc.boardcategory.model.entity.BoardCategory;
 import com.example.bootshelf.boardsvc.boardcomment.model.entity.BoardComment;
-import com.example.bootshelf.boardsvc.boardimage.model.entity.BoardImage;
-import com.example.bootshelf.boardsvc.boardimage.repository.BoardImageRepository;
-import com.example.bootshelf.boardsvc.boardimage.service.BoardImageService;
 import com.example.bootshelf.boardsvc.boardscrap.model.response.GetFindBoardScrapRes;
 import com.example.bootshelf.boardsvc.boardscrap.model.response.GetFindBoardScrapResResult;
 import com.example.bootshelf.boardsvc.boardtag.model.entity.BoardTag;
@@ -54,60 +51,9 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final BoardTagService boardTagService;
-    private final BoardImageService boardImageService;
     private final ReviewRepository reviewRepository;
-    private final BoardImageRepository boardImageRepository;
 
 
-    //    @Transactional(readOnly = false)
-//    public BaseRes createBoard(User user, PostCreateBoardReq request, MultipartFile[] boardImages) {
-//
-//        Optional<Board> result = boardRepository.findByBoardTitle(request.getBoardTitle());
-//
-//        if (result.isPresent()) {
-//            throw new BoardException(ErrorCode.DUPICATED_BOARD_TITLE, String.format("Board Title [ %s ] is duplicated.", request.getBoardTitle()));
-//        }
-//
-//        Board board = Board.builder()
-//                .boardTitle(request.getBoardTitle())
-//                .boardContent(request.getBoardContent())
-//                .boardCategory(BoardCategory.builder().idx(request.getBoardCategoryIdx()).build())
-//                .user(user)
-//                .status(true)
-//                .viewCnt(0)
-//                .upCnt(0)
-//                .commentCnt(0)
-//                .scrapCnt(0)
-//                .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
-//                .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
-//                .build();
-//
-//        board = boardRepository.save(board);
-//
-//        if (boardImages != null && boardImages.length > 0) {
-//            boardImageService.createBoardImage(board.getIdx(), boardImages);
-//        }
-//
-//        if (request.getTagList() != null) {
-//            boardTagService.saveBoardTag(request.getTagList(), board.getIdx());
-//        }
-//
-//        PostCreateBoardRes response = PostCreateBoardRes.builder()
-//                .boardIdx(board.getIdx())
-//                .boardtitle(board.getBoardTitle())
-//                .boardcontent(board.getBoardContent())
-//                .boardCategoryIdx(board.getBoardCategory().getIdx())
-//                .boardTagList(request.getTagList())
-//                .build();
-//
-//        BaseRes baseRes = BaseRes.builder()
-//                .isSuccess(true)
-//                .message("게시글 등록 성공")
-//                .result(response)
-//                .build();
-//
-//        return baseRes;
-//    }
     @Transactional(readOnly = false)
     public BaseRes createBoard(User user, PostCreateBoardReq request) {
 
@@ -132,17 +78,6 @@ public class BoardService {
                 .build();
 
         board = boardRepository.save(board);
-
-        // 게시글 본문의 html에서 img url을 뽑아내기 위해 jsoup 라이브러리 사용
-        Document doc = Jsoup.parse(request.getBoardContent());
-        Elements images = doc.select("img");
-
-        if (!images.isEmpty()) {
-            for (Element img : images) {
-                String imageUrl = img.attr("src");
-                boardImageService.saveImageUrl(board.getIdx(), imageUrl);
-            }
-        }
 
         if (request.getTagList() != null) {
             boardTagService.saveBoardTag(request.getTagList(), board.getIdx());
@@ -201,20 +136,6 @@ public class BoardService {
             }
         }
 
-        // 이미지 조회
-        List<GetListImageBoardRes> getListImageBoardResList = new ArrayList<>();
-
-        if (!board.getBoardImageList().isEmpty()) {
-            for (BoardImage boardImage : board.getBoardImageList()) {
-                GetListImageBoardRes getListImageReviewRes = GetListImageBoardRes.builder()
-                        .boardImageIdx(boardImage.getIdx())
-                        .boardImage(boardImage.getBoardImage())
-                        .build();
-
-                getListImageBoardResList.add(getListImageReviewRes);
-            }
-        }
-
         GetReadBoardRes getReadBoardRes = GetReadBoardRes.builder()
                 .idx(board.getIdx())
                 .boardCategoryIdx(board.getBoardCategory().getIdx())
@@ -230,7 +151,6 @@ public class BoardService {
                 .scrapCnt(board.getScrapCnt())
                 .createdAt(board.getCreatedAt())
                 .updatedAt(board.getUpdatedAt())
-                .boardImageList(getListImageBoardResList)
                 .boardCommentList(getListCommentBoardResList)
                 .build();
 
@@ -304,16 +224,6 @@ public class BoardService {
                     .createdAt(board.getCreatedAt())
                     .build();
 
-            List<BoardImage> boardImageList = board.getBoardImageList();
-            List<String> fileNames = new ArrayList<>();
-            if (!boardImageList.isEmpty()) {
-                for (BoardImage boardImage : boardImageList) {
-                    String fileName = boardImage.getBoardImage();
-                    fileNames.add(fileName);
-                }
-                getListBoardRes.setBoardImg(fileNames.get(0));
-            }
-
             getListBoardResList.add(getListBoardRes);
         }
         BaseRes baseRes = BaseRes.builder()
@@ -361,16 +271,6 @@ public class BoardService {
                     .createdAt(board.getCreatedAt())
                     .updatedAt(board.getUpdatedAt())
                     .build();
-
-            List<BoardImage> boardImageList = board.getBoardImageList();
-            List<String> fileNames = new ArrayList<>();
-            if (!boardImageList.isEmpty()) {
-                for (BoardImage boardImage : boardImageList) {
-                    String fileName = boardImage.getBoardImage();
-                    fileNames.add(fileName);
-                }
-                getListBoardRes.setBoardImg(fileNames.get(0));
-            }
 
             getListBoardResList.add(getListBoardRes);
         }
@@ -426,14 +326,11 @@ public class BoardService {
                     .updatedAt(board.getUpdatedAt())
                     .build();
 
-            List<BoardImage> boardImageList = board.getBoardImageList();
-            List<String> fileNames = new ArrayList<>();
-            if (!boardImageList.isEmpty()) {
-                for (BoardImage boardImage : boardImageList) {
-                    String fileName = boardImage.getBoardImage();
-                    fileNames.add(fileName);
-                }
-                getListBoardRes.setBoardImg(fileNames.get(0));
+            Document doc = Jsoup.parse(board.getBoardContent());
+            Elements images = doc.select("img");
+
+            if (!images.isEmpty()) {
+                getListBoardRes.setBoardImg(images.get(0).attr("src"));
             }
 
             getListBoardResList.add(getListBoardRes);
@@ -492,14 +389,11 @@ public class BoardService {
                     .updatedAt(board.getUpdatedAt())
                     .build();
 
-            List<BoardImage> boardImageList = board.getBoardImageList();
-            List<String> fileNames = new ArrayList<>();
-            if (!boardImageList.isEmpty()) {
-                for (BoardImage boardImage : boardImageList) {
-                    String fileName = boardImage.getBoardImage();
-                    fileNames.add(fileName);
-                }
-                getListBoardRes.setBoardImg(fileNames.get(0));
+            Document doc = Jsoup.parse(board.getBoardContent());
+            Elements images = doc.select("img");
+
+            if (!images.isEmpty()) {
+                getListBoardRes.setBoardImg(images.get(0).attr("src"));
             }
 
             getListBoardResList.add(getListBoardRes);
@@ -558,14 +452,11 @@ public class BoardService {
                     .updatedAt(board.getUpdatedAt())
                     .build();
 
-            List<BoardImage> boardImageList = board.getBoardImageList();
-            List<String> fileNames = new ArrayList<>();
-            if (!boardImageList.isEmpty()) {
-                for (BoardImage boardImage : boardImageList) {
-                    String fileName = boardImage.getBoardImage();
-                    fileNames.add(fileName);
-                }
-                getListBoardRes.setBoardImg(fileNames.get(0));
+            Document doc = Jsoup.parse(board.getBoardContent());
+            Elements images = doc.select("img");
+
+            if (!images.isEmpty()) {
+                getListBoardRes.setBoardImg(images.get(0).attr("src"));
             }
 
             getListBoardResList.add(getListBoardRes);
@@ -666,14 +557,11 @@ public class BoardService {
                     .userProfileImage(board.getUser().getProfileImage())
                     .build();
 
-            List<BoardImage> boardImageList = board.getBoardImageList();
-            List<String> fileNames = new ArrayList<>();
-            if (!boardImageList.isEmpty()) {
-                for (BoardImage boardImage : boardImageList) {
-                    String fileName = boardImage.getBoardImage();
-                    fileNames.add(fileName);
-                }
-                getBoardListByQueryRes.setBoardImg(fileNames.get(0));
+            Document doc = Jsoup.parse(board.getBoardContent());
+            Elements images = doc.select("img");
+
+            if (!images.isEmpty()) {
+                getBoardListByQueryRes.setBoardImg(images.get(0).attr("src"));
             }
 
             getBoardListByQueryResList.add(getBoardListByQueryRes);
@@ -771,18 +659,6 @@ public class BoardService {
 
         boardTagService.updateBoardTag(patchUpdateBoardReq.getTagList(), patchUpdateBoardReq.getBoardIdx());
 
-        // 게시글 본문의 html에서 img url을 뽑아내기 위해 jsoup 라이브러리 사용
-        Document doc = Jsoup.parse(patchUpdateBoardReq.getBoardContent());
-        Elements images = doc.select("img");
-
-        if (!images.isEmpty()) {
-            boardImageRepository.deleteAllByBoard_idx(board.getIdx());
-            for (Element img : images) {
-                String imageUrl = img.attr("src");
-                boardImageService.saveImageUrl(board.getIdx(), imageUrl);
-            }
-        }
-
         board.setBoardTitle(patchUpdateBoardReq.getBoardTitle());
         board.setBoardContent(patchUpdateBoardReq.getBoardContent());
         board.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
@@ -841,20 +717,6 @@ public class BoardService {
             }
         }
 
-        // 이미지 조회
-        List<GetListImageBoardRes> getListImageBoardResList = new ArrayList<>();
-
-        if (!board.getBoardImageList().isEmpty()) {
-            for (BoardImage boardImage : board.getBoardImageList()) {
-                GetListImageBoardRes getListImageReviewRes = GetListImageBoardRes.builder()
-                        .boardImageIdx(boardImage.getIdx())
-                        .boardImage(boardImage.getBoardImage())
-                        .build();
-
-                getListImageBoardResList.add(getListImageReviewRes);
-            }
-        }
-
         GetReadBoardRes getReadBoardRes = GetReadBoardRes.builder()
                 .idx(board.getIdx())
                 .boardCategoryName(board.getBoardCategory().getCategoryName())
@@ -862,7 +724,6 @@ public class BoardService {
                 .boardTitle(board.getBoardTitle())
                 .boardContent(board.getBoardContent())
                 .tagList(tags)
-                .boardImageList(getListImageBoardResList)
                 .build();
 
         BaseRes baseRes = BaseRes.builder()
@@ -909,14 +770,11 @@ public class BoardService {
                     .type("board")
                     .build();
 
-            List<BoardImage> boardImageList = board.getBoardImageList();
-            List<String> fileNames = new ArrayList<>();
-            if (!boardImageList.isEmpty()) {
-                for (BoardImage boardImage : boardImageList) {
-                    String fileName = boardImage.getBoardImage();
-                    fileNames.add(fileName);
-                }
-                getListHotBoardRes.setImage(fileNames.get(0));
+            Document doc = Jsoup.parse(board.getBoardContent());
+            Elements images = doc.select("img");
+
+            if (!images.isEmpty()) {
+                getListHotBoardRes.setImage(images.get(0).attr("src"));
             }
 
             getListResListHotBoard.add(getListHotBoardRes);
@@ -976,17 +834,15 @@ public class BoardService {
                     .type("board")
                     .build();
 
-            List<BoardImage> boardImageList = board.getBoardImageList();
-            List<String> fileNames = new ArrayList<>();
-            if (!boardImageList.isEmpty()) {
-                for (BoardImage boardImage : boardImageList) {
-                    String fileName = boardImage.getBoardImage();
-                    fileNames.add(fileName);
-                }
-                getListHotBoardRes.setImage(fileNames.get(0));
+            Document doc = Jsoup.parse(board.getBoardContent());
+            Elements images = doc.select("img");
+
+            if (!images.isEmpty()) {
+                getListHotBoardRes.setImage(images.get(0).attr("src"));
             }
 
             getListResListHotBoard.add(getListHotBoardRes);
+
         }
 
         Long totalCnt = boardList.getTotalElements();

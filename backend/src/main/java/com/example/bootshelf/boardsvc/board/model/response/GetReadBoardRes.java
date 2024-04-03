@@ -32,8 +32,6 @@ public class GetReadBoardRes {
 
     private String updatedAt;
 
-    private List<GetListImageBoardRes> boardImageList;
-
     private List<GetListCommentBoardRes> boardCommentList;
 
     private List<String> tagList;
