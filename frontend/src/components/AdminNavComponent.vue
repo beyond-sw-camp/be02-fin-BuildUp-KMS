@@ -83,7 +83,8 @@ export default {
     },
     methods: {
         logout() {
-            window.localStorage.removeItem("a_token");
+            window.localStorage.removeItem("accessToken");
+            window.localStorage.removeItem("refreshToken");
             const store = useAdminStore();
             store.isAdminAuthenticated = false;
             store.adminDecodedToken = {};
@@ -104,9 +105,9 @@ export default {
         },
     },
     created() {
-    const token = window.localStorage.getItem("a_token");
-    if (token) {
-      const decoded = this.adminDecodeToken(token);
+    const accessToken = window.localStorage.getItem("accessToken");
+    if (accessToken) {
+      const decoded = this.adminDecodeToken(accessToken);
       const store = useAdminStore();
       store.setDecodedToken(decoded);
       store.isAdminAuthenticated = true;

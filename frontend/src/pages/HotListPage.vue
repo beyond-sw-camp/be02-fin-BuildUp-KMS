@@ -60,7 +60,14 @@
                     <div class="css-1pbcmmt-001">
                       <div class="css-5ala5m-001">
                         <router-link to="/review/new">
-                          <div class="css-nmdn6a-001">작성하기</div>
+                          <div class="css-nmdn6a-001">후기글 작성하기</div>
+                        </router-link>
+                      </div>
+                    </div>
+                    <div class="css-1pbcmmt-0001">
+                      <div class="css-5ala5m-001">
+                        <router-link to="/board/new">
+                          <div class="css-nmdn6a-001">게시글 작성하기</div>
                         </router-link>
                       </div>
                     </div>
@@ -708,7 +715,7 @@ div {
 .css-ogh6wd {
   display: flex;
   flex-direction: row;
-  gap: 50px;
+  gap: 0px;
   overflow-x: auto;
   white-space: nowrap;
 }
@@ -737,6 +744,19 @@ svg:not(:root) {
   border-radius: 10px;
   background: #541d7a;
   flex: 0 0 auto;
+}
+
+.css-1pbcmmt-0001 {
+  display: flex;
+  flex-direction: row;
+  padding: 8px 12px;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  border-radius: 10px;
+  background: #4fa023;
+  flex: 0 0 auto;
+  margin-left: 20px;
 }
 
 .css-5ala5m-001 {
@@ -787,7 +807,7 @@ svg:not(:root) {
   gap: 4px;
   flex-shrink: 1;
   /* width: 350px; */
-  width: 480px;
+  width: 426px;
   align-items: center;
   text-align: center;
   justify-content: center;
@@ -803,12 +823,12 @@ svg:not(:root) {
   flex-shrink: 0;
   text-overflow: ellipsis;
   white-space: nowrap;
-  width: 420px;
+  width: 385px;
   align-items: center;
 }
 
 .css-search-002 {
-  width: 420px;
+  width: 375px;
   outline: none;
   border: none;
 }

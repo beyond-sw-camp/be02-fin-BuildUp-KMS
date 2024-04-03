@@ -197,7 +197,7 @@
                                   <span
                                     class="text-gray-600 flex-shrink-0"
                                     title="2024. 2. 17. 오후 7:25:30"
-                                    >{{ board.createdAt }}
+                                    >{{ this.$moment(board.createdAt).format('YYYY-MM-DD HH:mm:ss') }}
                                   </span>
                                 </span>
                               </span>

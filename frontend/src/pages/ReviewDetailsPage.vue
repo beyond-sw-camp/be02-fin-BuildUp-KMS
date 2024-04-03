@@ -159,7 +159,11 @@
                         </svg>
                       </div>
                       <div class="css-1ry6usa">
-                        {{ reviewStore.review.updatedAt }}
+                        {{
+                          this.$moment(reviewStore.review.updatedAt).format(
+                            "YYYY-MM-DD HH:mm:ss"
+                          )
+                        }}
                       </div>
                     </div>
                   </div>
@@ -337,7 +341,7 @@ export default {
   methods: {
     highlightCode() {
       this.$nextTick(() => {
-        document.querySelectorAll('pre').forEach((block) => {
+        document.querySelectorAll("pre").forEach((block) => {
           hljs.highlightBlock(block);
         });
       });
@@ -355,9 +359,9 @@ export default {
       }
     },
     async createReviewUp() {
-      let token = window.localStorage.getItem("token");
+      let accessToken = window.localStorage.getItem("accessToken");
 
-      if (token == null) {
+      if (accessToken == null) {
         alert("로그인 후 이용해주세요.");
       } else {
         let requestBody = {
@@ -366,14 +370,14 @@ export default {
 
         try {
           if (this.isRecommended) {
-            await this.reviewStore.cancelReviewUp(token, this.reviewUpIdx);
+            await this.reviewStore.cancelReviewUp(accessToken, this.reviewUpIdx);
             console.log("후기 추천 취소 성공");
             this.isRecommended = false;
 
             window.location.reload();
           } else {
             const response = await this.reviewStore.createReviewUp(
-              token,
+              accessToken,
               requestBody
             );
 
@@ -393,9 +397,9 @@ export default {
     },
 
     async createReviewScrap() {
-      let token = window.localStorage.getItem("token");
+      let accessToken = window.localStorage.getItem("accessToken");
 
-      if (token == null) {
+      if (accessToken == null) {
         alert("로그인 후 이용해주세요.");
       } else {
         let requestBody = {
@@ -405,7 +409,7 @@ export default {
         try {
           if (this.isScrapped) {
             await this.reviewStore.cancelReviewScrap(
-              token,
+              accessToken,
               this.reviewScrapIdx
             );
             console.log("후기 스크랩 취소 성공");
@@ -414,7 +418,7 @@ export default {
             window.location.reload();
           } else {
             const response = await this.reviewStore.createReviewScrap(
-              token,
+              accessToken,
               requestBody
             );
 
@@ -445,9 +449,9 @@ export default {
 
     async checkReviewUp() {
       try {
-        let token = window.localStorage.getItem("token");
+        let accessToken = window.localStorage.getItem("accessToken");
         let response = await this.reviewStore.checkReviewUp(
-          token,
+          accessToken,
           this.reviewIdx
         );
 
@@ -464,9 +468,9 @@ export default {
 
     async checkReviewScrap() {
       try {
-        let token = window.localStorage.getItem("token");
+        let accessToken = window.localStorage.getItem("accessToken");
         let response = await this.reviewStore.checkReviewScrap(
-          token,
+          accessToken,
           this.reviewIdx
         );
 
@@ -765,7 +769,7 @@ img {
   letter-spacing: normal;
 }
 
-::v-deep .editedQ_QContent{
+::v-deep .editedQ_QContent {
   font-size: 14px;
   color: #505254;
   line-height: 1.8;
@@ -822,13 +826,13 @@ img {
 }
 
 ::v-deep .editedQ_QContent .ql-align-center {
-    text-align: center;
+  text-align: center;
 }
 ::v-deep .editedQ_QContent .ql-align-right {
-    text-align: right;
+  text-align: right;
 }
 ::v-deep .editedQ_QContent .ql-align-justify {
-    text-align: justify;
+  text-align: justify;
 }
 
 @media (min-width: 1024px) {

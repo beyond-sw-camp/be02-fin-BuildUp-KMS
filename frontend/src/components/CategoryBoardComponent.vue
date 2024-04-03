@@ -89,7 +89,7 @@
                 </svg>
               </div>
               <div class="css-1ry6usa"></div>
-              <div class="css-updatedTimeGms">{{ boards.createdAt }}</div>
+              <div class="css-updatedTimeGms">{{ this.$moment(boards.createdAt).format('YYYY-MM-DD HH:mm:ss') }}</div>
             </div>
           </div>
           <!-- 여기서부터 추천수 댓글수 등등 표시-->

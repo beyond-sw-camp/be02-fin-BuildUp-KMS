@@ -223,18 +223,18 @@ export function imageHandler() {
       });
 
       if (response.headers["new-access-token"] != null) {
-          if (
-            response.headers["new-access-token"] !=
-            localStorage.getItem("accessToken")
-          ) {
-            localStorage.setItem("accessToken", "");
-            localStorage.setItem(
-              "accessToken",
-              response.headers["new-access-token"]
-            );
-          }
+        if (
+          response.headers["new-access-token"] !=
+          localStorage.getItem("accessToken")
+        ) {
+          localStorage.setItem("accessToken", "");
+          localStorage.setItem(
+            "accessToken",
+            response.headers["new-access-token"]
+          );
         }
-        
+      }
+
       if (response.data.isSuccess === true) {
         let imageUrl = response.data.result.imageUrl;
         quill.insertEmbed(range.index, "image", imageUrl);
