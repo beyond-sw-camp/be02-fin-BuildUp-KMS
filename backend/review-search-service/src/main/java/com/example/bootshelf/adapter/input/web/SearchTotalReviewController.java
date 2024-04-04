@@ -1,6 +1,6 @@
 package com.example.bootshelf.adapter.input.web;
 
-import com.example.bootshelf.application.port.input.SearchReviewUseCase;
+import com.example.bootshelf.application.port.input.SearchTotalReviewUseCase;
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.common.WebAdapter;
 import lombok.RequiredArgsConstructor;
@@ -16,22 +16,20 @@ import javax.validation.constraints.Positive;
 @RequiredArgsConstructor
 @WebAdapter
 @CrossOrigin("*")
-@RequestMapping("/review")
-public class SearchReviewController {
+public class SearchTotalReviewController {
 
-    private final SearchReviewUseCase searchReviewUseCase;
+    private final SearchTotalReviewUseCase searchTotalReviewUseCase;
 
-    // 후기 페이지에서 검색
-    @RequestMapping(method = RequestMethod.GET, value = "/search")
+    // 메인 페이지에서 검색
+    @RequestMapping(method = RequestMethod.GET, value = "/total/search")
     @ResponseBody
-    public ResponseEntity<BaseRes> searchReview(
-            @RequestParam @NotNull @Positive Integer categoryIdx,
-            @RequestParam @NotNull @Positive Integer sortType,
+    public ResponseEntity<BaseRes> searchTotalReview(
+            @RequestParam @NotNull @Positive Integer selectedDropdownValue,
             @RequestParam @NotNull String title,
-            @PageableDefault(size = 9) Pageable pageable
+            @PageableDefault(size = 20) Pageable pageable
     ) {
 
-        BaseRes baseRes = searchReviewUseCase.searchReview(categoryIdx, sortType, title, pageable);
+        BaseRes baseRes = searchTotalReviewUseCase.searchTotalReview(selectedDropdownValue, title, pageable);
 
         return ResponseEntity.ok().body(baseRes);
     }

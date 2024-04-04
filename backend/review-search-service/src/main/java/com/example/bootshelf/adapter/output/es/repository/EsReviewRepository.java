@@ -22,23 +22,22 @@ public class EsReviewRepository {
 
     private final ElasticsearchOperations operations;
 
-    public SearchHits<EsReview> titleContentSearch (Integer categoryIdx, String sortField, String title, Pageable
-        pageable){
+    public SearchHits<EsReview> titleContentSearch(Integer categoryIdx, String sortField, String title, Pageable pageable) {
 
-            MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(title,
-                    "reviewTitle", "reviewContent");
+        MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(title,
+                "reviewTitle", "reviewContent");
 
-            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
-                    .filter(QueryBuilders.termQuery("status", "true"))
-                    .filter(QueryBuilders.termQuery("reviewCategory", categoryIdx));
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
+                .filter(QueryBuilders.termQuery("status", "true"))
+                .filter(QueryBuilders.termQuery("reviewCategory", categoryIdx));
 
-            NativeSearchQuery build = new NativeSearchQueryBuilder()
-                    .withQuery(multiMatchQueryBuilder)
-                    .withFilter(boolQueryBuilder)
-                    .withPageable(pageable)
-                    .withSort(SortBuilders.fieldSort(sortField).order(SortOrder.ASC))
-                    .build();
+        NativeSearchQuery build = new NativeSearchQueryBuilder()
+                .withQuery(multiMatchQueryBuilder)
+                .withFilter(boolQueryBuilder)
+                .withPageable(pageable)
+                .withSort(SortBuilders.fieldSort(sortField).order(SortOrder.ASC))
+                .build();
 
-            return operations.search(build, EsReview.class);
-        }
+        return operations.search(build, EsReview.class);
+    }
 }
