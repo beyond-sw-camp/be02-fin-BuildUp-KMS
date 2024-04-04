@@ -1,12 +1,10 @@
-package com.example.bootshelf.adapter.in.web;
+package com.example.bootshelf.adapter.input.web;
 
-import com.example.bootshelf.adapter.out.es.entity.EsReview;
-import com.example.bootshelf.application.port.in.SearchReviewUseCase;
+import com.example.bootshelf.application.port.input.SearchReviewUseCase;
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.common.WebAdapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

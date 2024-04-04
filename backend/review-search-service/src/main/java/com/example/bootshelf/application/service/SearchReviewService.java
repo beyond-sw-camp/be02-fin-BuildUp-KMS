@@ -1,8 +1,8 @@
 package com.example.bootshelf.application.service;
 
-import com.example.bootshelf.adapter.out.es.entity.EsReview;
-import com.example.bootshelf.application.port.in.SearchReviewUseCase;
-import com.example.bootshelf.application.port.out.GetListReviewPort;
+import com.example.bootshelf.adapter.output.es.entity.EsReview;
+import com.example.bootshelf.application.port.input.SearchReviewUseCase;
+import com.example.bootshelf.application.port.output.GetListReviewPort;
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.common.UseCase;
 import com.example.bootshelf.domain.Review;
