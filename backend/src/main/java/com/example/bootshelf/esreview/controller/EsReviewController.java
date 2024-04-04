@@ -20,29 +20,30 @@ public class EsReviewController {
 
     private final EsReviewService esReviewService;
 
-    // 제목으로 검색(메인)
-    @GetMapping("/search/main/title")
+    // 메인 검색(통합)
+    @GetMapping("/search/main")
     @ResponseBody
     public ResponseEntity titleContentSearch(
+            @RequestParam Integer selectedDropdownValue,
             @RequestParam String title,
             @PageableDefault(size = 20) Pageable pageable
     ) {
-        BaseRes baseRes =  esReviewService.titleSearchByMain(title, pageable);
+        BaseRes baseRes =  esReviewService.titleSearchByMain(selectedDropdownValue, title, pageable);
 
         return ResponseEntity.ok().body(baseRes);
     }
-
-    // 제목+내용 (메인)
-    @GetMapping("/search/main/titlecontent")
-    @ResponseBody
-    public ResponseEntity titleContentSearchByMain(
-            @RequestParam String title,
-            @PageableDefault(size = 20) Pageable pageable
-    ) {
-        BaseRes baseRes =  esReviewService.titleContentSearchByMain(title, pageable);
-
-        return ResponseEntity.ok().body(baseRes);
-    }
+//
+//    // 제목+내용 (메인)
+//    @GetMapping("/search/main/titlecontent")
+//    @ResponseBody
+//    public ResponseEntity titleContentSearchByMain(
+//            @RequestParam String title,
+//            @PageableDefault(size = 20) Pageable pageable
+//    ) {
+//        BaseRes baseRes =  esReviewService.titleContentSearchByMain(title, pageable);
+//
+//        return ResponseEntity.ok().body(baseRes);
+//    }
 
     // 제목+내용+정렬 (과정후기)
     @GetMapping("/search/course")

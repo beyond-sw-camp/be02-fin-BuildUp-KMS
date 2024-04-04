@@ -22,99 +22,117 @@ import org.springframework.stereotype.Repository;
 public class EsReviewRepository {
     private final ElasticsearchOperations operations;
 
-    // 제목 검색(메인)
-    public SearchHits<EsReview> titleSearchByMain(String title, Pageable pageable) {
+    // 메인 검색(통합)
+    public SearchHits<EsReview> titleSearchByMain(Integer selectedDropdownValue, String title, Pageable pageable) {
 
-        MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("reviewTitle", title);
+        if (selectedDropdownValue == 1) {
+            MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("reviewTitle", title);
 
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
-                .filter(QueryBuilders.termQuery("status", "true"));
+            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
+                    .filter(QueryBuilders.termQuery("status", "true"));
 
-        NativeSearchQuery build = new NativeSearchQueryBuilder()
-                .withQuery(matchQueryBuilder)
-                .withFilter(boolQueryBuilder)
-                .withPageable(pageable)
-                .build();
+            NativeSearchQuery build = new NativeSearchQueryBuilder()
+                    .withQuery(matchQueryBuilder)
+                    .withFilter(boolQueryBuilder)
+                    .withPageable(pageable)
+                    .build();
 
-        return operations.search(build, EsReview.class);
+            return operations.search(build, EsReview.class);
+
+        } else {
+            MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(title,
+                    "reviewTitle", "reviewContent");
+
+            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
+                    .filter(QueryBuilders.termQuery("status", "true"));
+
+            NativeSearchQuery build = new NativeSearchQueryBuilder()
+                    .withQuery(multiMatchQueryBuilder)
+                    .withFilter(boolQueryBuilder)
+                    .withPageable(pageable)
+                    .build();
+
+            return operations.search(build, EsReview.class);
+        }
     }
 
-    // 제목+내용 검색(메인)
-    public SearchHits<EsReview> titleContentSearchByMain(String title, Pageable pageable) {
+//    // 제목+내용 검색(메인)
+//    public SearchHits<EsReview> titleContentSearchByMain(String title, Pageable pageable) {
+//
+//        MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(title,
+//                "reviewTitle", "reviewContent");
+//
+//        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
+//                .filter(QueryBuilders.termQuery("status", "true"));
+//
+//        NativeSearchQuery build = new NativeSearchQueryBuilder()
+//                .withQuery(multiMatchQueryBuilder)
+//                .withFilter(boolQueryBuilder)
+//                .withPageable(pageable)
+//                .build();
+//
+//        return operations.search(build, EsReview.class);
+//    }
 
-        MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(title,
-                "reviewTitle", "reviewContent");
+        // 제목+내용+정렬 검색(과정후기)
+        public SearchHits<EsReview> titleContentSearchByCourse (String sortField, String title, Pageable pageable){
 
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
-                .filter(QueryBuilders.termQuery("status", "true"));
+            MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(title,
+                    "reviewTitle", "reviewContent");
 
-        NativeSearchQuery build = new NativeSearchQueryBuilder()
-                .withQuery(multiMatchQueryBuilder)
-                .withFilter(boolQueryBuilder)
-                .withPageable(pageable)
-                .build();
+            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
+                    .filter(QueryBuilders.termQuery("status", "true"))
+                    .filter(QueryBuilders.termQuery("reviewCategory", 1));
 
-        return operations.search(build, EsReview.class);
+            NativeSearchQuery build = new NativeSearchQueryBuilder()
+                    .withQuery(multiMatchQueryBuilder)
+                    .withFilter(boolQueryBuilder)
+                    .withPageable(pageable)
+                    .withSort(SortBuilders.fieldSort(sortField).order(SortOrder.ASC))
+                    .build();
+
+            return operations.search(build, EsReview.class);
+        }
+
+        // 제목+내용+정렬 검색(강사후기)
+        public SearchHits<EsReview> titleContentSearchByTeacher (String sortField, String title, Pageable pageable){
+
+            MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(title,
+                    "reviewTitle", "reviewContent");
+
+            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
+                    .filter(QueryBuilders.termQuery("status", "true"))
+                    .filter(QueryBuilders.termQuery("reviewCategory", 2));
+
+            NativeSearchQuery build = new NativeSearchQueryBuilder()
+                    .withQuery(multiMatchQueryBuilder)
+                    .withFilter(boolQueryBuilder)
+                    .withPageable(pageable)
+                    .withSort(SortBuilders.fieldSort(sortField).order(SortOrder.ASC))
+                    .build();
+
+            return operations.search(build, EsReview.class);
+        }
+
+        // 제목+내용+정렬 검색(통합)
+        public SearchHits<EsReview> titleContentSearch (Integer categoryIdx, String sortField, String title, Pageable
+        pageable){
+
+            MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(title,
+                    "reviewTitle", "reviewContent");
+
+            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
+                    .filter(QueryBuilders.termQuery("status", "true"))
+                    .filter(QueryBuilders.termQuery("reviewCategory", categoryIdx));
+
+            NativeSearchQuery build = new NativeSearchQueryBuilder()
+                    .withQuery(multiMatchQueryBuilder)
+                    .withFilter(boolQueryBuilder)
+                    .withPageable(pageable)
+                    .withSort(SortBuilders.fieldSort(sortField).order(SortOrder.ASC))
+                    .build();
+
+            return operations.search(build, EsReview.class);
+        }
+
     }
-
-    // 제목+내용+정렬 검색(과정후기)
-    public SearchHits<EsReview> titleContentSearchByCourse(String sortField, String title, Pageable pageable) {
-
-        MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(title,
-                "reviewTitle", "reviewContent");
-
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
-                .filter(QueryBuilders.termQuery("status", "true"))
-                .filter(QueryBuilders.termQuery("reviewCategory", 1));
-
-        NativeSearchQuery build = new NativeSearchQueryBuilder()
-                .withQuery(multiMatchQueryBuilder)
-                .withFilter(boolQueryBuilder)
-                .withPageable(pageable)
-                .withSort(SortBuilders.fieldSort(sortField).order(SortOrder.ASC))
-                .build();
-
-        return operations.search(build, EsReview.class);
-    }
-
-    // 제목+내용+정렬 검색(강사후기)
-    public SearchHits<EsReview> titleContentSearchByTeacher(String sortField, String title, Pageable pageable) {
-
-        MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(title,
-                "reviewTitle", "reviewContent");
-
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
-                .filter(QueryBuilders.termQuery("status", "true"))
-                .filter(QueryBuilders.termQuery("reviewCategory", 2));
-
-        NativeSearchQuery build = new NativeSearchQueryBuilder()
-                .withQuery(multiMatchQueryBuilder)
-                .withFilter(boolQueryBuilder)
-                .withPageable(pageable)
-                .withSort(SortBuilders.fieldSort(sortField).order(SortOrder.ASC))
-                .build();
-
-        return operations.search(build, EsReview.class);
-    }
-
-    // 제목+내용+정렬 검색(통합)
-    public SearchHits<EsReview> titleContentSearch(Integer categoryIdx ,String sortField, String title, Pageable pageable) {
-
-        MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(title,
-                "reviewTitle", "reviewContent");
-
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
-                .filter(QueryBuilders.termQuery("status", "true"))
-                .filter(QueryBuilders.termQuery("reviewCategory", categoryIdx));
-
-        NativeSearchQuery build = new NativeSearchQueryBuilder()
-                .withQuery(multiMatchQueryBuilder)
-                .withFilter(boolQueryBuilder)
-                .withPageable(pageable)
-                .withSort(SortBuilders.fieldSort(sortField).order(SortOrder.ASC))
-                .build();
-
-        return operations.search(build, EsReview.class);
-    }
-
-}
