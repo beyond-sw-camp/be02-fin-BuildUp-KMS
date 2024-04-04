@@ -3,18 +3,17 @@ package com.example.bootshelf.user.model.entity;
 import com.example.bootshelf.boardsvc.board.model.entity.Board;
 import com.example.bootshelf.boardsvc.boardcomment.model.entity.BoardComment;
 import com.example.bootshelf.boardsvc.boardcommentup.model.entity.BoardCommentUp;
-import com.example.bootshelf.boardsvc.boardhistory.model.entity.BoardHistory;
 import com.example.bootshelf.boardsvc.boardscrap.model.entity.BoardScrap;
 import com.example.bootshelf.boardsvc.boardup.model.entity.BoardUp;
 import com.example.bootshelf.certification.Certification;
 import com.example.bootshelf.reviewsvc.review.model.entity.Review;
 import com.example.bootshelf.reviewsvc.reviewcomment.model.entity.ReviewComment;
 import com.example.bootshelf.reviewsvc.reviewcommentup.model.entity.ReviewCommentUp;
-import com.example.bootshelf.reviewsvc.reviewhistory.model.ReviewHistory;
 import com.example.bootshelf.reviewsvc.reviewscrap.model.entity.ReviewScrap;
 import com.example.bootshelf.reviewsvc.reviewup.model.entity.ReviewUp;
 import com.example.bootshelf.user.model.request.PatchUpdateUserReq;
 import lombok.*;
+import org.joda.time.LocalDateTime;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -46,9 +45,6 @@ public class User implements UserDetails {
     private List<ReviewScrap> reviewScrapList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<ReviewHistory> reviewHistoryList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<ReviewComment> reviewCommentList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
@@ -62,9 +58,6 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<BoardScrap> boardScrapList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<BoardHistory> boardHistoryList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<BoardComment> boardCommentList = new ArrayList<>();
@@ -94,10 +87,10 @@ public class User implements UserDetails {
     private String profileImage;
 
     @Column(nullable = false)
-    private String createdAt;
+    private LocalDateTime createdAt;
 
     @Column(nullable = false)
-    private String updatedAt;
+    private LocalDateTime updatedAt;
 
     @Column(nullable = false)
     private Boolean status;

@@ -18,11 +18,10 @@ import com.example.bootshelf.common.error.ErrorCode;
 import com.example.bootshelf.common.error.entityexception.BoardCommentException;
 import com.example.bootshelf.user.model.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.joda.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -56,8 +55,8 @@ public class BoardCommentService {
                 .commentContent(postCreateBoardCommentReq.getBoardCommentContent())
                 .status(true)
                 .upCnt(0)
-                .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-                .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
 
         boardCommentRepository.save(boardComment);
@@ -146,7 +145,7 @@ public class BoardCommentService {
             }
 
             BoardComment boardComment = result.get();
-            boardComment.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            boardComment.setUpdatedAt(LocalDateTime.now());
             boardComment.setCommentContent(patchUpdateBoardCommentReq.getBoardCommentContent());
 
             boardCommentRepository.save(boardComment);
@@ -243,8 +242,8 @@ public class BoardCommentService {
                 .commentContent(postCreateBoardReplyReq.getBoardReplyContent())
                 .status(true)
                 .upCnt(0)
-                .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-                .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
 
         parentBoardComment.get().getChildren().add(childrenBoardComment);

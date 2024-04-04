@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface ReviewCategoryRepository extends JpaRepository<ReviewCategory, Integer> {
 
     Optional<ReviewCategory> findByIdx(Integer idx);
-    Optional<ReviewCategory> findByCategoryName(String categoryName );
+    Optional<ReviewCategory> findByCategoryName(String categoryName);
 }

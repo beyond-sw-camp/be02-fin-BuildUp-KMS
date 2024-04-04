@@ -6,17 +6,14 @@ import com.example.bootshelf.boardsvc.boardtag.model.response.GetListHotTagRes;
 import com.example.bootshelf.boardsvc.boardtag.model.response.GetListHotTagResResult;
 import com.example.bootshelf.boardsvc.boardtag.repository.BoardTagRepository;
 import com.example.bootshelf.common.BaseRes;
-import com.example.bootshelf.common.error.ErrorCode;
-import com.example.bootshelf.common.error.entityexception.BoardTagException;
 import com.example.bootshelf.tag.model.entity.Tag;
 import com.example.bootshelf.tag.repository.TagRepository;
 import com.example.bootshelf.tag.service.TagService;
 import lombok.RequiredArgsConstructor;
+import org.joda.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -50,8 +47,8 @@ public class BoardTagService {
                     .tag(tag)
                     .board(Board.builder().idx(idx).build())
                     .status(true)
-                    .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
-                    .updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+                    .createdAt(LocalDateTime.now())
+                    .updatedAt(LocalDateTime.now())
                     .build();
 
             boardTagRepository.save(boardTag);
@@ -61,12 +58,8 @@ public class BoardTagService {
     @Transactional(readOnly = false)
     public void updateBoardTag(List<String> reqTagList, Integer idx) {
 
+        boardTagRepository.deleteAllByBoard_Idx(idx);
 
-        Integer result = boardTagRepository.deleteAllByBoard_Idx(idx);
-
-        if(result.equals(0)) {
-            throw new BoardTagException(ErrorCode.BOARD_TAG_NOT_EXISTS, String.format("Board [ %s ] does not have BoardTag", idx));
-        }
         saveBoardTag(reqTagList, idx);
     }
 

@@ -105,7 +105,14 @@ public class JwtUtils {
     }
 
     public static Integer getUserIdx(String token, String key){
-        return extractAllClaims(token, key).get("idx", Integer.class);
+        return extracAtllClaimsFromOld(token, key).get("idx", Integer.class);
+    }
+    public static Claims extracAtllClaimsFromOld(String token, String key) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getSignKey(key))
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     // 토큰에서 정보를 가져오는 코드가 계속 중복되어 사용되기 때문에 별도의 메서드로 만들어서 사용하기 위한 것

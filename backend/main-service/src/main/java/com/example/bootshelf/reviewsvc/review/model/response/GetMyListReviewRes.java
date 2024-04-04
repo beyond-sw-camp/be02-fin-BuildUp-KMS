@@ -1,6 +1,7 @@
 package com.example.bootshelf.reviewsvc.review.model.response;
 
 import lombok.*;
+import org.joda.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -22,6 +23,5 @@ public class GetMyListReviewRes {
     private Integer commentCnt;
     private String type;
     private String boardType;
-    private String updatedAt;
-
+    private LocalDateTime updatedAt;
 }

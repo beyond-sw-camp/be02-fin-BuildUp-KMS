@@ -3,6 +3,7 @@ package com.example.bootshelf.boardsvc.boardtag.model.entity;
 import com.example.bootshelf.boardsvc.board.model.entity.Board;
 import com.example.bootshelf.tag.model.entity.Tag;
 import lombok.*;
+import org.joda.time.LocalDateTime;
 
 import javax.persistence.*;
 
@@ -30,9 +31,9 @@ public class BoardTag {
     private Boolean status;
 
     @Column(nullable = false)
-    private String createdAt;
+    private LocalDateTime createdAt;
 
     @Column(nullable = false)
-    private String updatedAt;
+    private LocalDateTime updatedAt;
 
 }

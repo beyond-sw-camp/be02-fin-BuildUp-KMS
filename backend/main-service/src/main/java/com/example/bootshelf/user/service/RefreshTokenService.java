@@ -12,10 +12,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Base64;
 import java.util.Optional;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class RefreshTokenService {
     @Value("${jwt.secret-key}")
     private String secretKey;
@@ -23,13 +24,16 @@ public class RefreshTokenService {
     private Long expiredTimeMs;
     @Value("${jwt.token.refresh-expiration-ms}")
     private Long expiredRefreshTokenTimeMs;
-    private UserRepository userRepository;
-    private UserRefreshToken userRefreshToken;
-    private UserRefreshTokenRepository userRefreshTokenRepository;
+
+    private final UserRepository userRepository;
+
+    private final UserRefreshTokenRepository userRefreshTokenRepository;
+
+    private final JwtUtils jwtUtils;
 
     @Transactional
     public String recreateAccessToken(String oldAccessToken) throws JsonProcessingException {
-        Integer userIdx = JwtUtils.getUserIdx(oldAccessToken, secretKey);
+        Integer userIdx = extractIdxFromAccessToken(oldAccessToken);
 
         if(userRefreshTokenRepository.findByUserIdx(userIdx).isPresent()){
             Optional<User> result = userRepository.findByIdx(userIdx);
@@ -41,16 +45,49 @@ public class RefreshTokenService {
     }
 
     @Transactional(readOnly = true)
-    public void validateRefreshToken(String refreshToken, String oldAccessToken) throws JsonProcessingException {
+    public Boolean validateRefreshToken(String refreshToken, String oldAccessToken) throws JsonProcessingException {
         // 이거 try catch로 해야하나...?
-        JwtUtils.extractAllClaims(refreshToken,secretKey);
+        jwtUtils.extractAllClaims(refreshToken,secretKey);
         //
-        Integer userIdx = JwtUtils.getUserIdx(oldAccessToken, secretKey);
+        Integer userIdx = extractIdxFromAccessToken(oldAccessToken);
         Optional <UserRefreshToken> result = userRefreshTokenRepository.findByUserIdx(userIdx);
-        if(!result.isEmpty()){
-            userRefreshToken.validateRefreshToken(refreshToken);
+        if(result!=null){
+            UserRefreshToken userRefreshToken = result.get();
+            String ref = userRefreshToken.getRefreshToken();
+            if(ref.equals(refreshToken)) {
+                return true;
+            } else {
+                return false;
+            }
+//            userRefreshToken.validateRefreshToken(refreshToken);
         } else {
             throw new ExpiredJwtException(null, null, "Refresh token expired.");
         }
+    }
+
+    public static int extractIdxFromAccessToken(String accessToken) {
+        String[] tokenParts = accessToken.split("\\.");
+        if (tokenParts.length < 2) {
+            // 올바르지 않은 JWT 형식
+            return -1;
+        }
+
+        String payloadBase64 = tokenParts[1];
+        byte[] payloadBytes = Base64.getDecoder().decode(payloadBase64);
+        String payloadJson = new String(payloadBytes);
+
+        // JSON 문자열에서 "idx" 값을 추출
+        int idxStartIndex = payloadJson.indexOf("\"idx\"");
+        if (idxStartIndex == -1) {
+            // "idx" 필드가 없음
+            return -1;
+        }
+
+        int colonIndex = payloadJson.indexOf(":", idxStartIndex);
+        int commaIndex = payloadJson.indexOf(",", colonIndex);
+        String idxValue = payloadJson.substring(colonIndex + 1, commaIndex).trim();
+
+        // "idx" 값을 정수로 변환하여 반환
+        return Integer.parseInt(idxValue);
     }
 }

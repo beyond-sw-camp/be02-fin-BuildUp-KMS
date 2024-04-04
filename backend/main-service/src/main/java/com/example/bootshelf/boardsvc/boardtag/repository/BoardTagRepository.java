@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BoardTagRepository extends JpaRepository<BoardTag, Integer>, BoardTagRepositoryCustom {
-    Integer deleteAllByBoard_Idx(Integer idx);
+    void deleteAllByBoard_Idx(Integer idx);
 }

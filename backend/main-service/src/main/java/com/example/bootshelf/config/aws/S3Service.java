@@ -14,16 +14,16 @@ public class S3Service {
 
     private final AmazonS3 s3;
 
-    public String uploadBoardFile(String buckName, MultipartFile file, String savePath){
+    public String uploadFile(String bucketName, MultipartFile file, String savePath){
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(file.getSize());
         metadata.setContentType(file.getContentType());
 
         try {
-            s3.putObject(buckName, savePath, file.getInputStream(), metadata);
+            s3.putObject(bucketName, savePath, file.getInputStream(), metadata);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return s3.getUrl(buckName, savePath).toString();
+        return s3.getUrl(bucketName, savePath).toString();
     }
 }

@@ -4,6 +4,7 @@ import com.example.bootshelf.boardsvc.board.model.entity.Board;
 import com.example.bootshelf.boardsvc.boardcommentup.model.entity.BoardCommentUp;
 import com.example.bootshelf.user.model.entity.User;
 import lombok.*;
+import org.joda.time.LocalDateTime;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -51,10 +52,10 @@ public class BoardComment {
     private Boolean status;
 
     @Column(nullable = false)
-    private String createdAt;
+    private LocalDateTime createdAt;
 
     @Column(nullable = false)
-    private String updatedAt;
+    private LocalDateTime updatedAt;
 
     public void increaseUpCnt() {
         this.upCnt += 1;

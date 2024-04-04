@@ -7,8 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class GetListImageBoardRes {
-
-    private String boardImage;
+public class PostUploadBoardImageRes {
+    String imageUrl;
 
 }

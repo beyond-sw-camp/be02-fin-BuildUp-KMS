@@ -1,6 +1,7 @@
 package com.example.bootshelf.reviewsvc.reviewscrap.model.response;
 
 import lombok.*;
+import org.joda.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -23,6 +24,6 @@ public class GetScrapListReviewRes {
     private Integer commentCnt;
     private String type;   // review, board
     private String boardType;  // write, scrap
-    private String updatedAt;
+    private LocalDateTime updatedAt;
 
 }

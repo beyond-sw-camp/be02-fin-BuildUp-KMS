@@ -16,11 +16,13 @@ import com.example.bootshelf.config.utils.JwtUtils;
 import com.example.bootshelf.course.Course;
 import com.example.bootshelf.course.repository.CourseRepository;
 import com.example.bootshelf.user.model.entity.User;
+import com.example.bootshelf.user.model.entity.UserRefreshToken;
 import com.example.bootshelf.user.model.request.*;
 import com.example.bootshelf.user.model.response.*;
 import com.example.bootshelf.user.repository.UserRefreshTokenRepository;
 import com.example.bootshelf.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,8 +35,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -73,11 +73,11 @@ public class UserService {
             savePath = "https://bootshelf-profile.s3.ap-northeast-2.amazonaws.com/2024/03/14/6a0ac29b-55c8-4fd0-808a-fcd1b9deda76_default.png";
         } else {
             // 프로필 이미지가 있는 경우 S3에 업로드
-            savePath = ImageUtils.makeBoardImagePath(profileImage.getOriginalFilename());
-            savePath = s3Service.uploadBoardFile(profileBucket, profileImage, savePath);
+            savePath = ImageUtils.makeImagePath(profileImage.getOriginalFilename());
+            savePath = s3Service.uploadFile(profileBucket, profileImage, savePath);
         }
 
-        User user = User.builder().password(passwordEncoder.encode(postSignUpUserReq.getPassword())).name(postSignUpUserReq.getName()).email(postSignUpUserReq.getEmail()).nickName(postSignUpUserReq.getNickName()).profileImage(savePath).authority("ROLE_USER").createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))).updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))).status(false).build();
+        User user = User.builder().password(passwordEncoder.encode(postSignUpUserReq.getPassword())).name(postSignUpUserReq.getName()).email(postSignUpUserReq.getEmail()).nickName(postSignUpUserReq.getNickName()).profileImage(savePath).authority("ROLE_USER").createdAt(LocalDateTime.now()).updatedAt(LocalDateTime.now()).status(false).build();
 
         userRepository.save(user);
 
@@ -106,10 +106,10 @@ public class UserService {
                     .isSuccess(true)
                     .message("회원가입에 성공하였습니다.")
                     .result(
-                    PostSignUpUserRes.builder()
-                            .userEmail(user.getEmail())
-                            .userName(user.getName())
-                            .build())
+                            PostSignUpUserRes.builder()
+                                    .userEmail(user.getEmail())
+                                    .userName(user.getName())
+                                    .build())
                     .build();
 
             return baseRes;
@@ -122,7 +122,7 @@ public class UserService {
 
             User user = saveUser(postSignUpUserReq, profileImage);
 
-            Certification certification = Certification.builder().user(user).course(Course.builder().idx(resultCourse.get().getIdx()).build()).status(true).createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))).updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))).build();
+            Certification certification = Certification.builder().user(user).course(Course.builder().idx(resultCourse.get().getIdx()).build()).status(true).createdAt(LocalDateTime.now()).updatedAt(LocalDateTime.now()).build();
 
             certificationRepository.save(certification);
 
@@ -198,14 +198,36 @@ public class UserService {
         }
 
         User user = result.get();
-        if (passwordEncoder.matches(postLoginUserReq.getPassword(), user.getPassword()) && user.getStatus().equals(true)) {
-            PostLoginUserRes postLogInUserRes = PostLoginUserRes.builder().accessToken(jwtUtils.generateAccessToken(user, secretKey, expiredTimeMs)).expiredTimeMs(expiredTimeMs).build();
+        if (passwordEncoder.matches(postLoginUserReq.getPassword(), user.getPassword())) {
+
+            if(user.getStatus() == false) {
+                throw new UserException(ErrorCode.NO_EMAIL_VERIFY, String.format("User email [ %s ] is not email verified.", user.getEmail()));
+            }
+            PostLoginUserRes postLogInUserRes = PostLoginUserRes.builder().accessToken(jwtUtils.generateAccessToken(user, secretKey, expiredTimeMs)).build();
             // 로그인 시 리프레시 토큰이 존재할 때 지워준다.
-            if(userRefreshTokenRepository.findByUserIdx(user.getIdx()).isPresent()){
-                userRefreshTokenRepository.deleteByUserIdx(user.getIdx());
-                postLogInUserRes.setRefreshToken(jwtUtils.generateRefreshToken(secretKey,expiredRefreshTokenTimeMs));
+
+            Optional<UserRefreshToken> oldToken = userRefreshTokenRepository.findByUserIdx(user.getIdx());
+
+            if(oldToken.isPresent()) {
+                UserRefreshToken userRefreshToken = oldToken.get();
+                String newRefreshToken = jwtUtils.generateRefreshToken(secretKey,expiredRefreshTokenTimeMs);
+
+                userRefreshToken.setRefreshToken(newRefreshToken);
+                userRefreshTokenRepository.save(userRefreshToken);
+
+                postLogInUserRes.setRefreshToken(newRefreshToken);
             } else {
-                postLogInUserRes.setRefreshToken(jwtUtils.generateRefreshToken(secretKey,expiredRefreshTokenTimeMs));
+
+                String newRefreshToken = jwtUtils.generateRefreshToken(secretKey,expiredRefreshTokenTimeMs);
+
+                UserRefreshToken userRefreshToken = UserRefreshToken.builder()
+                        .refreshToken(newRefreshToken)
+                        .userIdx(user.getIdx())
+                        .build();
+
+                userRefreshTokenRepository.save(userRefreshToken);
+
+                postLogInUserRes.setRefreshToken(newRefreshToken);
             }
             return BaseRes.builder().isSuccess(true).message("로그인에 성공하였습니다.").result(postLogInUserRes).build();
         } else {
@@ -272,7 +294,7 @@ public class UserService {
     @Transactional
     public void kakaoSignup(String nickName, String profileImage) {
 
-        User user = User.builder().email(nickName + "@kakao.com").password(passwordEncoder.encode("kakao")).nickName(nickName).name(nickName).profileImage(profileImage).authority("ROLE_KAKAO").createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))).updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))).status(true).build();
+        User user = User.builder().email(nickName + "@kakao.com").password(passwordEncoder.encode("kakao")).nickName(nickName).name(nickName).profileImage(profileImage).authority("ROLE_KAKAO").createdAt(LocalDateTime.now()).updatedAt(LocalDateTime.now()).status(true).build();
 
         user = userRepository.save(user);
 
@@ -320,7 +342,7 @@ public class UserService {
             user.update(patchUpdateUserReq, null);
         }
 
-        user.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+        user.setUpdatedAt(LocalDateTime.now());
         userRepository.save(user);
 
         return BaseRes.builder().isSuccess(true).message("회원정보 수정 성공").result(user.getNickName()).build();
@@ -338,11 +360,11 @@ public class UserService {
 
         User user = result.get();
         // 프로필 이미지가 있는 경우 S3에 업로드
-        String savePath = ImageUtils.makeBoardImagePath(profileImage.getOriginalFilename());
-        savePath = s3Service.uploadBoardFile(profileBucket, profileImage, savePath);
+        String savePath = ImageUtils.makeImagePath(profileImage.getOriginalFilename());
+        savePath = s3Service.uploadFile(profileBucket, profileImage, savePath);
 
         user.setProfileImage(savePath);
-        user.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+        user.setUpdatedAt(LocalDateTime.now());
         userRepository.save(user);
 
         BaseRes baseRes = BaseRes.builder().isSuccess(true).message("프로필 이미지 수정 성공").result("요청 성공").build();
@@ -393,7 +415,7 @@ public class UserService {
             throw new AdminException(ErrorCode.DUPLICATE_SIGNUP_EMAIL, String.format("SignUp Email [ %s ] is duplicated.", postSignUpAdminReq.getEmail()));
         }
 
-        User user = User.builder().password(passwordEncoder.encode(postSignUpAdminReq.getPassword())).name(postSignUpAdminReq.getName()).email(postSignUpAdminReq.getEmail()).authority("ROLE_ADMIN").createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))).updatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))).status(true).build();
+        User user = User.builder().password(passwordEncoder.encode(postSignUpAdminReq.getPassword())).name(postSignUpAdminReq.getName()).email(postSignUpAdminReq.getEmail()).authority("ROLE_ADMIN").createdAt(LocalDateTime.now()).updatedAt(LocalDateTime.now()).status(true).build();
 
         userRepository.save(user);
 
@@ -408,13 +430,14 @@ public class UserService {
         if (result.isEmpty()) {
             throw new UserException(ErrorCode.USER_NOT_EXISTS, String.format("UserEmail [ %s ] is not exists.", email));
         }
-            User user = result.get();
-            String pw = getTempPassword();
-            user.setPassword(passwordEncoder.encode(pw));
+        User user = result.get();
+        String pw = getTempPassword();
+        user.setPassword(passwordEncoder.encode(pw));
 
-            user.setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
-            userRepository.save(user);
-            return pw;
+        user.setUpdatedAt(LocalDateTime.now());
+        userRepository.save(user);
+        
+        return pw;
     }
 
     public String getTempPassword() {
@@ -422,7 +445,7 @@ public class UserService {
                 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 
         char[] charSet2 = new char[]{'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s',
-        't','u','v','w','x','y','z'};
+                't','u','v','w','x','y','z'};
 
         char[] charSet3 = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 

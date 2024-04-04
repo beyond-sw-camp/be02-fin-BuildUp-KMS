@@ -1,6 +1,7 @@
 package com.example.bootshelf.boardsvc.boardcomment.model.response;
 
 import lombok.*;
+import org.joda.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -13,7 +14,7 @@ public class PatchUpdateBoardCommentRes {
     private Integer userIdx;
     private String nickName;
     private String boardCommentContent;
-    private String createAt;
-    private String updateAt;
+    private LocalDateTime createAt;
+    private LocalDateTime updateAt;
 
 }

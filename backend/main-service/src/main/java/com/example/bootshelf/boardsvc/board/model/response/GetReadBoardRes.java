@@ -1,6 +1,7 @@
 package com.example.bootshelf.boardsvc.board.model.response;
 
 import lombok.*;
+import org.joda.time.LocalDateTime;
 
 import java.util.List;
 
@@ -28,11 +29,9 @@ public class GetReadBoardRes {
 
     private Integer commentCnt;
 
-    private String createdAt;
+    private LocalDateTime createdAt;
 
-    private String updatedAt;
-
-    private List<GetListImageBoardRes> boardImageList;
+    private LocalDateTime updatedAt;
 
     private List<GetListCommentBoardRes> boardCommentList;
 

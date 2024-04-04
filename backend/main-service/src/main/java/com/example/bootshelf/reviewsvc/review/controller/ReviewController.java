@@ -3,8 +3,8 @@ package com.example.bootshelf.reviewsvc.review.controller;
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.reviewsvc.review.model.request.PatchUpdateReviewReq;
 import com.example.bootshelf.reviewsvc.review.model.request.PostCreateReviewReq;
+import com.example.bootshelf.reviewsvc.review.service.ReviewImageService;
 import com.example.bootshelf.reviewsvc.review.service.ReviewService;
-import com.example.bootshelf.reviewsvc.reviewimage.service.ReviewImageService;
 import com.example.bootshelf.user.model.entity.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
@@ -32,25 +32,9 @@ import javax.validation.constraints.Positive;
 @CrossOrigin("*")
 public class ReviewController {
 
-    private final ReviewImageService reviewImageService;
     private final ReviewService reviewService;
+    private final ReviewImageService reviewImageService;
 
-    //    @Operation(summary = "후기글 생성",
-//            description = "인증회원이 후기글을 생성할 수 있다.")
-//    @ApiResponses({
-//            @ApiResponse(responseCode = "200", description = "성공"),
-//            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
-//    })
-//    @RequestMapping(method = RequestMethod.POST, value = "/create")
-//    public ResponseEntity<BaseRes> createReview(
-//            @RequestPart(value = "review") @Valid PostCreateReviewReq postCreateReviewReq,
-//            @RequestPart(value = "reviewImage", required = false) MultipartFile[] reviewImages
-//    ) {
-//        User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-//        BaseRes baseRes = reviewService.createReview(user, postCreateReviewReq, reviewImages);
-//
-//        return ResponseEntity.ok().body(baseRes);
-//    }
     @Operation(summary = "후기글 생성",
             description = "인증회원이 후기글을 생성할 수 있다.")
     @ApiResponses({
