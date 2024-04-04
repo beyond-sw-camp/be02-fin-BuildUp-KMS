@@ -7,6 +7,10 @@ import com.example.bootshelf.esboard.model.response.BoardSearchResResult;
 import com.example.bootshelf.esboard.repository.EsBoardRepository;
 import com.example.bootshelf.esboard.repository.EsOperation;
 import lombok.RequiredArgsConstructor;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
@@ -125,6 +129,12 @@ public class EsBoardService {
         else return null;
     }
 
+    // 목록 조회 시 글만 추출
+    public static String extractText(String html) {
+        Document doc = Jsoup.parse(html);
+        return doc.text();
+    }
+
     // 제목+내용+정렬 검색 (통합)
     public BaseRes titleContentSearch(@NotNull Integer categoryIdx, Integer sortType, String title, Pageable pageable) {
         String[] fields = {"createdAt", "upCnt", "viewCnt", "scrapCnt", "commentCnt"}; // 필드 이름 배열
@@ -139,12 +149,15 @@ public class EsBoardService {
             List<BoardSearchRes> boardSearchRes = new ArrayList<>();
 
             for (EsBoard result : searchContent) {
+
+                String textContent = extractText(result.getBoardContent());
+
                 BoardSearchRes response = BoardSearchRes.builder()
                         .idx(Integer.valueOf(result.getId()))
                         .user(result.getUser())
                         .boardCategory(result.getBoardCategory())
                         .boardTitle(result.getBoardTitle())
-                        .boardContent(result.getBoardContent())
+                        .boardContent(textContent)
                         .viewCnt(result.getViewCnt())
                         .upCnt(result.getUpCnt())
                         .scrapCnt(result.getScrapCnt())
@@ -153,6 +166,12 @@ public class EsBoardService {
                         .createdAt(result.getCreatedAt())
                         .updatedAt(result.getUpdatedAt())
                         .build();
+                Document doc = Jsoup.parse(result.getBoardContent());
+                Elements images = doc.select("img");
+
+                if (!images.isEmpty()) {
+                    response.setBoardImg(images.get(0).attr("src"));
+                }
 
                 boardSearchRes.add(response);
             }
@@ -177,8 +196,8 @@ public class EsBoardService {
 
 
 //    // EsRepository 사용
-//    public Page<EsBoard> titleContentSearchByElastic2(@NotNull String title, Pageable pageable) {
-//        Page<EsBoard> result = esBoardRepository.findByBoardTitle(title, pageable);
+//    public Page<EsBoard> titleContentSearchByElastic2(@NotNull Integer categoryIdx, String title, Pageable pageable) {
+//        Page<EsBoard> result = esBoardRepository.findByBoardTitleAndBoardCategory(categoryIdx, title, pageable);
 //        return result;
 //    }
 }

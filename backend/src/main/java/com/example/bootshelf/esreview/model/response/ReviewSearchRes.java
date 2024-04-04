@@ -24,4 +24,5 @@ public class ReviewSearchRes {
     private Long totalHits;
     private String courseName;
     private Integer courseEvaluation;
+    private String reviewImg;
 }

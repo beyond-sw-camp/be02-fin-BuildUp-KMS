@@ -5,6 +5,7 @@ import com.example.bootshelf.esboard.model.entity.EsBoard;
 import com.example.bootshelf.esboard.service.EsBoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.web.PageableDefault;
@@ -118,9 +119,10 @@ public class EsBoardController {
 //    @GetMapping("/search2")
 //    @ResponseBody
 //    public Page<EsBoard> titleContentSearch2(
+//            @RequestParam Integer categoryIdx,
 //            @RequestParam String title,
 //            @PageableDefault(size = 20) Pageable pageable
 //    ) {
-//        return esBoardService.titleContentSearchByElastic2(title, pageable);
+//        return esBoardService.titleContentSearchByElastic2(categoryIdx, title, pageable);
 //    }
 }
