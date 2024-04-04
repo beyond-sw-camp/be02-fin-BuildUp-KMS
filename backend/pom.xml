@@ -19,8 +19,9 @@
         <module>common</module>
         <module>discovery</module>
         <module>board-search-service</module>
-        <module>bootshelf-main-service</module>
+        <module>main-service</module>
         <module>review-search-service</module>
+        <module>main-service</module>
     </modules>
     <properties>
         <java.version>11</java.version>
