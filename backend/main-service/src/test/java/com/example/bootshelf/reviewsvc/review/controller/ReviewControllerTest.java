@@ -11,15 +11,18 @@ import com.example.bootshelf.reviewsvc.review.model.request.PostCreateReviewReq;
 import com.example.bootshelf.reviewsvc.review.model.response.GetMyListReviewRes;
 import com.example.bootshelf.reviewsvc.review.model.response.PostCreateReviewRes;
 import com.example.bootshelf.reviewsvc.review.repository.ReviewRepository;
+import com.example.bootshelf.reviewsvc.review.service.ReviewImageService;
 import com.example.bootshelf.reviewsvc.review.service.ReviewService;
-import com.example.bootshelf.reviewsvc.reviewimage.service.ReviewImageService;
 import com.example.bootshelf.user.controller.mock.WithCustomMockUser;
 import com.example.bootshelf.user.exception.security.CustomAccessDeniedHandler;
 import com.example.bootshelf.user.exception.security.CustomAuthenticationEntryPoint;
 import com.example.bootshelf.user.model.entity.User;
+import com.example.bootshelf.user.repository.UserRefreshTokenRepository;
 import com.example.bootshelf.user.repository.UserRepository;
+import com.example.bootshelf.user.service.RefreshTokenService;
 import com.example.bootshelf.user.service.UserOAuth2Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.joda.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,6 +37,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -41,7 +46,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -55,15 +59,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayName("ReviewController 테스트")
 public class ReviewControllerTest {
 
+    @DynamicPropertySource
+    static void setProperties(DynamicPropertyRegistry registry) {
+        registry.add("jwt.secret-key", () -> "secretKey");
+        registry.add("jwt.token.expired-time-ms", () -> "3000000");
+        registry.add("jwt.token.refresh-expiration-ms", () -> "84000000");
+    }
 
     @Autowired
     MockMvc mvc;
 
     @Autowired
     private WebApplicationContext context;
-
-    @MockBean
-    private ReviewImageService reviewImageService;
 
     @MockBean
     private JwtUtils jwtUtils;
@@ -88,6 +95,15 @@ public class ReviewControllerTest {
 
     @MockBean
     private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
+    @MockBean
+    private UserRefreshTokenRepository userRefreshTokenRepository;
+
+    @MockBean
+    private RefreshTokenService refreshTokenService;
+
+    @MockBean
+    private ReviewImageService reviewImageService;
 
     @BeforeEach
     public void setup() {
@@ -187,7 +203,7 @@ public class ReviewControllerTest {
                 .commentCnt(5)
                 .type("review")
                 .boardType("write")
-                .updatedAt("2024/03/16 13:50:31")
+                .updatedAt(LocalDateTime.now())
                 .build();
 
         BaseRes baseRes = BaseRes.builder()

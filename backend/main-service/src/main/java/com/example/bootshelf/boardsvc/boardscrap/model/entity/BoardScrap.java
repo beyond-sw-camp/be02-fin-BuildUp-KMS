@@ -5,6 +5,7 @@ import com.example.bootshelf.boardsvc.boardscrap.model.request.PostCreateBoardSc
 import com.example.bootshelf.user.model.entity.User;
 import lombok.*;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 

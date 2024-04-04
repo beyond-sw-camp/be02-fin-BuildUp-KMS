@@ -5,6 +5,7 @@ import com.example.bootshelf.reviewsvc.reviewscrap.model.request.PostCreateRevie
 import com.example.bootshelf.user.model.entity.User;
 import lombok.*;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 

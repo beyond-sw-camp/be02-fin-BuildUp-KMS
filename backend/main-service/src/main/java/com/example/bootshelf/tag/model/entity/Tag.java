@@ -3,6 +3,7 @@ package com.example.bootshelf.tag.model.entity;
 import com.example.bootshelf.boardsvc.boardtag.model.entity.BoardTag;
 import lombok.*;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 

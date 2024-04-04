@@ -6,6 +6,7 @@ import com.example.bootshelf.user.model.entity.User;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 

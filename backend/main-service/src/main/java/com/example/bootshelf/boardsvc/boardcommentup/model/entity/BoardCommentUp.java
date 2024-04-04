@@ -5,6 +5,8 @@ import com.example.bootshelf.boardsvc.boardcommentup.model.request.PostCreateBoa
 import com.example.bootshelf.user.model.entity.User;
 import lombok.*;
 
+import javax.persistence.*;
+
 @Entity
 @Getter
 @Setter

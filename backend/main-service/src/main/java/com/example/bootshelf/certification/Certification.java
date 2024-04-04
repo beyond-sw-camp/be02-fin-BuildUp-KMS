@@ -4,6 +4,8 @@ import com.example.bootshelf.course.Course;
 import com.example.bootshelf.user.model.entity.User;
 import lombok.*;
 
+import javax.persistence.*;
+
 @Entity
 @Getter
 @Setter

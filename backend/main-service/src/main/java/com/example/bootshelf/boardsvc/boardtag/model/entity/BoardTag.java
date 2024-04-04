@@ -4,6 +4,8 @@ import com.example.bootshelf.boardsvc.board.model.entity.Board;
 import com.example.bootshelf.tag.model.entity.Tag;
 import lombok.*;
 
+import javax.persistence.*;
+
 @Entity
 @Getter
 @Setter

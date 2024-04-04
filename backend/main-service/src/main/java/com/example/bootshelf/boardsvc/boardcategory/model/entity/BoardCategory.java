@@ -3,6 +3,7 @@ package com.example.bootshelf.boardsvc.boardcategory.model.entity;
 import com.example.bootshelf.boardsvc.board.model.entity.Board;
 import lombok.*;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 

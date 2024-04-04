@@ -5,6 +5,8 @@ import com.example.bootshelf.reviewsvc.reviewcommentup.model.request.PostCreateR
 import com.example.bootshelf.user.model.entity.User;
 import lombok.*;
 
+import javax.persistence.*;
+
 @Entity
 @Getter
 @Setter

@@ -3,6 +3,7 @@ package com.example.bootshelf.reviewsvc.reviewcategory.model;
 import com.example.bootshelf.reviewsvc.review.model.entity.Review;
 import lombok.*;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 

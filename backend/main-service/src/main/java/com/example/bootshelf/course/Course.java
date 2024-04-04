@@ -3,6 +3,7 @@ package com.example.bootshelf.course;
 import com.example.bootshelf.certification.Certification;
 import lombok.*;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
