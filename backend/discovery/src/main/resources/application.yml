@@ -2,7 +2,7 @@ server:
   port: 8761
 spring:
   application:
-    name: discovery-server
+    name: BOOTSHELF-DISCOVERY-SERVER
 eureka:
   client:
     register-with-eureka: false

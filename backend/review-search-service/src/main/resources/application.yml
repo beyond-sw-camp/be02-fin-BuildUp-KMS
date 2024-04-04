@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8082
 
 eureka:
   client:
@@ -10,4 +10,9 @@ eureka:
 
 spring:
   application:
-    name: BOARD-SEARCH-SERVICE
+    name: BOOTSHELF-REVIEW-SEARCH-SERVICE
+  data:
+    elasticsearch:
+      repositories:
+        enabled: true
+      url: ${ES_URL}
