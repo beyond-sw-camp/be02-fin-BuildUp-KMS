@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "게시글 태그 순위 조회")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/boardtag")
+@RequestMapping("/main/boardtag")
 @CrossOrigin("*")
 public class BoardTagController {
 

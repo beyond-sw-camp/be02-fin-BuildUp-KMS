@@ -32,7 +32,7 @@ import javax.validation.constraints.Positive;
 @RequiredArgsConstructor
 @Slf4j
 @CrossOrigin("*")
-@RequestMapping("/board")
+@RequestMapping("/main/board")
 public class BoardController {
 
     private final BoardService boardService;

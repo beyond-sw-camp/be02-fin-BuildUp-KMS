@@ -27,7 +27,7 @@ import javax.validation.constraints.Positive;
 @Slf4j
 @RequiredArgsConstructor
 @CrossOrigin("*")
-@RequestMapping("/boardscrap")
+@RequestMapping("/main/boardscrap")
 public class BoardScrapController {
 
     private final BoardScrapService boardScrapService;

@@ -16,12 +16,13 @@ import javax.validation.constraints.Positive;
 @RequiredArgsConstructor
 @WebAdapter
 @CrossOrigin("*")
+@RequestMapping("/search/review")
 public class SearchTotalReviewController {
 
     private final SearchTotalReviewUseCase searchTotalReviewUseCase;
 
     // 메인 페이지에서 검색
-    @RequestMapping(method = RequestMethod.GET, value = "/total/search")
+    @RequestMapping(method = RequestMethod.GET, value = "/total/list")
     @ResponseBody
     public ResponseEntity<BaseRes> searchTotalReview(
             @RequestParam @NotNull @Positive Integer selectedDropdownValue,

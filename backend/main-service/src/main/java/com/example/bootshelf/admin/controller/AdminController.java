@@ -25,7 +25,7 @@ import javax.validation.constraints.Positive;
 @Api(tags = "관리자 회원기능")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/admin")
+@RequestMapping("/main/admin")
 @CrossOrigin("*")
 public class AdminController {
 

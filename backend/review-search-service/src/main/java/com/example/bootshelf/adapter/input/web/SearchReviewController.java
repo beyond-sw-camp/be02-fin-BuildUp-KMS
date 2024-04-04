@@ -16,13 +16,13 @@ import javax.validation.constraints.Positive;
 @RequiredArgsConstructor
 @WebAdapter
 @CrossOrigin("*")
-@RequestMapping("/review")
+@RequestMapping("/search/review")
 public class SearchReviewController {
 
     private final SearchReviewUseCase searchReviewUseCase;
 
     // 후기 페이지에서 검색
-    @RequestMapping(method = RequestMethod.GET, value = "/search")
+    @RequestMapping(method = RequestMethod.GET, value = "/list")
     @ResponseBody
     public ResponseEntity<BaseRes> searchReview(
             @RequestParam @NotNull @Positive Integer categoryIdx,

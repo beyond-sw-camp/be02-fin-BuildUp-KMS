@@ -28,7 +28,7 @@ import javax.validation.constraints.Positive;
 @Api(tags = "후기 게시판")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/review")
+@RequestMapping("/main/review")
 @CrossOrigin("*")
 public class ReviewController {
 

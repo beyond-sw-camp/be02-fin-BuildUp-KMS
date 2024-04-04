@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequiredArgsConstructor
 @CrossOrigin("*")
-@RequestMapping("/admin/review")
+@RequestMapping("/main/admin/review")
 public class ReviewCategoryController {
 
     private final ReviewCategoryService reviewCategoryService;
