@@ -10,9 +10,12 @@ import com.example.bootshelf.reviewsvc.reviewscrap.service.ReviewScrapService;
 import com.example.bootshelf.user.exception.security.CustomAccessDeniedHandler;
 import com.example.bootshelf.user.exception.security.CustomAuthenticationEntryPoint;
 import com.example.bootshelf.user.model.entity.User;
+import com.example.bootshelf.user.repository.UserRefreshTokenRepository;
 import com.example.bootshelf.user.repository.UserRepository;
+import com.example.bootshelf.user.service.RefreshTokenService;
 import com.example.bootshelf.user.service.UserOAuth2Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.joda.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,6 +28,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -41,6 +46,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = {SecurityConfig.class, ReviewScrapController.class})
 @AutoConfigureMockMvc
 class ReviewScrapControllerTest {
+
+
+    @DynamicPropertySource
+    static void setProperties(DynamicPropertyRegistry registry) {
+        registry.add("jwt.secret-key", () -> "secretKey");
+        registry.add("jwt.token.expired-time-ms", () -> "3000000");
+        registry.add("jwt.token.refresh-expiration-ms", () -> "84000000");
+    }
 
     @Autowired
     MockMvc mvc;
@@ -66,6 +79,12 @@ class ReviewScrapControllerTest {
     @MockBean
     private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
+    @MockBean
+    private UserRefreshTokenRepository userRefreshTokenRepository;
+
+    @MockBean
+    private RefreshTokenService refreshTokenService;
+
     @BeforeEach
     public void setup() {
         mvc = MockMvcBuilders
@@ -82,8 +101,8 @@ class ReviewScrapControllerTest {
                 .reviewScrapIdx(1)
                 .userIdx(1)
                 .reviewIdx(1)
-                .createdAt("2024/03/12 14:00:00")
-                .updatedAt("2024/03/12 14:00:00")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
 
         BaseRes baseRes = BaseRes.builder()

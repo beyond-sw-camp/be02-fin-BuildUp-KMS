@@ -11,14 +11,15 @@ import com.example.bootshelf.config.utils.JwtUtils;
 import com.example.bootshelf.reviewsvc.review.controller.ReviewController;
 import com.example.bootshelf.reviewsvc.review.repository.ReviewRepository;
 import com.example.bootshelf.reviewsvc.review.service.ReviewService;
-import com.example.bootshelf.reviewsvc.reviewimage.service.ReviewImageService;
 import com.example.bootshelf.user.exception.security.CustomAccessDeniedHandler;
 import com.example.bootshelf.user.exception.security.CustomAuthenticationEntryPoint;
 import com.example.bootshelf.user.model.request.PostLoginUserReq;
 import com.example.bootshelf.user.model.request.PostSignUpUserReq;
 import com.example.bootshelf.user.model.response.PostLoginUserRes;
 import com.example.bootshelf.user.model.response.PostSignUpUserRes;
+import com.example.bootshelf.user.repository.UserRefreshTokenRepository;
 import com.example.bootshelf.user.repository.UserRepository;
+import com.example.bootshelf.user.service.RefreshTokenService;
 import com.example.bootshelf.user.service.UserOAuth2Service;
 import com.example.bootshelf.user.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,6 +36,8 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -62,6 +65,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayName("AdminController 테스트")
 public class AdminControllerTest {
 
+    @DynamicPropertySource
+    static void setProperties(DynamicPropertyRegistry registry) {
+        registry.add("jwt.secret-key", () -> "secretKey");
+        registry.add("jwt.token.expired-time-ms", () -> "3000000");
+        registry.add("jwt.token.refresh-expiration-ms", () -> "84000000");
+    }
+
     @Autowired
     MockMvc mvc;
 
@@ -88,6 +98,12 @@ public class AdminControllerTest {
 
     @MockBean
     private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
+    @MockBean
+    private UserRefreshTokenRepository userRefreshTokenRepository;
+
+    @MockBean
+    private RefreshTokenService refreshTokenService;
 
     @BeforeEach
     public void setup() {
@@ -169,7 +185,7 @@ public class AdminControllerTest {
     @Test
     void adminController_login_success() throws Exception {
         PostLoginUserRes postLoginUserRes = PostLoginUserRes.builder()
-                .token("eyJhbGciOiJIUzI1NiJ9.eyJpZHgiOjcsImVtYWlsIjoidGVzdDAyQGdtYWlsLmNvbSIsIm5hbWUiOiLthYzsiqTthLAwMiIsIm5pY2tOYW1lIjoi7YWM7Iqk7YSwMDIiLCJST0xFIjoiUk9MRV9BVVRIVVNFUiIsImlhdCI6MTcxMDc3NDYzOCwiZXhwIjoxNzEwNzc3NjM4fQ.gUPQMylRgrzJE_21EUCaNZI9N9DyvN8sCVvpFtXXRZI")
+                .accessToken("eyJhbGciOiJIUzI1NiJ9.eyJpZHgiOjcsImVtYWlsIjoidGVzdDAyQGdtYWlsLmNvbSIsIm5hbWUiOiLthYzsiqTthLAwMiIsIm5pY2tOYW1lIjoi7YWM7Iqk7YSwMDIiLCJST0xFIjoiUk9MRV9BVVRIVVNFUiIsImlhdCI6MTcxMDc3NDYzOCwiZXhwIjoxNzEwNzc3NjM4fQ.gUPQMylRgrzJE_21EUCaNZI9N9DyvN8sCVvpFtXXRZI")
                 .build();
 
         BaseRes baseRes = BaseRes.builder()
