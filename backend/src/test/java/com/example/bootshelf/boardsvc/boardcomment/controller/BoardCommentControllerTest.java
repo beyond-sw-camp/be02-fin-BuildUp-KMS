@@ -19,6 +19,7 @@ import com.example.bootshelf.user.model.entity.User;
 import com.example.bootshelf.user.repository.UserRepository;
 import com.example.bootshelf.user.service.UserOAuth2Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.joda.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -144,8 +145,8 @@ class BoardCommentControllerTest {
                 .boardCommnetContent("게시글 댓글 조회 테스트 입니다.")
                 .status(true)
                 .upCnt(0)
-                .createAt("2024-03-21 10:28:10")
-                .updateAt("2024-03-21 10:28:10")
+                .createAt(LocalDateTime.now())
+                .updateAt(LocalDateTime.now())
                 .build();
 
         BaseRes baseRes = BaseRes.builder()
