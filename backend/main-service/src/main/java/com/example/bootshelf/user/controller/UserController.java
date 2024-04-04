@@ -29,7 +29,7 @@ import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user")
+@RequestMapping("/main/user")
 @CrossOrigin("*")
 @Api(value="회원 컨트롤러 v1", tags="회원 API")
 public class UserController {

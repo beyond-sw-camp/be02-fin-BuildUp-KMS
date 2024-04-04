@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequiredArgsConstructor
 @CrossOrigin("*")
-@RequestMapping("/boardcomment/up")
+@RequestMapping("/main/boardcomment/up")
 public class BoardCommentUpController {
     private final BoardCommentUpService boardCommentUpService;
 

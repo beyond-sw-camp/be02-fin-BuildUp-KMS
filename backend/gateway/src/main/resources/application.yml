@@ -20,15 +20,20 @@ spring:
             allowedHeaders: "*"
 
       routes:
-        - id: BOOTSHELF-BOARD-SEARCH-SERVICE
+        - id: main-service
+          uri: lb://BOOTSHELF-MAIN-SERVICE
+          predicates:
+            - Path=/main/**
+
+        - id: board-search-service
           uri: lb://BOOTSHELF-BOARD-SEARCH-SERVICE
           predicates:
-            - Path=/board/**
+            - Path=/search/board/**
 
         - id: review-search-service
           uri: lb://BOOTSHELF-REVIEW-SEARCH-SERVICE
           predicates:
-            - Path=/review/**
+            - Path=/search/review/**
 
 eureka:
   client:

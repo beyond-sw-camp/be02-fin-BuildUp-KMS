@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequiredArgsConstructor
 @CrossOrigin("*")
-@RequestMapping("/admin/board")
+@RequestMapping("/main/admin/board")
 public class BoardCategoryController {
 
     private final BoardCategoryService boardCategoryService;

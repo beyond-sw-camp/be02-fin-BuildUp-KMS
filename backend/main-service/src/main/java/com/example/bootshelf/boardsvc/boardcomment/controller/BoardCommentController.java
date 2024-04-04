@@ -27,7 +27,7 @@ import javax.validation.constraints.Positive;
 @Slf4j
 @RequiredArgsConstructor
 @CrossOrigin("*")
-@RequestMapping("/board")
+@RequestMapping("/main/board")
 public class BoardCommentController {
 
     private final BoardCommentService boardCommentService;
