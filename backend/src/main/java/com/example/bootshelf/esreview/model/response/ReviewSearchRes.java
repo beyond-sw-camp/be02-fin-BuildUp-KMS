@@ -22,6 +22,6 @@ public class ReviewSearchRes {
     private Boolean status;
     private String courseName;
     private Integer courseEvaluation;
-    private String reviewImg;
+    private String reviewImage;
     private String profileImage;
 }
