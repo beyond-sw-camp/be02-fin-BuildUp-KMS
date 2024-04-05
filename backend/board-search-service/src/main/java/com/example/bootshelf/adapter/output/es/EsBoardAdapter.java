@@ -31,7 +31,6 @@ public class EsBoardAdapter implements GetListBoardPort {
                 "boardTitle", "boardContent");
 
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
-                .filter(QueryBuilders.termQuery("status", "true"))
                 .filter(QueryBuilders.termQuery("boardCategory", categoryIdx));
 
         HighlightBuilder highlightBuilder = new HighlightBuilder();
