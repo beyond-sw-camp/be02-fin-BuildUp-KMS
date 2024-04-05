@@ -42,7 +42,7 @@ public class BoardComment {
     @OneToMany(mappedBy = "boardComment", fetch = FetchType.LAZY)
     private List<BoardCommentUp> boardCommentUpList = new ArrayList<>();
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 5000)
     private String commentContent;
 
     @Column(nullable = false)
