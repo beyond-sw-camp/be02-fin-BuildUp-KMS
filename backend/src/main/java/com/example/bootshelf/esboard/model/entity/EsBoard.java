@@ -18,9 +18,6 @@ public class EsBoard {
     private String id;
 
     @Field(type = FieldType.Integer)
-    private Integer user;
-
-    @Field(type = FieldType.Integer)
     private Integer boardCategory;
 
     @Field(type = FieldType.Text, analyzer = "nori")
@@ -41,12 +38,19 @@ public class EsBoard {
     @Field(type = FieldType.Integer)
     private Integer commentCnt;
 
-    @Field(type = FieldType.Boolean)
-    private Boolean status;
+    @Field(type = FieldType.Text)
+    private String tagName;
 
-//    @Field(type = FieldType.Date, format = DateFormat.custom, pattern = "yyyy-MM-dd")
+    @Field(type = FieldType.Text)
+    private String nickName;
+
+    @Field(type = FieldType.Text)
+    private String profileImage;
+
+    @Field(type = FieldType.Text)
+    private String boardImage;
+
     private String createdAt;
 
-//    @Field(type = FieldType.Date, format = DateFormat.custom, pattern = "yyyy-MM-dd")
     private String updatedAt;
 }
