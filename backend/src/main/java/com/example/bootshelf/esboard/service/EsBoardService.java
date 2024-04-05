@@ -4,7 +4,7 @@ import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.esboard.model.entity.EsBoard;
 import com.example.bootshelf.esboard.model.response.BoardSearchRes;
 import com.example.bootshelf.esboard.model.response.BoardSearchResResult;
-import com.example.bootshelf.esboard.repository.EsOperation;
+import com.example.bootshelf.esboard.repository.EsBoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -22,12 +22,12 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class EsBoardService {
-    private final EsOperation esOperation;
+    private final EsBoardRepository esBoardRepository;
 
     // 제목+내용 검색 (지식공유)
     public SearchHits<EsBoard> titleContentSearchByKnowledge(@NotNull String title, Pageable pageable) {
 
-            SearchHits<EsBoard> searchHits = esOperation.titleContentSearchByKnowledge(title, pageable);
+            SearchHits<EsBoard> searchHits = esBoardRepository.titleContentSearchByKnowledge(title, pageable);
             return searchHits;
     }
 
@@ -38,7 +38,7 @@ public class EsBoardService {
         if (sortType >= 1 && sortType <= fields.length) {
             String sortField = fields[sortType - 1];
 
-            SearchHits<EsBoard> searchHits = esOperation.titleContentSearchByQnA(sortField, title, pageable);
+            SearchHits<EsBoard> searchHits = esBoardRepository.titleContentSearchByQnA(sortField, title, pageable);
             return searchHits;
         }
         else return null;
@@ -51,7 +51,7 @@ public class EsBoardService {
         if (sortType >= 1 && sortType <= fields.length) {
             String sortField = fields[sortType - 1];
 
-            SearchHits<EsBoard> searchHits = esOperation.titleContentSearchByStudy(sortField, title, pageable);
+            SearchHits<EsBoard> searchHits = esBoardRepository.titleContentSearchByStudy(sortField, title, pageable);
             return searchHits;
         }
         else return null;
@@ -64,7 +64,7 @@ public class EsBoardService {
         if (sortType >= 1 && sortType <= fields.length) {
             String sortField = fields[sortType - 1];
 
-            SearchHits<EsBoard> searchHits = esOperation.titleContentSearchByHot(sortField, title, pageable);
+            SearchHits<EsBoard> searchHits = esBoardRepository.titleContentSearchByHot(sortField, title, pageable);
             return searchHits;
         }
         else return null;
@@ -83,7 +83,7 @@ public class EsBoardService {
         if (sortType >= 1 && sortType <= fields.length) {
             String sortField = fields[sortType - 1];
 
-            SearchHits<EsBoard> searchHits = esOperation.titleContentSearch(categoryIdx, sortField, title, pageable);
+            SearchHits<EsBoard> searchHits = esBoardRepository.titleContentSearch(categoryIdx, sortField, title, pageable);
 
             // EsOperation의 검색 결과를 가져온다. map(SearchHit 객체에서 getContent() 호출 후 해당 문서의 내용인 EsBoard 객체를 추출).collect(추출된 EsBoard 객체들를 List로)
             List<EsBoard> searchContent = searchHits.get().map(SearchHit::getContent).collect(Collectors.toList());
@@ -95,7 +95,6 @@ public class EsBoardService {
 
                 BoardSearchRes response = BoardSearchRes.builder()
                         .idx(Integer.valueOf(result.getId()))
-                        .user(result.getUser())
                         .boardCategory(result.getBoardCategory())
                         .boardTitle(result.getBoardTitle())
                         .boardContent(textContent)
@@ -103,15 +102,18 @@ public class EsBoardService {
                         .upCnt(result.getUpCnt())
                         .scrapCnt(result.getScrapCnt())
                         .commentCnt(result.getCommentCnt())
-                        .status(result.getStatus())
                         .createdAt(result.getCreatedAt())
                         .updatedAt(result.getUpdatedAt())
+                        .profileImage(result.getProfileImage())
+                        .nickName(result.getNickName())
+                        .boardImage(result.getBoardImage())
                         .build();
+
                 Document doc = Jsoup.parse(result.getBoardContent());
                 Elements images = doc.select("img");
 
                 if (!images.isEmpty()) {
-                    response.setBoardImg(images.get(0).attr("src"));
+                    response.setBoardImage(images.get(0).attr("src"));
                 }
 
                 boardSearchRes.add(response);
@@ -124,7 +126,7 @@ public class EsBoardService {
 
             BaseRes baseRes = BaseRes.builder()
                     .isSuccess(true)
-                    .message("ES 게시판 categoryIdx=" + categoryIdx + " 검색 성공")
+                    .message("ES 게시판 categoryIdx = " + categoryIdx + " 검색 성공")
                     .result(result)
                     .build();
 
