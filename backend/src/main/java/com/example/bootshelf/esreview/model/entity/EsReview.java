@@ -20,9 +20,6 @@ public class EsReview {
     private String id;
 
     @Field(type = FieldType.Integer)
-    private Integer user;
-
-    @Field(type = FieldType.Integer)
     private Integer reviewCategory;
 
     @Field(type = FieldType.Text, analyzer = "nori")
@@ -43,13 +40,8 @@ public class EsReview {
     @Field(type = FieldType.Integer)
     private Integer commentCnt;
 
-    @Field(type = FieldType.Boolean)
-    private Boolean status;
-
-//    @Field(type = FieldType.Text)
     private String createdAt;
 
-//    @Field(type = FieldType.Text)
     private String updatedAt;
 
     @Field(type = FieldType.Text)
@@ -58,5 +50,9 @@ public class EsReview {
     @Field(type = FieldType.Integer)
     private Integer courseEvaluation;
 
+    @Field(type = FieldType.Text)
+    private String nickName;
 
+    @Field(type = FieldType.Text)
+    private String profileImage;
 }

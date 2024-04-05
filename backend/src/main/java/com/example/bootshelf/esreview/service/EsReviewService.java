@@ -1,7 +1,6 @@
 package com.example.bootshelf.esreview.service;
 
 import com.example.bootshelf.common.BaseRes;
-import com.example.bootshelf.esboard.model.response.BoardSearchResResult;
 import com.example.bootshelf.esreview.model.entity.EsReview;
 import com.example.bootshelf.esreview.model.response.ReviewSearchRes;
 import com.example.bootshelf.esreview.model.response.ReviewSearchResResult;
@@ -26,7 +25,6 @@ public class EsReviewService {
 
     private final EsReviewRepository esReviewRepository;
 
-
     // 메인 검색(통합)
     public BaseRes titleSearchByMain(@NotNull Integer selectedDropdownValue, String title, Pageable pageable) {
 
@@ -38,7 +36,6 @@ public class EsReviewService {
             for (EsReview result : searchContent) {
                 ReviewSearchRes response = ReviewSearchRes.builder()
                         .idx(Integer.valueOf(result.getId()))
-                        .user(result.getUser())
                         .reviewCategory(result.getReviewCategory())
                         .reviewTitle(result.getReviewTitle())
                         .reviewContent(result.getReviewContent())
@@ -48,10 +45,10 @@ public class EsReviewService {
                         .upCnt(result.getUpCnt())
                         .scrapCnt(result.getScrapCnt())
                         .commentCnt(result.getCommentCnt())
-                        .status(result.getStatus())
                         .createdAt(result.getCreatedAt())
                         .updatedAt(result.getUpdatedAt())
-                        .totalHits(searchHits.getTotalHits())
+                        .nickName(result.getNickName())
+                        .profileImage(result.getProfileImage())
                         .build();
 
                 reviewSearchRes.add(response);
@@ -71,44 +68,6 @@ public class EsReviewService {
             return baseRes;
 
     }
-
-//    // 제목+내용으로 검색(메인)
-//    public BaseRes titleContentSearchByMain(@NotNull String title, Pageable pageable) {
-//        SearchHits<EsReview> searchHits = esReviewRepository.titleContentSearchByMain(title, pageable);
-//
-//        List<EsReview> searchContent = searchHits.get().map(SearchHit::getContent).collect(Collectors.toList());
-//        List<ReviewSearchRes> reviewSearchRes = new ArrayList<>();
-//
-//        for (EsReview result : searchContent) {
-//            ReviewSearchRes response = ReviewSearchRes.builder()
-//                    .idx(Integer.valueOf(result.getId()))
-//                    .user(result.getUser())
-//                    .reviewCategory(result.getReviewCategory())
-//                    .reviewTitle(result.getReviewTitle())
-//                    .reviewContent(result.getReviewContent())
-//                    .courseName(result.getCourseName())
-//                    .courseEvaluation(result.getCourseEvaluation())
-//                    .viewCnt(result.getViewCnt())
-//                    .upCnt(result.getUpCnt())
-//                    .scrapCnt(result.getScrapCnt())
-//                    .commentCnt(result.getCommentCnt())
-//                    .status(result.getStatus())
-//                    .createdAt(result.getCreatedAt())
-//                    .updatedAt(result.getUpdatedAt())
-//                    .totalHits(searchHits.getTotalHits())
-//                    .build();
-//
-//            reviewSearchRes.add(response);
-//        }
-//
-//        BaseRes baseRes = BaseRes.builder()
-//                .isSuccess(true)
-//                .message("ES 메인 제목+내용 검색 성공")
-//                .result(reviewSearchRes)
-//                .build();
-//
-//        return baseRes;
-//    }
 
     // 제목+내용으로 검색(과정후기)
     public SearchHits<EsReview> titleContentSearchByCourse(@NotNull Integer sortType, String title, Pageable pageable) {
@@ -160,7 +119,6 @@ public class EsReviewService {
 
                 ReviewSearchRes response = ReviewSearchRes.builder()
                         .idx(Integer.valueOf(result.getId()))
-                        .user(result.getUser())
                         .reviewCategory(result.getReviewCategory())
                         .reviewTitle(result.getReviewTitle())
                         .reviewContent(textContent)
@@ -170,10 +128,10 @@ public class EsReviewService {
                         .upCnt(result.getUpCnt())
                         .scrapCnt(result.getScrapCnt())
                         .commentCnt(result.getCommentCnt())
-                        .status(result.getStatus())
                         .createdAt(result.getCreatedAt())
                         .updatedAt(result.getUpdatedAt())
-                        .totalHits(searchHits.getTotalHits())
+                        .nickName(result.getNickName())
+                        .profileImage(result.getProfileImage())
                         .build();
 
                 Document doc = Jsoup.parse(result.getReviewContent());
@@ -188,13 +146,12 @@ public class EsReviewService {
 
             ReviewSearchResResult result = ReviewSearchResResult.builder()
                     .totalHits(searchHits.getTotalHits())
-                    //.totalPages() 페이지 추가하기..
                     .list(reviewSearchRes)
                     .build();
 
             BaseRes baseRes = BaseRes.builder()
                     .isSuccess(true)
-                    .message("ES 후기 categoryIdx = "+ categoryIdx +" 검색 성공")
+                    .message("ES 후기 categoryIdx = " + categoryIdx + " 검색 성공")
                     .result(result)
                     .build();
 
