@@ -20,5 +20,6 @@ public class BoardSearchRes {
     private Integer upCnt;
     private Integer scrapCnt;
     private String updatedAt;
-    private Boolean status;
+    private String profileImage;
+    private String boardImage;
 }

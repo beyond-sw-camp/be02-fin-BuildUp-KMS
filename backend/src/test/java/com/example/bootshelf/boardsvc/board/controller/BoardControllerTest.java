@@ -2,10 +2,11 @@ package com.example.bootshelf.boardsvc.board.controller;
 
 import com.example.bootshelf.boardsvc.board.model.response.GetBoardListByQueryRes;
 import com.example.bootshelf.boardsvc.board.model.response.GetBoardListByQueryResResult;
+import com.example.bootshelf.boardsvc.board.service.BoardImageService;
 import com.example.bootshelf.boardsvc.board.service.BoardService;
-import com.example.bootshelf.boardsvc.boardimage.service.BoardImageService;
 import com.example.bootshelf.common.BaseRes;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.joda.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,7 +21,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -46,7 +46,6 @@ class BoardControllerTest {
     @MockBean
     private BoardImageService boardImageService;
 
-
     @BeforeEach
     public void setup() {
         mvc = MockMvcBuilders
@@ -63,8 +62,8 @@ class BoardControllerTest {
                 .title("스프링 테스트 코드")
                 .content("스프링 테스트 코드는 영한이형에게")
                 .nickName("갓영한")
-                .createdAt(LocalDateTime.now().toString())
-                .updatedAt(LocalDateTime.now().toString())
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .viewCnt(100)
                 .commentCnt(10)
                 .upCnt(50)
