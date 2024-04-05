@@ -138,7 +138,7 @@ public class EsReviewService {
                 Elements images = doc.select("img");
 
                 if (!images.isEmpty()) {
-                    response.setReviewImg(images.get(0).attr("src"));
+                    response.setReviewImage(images.get(0).attr("src"));
                 }
 
                 reviewSearchRes.add(response);

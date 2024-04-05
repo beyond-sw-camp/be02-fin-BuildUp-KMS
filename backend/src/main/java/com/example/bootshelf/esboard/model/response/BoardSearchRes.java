@@ -12,7 +12,6 @@ import java.util.List;
 @Builder
 public class BoardSearchRes {
     private Integer idx;
-    private Integer user;
     private String boardtitle;
     private String boardcontent;
     private Integer boardcategory_idx;
