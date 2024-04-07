@@ -9,6 +9,10 @@ eureka:
       defaultZone: http://localhost:8761/eureka
 
 spring:
+  config:
+    activate:
+      on-profile: local
+
   application:
     name: BOOTSHELF-MAIN-SERVICE
 
@@ -26,7 +30,7 @@ spring:
               - profile_nickname
               - profile_image
             authorization-grant-type: authorization_code
-            redirect-uri:  http://192.168.0.61/api/logino/oauth2/code/kaka
+            redirect-uri:  http://77.77.77.50/api/logino/oauth2/code/kaka
             client-name: Kakao
             client-authentication-method: POST
         provider:

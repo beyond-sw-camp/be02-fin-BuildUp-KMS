@@ -1,8 +1,8 @@
-apiVersion: apps/v1
+apiVersion: apps/v1 # main
 kind: Deployment
 
 metadata:
-  name: backend-deployment
+  name: main-deployment
 
 spec:
   replicas: 2
@@ -12,15 +12,15 @@ spec:
   minReadySeconds: 10
   selector:
     matchLabels:
-      type: backend
+      type: main
   template:
     metadata:
       labels:
-        type: backend
+        type: main
     spec:
       containers:
         - name: backend-container
-          image: hyungdoyou/bootshelf-be:2.VERSION
+          image: hyungdoyou/be:6.VERSION
           resources:
             requests:
               memory: "512Mi"
@@ -30,18 +30,18 @@ spec:
               cpu: "2000m"
           readinessProbe:
             httpGet:
-              path: /review/list/1/1?page=0
+              path: /main/review/list/1/1?page=0
               port: 8080
             initialDelaySeconds: 20
             periodSeconds: 10
             successThreshold: 1
           livenessProbe:
             httpGet:
-              path: /review/list/1/1?page=0
+              path: /main/review/list/1/1?page=0
               port: 8080
             initialDelaySeconds: 20
             periodSeconds: 10
           envFrom:
             - configMapRef:
-                name: backend-config
+                name: main-config
       terminationGracePeriodSeconds: 5

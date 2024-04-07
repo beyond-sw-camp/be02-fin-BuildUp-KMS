@@ -2,6 +2,10 @@ server:
   port: 9999
 
 spring:
+  config:
+    activate:
+      on-profile: local
+
   application:
     name: BOOTSHELF-GATEWAY-SERVICE
   cloud:

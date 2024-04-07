@@ -1,0 +1,44 @@
+server:
+  port: 9999
+
+eureka:
+  client:
+    enabled: false
+
+spring:
+  config:
+    activate:
+      on-profile: k8s
+
+  application:
+    name: BOOTSHELF-GATEWAY-SERVICE
+
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+
+      routes:
+        - id: main-service
+          uri: http://main-svc:8080
+          predicates:
+            - Path=/main/**
+
+        - id: board-search-service
+          uri: http://board-svc:8081
+          predicates:
+            - Path=/search/board/**
+
+        - id: review-search-service
+          uri: http://review-svc:8082
+          predicates:
+            - Path=/search/review/**

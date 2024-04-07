@@ -26,6 +26,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -85,6 +86,9 @@ class ReviewScrapControllerTest {
     @MockBean
     private RefreshTokenService refreshTokenService;
 
+    @MockBean
+    private ClientRegistrationRepository clientRegistrationRepository;
+
     @BeforeEach
     public void setup() {
         mvc = MockMvcBuilders
@@ -117,7 +121,7 @@ class ReviewScrapControllerTest {
         ObjectMapper mapper = new ObjectMapper();
         String content = mapper.writeValueAsString(new PostCreateReviewScrapReq(1));
 
-        mvc.perform(post("/reviewscrap/create")
+        mvc.perform(post("/main/reviewscrap/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content))
                 .andDo(print())

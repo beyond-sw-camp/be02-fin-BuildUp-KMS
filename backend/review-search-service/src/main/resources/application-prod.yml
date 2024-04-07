@@ -1,0 +1,16 @@
+server:
+  port: 8082
+
+eureka:
+  client:
+    enabled: false
+
+spring:
+  application:
+    name: BOOTSHELF-REVIEW-SEARCH-SERVICE
+
+  data:
+    elasticsearch:
+      repositories:
+        enabled: true
+      url: ${ES_URL}

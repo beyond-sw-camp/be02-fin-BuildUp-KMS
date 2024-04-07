@@ -84,7 +84,7 @@ class ReviewCommentControllerTest {
 
         given(reviewCommentService.createReviewComment(any(User.class), any(Integer.class), any(PostCreateReviewCommentReq.class))).willReturn(baseRes);
 
-        mockMvc.perform(post("/review/1/comment/create")
+        mockMvc.perform(post("/main/review/1/comment/create")
                 .content(objectMapper.writeValueAsBytes(postCreateReviewCommentReq))
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(csrf()))
@@ -108,7 +108,7 @@ class ReviewCommentControllerTest {
         given(reviewCommentService.createReviewComment(any(User.class), any(Integer.class), any(PostCreateReviewCommentReq.class)))
                 .willThrow(new BoardCommentException(ErrorCode.INVALID_INPUT_VALUE, "Review Comment Content is empty."));
         // When
-        mockMvc.perform(post("/review/1/comment/create")
+        mockMvc.perform(post("/main/review/1/comment/create")
                         .content(objectMapper.writeValueAsBytes(postCreateReviewCommentReq))
                         // 객체를 json 파일로 변환해준다.
                         .contentType(MediaType.APPLICATION_JSON)
@@ -142,7 +142,7 @@ class ReviewCommentControllerTest {
 
         given(reviewCommentService.createReviewReply(any(User.class), any(Integer.class), any(Integer.class), any(PostCreateReviewReplyReq.class))).willReturn(baseRes);
 
-        mockMvc.perform(post("/review/1/comment/create/1")
+        mockMvc.perform(post("/main/review/1/comment/create/1")
                         .content(objectMapper.writeValueAsBytes(postCreateReviewReplyReq))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf()))

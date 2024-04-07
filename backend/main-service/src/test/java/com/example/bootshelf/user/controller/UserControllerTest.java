@@ -31,6 +31,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -108,6 +109,9 @@ class UserControllerTest {
     @MockBean
     private RefreshTokenService refreshTokenService;
 
+    @MockBean
+    private ClientRegistrationRepository clientRegistrationRepository;
+
 
     @BeforeEach
     public void setup() {
@@ -155,7 +159,7 @@ class UserControllerTest {
                 .willReturn(baseRes);
 
         // when & then
-        mvc.perform(multipart("/user/signup")
+        mvc.perform(multipart("/main/user/signup")
                         .file(new MockMultipartFile("user", "", "application/json", content.getBytes(StandardCharsets.UTF_8)))
                         .file(multipartFile)
                         .contentType(MULTIPART_FORM_DATA)
@@ -197,7 +201,7 @@ class UserControllerTest {
                 .willReturn(baseRes);
 
         // when & then
-        mvc.perform(post("/user/login")
+        mvc.perform(post("/main/user/login")
                         .content(mapper.writeValueAsBytes(postLoginUserReq))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -222,7 +226,7 @@ class UserControllerTest {
                 .willThrow(new UserException(DIFFERENT_USER_PASSWORD, "User Password [ Qwer1234@ ] is different."));
 
         // when & then
-        mvc.perform(post("/user/login")
+        mvc.perform(post("/main/user/login")
                         .content(mapper.writeValueAsBytes(postLoginUserReq))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized())
@@ -257,7 +261,7 @@ class UserControllerTest {
                 .willReturn(baseRes);
 
         // when & then
-        mvc.perform(get("/user/list")
+        mvc.perform(get("/main/user/list")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.isSuccess").value(true))
@@ -289,7 +293,7 @@ class UserControllerTest {
 
         // when & then
 
-        mvc.perform(patch("/user/update")
+        mvc.perform(patch("/main/user/update")
                         .content(mapper.writeValueAsBytes(patchUpdateUserReq))
                         .contentType(MediaType.APPLICATION_JSON)
                         )
@@ -316,7 +320,7 @@ class UserControllerTest {
 
         // when & then
 
-        mvc.perform(delete("/user/cancel")
+        mvc.perform(delete("/main/user/cancel")
                         .contentType(MediaType.APPLICATION_JSON)
                         )
                 .andExpect(status().isOk())
@@ -337,7 +341,7 @@ class UserControllerTest {
 
         // when & then
 
-        mvc.perform(delete("/user/cancel")
+        mvc.perform(delete("/main/user/cancel")
                         .contentType(MediaType.APPLICATION_JSON)
                         )
                 .andExpect(status().isUnauthorized())

@@ -36,6 +36,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -105,6 +106,9 @@ public class ReviewControllerTest {
     @MockBean
     private ReviewImageService reviewImageService;
 
+    @MockBean
+    private ClientRegistrationRepository clientRegistrationRepository;
+
     @BeforeEach
     public void setup() {
         mvc = MockMvcBuilders
@@ -145,7 +149,7 @@ public class ReviewControllerTest {
         given(reviewService.createReview(any(User.class), any(PostCreateReviewReq.class)))
                 .willReturn(baseRes);
 
-        mvc.perform(multipart("/review/create")
+        mvc.perform(multipart("/main/review/create")
                         .content(mapper.writeValueAsBytes(request))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -176,7 +180,7 @@ public class ReviewControllerTest {
                 .willThrow(new ReviewException(ErrorCode.DUPLICATE_REVIEW_TITLE, "Review Title [ %s ] is duplicated."));
 
         // when & then
-        mvc.perform(multipart("/review/create")
+        mvc.perform(multipart("/main/review/create")
                         .content(mapper.writeValueAsBytes(request))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("ACCOUNT-001"))
@@ -218,7 +222,7 @@ public class ReviewControllerTest {
                 .willReturn(baseRes);
 
         // when & then
-        mvc.perform(get("/review/mylist/1/1")
+        mvc.perform(get("/main/review/mylist/1/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.isSuccess").value(true))
@@ -250,7 +254,7 @@ public class ReviewControllerTest {
                 .willReturn(baseRes);
 
         // when & then
-        mvc.perform(multipart(HttpMethod.PATCH, "/review/update")
+        mvc.perform(multipart(HttpMethod.PATCH, "/main/review/update")
                         .content(mapper.writeValueAsBytes(request))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf())
@@ -278,7 +282,7 @@ public class ReviewControllerTest {
 
         // when & then
 
-        mvc.perform(delete("/review/delete/1")
+        mvc.perform(delete("/main/review/delete/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.isSuccess").value(true))
@@ -298,19 +302,12 @@ public class ReviewControllerTest {
 
         // when & then
 
-        mvc.perform(delete("/review/delete/1")
+        mvc.perform(delete("/main/review/delete/1")
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isUnauthorized())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("ACCOUNT-001"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Request processing failed; nested exception is com.example.bootshelf.common.error.entityexception.ReviewException: Review Idx [ %s ] is not exists."))
                 .andDo(print());
-    }
-
-
-
-    private MockMultipartFile setMockMultipartFile(String fileName, String contentType) {
-        return new MockMultipartFile("reviewImage", fileName + "." + contentType, contentType, "<<data>>".getBytes());
-
     }
 }

@@ -89,7 +89,7 @@ class BoardCommentControllerTest {
                 .willReturn(baseRes);
 
         // When
-        mockMvc.perform(post("/board/1/comment/create")
+        mockMvc.perform(post("/main/board/1/comment/create")
                         .content(objectMapper.writeValueAsBytes(postCreateBoardCommentReq))
                         // 객체를 json 파일로 변환해준다.
                         .contentType(MediaType.APPLICATION_JSON)
@@ -114,7 +114,7 @@ class BoardCommentControllerTest {
         given(boardCommentService.createBoardComment(any(User.class), any(Integer.class), any(PostCreateBoardCommentReq.class)))
                 .willThrow(new BoardCommentException(ErrorCode.INVALID_INPUT_VALUE, "Board Comment Content is empty."));
         // When
-        mockMvc.perform(post("/board/1/comment/create")
+        mockMvc.perform(post("/main/board/1/comment/create")
                         .content(objectMapper.writeValueAsBytes(postCreateBoardCommentReq))
                         // 객체를 json 파일로 변환해준다.
                         .contentType(MediaType.APPLICATION_JSON)
@@ -150,7 +150,7 @@ class BoardCommentControllerTest {
 
         given(boardCommentService.listBoardComment(any(Integer.class))).willReturn(baseRes);
 
-        mockMvc.perform(get("/board/1/comment")
+        mockMvc.perform(get("/main/board/1/comment")
 //                        .with(anonymous())
                         .with(oauth2Login())
                         .contentType(MediaType.APPLICATION_JSON)

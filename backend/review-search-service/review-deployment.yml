@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: review-deployment
+
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+  revisionHistoryLimit: 1
+  minReadySeconds: 10
+  selector:
+    matchLabels:
+      type: review
+  template:
+    metadata:
+      labels:
+        type: review
+    spec:
+      containers:
+        - name: backend-container
+          image: hyungdoyou/be:6.VERSION
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "100m"
+            limits:
+              memory: "3Gi"
+              cpu: "2000m"
+          readinessProbe:
+            httpGet:
+              path: /search/review/list?categoryIdx=1&sortType=1&title=백엔드
+              port: 8082
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            successThreshold: 1
+          livenessProbe:
+            httpGet:
+              path: /search/review/list?categoryIdx=1&sortType=1&title=백엔드
+              port: 8082
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          envFrom:
+            - configMapRef:
+                name: review-config
+      terminationGracePeriodSeconds: 5

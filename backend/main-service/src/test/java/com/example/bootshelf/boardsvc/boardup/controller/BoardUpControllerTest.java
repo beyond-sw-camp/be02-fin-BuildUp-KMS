@@ -116,7 +116,7 @@ class BoardUpControllerTest {
         given(boardUpService.createBoardUp(any(User.class), any(PostCreateBoardUpReq.class))).willReturn(baseRes);
 
         // When
-        mockMvc.perform(post("/boardup/create")
+        mockMvc.perform(post("/main/boardup/create")
                         .content(objectMapper.writeValueAsBytes(postCreateBoardUpReq))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf()))
@@ -147,7 +147,7 @@ class BoardUpControllerTest {
                 .willThrow(new BoardException(ErrorCode.BOARD_NOT_EXISTS, String.format("Board [ %d ] is not exists.", postCreateBoardUpReq.getBoardIdx())));
 
         // When
-        mockMvc.perform(post("/boardup/create")
+        mockMvc.perform(post("/main/boardup/create")
                         .content(objectMapper.writeValueAsBytes(postCreateBoardUpReq))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf()))

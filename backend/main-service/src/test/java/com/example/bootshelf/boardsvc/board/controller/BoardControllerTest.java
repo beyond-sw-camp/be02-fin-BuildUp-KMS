@@ -78,7 +78,7 @@ class BoardControllerTest {
                 .willReturn(baseRes);
 
         // When & Then
-        mvc.perform(get("/board/search")
+        mvc.perform(get("/main/board/search")
                         .param("query", "스프링 테스트 코드")
                         .param("searchType", "1")
                         .contentType(MediaType.APPLICATION_JSON))

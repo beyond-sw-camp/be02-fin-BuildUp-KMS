@@ -28,6 +28,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -93,6 +94,9 @@ public class AdminControllerTest {
     @MockBean
     private RefreshTokenService refreshTokenService;
 
+    @MockBean
+    private ClientRegistrationRepository clientRegistrationRepository;
+
     @BeforeEach
     public void setup() {
         mvc = MockMvcBuilders
@@ -132,7 +136,7 @@ public class AdminControllerTest {
                 .willReturn(baseRes);
 
         // when & then
-        mvc.perform(post("/admin/signup")
+        mvc.perform(post("/main/admin/signup")
                         .content(mapper.writeValueAsBytes(request))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -159,7 +163,7 @@ public class AdminControllerTest {
 
 
         // when & then
-        mvc.perform(post("/admin/signup")
+        mvc.perform(post("/main/admin/signup")
                         .content(mapper.writeValueAsBytes(request))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized())
@@ -194,7 +198,7 @@ public class AdminControllerTest {
                 .willReturn(baseRes);
 
         // when & then
-        mvc.perform(post("/admin/login")
+        mvc.perform(post("/main/admin/login")
                         .content(mapper.writeValueAsBytes(postLoginUserReq))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -220,7 +224,7 @@ public class AdminControllerTest {
 
 
         // when & then
-        mvc.perform(post("/admin/login")
+        mvc.perform(post("/main/admin/login")
                         .content(mapper.writeValueAsBytes(postLoginUserReq))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized())
