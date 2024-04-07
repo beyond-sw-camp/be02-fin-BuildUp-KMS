@@ -1,10 +1,12 @@
 import { defineStore } from "pinia";
 import axios from "axios";
+import VueJwtDecode from "vue-jwt-decode";
 
 const backend = "http://192.168.0.61/api";
 // const backend = "http://localhost:8080";
 
-const storedToken = localStorage.getItem("token");
+const accessToken = localStorage.getItem("accessToken");
+const refreshToken = localStorage.getItem("refreshToken");
 
 export const useTotalStore = defineStore("total", {
   state: () => ({
@@ -15,8 +17,21 @@ export const useTotalStore = defineStore("total", {
     isBoardExist: true,
     isLoading: false,
     isPageExist: true,
+    isTokenExpired: false,
   }),
   actions: {
+    validateToken() {
+      const decodedAccessToken = VueJwtDecode.decode(accessToken);
+      const expirationTime = decodedAccessToken.exp;
+      const currentTime = Math.floor(Date.now() / 1000);
+
+      if (expirationTime - currentTime < 30) {
+        this.isTokenExpired = true;
+      } else {
+        this.isTokenExpired = false;
+      }
+    },
+
     async getHotReviewList(reviewCategoryIdx, sortType, page = 1) {
       try {
         this.isLoading = true;
@@ -26,7 +41,7 @@ export const useTotalStore = defineStore("total", {
         }).toString();
 
         let response = await axios.get(
-          backend + `/review/hotlist/${reviewCategoryIdx}/${sortType}?${params}`
+          backend + `/main/review/hotlist/${reviewCategoryIdx}/${sortType}?${params}`
         );
 
         this.totalList = response.data.result.list;
@@ -93,7 +108,7 @@ export const useTotalStore = defineStore("total", {
 
         let response = await axios.get(
           backend +
-            "/board/hotlist/" +
+            "/main/board/hotlist/" +
             boardCategoryIdx +
             "/" +
             sortType +
@@ -160,21 +175,45 @@ export const useTotalStore = defineStore("total", {
     },
     async findMyBoardListByCategory(boardCategoryIdx, option, page = 1) {
       try {
+        this.validateToken();
+
+        const headers = this.isTokenExpired
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+              RefreshToken: `Bearer ${refreshToken}`,
+              "Content-Type": "application/json",
+            }
+          : {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
+
         let response = await axios.get(
           backend +
-            "/board/mylist/" +
+            "/main/board/mylist/" +
             boardCategoryIdx +
             "/" +
             option +
             "?page=" +
             (page - 1),
           {
-            headers: {
-              Authorization: `Bearer ${storedToken}`,
-              "Content-Type": "application/json",
-            },
+            headers,
           }
         );
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
+
         this.totalList = response.data.result.list;
         this.totalPages = response.data.result.totalPages;
         this.currentPage = page;
@@ -194,21 +233,45 @@ export const useTotalStore = defineStore("total", {
 
     async findBoardScrapListByCategory(boardCategoryIdx, option, page = 1) {
       try {
+        this.validateToken();
+
+        const headers = this.isTokenExpired
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+              RefreshToken: `Bearer ${refreshToken}`,
+              "Content-Type": "application/json",
+            }
+          : {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
+
         let response = await axios.get(
           backend +
-            "/boardscrap/list/" +
+            "/main/boardscrap/list/" +
             boardCategoryIdx +
             "/" +
             option +
             "?page=" +
             (page - 1),
           {
-            headers: {
-              Authorization: `Bearer ${storedToken}`,
-              "Content-Type": "application/json",
-            },
+            headers,
           }
         );
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
+
         this.totalList = response.data.result.list;
         this.totalPages = response.data.result.totalPages;
         this.currentPage = page;
@@ -227,19 +290,42 @@ export const useTotalStore = defineStore("total", {
     },
     async getMyReviewList(reviewCategoryIdx, sortType, page = 1) {
       try {
+        this.validateToken();
+
+        const headers = this.isTokenExpired
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+              RefreshToken: `Bearer ${refreshToken}`,
+              "Content-Type": "application/json",
+            }
+          : {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
+
         const params = new URLSearchParams({
           page: page - 1,
         }).toString();
 
         let response = await axios.get(
-          backend + `/review/mylist/${reviewCategoryIdx}/${sortType}?${params}`,
+          backend + `/main/review/mylist/${reviewCategoryIdx}/${sortType}?${params}`,
           {
-            headers: {
-              Authorization: `Bearer ${storedToken}`,
-              "Content-Type": "application/json",
-            },
+            headers,
           }
         );
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
 
         this.totalList = response.data.result.list;
         this.totalPages = response.data.result.totalPages;
@@ -260,20 +346,44 @@ export const useTotalStore = defineStore("total", {
 
     async findReviewScrapListByCategory(reviewCategoryIdx, option, page = 1) {
       try {
+        this.validateToken();
+
+        const headers = this.isTokenExpired
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+              RefreshToken: `Bearer ${refreshToken}`,
+              "Content-Type": "application/json",
+            }
+          : {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
+
         const params = new URLSearchParams({
           page: page - 1,
         }).toString();
 
         let response = await axios.get(
           backend +
-            `/reviewscrap/list/${reviewCategoryIdx}/${option}?${params}`,
+            `/main/reviewscrap/list/${reviewCategoryIdx}/${option}?${params}`,
           {
-            headers: {
-              Authorization: `Bearer ${storedToken}`,
-              "Content-Type": "application/json",
-            },
+            headers,
           }
         );
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
+
         this.totalList = response.data.result.list;
         this.totalPages = response.data.result.totalPages;
         this.currentPage = page;
@@ -292,13 +402,36 @@ export const useTotalStore = defineStore("total", {
     },
     async deleteBoard(idx) {
       try {
-        let response = await axios.delete(backend + "/board/delete/" + idx, {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-            "Content-Type": "application/json",
-          },
+        this.validateToken();
+
+        const headers = this.isTokenExpired
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+              RefreshToken: `Bearer ${refreshToken}`,
+              "Content-Type": "application/json",
+            }
+          : {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
+
+        let response = await axios.delete(backend + "/main/board/delete/" + idx, {
+          headers,
         });
 
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
+        
         if (response.data.isSuccess === true) {
           alert("게시글이 삭제되었습니다.");
           window.location.href = "/mypage";
@@ -313,12 +446,35 @@ export const useTotalStore = defineStore("total", {
     },
     async deleteReview(idx) {
       try {
-        let response = await axios.delete(backend + "/review/delete/" + idx, {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-            "Content-Type": "application/json",
-          },
+        this.validateToken();
+
+        const headers = this.isTokenExpired
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+              RefreshToken: `Bearer ${refreshToken}`,
+              "Content-Type": "application/json",
+            }
+          : {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
+
+        let response = await axios.delete(backend + "/main/review/delete/" + idx, {
+          headers,
         });
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
 
         if (response.data.isSuccess === true) {
           alert("후기글이 삭제되었습니다.");
@@ -334,16 +490,39 @@ export const useTotalStore = defineStore("total", {
     },
     async deleteBoardScrap(boardScrapIdx) {
       try {
+        this.validateToken();
+
+        const headers = this.isTokenExpired
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+              RefreshToken: `Bearer ${refreshToken}`,
+              "Content-Type": "application/json",
+            }
+          : {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
+
         let response = await axios.patch(
-          backend + `/boardscrap/delete/${boardScrapIdx}`,
+          backend + `/main/boardscrap/delete/${boardScrapIdx}`,
           {},
           {
-            headers: {
-              Authorization: `Bearer ${storedToken}`,
-              "Content-Type": "application/json",
-            },
+            headers,
           }
         );
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
 
         if (response.data.isSuccess === true) {
           alert("게시글 스크랩을 취소하였습니다.");
@@ -360,17 +539,40 @@ export const useTotalStore = defineStore("total", {
 
     async deletReviewScrap(reviewScrapIdx) {
       try {
+        this.validateToken();
+
+        const headers = this.isTokenExpired
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+              RefreshToken: `Bearer ${refreshToken}`,
+              "Content-Type": "application/json",
+            }
+          : {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
+
         let response = await axios.patch(
-          backend + `/reviewscrap/delete/${reviewScrapIdx}`,
+          backend + `/main/reviewscrap/delete/${reviewScrapIdx}`,
           {},
           {
-            headers: {
-              Authorization: `Bearer ${storedToken}`,
-              "Content-Type": "application/json",
-            },
+            headers,
           }
         );
 
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
+        
         if (response.data.isSuccess === true) {
           alert("후기글 스크랩을 취소하였습니다.");
           window.location.href = "/mypage";

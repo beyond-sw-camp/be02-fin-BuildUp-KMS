@@ -144,7 +144,8 @@ hljs.configure({
 });
 
 export function imageHandler() {
-  const storedToken = localStorage.getItem("token");
+  const accessToken = localStorage.getItem("accessToken");
+  const refreshToken = localStorage.getItem("refreshToken");
   const quill = this.quill;
 
   const input = document.createElement("input");
@@ -174,17 +175,31 @@ export function imageHandler() {
     try {
       const backend = "http://192.168.0.61/api";
       // const backend = "http://localhost:8080";
-      
+
       let response = await axios({
         method: "POST",
         // url: "http://192.168.0.61/api/review/image/upload",
-        url: backend + "/review/image/upload",
+        url: backend + "/main/review/image/upload",
         headers: {
-          Authorization: `Bearer ${storedToken}`,
+          Authorization: `Bearer ${accessToken}`,
+          RefreshToken: `Bearer ${refreshToken}`,
           "Content-Type": "multipart/form-data",
         },
         data: formData,
       });
+
+      if (response.headers["new-access-token"] != null) {
+        if (
+          response.headers["new-access-token"] !=
+          localStorage.getItem("accessToken")
+        ) {
+          localStorage.setItem("accessToken", "");
+          localStorage.setItem(
+            "accessToken",
+            response.headers["new-access-token"]
+          );
+        }
+      }
 
       if (response.data.isSuccess === true) {
         let imageUrl = response.data.result.imageUrl;
@@ -287,7 +302,7 @@ export default {
     async updateReview() {
       this.review.reviewContent = this.state._content;
       console.log("Updating with:", this.review.reviewContent);
-      
+
       await this.reviewStore.updateReview(this.review);
     },
     cancel() {

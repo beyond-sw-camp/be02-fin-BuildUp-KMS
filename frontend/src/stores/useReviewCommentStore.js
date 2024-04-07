@@ -1,22 +1,39 @@
 import axios from "axios";
 import { defineStore } from "pinia";
+import VueJwtDecode from "vue-jwt-decode";
 
 const backend = "http://192.168.0.61/api";
 // const backend = "http://localhost:8080";
-let token = localStorage.getItem("token");
+
+const accessToken = localStorage.getItem("accessToken");
+const refreshToken = localStorage.getItem("refreshToken");
 
 export const useReviewCommentStore = defineStore("reviewComment", {
   state: () => ({
     reviewCommentList: [],
     reviewReplyList: [],
     reviewCommentUpList: [],
+    isTokenExpired: false,
   }),
   actions: {
+
+    validateToken() {
+      const decodedAccessToken = VueJwtDecode.decode(accessToken);
+      const expirationTime = decodedAccessToken.exp;
+      const currentTime = Math.floor(Date.now() / 1000);
+
+      if (expirationTime - currentTime < 30) {
+        this.isTokenExpired = true;
+      } else {
+        this.isTokenExpired = false;
+      }
+    },
+
     // 댓글 조회
     async getReviewCommentList(reviewIdx) {
       try {
         let response = await axios.get(
-          backend + `/review/${reviewIdx}/comment`,
+          backend + `/main/review/${reviewIdx}/comment`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -34,16 +51,40 @@ export const useReviewCommentStore = defineStore("reviewComment", {
     // 댓글 작성
     async createReviewComment(reviewCommentContent, reviewIdx) {
       try {
+
+        this.validateToken();
+
+        const headers = this.isTokenExpired
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+              RefreshToken: `Bearer ${refreshToken}`,
+              "Content-Type": "application/json",
+            }
+          : {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
+
         const response = await axios.post(
-          backend + `/review/${reviewIdx}/comment/create`,
+          backend + `/main/review/${reviewIdx}/comment/create`,
           { reviewCommentContent: reviewCommentContent },
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
+            headers
           }
         );
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
 
         if(response.data.isSuccess === true) {
           window.location.href = `/review/${reviewIdx}`;
@@ -61,22 +102,46 @@ export const useReviewCommentStore = defineStore("reviewComment", {
     // 댓글 수정
     async updateReviewComment(reviewCommentContent, commentIdx, reviewIdx) {
       try {
-        if (!token) {
+
+        this.validateToken();
+
+        const headers = this.isTokenExpired
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+              RefreshToken: `Bearer ${refreshToken}`,
+              "Content-Type": "application/json",
+            }
+          : {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
+
+        if (!accessToken) {
           throw new Error(
             "토큰이 없습니다. 사용자가 로그인되었는지 확인하세요."
           );
         }
 
         const response = await axios.patch(
-          backend + `/review/${reviewIdx}/update/${commentIdx}`,
+          backend + `/main/review/${reviewIdx}/update/${commentIdx}`,
           { reviewCommentContent: reviewCommentContent },
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
+            headers
           }
         );
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
 
         if(response.data.isSuccess === true) {
           window.location.href = `/review/${reviewIdx}`;
@@ -94,22 +159,46 @@ export const useReviewCommentStore = defineStore("reviewComment", {
     // 댓글 삭제
       async deleteReviewComment(commentIdx, reviewIdx, userIdx) {
         try {
-          if (!token) {
+
+          this.validateToken();
+
+          const headers = this.isTokenExpired
+            ? {
+                Authorization: `Bearer ${accessToken}`,
+                RefreshToken: `Bearer ${refreshToken}`,
+                "Content-Type": "application/json",
+              }
+            : {
+                Authorization: `Bearer ${accessToken}`,
+                "Content-Type": "application/json",
+              };
+
+          if (!accessToken) {
             throw new Error(
               "토큰이 없습니다. 사용자가 로그인되었는지 확인하세요."
             );
           }
 
           const response = await axios.patch(
-            `${backend}/review/${reviewIdx}/delete/${commentIdx}`,
+            `${backend}/main/review/${reviewIdx}/delete/${commentIdx}`,
             {userIdx : userIdx},
             {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-              },
+              headers
             }
           );
+
+          if (response.headers["new-access-token"] != null) {
+            if (
+              response.headers["new-access-token"] !=
+              localStorage.getItem("accessToken")
+            ) {
+              localStorage.setItem("accessToken", "");
+              localStorage.setItem(
+                "accessToken",
+                response.headers["new-access-token"]
+              );
+            }
+          }
 
           if(response.data.isSuccess === true) {
             window.location.href = `/review/${reviewIdx}`;
@@ -122,16 +211,41 @@ export const useReviewCommentStore = defineStore("reviewComment", {
     //  대댓글 작성
     async createReviewReply(reviewReplyContent, reviewIdx, reviewCommentIdx) {
       try {
+
+        this.validateToken();
+
+        const headers = this.isTokenExpired
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+              RefreshToken: `Bearer ${refreshToken}`,
+              "Content-Type": "application/json",
+            }
+          : {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
+
         const response = await axios.post(
-          backend + `/review/${reviewIdx}/comment/create/${reviewCommentIdx}`,
+          backend + `/main/review/${reviewIdx}/comment/create/${reviewCommentIdx}`,
           { reviewReplyContent: reviewReplyContent },
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
+            headers
           }
         );
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
+
         if(response.data.isSuccess === true) {
           window.location.href = `/review/${reviewIdx}`;
         }
@@ -148,9 +262,37 @@ export const useReviewCommentStore = defineStore("reviewComment", {
     // 댓글 추천
     async reviewRecommend(commentIdx) {
       try {
-        await axios.post(`${backend}/reviewcomment/up/create`, { reviewCommentIdx: commentIdx }, {
-          headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+
+        this.validateToken();
+
+        const headers = this.isTokenExpired
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+              RefreshToken: `Bearer ${refreshToken}`,
+              "Content-Type": "application/json",
+            }
+          : {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
+
+        let response = await axios.post(`${backend}/main/reviewcomment/up/create`, { reviewCommentIdx: commentIdx }, {
+          headers,
         });
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
+
         console.log("Comment recommendation successful");
       } catch (error) {
         if (error.response && error.response.data.code === "REVIEWUP-001") {
@@ -166,9 +308,37 @@ export const useReviewCommentStore = defineStore("reviewComment", {
     // 댓글 추천 삭제
     async cancelReviewComment(commentIdx) {
       try {
-        await axios.patch(`${backend}/reviewcomment/up/delete/${commentIdx}`, {}, {
-          headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+
+        this.validateToken();
+
+        const headers = this.isTokenExpired
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+              RefreshToken: `Bearer ${refreshToken}`,
+              "Content-Type": "application/json",
+            }
+          : {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
+
+        let response = await axios.patch(`${backend}/main/reviewcomment/up/delete/${commentIdx}`, {}, {
+          headers
         });
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
+
         console.log("Comment recommendation cancellation successful");
         // You may want to update your store's state here to reflect the cancellation
       } catch (error) {
@@ -178,9 +348,9 @@ export const useReviewCommentStore = defineStore("reviewComment", {
 
     // Inside your useReviewCommentStore
     async updateCommentRecommendationStatus() {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        console.error('Authentication token not found.');
+      const accessToken = localStorage.getItem('accessToken');
+      if (!accessToken) {
+        console.error('Authentication accessToken not found.');
         return;
       }
 
@@ -196,9 +366,37 @@ export const useReviewCommentStore = defineStore("reviewComment", {
 
     async updateRecommendationStatusForCommentOrReply(item) {
       try {
-        const response = await axios.get(`${backend}/reviewcomment/up/check/${item.idx}`, {
-          headers: { Authorization: `Bearer ${token}` },
+
+        this.validateToken();
+
+        const headers = this.isTokenExpired
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+              RefreshToken: `Bearer ${refreshToken}`,
+              "Content-Type": "application/json",
+            }
+          : {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
+
+        const response = await axios.get(`${backend}/main/reviewcomment/up/check/${item.idx}`, {
+          headers
         });
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
+
         item.isReviewCommentRecommended = response.data.result.status;
       } catch (error) {
         console.error(`Error checking recommendation status for item ${item.idx}:`, error);
@@ -208,15 +406,41 @@ export const useReviewCommentStore = defineStore("reviewComment", {
 
     async checkReviewCommentUp(reviewCommentIdx) {
       try {
-        const token = localStorage.getItem('token'); // Ensure you have a token
-        if (!token) {
-          throw new Error('No authentication token found');
+
+        this.validateToken();
+
+        const headers = this.isTokenExpired
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+              RefreshToken: `Bearer ${refreshToken}`,
+              "Content-Type": "application/json",
+            }
+          : {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
+
+        const accessToken = localStorage.getItem('accessToken'); // Ensure you have a accessToken
+        if (!accessToken) {
+          throw new Error('No authentication accessToken found');
         }
-        const response = await axios.get(`${backend}/reviewcomment/up/check/${reviewCommentIdx}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+        const response = await axios.get(`${backend}/main/reviewcomment/up/check/${reviewCommentIdx}`, {
+          headers
         });
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
+        
         // Adjust based on actual API response structure
         return response.data.result.status;
       } catch (error) {

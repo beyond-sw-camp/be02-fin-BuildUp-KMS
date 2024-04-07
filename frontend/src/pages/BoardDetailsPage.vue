@@ -150,7 +150,13 @@
                           <circle cx="1" cy="1" r="1" fill="#9DA7AE"></circle>
                         </svg>
                       </div>
-                      <div class="css-1ry6usa">{{ boardDetail.updatedAt }}</div>
+                      <div class="css-1ry6usa">
+                        {{
+                          this.$moment(boardDetail.updatedAt).format(
+                            "YYYY-MM-DD HH:mm:ss"
+                          )
+                        }}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -226,12 +232,14 @@
                   </div>
                   <div class="css-13ljjbe">
                     <div class="commentEditor">
-                      <input
-                        class="css-001"
-                        type="text"
-                        placeholder="댓글을 남겨주세요"
-                        v-model="boardCommentContent"
-                      />
+                      <div class="quill">
+                        <quill-editor
+                          ref="quillEditor"
+                          v-model:value="state.content"
+                          :options="state.editorOption"
+                          :disabled="false"
+                        ></quill-editor>
+                      </div>
                     </div>
                     <div class="css-btn-div">
                       <button class="css-btn" @click="submitComment()">
@@ -292,6 +300,32 @@ export default {
   },
   data() {
     return {
+      state: {
+        content: "",
+        _content: "",
+        editorOption: {
+          placeholder: "댓글을 남겨주세요",
+          modules: {
+            syntax: {
+              highlight: (text) => hljs.highlightAuto(text).value,
+            },
+            toolbar: {
+              container: [
+                [
+                  "bold",
+                  "underline",
+                  "code-block",
+                  { header: 1 },
+                  { header: 2 },
+                  { color: [] },
+                  { background: [] },
+                ],
+              ],
+            },
+          },
+        },
+        disabled: false,
+      },
       boardCommentContent: "",
       boardDetail: null,
       boardIdx: null,
@@ -310,7 +344,7 @@ export default {
       "tagList",
     ]),
     isLoggedIn() {
-      return !!localStorage.getItem("token");
+      return !!localStorage.getItem("accessToken");
     },
     userProfileImage() {
       // 사용자 정보 로딩 후 사용자 프로필 이미지 반환
@@ -346,7 +380,7 @@ export default {
   methods: {
     highlightCode() {
       this.$nextTick(() => {
-        document.querySelectorAll('pre').forEach((block) => {
+        document.querySelectorAll("pre").forEach((block) => {
           hljs.highlightBlock(block);
         });
       });
@@ -371,7 +405,7 @@ export default {
       let isAuthenticated = this.userStore.isAuthenticated;
       try {
         await useBoardCommentStore().createBoardComment(
-          this.boardCommentContent,
+          this.state.content,
           this.boardIdx,
           isAuthenticated
         );
@@ -381,9 +415,9 @@ export default {
       }
     },
     async createBoardUp() {
-      let token = window.localStorage.getItem("token");
+      let accessToken = window.localStorage.getItem("accessToken");
 
-      if (token == null) {
+      if (accessToken == null) {
         alert("로그인 후 이용해주세요.");
       } else {
         let requestBody = {
@@ -392,14 +426,14 @@ export default {
 
         try {
           if (this.isRecommended) {
-            await this.boardStore.cancelBoardUp(token, this.boardUpIdx);
+            await this.boardStore.cancelBoardUp(accessToken, this.boardUpIdx);
             console.log("게시글 추천 취소 성공");
             this.isRecommended = false;
 
             window.location.reload();
           } else {
             const response = await this.boardStore.createBoardUp(
-              token,
+              accessToken,
               requestBody
             );
 
@@ -418,9 +452,9 @@ export default {
       }
     },
     async createBoardScrap() {
-      let token = window.localStorage.getItem("token");
+      let accessToken = window.localStorage.getItem("accessToken");
 
-      if (token == null) {
+      if (accessToken == null) {
         alert("로그인 후 이용해주세요.");
       } else {
         let requestBody = {
@@ -429,14 +463,17 @@ export default {
 
         try {
           if (this.isScrapped) {
-            await this.boardStore.cancelBoardScrap(token, this.boardScrapIdx);
+            await this.boardStore.cancelBoardScrap(
+              accessToken,
+              this.boardScrapIdx
+            );
             console.log("게시글 스크랩 취소 성공");
             this.isScrapped = false;
 
             window.location.reload();
           } else {
             const response = await this.boardStore.createBoardScrap(
-              token,
+              accessToken,
               requestBody
             );
 
@@ -464,8 +501,11 @@ export default {
     },
     async checkBoardUp() {
       try {
-        let token = window.localStorage.getItem("token");
-        let response = await this.boardStore.checkBoardUp(token, this.boardIdx);
+        let accessToken = window.localStorage.getItem("accessToken");
+        let response = await this.boardStore.checkBoardUp(
+          accessToken,
+          this.boardIdx
+        );
 
         if (response.data && response.data.result.status === true) {
           this.isRecommended = true;
@@ -479,9 +519,9 @@ export default {
     },
     async checkBoardScrap() {
       try {
-        let token = window.localStorage.getItem("token");
+        let accessToken = window.localStorage.getItem("accessToken");
         let response = await this.boardStore.checkBoardScrap(
-          token,
+          accessToken,
           this.boardIdx
         );
 
@@ -780,7 +820,7 @@ img {
   letter-spacing: normal;
 }
 
-::v-deep .editedQ_QContent{
+::v-deep .editedQ_QContent {
   font-size: 14px;
   color: #505254;
   line-height: 1.8;
@@ -819,6 +859,7 @@ img {
   font-size: 14px;
   color: #505254;
   font-weight: 400;
+  list-style-position: inside;
 }
 
 ::v-deep .editedQ_QContent pre.ql-syntax {
@@ -837,14 +878,14 @@ img {
 }
 
 ::v-deep .editedQ_QContent .ql-align-center {
-    text-align: center;
+  text-align: center;
 }
 
 ::v-deep .editedQ_QContent .ql-align-right {
-    text-align: right;
+  text-align: right;
 }
 ::v-deep .editedQ_QContent .ql-align-justify {
-    text-align: justify;
+  text-align: justify;
 }
 
 @media (min-width: 1024px) {
@@ -1045,13 +1086,6 @@ img {
   width: 100%;
   border: 1px solid #eaebed;
   border-radius: 12px;
-  height: 90px;
-}
-
-.commentEditor {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
 }
 
 .css-001 {
@@ -1080,6 +1114,7 @@ img {
   margin-right: 10px;
   cursor: pointer;
   font-family: Pretendard;
+  margin-bottom: 10px;
 }
 
 .css-5zcuov {
@@ -1307,4 +1342,253 @@ span.btn.black {
   white-space: pre;
   line-height: 1.42;
 }
+
+/* editor */
+.quill {
+  min-height: 280px;
+}
+
+@media (min-width: 1024px) {
+  .ql-editor,
+  .quill {
+    min-height: 280px;
+  }
+}
+
+.commentEditor .quill {
+  min-height: 57px;
+}
+
+.ql-snow,
+.ql-snow * {
+  box-sizing: border-box;
+}
+
+.ql-toolbar {
+  position: relative;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  border: none !important;
+  background-color: #f4f5f6;
+  box-sizing: border-box;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  padding: 12px 15px !important;
+  height: 52px;
+}
+
+@media (min-width: 1024px) {
+  .ql-toolbar {
+    position: relative;
+    border: none !important;
+    display: block;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    background-color: #f4f5f6;
+    box-sizing: border-box;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    padding: 13px 15px !important;
+    height: 56px;
+    border-radius: 10px;
+  }
+}
+
+.ql-toolbar {
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    padding: 8px;
+    border-radius: 10px;
+}
+
+::v-deep .ql-toolbar.ql-snow {
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    padding: 0px;
+    border-radius: 10px;
+}
+::v-deep .ql-toolbar.ql-snow .ql-formats {
+    margin-right: 15px;
+    margin-left: 15px;
+}
+.ql-snow, .ql-snow * {
+    box-sizing: border-box;
+}
+
+@media (min-width: 1024px) {
+  .ql-container {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    min-height: 520px;
+}
+}
+
+.ql-container {
+    min-height: 200px;
+}
+.ql-container {
+    border: 1px solid #ccc;
+}
+.ql-container.ql-snow {
+    border: 1px solid #ccc;
+}
+.commentEditor .ql-container {
+    min-height: 56px;
+}
+.ql-container.ql-snow {
+    border: none !important;
+}
+.ql-editor {
+    height: 100%;
+    overflow-y: auto;
+    padding: 12px 15px;
+}
+.ql-snow, .ql-snow * {
+    box-sizing: border-box;
+}
+@media (min-width: 1024px) {
+  .ql-editor, .quill {
+    min-height: 280px;
+}
+}
+@media (min-width: 1024px) {
+  .ql-editor {
+    color: #6b6e72;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.3;
+    letter-spacing: normal;
+    font-weight: 500;
+    width: 100%;
+    margin: auto;
+    padding: 24px 20px !important;
+}
+}
+.ql-editor {
+    color: #6b6e72;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.3;
+    letter-spacing: normal;
+    font-weight: 500;
+    min-height: 200px;
+    width: 100%;
+    margin: auto;
+    padding: 24px 20px !important;
+}
+.ql-editor {
+    box-sizing: border-box;
+    line-height: 1.42;
+    outline: none;
+    padding: 12px 0;
+    tab-size: 4;
+    -moz-tab-size: 4;
+    text-align: left;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+.commentEditor .ql-editor {
+    min-height: 56px;
+    padding: 14px 20px !important;
+}
+.ql-editor.ql-blank::before {
+    color: rgba(0, 0, 0, 0.6);
+    content: attr(data-placeholder);
+    font-style: italic;
+    left: 15px;
+    pointer-events: none;
+    position: absolute;
+    right: 15px;
+}
+.ql-editor.ql-blank:before {
+    left: 15px;
+}
+.ql-editor.ql-blank:before {
+    color: rgba(0, 0, 0, .6);
+    content: attr(data-placeholder);
+    font-style: italic;
+    left: 20px;
+    pointer-events: none;
+    position: absolute;
+    right: 15px;
+    font-weight: 350;
+}
+.ql-editor.ql-blank::before {
+    color: rgba(0, 0, 0, 0.6);
+    content: attr(data-placeholder);
+    font-style: italic;
+    left: 15px;
+    pointer-events: none;
+    position: absolute;
+    right: 15px;
+}
+.quill>.ql-container>.ql-editor.ql-blank:before {
+    color: #c7c9cb;
+    font-style: normal;
+    font-size: 14px;
+    white-space: pre-wrap;
+    line-height: 1.5;
+    padding: 5px;
+}
+.ql-editor * {
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    font-family: Pretendard;
+}
+.ql-editor blockquote, .ql-editor h1, .ql-editor h2, .ql-editor h3, .ql-editor h4, .ql-editor h5, .ql-editor h6, .ql-editor ol, .ql-editor p, .ql-editor pre, .ql-editor ul {
+    margin: 0;
+    padding: 0;
+    counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
+}
+.ql-editor *, .ql-editor p {
+    font-weight: 400;
+    line-height: 1.5;
+}
+.ql-editor p {
+    color: #505254;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    font-size: 14px;
+    word-break: break-word;
+    width: 100%;
+    overflow-x: clip;
+}
+.ql-editor>* {
+    cursor: text;
+}
+
+::v-deep .ql-snow.ql-toolbar button, .ql-snow .ql-toolbar button {
+  background: none;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+    float: left;
+    height: 24px;
+    padding: 3px 5px;
+    width: 28px;
+    margin-right: 10px;
+}
+
+::v-deep .ql-snow .ql-picker {
+    color: #444;
+    display: inline-block;
+    float: left;
+    font-size: 14px;
+    font-weight: 500;
+    height: 24px;
+    position: relative;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+::v-deep .ql-snow .ql-editor pre.ql-syntax {
+  background-color: #23241f;
+  color: #f8f8f2;
+  overflow: visible;
+  font-family: Monaco;
+  letter-spacing: 0.07em;
+  font-size: 10px;
+}
+
 </style>

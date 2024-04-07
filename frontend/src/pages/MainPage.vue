@@ -54,8 +54,7 @@
     <div class="css-16z0wya">
       <section class="css-zea7jz">
         <div class="css-143hej">
-          <router-link to="/board/knowledge">
-            <a>
+            <a onclick="location.href='/board/knowledge'">
               <button class="css-bcb9a9">
                 <div class="css-197aby8">
                   <p class="css-1r2nemk">&nbsp;지식 공유 서비스</p>
@@ -65,9 +64,7 @@
                 </div>
                 <img src="../assets/img/knowledge.png" loading="lazy" class="css-1522xt9" />
               </button></a>
-          </router-link>
-          <router-link to="/board/qna">
-            <a>
+            <a onclick="location.href='/board/qna'">
               <button class="css-bcb9a9">
                 <div class="css-197aby8">
                   <p class="css-1r2nemk">&nbsp;무엇이든 물어보세요</p>
@@ -78,9 +75,7 @@
                 </div>
                 <img src="../assets/img/qna.png" loading="lazy" class="css-1522xt9" />
               </button></a>
-          </router-link>
-          <router-link to="/review">
-            <a>
+            <a onclick="location.href='review'">
               <button class="css-bcb9a9">
                 <div class="css-197aby8">
                   <p class="css-1r2nemk">&nbsp;프로그램 참여 후기</p>
@@ -91,13 +86,11 @@
                 </div>
                 <img src="../assets/img/ddabong.png" loading="lazy" class="css-1522xt9" />
               </button></a>
-          </router-link>
         </div>
       </section>
       <section class="css-zea7jz2">
         <div class="css-143hej">
-          <router-link to="/hot">
-            <a>
+            <a onclick="location.href='/hot'">
               <button class="css-bcb9a9">
                 <div class="css-197aby8">
                   <p class="css-1r2nemk">&nbsp;인기 게시글</p>
@@ -105,9 +98,7 @@
                 </div>
                 <img src="../assets/img/danger.png" loading="lazy" class="css-1522xt9" />
               </button></a>
-          </router-link>
-          <router-link to="/study">
-            <a>
+            <a onclick="location.href='/study'">
               <button class="css-bcb9a9">
                 <div class="css-197aby8">
                   <p class="css-1r2nemk">&nbsp;스터디원 모집</p>
@@ -117,9 +108,7 @@
                 </div>
                 <img src="../assets/img/study.png" loading="lazy" class="css-1522xt9" />
               </button></a>
-          </router-link>
-          <router-link to="/notice">
-            <a>
+            <a onclick="location.href='/notice'">
               <button class="css-bcb9a9">
                 <div class="css-197aby8">
                   <p class="css-1r2nemk">&nbsp;공지사항</p>
@@ -127,7 +116,6 @@
                 </div>
                 <img src="../assets/img/notice.png" loading="lazy" class="css-1522xt9" />
               </button></a>
-          </router-link>
         </div>
       </section>
     </div>

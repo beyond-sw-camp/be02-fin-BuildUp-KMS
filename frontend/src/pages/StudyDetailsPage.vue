@@ -129,7 +129,7 @@
                           <circle cx="1" cy="1" r="1" fill="#9DA7AE"></circle>
                         </svg>
                       </div>
-                      <div class="css-1ry6usa">{{ boardDetail.updatedAt }}</div>
+                      <div class="css-1ry6usa">{{ this.$moment(boardDetail.updatedAt).format('YYYY-MM-DD HH:mm:ss') }}</div>
                     </div>
                   </div>
                 </div>
@@ -265,7 +265,7 @@ export default {
   computed: {
     ...mapStores(useBoardStore, useBoardCommentStore, useUserStore, ["tagList"]),
     isLoggedIn() {
-      return !!localStorage.getItem("token");
+      return !!localStorage.getItem("accessToken");
     },
     userProfileImage() {
       // 사용자 정보 로딩 후 사용자 프로필 이미지 반환
@@ -319,21 +319,21 @@ export default {
       }
     },
     async createBoardUp() {
-      let token = window.localStorage.getItem("token");
+      let accessToken = window.localStorage.getItem("accessToken");
       let requestBody = {
         boardIdx: this.boardIdx,
       };
 
       try {
         if (this.isRecommended) {
-          await this.boardStore.cancelBoardUp(token, this.boardUpIdx);
+          await this.boardStore.cancelBoardUp(accessToken, this.boardUpIdx);
           console.log("게시글 추천 취소 성공");
           this.isRecommended = false;
 
           window.location.reload();
         } else {
           const response = await this.boardStore.createBoardUp(
-            token,
+            accessToken,
             requestBody
           );
 
@@ -351,21 +351,21 @@ export default {
       }
     },
     async createBoardScrap() {
-      let token = window.localStorage.getItem("token");
+      let accessToken = window.localStorage.getItem("accessToken");
       let requestBody = {
         boardIdx: this.boardIdx,
       };
 
       try {
         if (this.isScrapped) {
-          await this.boardStore.cancelBoardScrap(token, this.boardScrapIdx);
+          await this.boardStore.cancelBoardScrap(accessToken, this.boardScrapIdx);
           console.log("게시글 스크랩 취소 성공");
           this.isScrapped = false;
 
           window.location.reload();
         } else {
           const response = await this.boardStore.createBoardScrap(
-            token,
+            accessToken,
             requestBody
           );
 
@@ -392,8 +392,8 @@ export default {
     },
     async checkBoardUp() {
       try {
-        let token = window.localStorage.getItem("token");
-        let response = await this.boardStore.checkBoardUp(token, this.boardIdx);
+        let accessToken = window.localStorage.getItem("accessToken");
+        let response = await this.boardStore.checkBoardUp(accessToken, this.boardIdx);
 
         if (response.data && response.data.result.status === true) {
           this.isRecommended = true;
@@ -407,9 +407,9 @@ export default {
     },
     async checkBoardScrap() {
       try {
-        let token = window.localStorage.getItem("token");
+        let accessToken = window.localStorage.getItem("accessToken");
         let response = await this.boardStore.checkBoardScrap(
-          token,
+          accessToken,
           this.boardIdx
         );
 

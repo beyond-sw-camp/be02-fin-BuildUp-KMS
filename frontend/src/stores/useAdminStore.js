@@ -9,11 +9,13 @@ export const useAdminStore = defineStore("admin", {
   state: () => ({
     isAdminAuthenticated: false,
     adminDecodedToken: null,
+    isTokenExpired: false,
   }),
+
   actions: {
     async adminSignUp(postSignUpAdminReq) {
         try {
-            let response = await axios.post(`${backend}/admin/signup`, postSignUpAdminReq, {
+            let response = await axios.post(`${backend}/main/admin/signup`, postSignUpAdminReq, {
                 headers: {
                     "Content-Type": "application/json",
                 }
@@ -37,14 +39,16 @@ export const useAdminStore = defineStore("admin", {
         try {
           let loginUser = { email: email, password: password };
   
-          let response = await axios.post(backend + "/admin/login", loginUser);
+          let response = await axios.post(backend + "/main/admin/login", loginUser);
   
-          if (response.data.isSuccess && response.data.result.token) {
-            let token = response.data.result.token;
+          if (response.data.isSuccess && response.data.result.accessToken) {
+            let accessToken = response.data.result.accessToken;
+            let refreshToken = response.data.result.refreshToken;
             
-            let userClaims = VueJwtDecode.decode(token);
+            let userClaims = VueJwtDecode.decode(accessToken);
   
-            window.localStorage.setItem("a_token", token);
+            window.localStorage.setItem("accessToken", accessToken);
+            window.localStorage.setItem("refreshToken", refreshToken);
             this.setDecodedToken(userClaims);
   
             this.isAdminAuthenticated = true;
@@ -66,22 +70,11 @@ export const useAdminStore = defineStore("admin", {
       setDecodedToken(adminDecodedToken) {
         this.adminDecodedToken = adminDecodedToken;
       },
-  
-      decodeToken() {
-        const token = localStorage.getItem("a_token");
-        if (token) {
-          const decoded = VueJwtDecode.decode(token);
-          if (decoded.exp < Date.now() / 1000) {
-            this.logout();
-          } else {
-            this.isAdminAuthenticated = true;
-            this.adminDecodedToken = decoded;
-          }
-        }
-      },
+
   
       logout() {
-        localStorage.removeItem("a_token");
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
         this.isAdminAuthenticated = false;
         this.adminDecodedToken = {};
   

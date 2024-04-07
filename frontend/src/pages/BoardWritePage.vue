@@ -169,7 +169,8 @@ hljs.configure({
 });
 
 export function imageHandler() {
-  const storedToken = localStorage.getItem("token");
+  const accessToken = localStorage.getItem("accessToken");
+  const refreshToken = localStorage.getItem("refreshToken");
   const quill = this.quill;
 
   const input = document.createElement("input");
@@ -203,13 +204,27 @@ export function imageHandler() {
       let response = await axios({
         method: "POST",
         // url: "http://192.168.0.61/api/board/image/upload",
-        url: backend + "/board/image/upload",
+        url: backend + "/main/board/image/upload",
         headers: {
-          Authorization: `Bearer ${storedToken}`,
+          Authorization: `Bearer ${accessToken}`,
+          RefreshToken: `Bearer ${refreshToken}`,
           "Content-Type": "multipart/form-data",
         },
         data: formData,
       });
+
+      if (response.headers["new-access-token"] != null) {
+        if (
+          response.headers["new-access-token"] !=
+          localStorage.getItem("accessToken")
+        ) {
+          localStorage.setItem("accessToken", "");
+          localStorage.setItem(
+            "accessToken",
+            response.headers["new-access-token"]
+          );
+        }
+      }
 
       if (response.data.isSuccess === true) {
         let imageUrl = response.data.result.imageUrl;
