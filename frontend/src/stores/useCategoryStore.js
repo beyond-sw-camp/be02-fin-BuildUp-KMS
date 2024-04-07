@@ -12,7 +12,7 @@ export const useCategoryStore = defineStore("category", {
   actions: {
     async getBoardCategoryList() {
       try {
-        let response = await axios.get(backend + "/admin/board/list");
+        let response = await axios.get(backend + "/main/admin/board/list");
 
         this.boardCategoryList = response.data.result;
       } catch (e) {
@@ -21,7 +21,7 @@ export const useCategoryStore = defineStore("category", {
     },
     async getReviewCategoryList() {
       try {
-        let response = await axios.get(backend + "/admin/review/list");
+        let response = await axios.get(backend + "/main/admin/review/list");
 
         this.reviewCategoryList = response.data.result;
       } catch (e) {
