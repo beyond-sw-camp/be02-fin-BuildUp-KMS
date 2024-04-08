@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
@@ -24,7 +23,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class EsBoardService {
     private final EsBoardRepository esBoardRepository;
-
 
     // 목록 조회 시 글만 추출
     public static String extractText(String html) {
@@ -136,7 +134,6 @@ public class EsBoardService {
             boardSearchRes.add(response);
         }
 
-        // 기존의 코드
         Object[] lastSearchAfter = searchHits.getSearchHits().size() > 0
                 ? searchHits.getSearchHits().get(searchHits.getSearchHits().size() - 1).getSortValues().toArray(new Object[0])
                 : null;
