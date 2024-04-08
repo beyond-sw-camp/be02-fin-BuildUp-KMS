@@ -19,7 +19,7 @@ spec:
         type: review
     spec:
       containers:
-        - name: backend-container
+        - name: review-container
           image: hyungdoyou/bootshelf-review:2.VERSION
           resources:
             requests:
