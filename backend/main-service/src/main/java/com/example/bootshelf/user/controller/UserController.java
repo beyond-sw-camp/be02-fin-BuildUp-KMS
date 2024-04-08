@@ -62,9 +62,9 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
     @RequestMapping(method = RequestMethod.GET, value = "/verify")
-    public RedirectView verify(GetEmailVerifyReq getEmailVerifyReq) {
-        if (emailVerifyService.verify(getEmailVerifyReq)) {
-            userService.updateStatus(getEmailVerifyReq.getEmail()); // 이메일 인증이 완료되면 회원의 status를 바꿔줌
+    public RedirectView verify(String email) {
+        if (emailVerifyService.verify(email)) {
+            userService.updateStatus(email); // 이메일 인증이 완료되면 회원의 status를 바꿔줌
 
             return new RedirectView("http://192.168.0.61/");
         } else {

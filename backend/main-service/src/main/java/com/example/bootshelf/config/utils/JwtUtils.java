@@ -5,11 +5,8 @@ import com.example.bootshelf.certification.repository.CertificationRepository;
 import com.example.bootshelf.common.error.ErrorCode;
 import com.example.bootshelf.common.error.entityexception.UserException;
 import com.example.bootshelf.user.model.entity.User;
-import com.example.bootshelf.user.repository.UserRefreshTokenRepository;
 import com.example.bootshelf.user.repository.UserRepository;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
@@ -17,15 +14,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Key;
-import java.util.Date;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Component
 public class JwtUtils {
 
     private final CertificationRepository certificationRepository;
-
-    private final UserRefreshTokenRepository userRefreshTokenRepository;
 
     private final UserRepository userRepository;
 

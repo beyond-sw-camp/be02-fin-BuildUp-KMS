@@ -3,8 +3,8 @@ package com.example.bootshelf.config.filter;
 
 import com.example.bootshelf.common.error.ErrorCode;
 import com.example.bootshelf.common.error.ErrorResponse;
-import com.example.bootshelf.common.error.entityexception.UserException;
 import com.example.bootshelf.config.utils.JwtUtils;
+import com.example.bootshelf.common.error.entityexception.UserException;
 import com.example.bootshelf.user.model.entity.User;
 import com.example.bootshelf.user.repository.UserRepository;
 import com.example.bootshelf.user.service.RefreshTokenService;
@@ -121,8 +121,9 @@ public class JwtFilter extends OncePerRequestFilter {
             }
             String oldAccessToken = parseBearerToken(request, HttpHeaders.AUTHORIZATION);
             //Try Catch 연장선
-            refreshTokenService.validateRefreshToken(refreshToken, oldAccessToken);
+            refreshTokenService.validateRefreshToken(refreshToken,oldAccessToken);
             String newAccessToken = refreshTokenService.recreateAccessToken(oldAccessToken);
+            String newRefreshToken = refreshTokenService.recreateRefreshToken(refreshToken,newAccessToken);
             String authority = JwtUtils.getAuthority(newAccessToken, secretKey);
             if (authority.equals("ROLE_USER") || authority.equals("ROLE_ADMIN") || authority.equals("ROLE_AUTHUSER") || authority.equals("ROLE_KAKAO")){
                 String userEmail = JwtUtils.getUserEmail(newAccessToken, secretKey);
@@ -136,6 +137,7 @@ public class JwtFilter extends OncePerRequestFilter {
                         authenticated.setDetails(new WebAuthenticationDetails(request));
                         SecurityContextHolder.getContext().setAuthentication(authenticated);
                         response.setHeader("new-access-token", newAccessToken);
+                        response.setHeader("new-refresh-token", newRefreshToken);
                     }
                 }
             }
