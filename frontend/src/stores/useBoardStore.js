@@ -107,7 +107,7 @@ export const useBoardStore = defineStore("board", {
         this.isLoading = false;
       }
     },
-
+// ES 검색
     async findListByCategory(boardCategoryIdx, sortType, page = 1) {
       try {
         this.isLoading = true;
