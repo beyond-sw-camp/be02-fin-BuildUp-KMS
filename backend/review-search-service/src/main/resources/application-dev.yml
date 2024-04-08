@@ -9,6 +9,10 @@ eureka:
       defaultZone: http://localhost:8761/eureka
 
 spring:
+  config:
+    activate:
+      on-profile: dev
+
   application:
     name: BOOTSHELF-REVIEW-SEARCH-SERVICE
 

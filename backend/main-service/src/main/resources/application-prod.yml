@@ -14,6 +14,11 @@ spring:
   application:
     name: BOOTSHELF-MAIN-SERVICE
 
+  data:
+    redis:
+      host: ${REDIS_URL}
+      port: ${REDIS_PORT}
+
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher

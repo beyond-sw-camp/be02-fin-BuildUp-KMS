@@ -6,6 +6,10 @@ eureka:
     enabled: false
 
 spring:
+  config:
+    activate:
+      on-profile: prod
+
   application:
     name: BOOTSHELF-REVIEW-SEARCH-SERVICE
 
