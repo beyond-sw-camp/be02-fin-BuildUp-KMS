@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: gateway-deployment
+
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+  revisionHistoryLimit: 1
+  minReadySeconds: 10
+  selector:
+    matchLabels:
+      type: gateway
+  template:
+    metadata:
+      labels:
+        type: gateway
+    spec:
+      containers:
+        - name: gateway-container
+          image: hyungdoyou/bootshelf-gateway:2.VERSION
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "100m"
+            limits:
+              memory: "3Gi"
+              cpu: "2000m"
+      terminationGracePeriodSeconds: 5
