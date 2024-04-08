@@ -15,7 +15,6 @@ import java.util.List;
 public class ReviewResult {
 
     private Long totalHits;
-    private Integer totalPages;
     private List<Review> list;
 
 }

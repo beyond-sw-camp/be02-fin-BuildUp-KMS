@@ -44,7 +44,6 @@ public class SearchReviewService implements SearchReviewUseCase, SearchTotalRevi
         for (EsReview result : searchContent) {
             Review response = Review.builder()
                     .idx(Integer.valueOf(result.getId()))
-                    .user(result.getUser())
                     .reviewCategory(result.getReviewCategory())
                     .reviewTitle(result.getReviewTitle())
                     .reviewContent(result.getReviewContent())
@@ -54,10 +53,10 @@ public class SearchReviewService implements SearchReviewUseCase, SearchTotalRevi
                     .upCnt(result.getUpCnt())
                     .scrapCnt(result.getScrapCnt())
                     .commentCnt(result.getCommentCnt())
-                    .status(result.getStatus())
                     .createdAt(result.getCreatedAt())
                     .updatedAt(result.getUpdatedAt())
-                    .totalHits(searchHits.getTotalHits())
+                    .nickName(result.getNickName())
+                    .profileImage(result.getProfileImage())
                     .build();
 
             reviewSearchRes.add(response);
@@ -99,7 +98,6 @@ public class SearchReviewService implements SearchReviewUseCase, SearchTotalRevi
 
                 Review response = Review.builder()
                         .idx(Integer.valueOf(result.getId()))
-                        .user(result.getUser())
                         .reviewCategory(result.getReviewCategory())
                         .reviewTitle(result.getReviewTitle())
                         .reviewContent(textContent)
@@ -109,10 +107,10 @@ public class SearchReviewService implements SearchReviewUseCase, SearchTotalRevi
                         .upCnt(result.getUpCnt())
                         .scrapCnt(result.getScrapCnt())
                         .commentCnt(result.getCommentCnt())
-                        .status(result.getStatus())
                         .createdAt(result.getCreatedAt())
                         .updatedAt(result.getUpdatedAt())
-                        .totalHits(searchHits.getTotalHits())
+                        .nickName(result.getNickName())
+                        .profileImage(result.getProfileImage())
                         .build();
 
                 Document doc = Jsoup.parse(result.getReviewContent());
