@@ -140,14 +140,14 @@ export const useBoardStore = defineStore("board", {
         this.isLoading = false;
       }
     },
-    async getSearchBoardList(searchTerm, sortType) {
+    async getSearchBoardList(title, sortType, categoryIdx) {
       try {
         this.isLoading = true;
 
         let response = await axios.get(
           backend +
-            `/board/${sortType}/search?searchTerm=${encodeURIComponent(
-              searchTerm
+            `/search/board/list?categoryIdx=${categoryIdx}&sortType=${sortType}&title=${encodeURIComponent(
+              title
             )}`,
           {
             headers: {
