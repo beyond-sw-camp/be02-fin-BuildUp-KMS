@@ -11,6 +11,10 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -28,7 +32,7 @@ public class EsReviewController {
             @RequestParam String title,
             @PageableDefault(size = 20) Pageable pageable
     ) {
-        BaseRes baseRes =  esReviewService.titleSearchByMain(selectedDropdownValue, title, pageable);
+        BaseRes baseRes = esReviewService.titleSearchByMain(selectedDropdownValue, title, pageable);
 
         return ResponseEntity.ok().body(baseRes);
     }
@@ -43,22 +47,54 @@ public class EsReviewController {
             @RequestParam String title,
             @PageableDefault(size = 20) Pageable pageable
     ) {
-        BaseRes baseRes =  esReviewService.titleContentSearch(categoryIdx, sortType ,title, pageable);
+        BaseRes baseRes = esReviewService.titleContentSearch(categoryIdx, sortType ,title, pageable);
 
         return ResponseEntity.ok().body(baseRes);
     }
 
-    // 제목+내용+정렬 (메인에서 검색 후 결과에서 또 검색)
-    @GetMapping("/search/result")
+
+    /**
+     *  search after 적용
+     */
+    // 메인 검색(통합)
+    @GetMapping("/search2/main")
     @ResponseBody
-    public ResponseEntity titleContentSearchResult(
+    public ResponseEntity titleContentSearch2(
+            @RequestParam Integer selectedDropdownValue,
+            @RequestParam String title,
+            @RequestParam(required = false, defaultValue = "20") int size,
+            @RequestParam(required = false) String searchAfterStr
+    ) {
+        List<Object> searchAfter = null;
+
+        if (searchAfterStr != null && !searchAfterStr.isEmpty()) {
+            searchAfter = Arrays.stream(searchAfterStr.split(","))
+                    .collect(Collectors.toList());
+        }
+
+        BaseRes baseRes = esReviewService.titleSearchByMain2(selectedDropdownValue, title, size, searchAfter);
+        return ResponseEntity.ok().body(baseRes);
+    }
+  
+  
+    // 제목+내용+정렬 (통합)
+    @GetMapping("/search2")
+    @ResponseBody
+    public ResponseEntity titleContentSearch2(
+            @RequestParam Integer categoryIdx,
             @RequestParam Integer sortType,
             @RequestParam String title,
-            @PageableDefault(size = 20) Pageable pageable
+            @RequestParam(required = false, defaultValue = "20") int size,
+            @RequestParam(required = false) String searchAfterStr
     ) {
-        BaseRes baseRes =  esReviewService.titleContentSearchResult(sortType ,title, pageable);
+        List<Object> searchAfter = null;
 
+        if (searchAfterStr != null && !searchAfterStr.isEmpty()) {
+            searchAfter = Arrays.stream(searchAfterStr.split(","))
+                    .collect(Collectors.toList());
+        }
+
+        BaseRes baseRes = esReviewService.titleContentSearch2(categoryIdx, sortType ,title, size, searchAfter);
         return ResponseEntity.ok().body(baseRes);
     }
-
 }

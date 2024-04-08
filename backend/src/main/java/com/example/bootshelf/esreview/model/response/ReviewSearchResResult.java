@@ -10,10 +10,8 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class ReviewSearchResResult {
-
     private Long totalHits;
     private Integer totalPages;
+    private Object[] lastSearchAfter;
     private List<ReviewSearchRes> list;
-
-
 }
