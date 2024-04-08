@@ -1,5 +1,5 @@
 <template>
-    <div class="loadingio-spinner-spinner" v-if="boardStore.isLoading">
+    <div class="loadingio-spinner-spinner" v-if="reviewStore.isLoading">
     <div class="ldio-f4nnk2ltl0v">
       <div></div>
       <div></div>
@@ -27,7 +27,7 @@
                     <h6 class="_3ZcrIA text-center mb-0">
                       <span>질문과 답변을 주고 받으며 함께 성장하세요!</span>
                     </h6>
-                    <router-link to="/board/new">
+                    <router-link to="/review/new">
                       <a class="_2-sdMj btn btn-primary btn-lg btn-block">
                         <div class="_2pYHs _1isiv">
                           <svg
@@ -113,7 +113,7 @@
                     <div class="_2kqp41 _2d5D_m" style="--box-gap: 0.5rem">
                       <span><span>검색 결과</span></span
                       ><span class="text-blue-500">{{
-                        boardStore.totalCnt
+                        reviewStore.totalCnt
                       }}</span>
                     </div>
                   </h5>
@@ -169,7 +169,7 @@
                 </div>
                 <ul class="_1PTI0R p-0 mb-4">
                   <span>
-                    <div v-for="board in boardStore.boardList" :key="board.idx">
+                    <div v-for="review in reviewStore.reviewList" :key="review.idx">
                       <li class="_3lQ639 _32Ay9Q" role="presentation">
                         <div
                           class="_2kqp41 flex-grow-1"
@@ -179,9 +179,9 @@
                             class="_2kqp41 tttQ1F"
                             style="--box-gap: 0.375rem"
                           >
-                            <router-link :to="`board/${board.idx}`">
+                            <router-link :to="`review/${review.idx}`">
                               <p class="_3yzn7O mb-0 _2Sv3IV">
-                                {{ board.title }}
+                                {{ review.reviewTitle }}
                               </p>
                             </router-link>
                             <div>
@@ -191,13 +191,13 @@
                                 >
                                   <span
                                     class="text-gray-900 font-weight-normal flex-shrink-0"
-                                    >{{ board.nickName }}</span
+                                    >{{ review.nickName }}</span
                                   >
                                   <span class="paragraph-sm">·</span>
                                   <span
                                     class="text-gray-600 flex-shrink-0"
                                     title="2024. 2. 17. 오후 7:25:30"
-                                    >{{ this.$moment(board.createdAt).format('YYYY-MM-DD HH:mm:ss') }}
+                                    >{{ this.$moment(review.updatedAt).format('YYYY-MM-DD HH:mm:ss') }}
                                   </span>
                                 </span>
                               </span>
@@ -211,7 +211,7 @@
                                   aria-current="page"
                                 >
                                   <span class="_1t2_hP">{{
-                                    board.content
+                                    review.reviewContent
                                   }}</span>
                                 </li>
                               </ol>
@@ -234,7 +234,7 @@
                                     d="M1 8.07129C3.24 4.73829 5.24 3.07129 8 3.07129C10.761 3.07129 12.761 4.73829 15 8.07129C12.761 11.4043 10.761 13.0713 8 13.0713C5.24 13.0713 3.24 11.4043 1 8.07129ZM8 12.0713C10.209 12.0713 12 10.2803 12 8.07129C12 5.86229 10.209 4.07129 8 4.07129C5.791 4.07129 4 5.86229 4 8.07129C4 10.2803 5.791 12.0713 8 12.0713ZM8 10.0713C6.896 10.0713 6 9.17629 6 8.07129C6 6.96729 6.896 6.07129 8 6.07129C9.104 6.07129 10 6.96729 10 8.07129C10 9.17629 9.104 10.0713 8 10.0713Z"
                                   ></path></svg
                                 ><span class="paragraph-sm">{{
-                                  board.viewCnt
+                                  review.viewCnt
                                 }}</span></span
                               ><span
                                 class="text-gray-600 d-inline-flex align-items-center _22s-QT"
@@ -251,7 +251,7 @@
                                     d="M4 6.059H12V4.759H4V6.059ZM4 8.741H9.5V7.441H4V8.741ZM1.5 1.75V10.25V11.75V14.25L4 11.75H14.5V1.75H1.5Z"
                                   ></path></svg
                                 ><span class="paragraph-sm">{{
-                                  board.commentCnt
+                                  review.commentCnt
                                 }}</span></span
                               ><span
                                 class="text-gray-600 d-inline-flex align-items-center _22s-QT"
@@ -268,7 +268,7 @@
                                     d="M9.95312 5.75011L10.4471 4.20511C10.7831 3.15311 10.4811 2.00111 9.67112 1.25011L5.30012 5.75011V13.7501H13.0001L15.0001 8.78811V5.75011H9.95312ZM1.50012 13.7501H4.00012V6.25011H1.50012V13.7501Z"
                                   ></path></svg
                                 ><span class="paragraph-sm">{{
-                                  board.upCnt
+                                  review.upCnt
                                 }}</span></span
                               >
                             </div>
@@ -281,9 +281,9 @@
                 </ul>
                 <div class="d-flex justify-content-center py-0 py-md-4">
                   <PaginationComponent
-                    :current-page="boardStore.currentPage"
-                    :total-pages="boardStore.totalPages"
-                    :isPageExist="boardStore.isPageExist"
+                    :current-page="reviewStore.currentPage"
+                    :total-pages="reviewStore.totalPages"
+                    :isPageExist="reviewStore.isPageExist"
                     @change-page="changePage"
                   />
                 </div>
@@ -299,7 +299,7 @@
 
 <script>
 import { mapStores } from "pinia";
-import { useBoardStore } from "/src/stores/useBoardStore";
+import { useReviewStore } from "/src/stores/useReviewStore";
 import PaginationComponent from "@/components/PaginationComponent.vue";
 
 export default {
@@ -352,12 +352,12 @@ export default {
     }
   },
   computed: {
-    ...mapStores(useBoardStore),
+    ...mapStores(useReviewStore),
     visiblePages() {
       // 최대 5개의 페이지 번호만 보이도록 계산
       let pages = [];
-      const total = this.boardStore.totalPages;
-      let start = Math.max(1, this.boardStore.currentPage - 2);
+      const total = this.reviewStore.totalPages;
+      let start = Math.max(1, this.reviewStore.currentPage - 2);
       let end = Math.min(total, start + 4);
       if (end === total) {
         // 마지막 페이지가 범위에 포함되면 시작점 조정
@@ -374,17 +374,17 @@ export default {
       this.dropdownOpen = !this.dropdownOpen;
     },
     changePage(page) {
-      this.boardStore.getBoardListByQuery(this.query, this.searchType, page);
+      this.reviewStore.getSearchTotalReviewList(this.query, this.searchType, page);
     },
     jumpForward() {
       // 현재 페이지에서 3페이지 앞으로 점프
       let nextPage = Math.min(
-        this.boardStore.currentPage + 3,
-        this.boardStore.totalPages
+        this.reviewStore.currentPage + 3,
+        this.reviewStore.totalPages
       );
       this.changePage(nextPage);
       // visiblePages를 업데이트하기 위해 currentPage를 설정
-      this.boardStore.currentPage = nextPage;
+      this.reviewStore.currentPage = nextPage;
     },
   },
 };
