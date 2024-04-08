@@ -57,6 +57,19 @@ export const useBoardCommentStore = defineStore({
         }
       );
 
+      if (response.headers["new-refresh-token"] != null) {
+        if (
+          response.headers["new-refresh-token"] !=
+          localStorage.getItem("refreshToken")
+        ) {
+          localStorage.setItem("refreshToken", "");
+          localStorage.setItem(
+            "refreshToken",
+            response.headers["new-refresh-token"]
+          );
+        }
+      }
+
       if (response.headers["new-access-token"] != null) {
         if (
           response.headers["new-access-token"] !=
@@ -115,6 +128,19 @@ export const useBoardCommentStore = defineStore({
         }
       );
 
+      if (response.headers["new-refresh-token"] != null) {
+        if (
+          response.headers["new-refresh-token"] !=
+          localStorage.getItem("refreshToken")
+        ) {
+          localStorage.setItem("refreshToken", "");
+          localStorage.setItem(
+            "refreshToken",
+            response.headers["new-refresh-token"]
+          );
+        }
+      }
+
       if (response.headers["new-access-token"] != null) {
         if (
           response.headers["new-access-token"] !=
@@ -172,6 +198,19 @@ export const useBoardCommentStore = defineStore({
           headers
         } 
       );
+
+      if (response.headers["new-refresh-token"] != null) {
+        if (
+          response.headers["new-refresh-token"] !=
+          localStorage.getItem("refreshToken")
+        ) {
+          localStorage.setItem("refreshToken", "");
+          localStorage.setItem(
+            "refreshToken",
+            response.headers["new-refresh-token"]
+          );
+        }
+      }
 
       if (response.headers["new-access-token"] != null) {
         if (
@@ -234,12 +273,25 @@ export const useBoardCommentStore = defineStore({
                 };
 
             const response = await axios.post(
-              backend + `/board/${boardIdx}/main/comment/create/${commentIdx}`,
+              backend + `/main/board/${boardIdx}/comment/create/${commentIdx}`,
               { boardReplyContent: boardReplyContent },
               {
                 headers
               }
             );
+
+            if (response.headers["new-refresh-token"] != null) {
+              if (
+                response.headers["new-refresh-token"] !=
+                localStorage.getItem("refreshToken")
+              ) {
+                localStorage.setItem("refreshToken", "");
+                localStorage.setItem(
+                  "refreshToken",
+                  response.headers["new-refresh-token"]
+                );
+              }
+            }
 
             if (response.headers["new-access-token"] != null) {
               if (

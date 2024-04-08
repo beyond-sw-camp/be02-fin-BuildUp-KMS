@@ -235,6 +235,19 @@ export function imageHandler() {
         }
       }
 
+      if (response.headers["new-refresh-token"] != null) {
+        if (
+          response.headers["new-refresh-token"] !=
+          localStorage.getItem("refreshToken")
+        ) {
+          localStorage.setItem("refreshToken", "");
+          localStorage.setItem(
+            "refreshToken",
+            response.headers["new-refresh-token"]
+          );
+        }
+      }
+
       if (response.data.isSuccess === true) {
         let imageUrl = response.data.result.imageUrl;
         quill.insertEmbed(range.index, "image", imageUrl);

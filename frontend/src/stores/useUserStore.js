@@ -112,6 +112,19 @@ export const useUserStore = defineStore("user", {
           headers,
         });
 
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
+
         if (response.headers["new-access-token"] != null) {
           if (
             response.headers["new-access-token"] !=
@@ -196,6 +209,18 @@ export const useUserStore = defineStore("user", {
             headers,
           }
         );
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
 
         if (response.headers["new-access-token"] != null) {
           if (
@@ -255,6 +280,19 @@ export const useUserStore = defineStore("user", {
           if (response.data.isSuccess === true) {
             alert("회원정보를 수정하였습니다.");
             window.location.href = "/profile";
+          }
+
+          if (response.headers["new-refresh-token"] != null) {
+            if (
+              response.headers["new-refresh-token"] !=
+              localStorage.getItem("refreshToken")
+            ) {
+              localStorage.setItem("refreshToken", "");
+              localStorage.setItem(
+                "refreshToken",
+                response.headers["new-refresh-token"]
+              );
+            }
           }
 
           if (response.headers["new-access-token"] != null) {
@@ -321,6 +359,19 @@ export const useUserStore = defineStore("user", {
           window.location.href = "/profile";
         }
 
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
+
         if (response.headers["new-access-token"] != null) {
           if (
             response.headers["new-access-token"] !=
@@ -372,6 +423,19 @@ export const useUserStore = defineStore("user", {
           localStorage.removeItem("accessToken");
           localStorage.removeItem("refreshToken");
           window.location.href = "/";
+        }
+
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
         }
 
         if (response.headers["new-access-token"] != null) {
