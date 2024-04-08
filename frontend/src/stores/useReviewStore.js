@@ -57,6 +57,19 @@ export const useReviewStore = defineStore("review", {
           headers
         });
 
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
+
         if (response.headers["new-access-token"] != null) {
           if (
             response.headers["new-access-token"] !=
@@ -210,6 +223,19 @@ export const useReviewStore = defineStore("review", {
           }
         );
 
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
+
         if (response.headers["new-access-token"] != null) {
           if (
             response.headers["new-access-token"] !=
@@ -254,6 +280,19 @@ export const useReviewStore = defineStore("review", {
           }
         );
 
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
+
         if (response.headers["new-access-token"] != null) {
           if (
             response.headers["new-access-token"] !=
@@ -296,6 +335,19 @@ export const useReviewStore = defineStore("review", {
             headers
           }
         );
+
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
 
         if (response.headers["new-access-token"] != null) {
           if (
@@ -341,6 +393,19 @@ export const useReviewStore = defineStore("review", {
             headers
           }
         );
+
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
 
         if (response.headers["new-access-token"] != null) {
           if (
@@ -388,6 +453,19 @@ export const useReviewStore = defineStore("review", {
           }
         );
 
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
+
         if (response.headers["new-access-token"] != null) {
           if (
             response.headers["new-access-token"] !=
@@ -430,6 +508,19 @@ export const useReviewStore = defineStore("review", {
             headers
           }
         );
+
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
 
         if (response.headers["new-access-token"] != null) {
           if (
@@ -474,6 +565,19 @@ export const useReviewStore = defineStore("review", {
             headers
           }
         );
+
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
 
         if (response.headers["new-access-token"] != null) {
           if (
@@ -564,6 +668,19 @@ export const useReviewStore = defineStore("review", {
           }
         );
 
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
+
         if (response.headers["new-access-token"] != null) {
           if (
             response.headers["new-access-token"] !=
@@ -605,6 +722,19 @@ export const useReviewStore = defineStore("review", {
         let response = await axios.patch(`${backend}/review/update`, review, {
           headers
         });
+
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
 
         if (response.headers["new-access-token"] != null) {
           if (

@@ -10,6 +10,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .exposedHeaders("new-access-token");
+                .exposedHeaders("new-access-token","new-refresh-token");
     }
 }

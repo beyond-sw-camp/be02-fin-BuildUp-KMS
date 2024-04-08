@@ -57,9 +57,36 @@ export const useBoardStore = defineStore("board", {
               "Content-Type": "application/json",
             };
 
+
         let response = await axios.post(backend + `/board/create`, board, {
           headers
         });
+
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
         if (response.data.isSuccess === true) {
           alert("게시글이 등록되었습니다.");
           window.location.href = "/board/" + response.data.result.boardIdx;
@@ -206,6 +233,31 @@ export const useBoardStore = defineStore("board", {
             headers
           }
         );
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
 
         return response;
       } catch (e) {
@@ -229,6 +281,7 @@ export const useBoardStore = defineStore("board", {
               "Content-Type": "application/json",
             };
 
+
         let response = await axios.post(
           backend + "/boardscrap/create",
           requestBody,
@@ -236,6 +289,31 @@ export const useBoardStore = defineStore("board", {
             headers
           }
         );
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
 
         return response;
       } catch (e) {
@@ -262,6 +340,31 @@ export const useBoardStore = defineStore("board", {
         let response = await axios.get(`${backend}/boardup/check/${boardIdx}`, {
           headers
         });
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
 
         this.isRecommended = response.data.result.status;
 
@@ -286,13 +389,39 @@ export const useBoardStore = defineStore("board", {
               Authorization: `Bearer ${accessToken}`,
               "Content-Type": "application/json",
             };
-
         let response = await axios.get(
           `${backend}/boardscrap/check/${boardIdx}`,
           {
             headers
           }
         );
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
+
+        
 
         this.isScrapped = response.data.result.status;
 
@@ -325,6 +454,7 @@ export const useBoardStore = defineStore("board", {
             headers
           }
         );
+        
       } catch (e) {
         console.error(e);
         throw e;
@@ -345,6 +475,8 @@ export const useBoardStore = defineStore("board", {
               Authorization: `Bearer ${accessToken}`,
               "Content-Type": "application/json",
             };
+
+            
 
         await axios.patch(
           `${backend}/boardscrap/delete/${boardScrapIdx}`,
@@ -443,6 +575,33 @@ export const useBoardStore = defineStore("board", {
         let response = await axios.get(`${backend}/board/mywrite/${boardIdx}`, {
           headers
         });
+
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
+
         this.boardDetail = response.data.result;
 
         return this.boardDetail;
@@ -469,9 +628,35 @@ export const useBoardStore = defineStore("board", {
               "Content-Type": "application/json",
             };
 
+          
         let response = await axios.patch(`${backend}/board/update`, board, {
           headers
         });
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
         if (response.data.isSuccess === true) {
           alert("게시글이 수정되었습니다.");
           window.location.href = "/board/" + board.boardIdx;
@@ -631,6 +816,31 @@ export const useBoardStore = defineStore("board", {
             headers
           }
         );
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
         this.boardList = response.data.result.list;
         this.totalPages = response.data.result.totalPages;
         this.currentPage = page;
@@ -675,6 +885,31 @@ export const useBoardStore = defineStore("board", {
             headers
           }
         );
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
         this.boardList = response.data.result.list;
         this.totalPages = response.data.result.totalPages;
         this.currentPage = page;
@@ -714,6 +949,32 @@ export const useBoardStore = defineStore("board", {
             headers
           }
         );
+
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
 
         return response.data;
       } catch (error) {
