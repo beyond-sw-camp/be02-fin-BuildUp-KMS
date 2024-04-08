@@ -217,7 +217,8 @@ export const useReviewStore = defineStore("review", {
         this.reviewList = response.data.result.list;
         this.totalPages = response.data.result.totalPages;
         this.currentPage = page;
-        this.totalCnt = response.data.result.totalCnt;
+        // this.totalCnt = response.data.result.totalCnt;
+        this.totalCnt = response.data.result.totalHits;
 
         if (this.reviewList.length === 0) {
           this.isReviewExist = false;

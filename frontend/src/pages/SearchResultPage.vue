@@ -113,7 +113,7 @@
                     <div class="_2kqp41 _2d5D_m" style="--box-gap: 0.5rem">
                       <span><span>검색 결과</span></span
                       ><span class="text-blue-500">{{
-                        reviewStore.totalHits
+                        reviewStore.totalCnt
                       }}</span>
                     </div>
                   </h5>
