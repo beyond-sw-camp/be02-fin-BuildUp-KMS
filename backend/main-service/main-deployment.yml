@@ -32,14 +32,14 @@ spec:
             httpGet:
               path: /main/review/list/1/1?page=0
               port: 8080
-            initialDelaySeconds: 20
+            initialDelaySeconds: 30
             periodSeconds: 10
             successThreshold: 1
           livenessProbe:
             httpGet:
               path: /main/review/list/1/1?page=0
               port: 8080
-            initialDelaySeconds: 20
+            initialDelaySeconds: 30
             periodSeconds: 10
           envFrom:
             - configMapRef:

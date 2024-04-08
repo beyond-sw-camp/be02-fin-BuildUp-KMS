@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: backend-container
-          image: hyungdoyou/be:6.VERSION
+          image: hyungdoyou/bootshelf-review:2.VERSION
           resources:
             requests:
               memory: "512Mi"
