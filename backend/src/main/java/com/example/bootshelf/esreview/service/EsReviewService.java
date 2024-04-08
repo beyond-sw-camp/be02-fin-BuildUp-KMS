@@ -69,32 +69,6 @@ public class EsReviewService {
 
     }
 
-    // 제목+내용으로 검색(과정후기)
-    public SearchHits<EsReview> titleContentSearchByCourse(@NotNull Integer sortType, String title, Pageable pageable) {
-        String[] fields = {"createdAt", "upCnt", "viewCnt", "scrapCnt", "commentCnt"}; // 필드 이름 배열
-
-        if (sortType >= 1 && sortType <= fields.length) {
-            String sortField = fields[sortType - 1];
-
-            SearchHits<EsReview> searchHits = esReviewRepository.titleContentSearchByCourse(sortField, title, pageable);
-            return searchHits;
-        }
-        else return null;
-    }
-
-    // 제목+내용으로 검색(강사후기)
-    public SearchHits<EsReview> titleContentSearchByTeacher(@NotNull Integer sortType, String title, Pageable pageable) {
-        String[] fields = {"createdAt", "upCnt", "viewCnt", "scrapCnt", "commentCnt"}; // 필드 이름 배열
-
-        if (sortType >= 1 && sortType <= fields.length) {
-            String sortField = fields[sortType - 1];
-
-            SearchHits<EsReview> searchHits = esReviewRepository.titleContentSearchByTeacher(sortField, title, pageable);
-            return searchHits;
-        }
-        else return null;
-    }
-
     // 목록 조회 시 글만 추출
     public static String extractText(String html) {
         Document doc = Jsoup.parse(html);
