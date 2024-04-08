@@ -17,7 +17,7 @@ spec:
     spec: 
       containers: 
         - name: frontend-container
-          image: hyungdoyou/bootshelf-fe:2.VERSION 
+          image: hyungdoyou/bootshelf-frontend:2.VERSION 
           resources: 
             requests: 
               memory: "512Mi" 
