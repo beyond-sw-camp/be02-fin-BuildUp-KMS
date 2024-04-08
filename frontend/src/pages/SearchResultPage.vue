@@ -403,10 +403,6 @@ export default {
     if (query !== null && query !== "") {
       await this.reviewStore.searchReviewListByQuery(searchType, query);
 
-      if (this.reviewStore.reviewList.length === 0) {
-        alert("해당하는 검색결과가 없습니다. 다른 검색어를 입력해주세요.");
-        this.$router.push("/");
-      }
     } else {
       alert("검색할 내용을 입력해주세요.");
       this.$router.push("/");
