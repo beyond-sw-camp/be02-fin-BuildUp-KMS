@@ -8,10 +8,10 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableDiscoveryClient
-public class SearchBoardServiceApplication {
+public class BoardSearchServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SearchBoardServiceApplication.class, args);
+		SpringApplication.run(BoardSearchServiceApplication.class, args);
 	}
 
 }
