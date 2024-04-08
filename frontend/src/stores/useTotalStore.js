@@ -78,9 +78,19 @@ export const useTotalStore = defineStore("total", {
 
         let response = await axios.get(
           backend +
-            `/main/review/hotlist/${reviewCategoryIdx}/${sortType}/search?searchTerm=${encodeURIComponent(
-              searchTerm
-            )}&${params}`
+            "/search/review/list?categoryIdx=" +
+            reviewCategoryIdx +
+            "&sortType=" +
+            sortType +
+            "&title=" +
+            searchTerm +
+            "&page=" +
+            params,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
         );
 
         this.totalList = response.data.result.list;
