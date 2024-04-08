@@ -1,5 +1,5 @@
 <template>
-    <div class="loadingio-spinner-spinner" v-if="reviewStore.isLoading">
+  <div class="loadingio-spinner-spinner" v-if="reviewStore.isLoading">
     <div class="ldio-f4nnk2ltl0v">
       <div></div>
       <div></div>
@@ -81,8 +81,8 @@
                       <input
                         type="text"
                         value=""
-                        placeholder="제목, 내용으로 질문을 찾아 보세요!"
-                        v-model="title"
+                        placeholder="제목, 내용으로 후기글을 찾아 보세요!"
+                        v-model="query"
                         @keyup.enter="getSearchSortReviewList()"
                         class="FMUyj _1LD4c form-control-xl form-control"
                       /><svg
@@ -128,7 +128,7 @@
                       :aria-expanded="dropdownOpen.toString()"
                       class="_1rMfp _3NZzgf btn btn-select btn-lg"
                     >
-                      <span>{{sortTypeTitle}}</span>
+                      <span>{{ sortTypeTitle }}</span>
                       <svg
                         fill="currentColor"
                         width="16"
@@ -155,7 +155,10 @@
                         type="button"
                         tabindex="0"
                         role="menuitem"
-                        class="_3CkPsH dropdown-item active"
+                        :class="{
+                          '_3CkPsH dropdown-item': true,
+                          active: this.sortType === 1,
+                        }"
                         @click="selectedSortType(1)"
                       >
                         <span>최신순</span>
@@ -164,17 +167,59 @@
                         type="button"
                         tabindex="0"
                         role="menuitem"
-                        class="_3CkPsH dropdown-item"
+                        :class="{
+                          '_3CkPsH dropdown-item': true,
+                          active: this.sortType === 2,
+                        }"
                         @click="selectedSortType(2)"
                       >
-                        <spa>인기순</spa>
+                        <spa>추천순</spa>
+                      </button>
+                      <button
+                        type="button"
+                        tabindex="0"
+                        role="menuitem"
+                        :class="{
+                          '_3CkPsH dropdown-item': true,
+                          active: this.sortType === 3,
+                        }"
+                        @click="selectedSortType(3)"
+                      >
+                        <spa>조회순</spa>
+                      </button>
+                      <button
+                        type="button"
+                        tabindex="0"
+                        role="menuitem"
+                        :class="{
+                          '_3CkPsH dropdown-item': true,
+                          active: this.sortType === 4,
+                        }"
+                        @click="selectedSortType(4)"
+                      >
+                        <spa>스크랩순</spa>
+                      </button>
+                      <button
+                        type="button"
+                        tabindex="0"
+                        role="menuitem"
+                        :class="{
+                          '_3CkPsH dropdown-item': true,
+                          active: this.sortType === 5,
+                        }"
+                        @click="selectedSortType(5)"
+                      >
+                        <spa>댓글순</spa>
                       </button>
                     </div>
                   </div>
                 </div>
                 <ul class="_1PTI0R p-0 mb-4">
                   <span>
-                    <div v-for="review in reviewStore.reviewList" :key="review.idx">
+                    <div
+                      v-for="review in reviewStore.reviewList"
+                      :key="review.reviewIdx"
+                    >
                       <li class="_3lQ639 _32Ay9Q" role="presentation">
                         <div
                           class="_2kqp41 flex-grow-1"
@@ -184,11 +229,25 @@
                             class="_2kqp41 tttQ1F"
                             style="--box-gap: 0.375rem"
                           >
-                            <router-link :to="`review/${review.idx}`">
+                            <router-link :to="`review/${review.reviewIdx}`">
                               <p class="_3yzn7O mb-0 _2Sv3IV">
                                 {{ review.reviewTitle }}
                               </p>
                             </router-link>
+                            <div class="_2U1dPx">
+                              <nav class="" aria-label="breadcrumb">
+                                <ol class="breadcrumb _3cKvl flex-nowrap">
+                                  <li
+                                    class="d-inline-flex align-items-center iFcHCl _1OTYG _2amVj _285DO active breadcrumb-item"
+                                    aria-current="page"
+                                  >
+                                    <span class="_1t2_hP">{{
+                                      review.reviewContent
+                                    }}</span>
+                                  </li>
+                                </ol>
+                              </nav>
+                            </div>
                             <div>
                               <span class="d-none d-md-block">
                                 <span
@@ -202,25 +261,15 @@
                                   <span
                                     class="text-gray-600 flex-shrink-0"
                                     title="2024. 2. 17. 오후 7:25:30"
-                                    >{{ this.$moment(review.updatedAt).format('YYYY-MM-DD HH:mm:ss') }}
+                                    >{{
+                                      this.$moment(review.updatedAt).format(
+                                        "YYYY-MM-DD HH:mm:ss"
+                                      )
+                                    }}
                                   </span>
                                 </span>
                               </span>
                             </div>
-                          </div>
-                          <div class="_2U1dPx">
-                            <nav class="" aria-label="breadcrumb">
-                              <ol class="breadcrumb _3cKvl flex-nowrap">
-                                <li
-                                  class="d-inline-flex align-items-center iFcHCl _1OTYG _2amVj _285DO active breadcrumb-item"
-                                  aria-current="page"
-                                >
-                                  <span class="_1t2_hP">{{
-                                    review.reviewContent
-                                  }}</span>
-                                </li>
-                              </ol>
-                            </nav>
                           </div>
                           <div class="d-flex justify-content-between">
                             <div class="d-flex align-items-center _1VWGjy">
@@ -283,6 +332,18 @@
                       <hr class="m-0 p-0" />
                     </div>
                   </span>
+                  <!---검색결과 없을 때-->
+                  <div class="css-6g4q8b" v-show="!reviewStore.isReviewExist">
+                    <div class="css-aa80it">
+                      <img src="@/assets/img/002.png" class="css-1baht8c" />
+                      <div class="css-dhqp8i">
+                        <div class="css-c7zvxr">검색 결과가 없습니다.</div>
+                        <div class="css-1mcux1f">
+                          질문을 직접 남겨서 궁금증을 해결해 보세요!
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </ul>
                 <div class="d-flex justify-content-center py-0 py-md-4">
                   <PaginationComponent
@@ -319,7 +380,7 @@ export default {
       searchType: "",
       title: "",
       sortType: 1,
-      sortTypeTitle: "최신순"
+      sortTypeTitle: "최신순",
     };
   },
   async mounted() {
@@ -339,19 +400,15 @@ export default {
     this.searchType = searchType;
 
     // 후기글 목록 불러오기
-    if(query !== null && query !== "") {
+    if (query !== null && query !== "") {
       await this.reviewStore.getSearchTotalReviewList(searchType, query);
 
-      if(this.reviewStore.reviewList.length === 0) {
-        alert("해당하는 검색결과가 없습니다. 다른 검색어를 입력해주세요.")
-        this.$router.push("/");
-      }
     } else {
-      alert("검색할 내용을 입력해주세요.")
+      alert("검색할 내용을 입력해주세요.");
       this.$router.push("/");
     }
   },
-  
+
   beforeUnmount() {
     // 동적으로 추가한 스타일시트를 ID로 찾아 제거
     const goormstrapLink = document.getElementById("goormstrap-css");
@@ -361,21 +418,6 @@ export default {
   },
   computed: {
     ...mapStores(useReviewStore),
-    visiblePages() {
-      // 최대 5개의 페이지 번호만 보이도록 계산
-      let pages = [];
-      const total = this.reviewStore.totalPages;
-      let start = Math.max(1, this.reviewStore.currentPage - 2);
-      let end = Math.min(total, start + 4);
-      if (end === total) {
-        // 마지막 페이지가 범위에 포함되면 시작점 조정
-        start = Math.max(1, end - 4);
-      }
-      for (let i = start; i <= end; i++) {
-        pages.push(i);
-      }
-      return pages;
-    },
   },
   methods: {
     toggleDropdown() {
@@ -383,16 +425,31 @@ export default {
     },
     selectedSortType(sortType) {
       this.sortType = sortType;
-      if(sortType === 1) {
-      this.sortTypeTitle = "최신순";
-    } else if(sortType === 2) {
-      this.sortTypeTitle = "인기순";
-    }
-    this.dropdownOpen = false;
-  }
+      if (sortType === 1) {
+        this.sortTypeTitle = "최신순";
+      } else if (sortType === 2) {
+        this.sortTypeTitle = "추천순";
+      } else if (sortType === 3) {
+        this.sortTypeTitle = "조회순";
+      } else if (sortType === 4) {
+        this.sortTypeTitle = "스크랩순";
+      } else if (sortType === 5) {
+        this.sortTypeTitle = "댓글순";
+      }
+      this.reviewStore.getSearchSortReviewList(
+        this.searchType,
+        this.sortType,
+        this.query
+      );
+      this.dropdownOpen = false;
     },
     changePage(page) {
-      this.reviewStore.getSearchTotalReviewList(this.query, this.searchType, page);
+      this.reviewStore.getSearchSortReviewList(
+        this.searchType,
+        this.sortType,
+        this.query,
+        page
+      );
     },
     jumpForward() {
       // 현재 페이지에서 3페이지 앞으로 점프
@@ -405,8 +462,14 @@ export default {
       this.reviewStore.currentPage = nextPage;
     },
     getSearchSortReviewList() {
-      this.reviewStore.getSearchSortReviewList(this.sortType, this.title);
-    }
+      this.searchType = 2;
+      this.reviewStore.getSearchSortReviewList(
+        this.searchType,
+        this.sortType,
+        this.query
+      );
+    },
+  },
 };
 </script>
 
@@ -1050,5 +1113,65 @@ svg:not(:root) {
 }
 .ldio-f4nnk2ltl0v div {
   box-sizing: content-box;
+}
+/* 검색 결과 없을 떄 */
+
+.css-6g4q8b {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  min-height: 400px;
+  background-color: white;
+  margin-bottom: 50px;
+}
+.css-aa80it {
+  display: flex;
+  flex-direction: column;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  gap: 16px;
+}
+img {
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  -ms-interpolation-mode: nearest-neighbor;
+}
+.css-1baht8c {
+  width: 160px;
+  height: 88px;
+}
+.css-dhqp8i {
+  display: flex;
+  flex-direction: column;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  gap: 6px;
+  text-align: center;
+}
+.css-c7zvxr {
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  color: rgb(28, 29, 30);
+}
+.css-1mcux1f {
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 20px;
+  color: rgb(131, 134, 137);
+  white-space: pre-wrap;
 }
 </style>
