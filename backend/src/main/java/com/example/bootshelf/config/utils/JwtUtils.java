@@ -5,7 +5,6 @@ import com.example.bootshelf.certification.repository.CertificationRepository;
 import com.example.bootshelf.common.error.ErrorCode;
 import com.example.bootshelf.common.error.entityexception.UserException;
 import com.example.bootshelf.user.model.entity.User;
-import com.example.bootshelf.user.repository.UserRefreshTokenRepository;
 import com.example.bootshelf.user.repository.UserRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -22,8 +21,6 @@ import java.util.*;
 public class JwtUtils {
 
     private final CertificationRepository certificationRepository;
-
-    private final UserRefreshTokenRepository userRefreshTokenRepository;
 
     private final UserRepository userRepository;
 

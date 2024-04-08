@@ -73,6 +73,19 @@ export const useReviewCommentStore = defineStore("reviewComment", {
           }
         );
 
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
+
         if (response.headers["new-access-token"] != null) {
           if (
             response.headers["new-access-token"] !=
@@ -129,6 +142,19 @@ export const useReviewCommentStore = defineStore("reviewComment", {
             headers
           }
         );
+
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
 
         if (response.headers["new-access-token"] != null) {
           if (
@@ -187,6 +213,19 @@ export const useReviewCommentStore = defineStore("reviewComment", {
             }
           );
 
+          if (response.headers["new-refresh-token"] != null) {
+            if (
+              response.headers["new-refresh-token"] !=
+              localStorage.getItem("refreshToken")
+            ) {
+              localStorage.setItem("refreshToken", "");
+              localStorage.setItem(
+                "refreshToken",
+                response.headers["new-refresh-token"]
+              );
+            }
+          }
+
           if (response.headers["new-access-token"] != null) {
             if (
               response.headers["new-access-token"] !=
@@ -232,6 +271,19 @@ export const useReviewCommentStore = defineStore("reviewComment", {
             headers
           }
         );
+
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
 
         if (response.headers["new-access-token"] != null) {
           if (
@@ -280,6 +332,19 @@ export const useReviewCommentStore = defineStore("reviewComment", {
           headers,
         });
 
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
+
         if (response.headers["new-access-token"] != null) {
           if (
             response.headers["new-access-token"] !=
@@ -325,6 +390,19 @@ export const useReviewCommentStore = defineStore("reviewComment", {
         let response = await axios.patch(`${backend}/reviewcomment/up/delete/${commentIdx}`, {}, {
           headers
         });
+
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
 
         if (response.headers["new-access-token"] != null) {
           if (
@@ -384,6 +462,19 @@ export const useReviewCommentStore = defineStore("reviewComment", {
           headers
         });
 
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
+
         if (response.headers["new-access-token"] != null) {
           if (
             response.headers["new-access-token"] !=
@@ -427,6 +518,19 @@ export const useReviewCommentStore = defineStore("reviewComment", {
         const response = await axios.get(`${backend}/reviewcomment/up/check/${reviewCommentIdx}`, {
           headers
         });
+
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
 
         if (response.headers["new-access-token"] != null) {
           if (

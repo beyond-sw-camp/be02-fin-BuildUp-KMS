@@ -17,7 +17,7 @@ public class UserRefreshToken {
     private Integer idx;
 
     @Column(nullable = false, unique = true)
-    private Integer userIdx;
+    private String userEmail;
 
     @Column(nullable = false)
     private String refreshToken;
