@@ -74,7 +74,7 @@
                               class="css-search-002"
                               type="text"
                               placeholder="제목과 내용으로 검색할 단어를 입력하세요."
-                              v-model="searchTerm"
+                              v-model="title"
                               @keyup.enter="sendSearchData()"
                             />
                           </div>
@@ -160,7 +160,7 @@ export default {
       selectedSortType: "최신순",
       sortType: 1,
       boardCategoryIdx: "1",
-      searchTerm: "",
+      title: "",
     };
   },
   computed: {
@@ -200,10 +200,10 @@ export default {
     },
     async loadBoardList(page) {
       // 검색어가 있는 경우
-      if (this.searchTerm) {
+      if (this.title) {
         await this.boardStore.getCategoryBoardListByQuery(
           this.boardCategoryIdx,
-          this.searchTerm,
+          this.title,
           this.sortType,
           page
         );
