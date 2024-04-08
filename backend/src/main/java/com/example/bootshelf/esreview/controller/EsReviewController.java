@@ -32,40 +32,7 @@ public class EsReviewController {
 
         return ResponseEntity.ok().body(baseRes);
     }
-//
-//    // 제목+내용 (메인)
-//    @GetMapping("/search/main/titlecontent")
-//    @ResponseBody
-//    public ResponseEntity titleContentSearchByMain(
-//            @RequestParam String title,
-//            @PageableDefault(size = 20) Pageable pageable
-//    ) {
-//        BaseRes baseRes =  esReviewService.titleContentSearchByMain(title, pageable);
-//
-//        return ResponseEntity.ok().body(baseRes);
-//    }
 
-    // 제목+내용+정렬 (과정후기)
-    @GetMapping("/search/course")
-    @ResponseBody
-    public SearchHits<EsReview> titleContentSearchByCourse(
-            @RequestParam Integer sortType,
-            @RequestParam String title,
-            @PageableDefault(size = 20) Pageable pageable
-    ) {
-        return esReviewService.titleContentSearchByCourse(sortType ,title, pageable);
-    }
-
-    // 제목+내용+정렬 (강사후기)
-    @GetMapping("/search/teacher")
-    @ResponseBody
-    public SearchHits<EsReview> titleContentSearchByTeacher(
-            @RequestParam Integer sortType,
-            @RequestParam String title,
-            @PageableDefault(size = 20) Pageable pageable
-    ) {
-        return esReviewService.titleContentSearchByTeacher(sortType ,title, pageable);
-    }
 
     // 제목+내용+정렬 (통합)
     @GetMapping("/search")

@@ -28,29 +28,29 @@ public class EsBoard {
     private String boardcontent;
 
     @Field(type = FieldType.Integer)
-    private Integer viewCnt;
+    private Integer viewcnt;
 
     @Field(type = FieldType.Integer)
-    private Integer upCnt;
+    private Integer upcnt;
 
     @Field(type = FieldType.Integer)
-    private Integer scrapCnt;
+    private Integer scrapcnt;
 
     @Field(type = FieldType.Integer)
-    private Integer commentCnt;
+    private Integer commentcnt;
 
     @Field(type = FieldType.Text)
-    private String nickName;
+    private String nickname;
 
     @Field(type = FieldType.Text)
-    private String profileImage;
+    private String profileimage;
 
     @Field(type = FieldType.Text)
     private String boardImage;
 
     private String createdAt;
 
-    private String updatedAt;
+    private String updatedat;
 
     @Field(type = FieldType.Nested)
     private List<EsTag> tags;

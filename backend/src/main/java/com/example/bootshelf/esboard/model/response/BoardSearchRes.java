@@ -12,9 +12,9 @@ import java.util.List;
 @Builder
 public class BoardSearchRes {
     private Integer idx;
-    private String boardtitle;
-    private String boardcontent;
-    private Integer boardcategory_idx;
+    private String boardTitle;
+    private String boardContent;
+    private Integer boardCategory;
     private String nickName;
     private String createdAt;
     private Integer viewCnt;
