@@ -307,7 +307,7 @@ public class BoardService {
             GetSearchListBoardRes getSearchListBoardRes = GetSearchListBoardRes.builder()
                     .idx(board.getIdx())
                     .nickName(board.getUser().getNickName())
-                    .userProfileImage(board.getUser().getProfileImage())
+                    .profileImage(board.getUser().getProfileImage())
                     .boardtitle(board.getBoardTitle())
                     .boardcontent(textContent)
                     .boardCategoryIdx(board.getBoardCategory().getIdx())
