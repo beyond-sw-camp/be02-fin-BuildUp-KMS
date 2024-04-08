@@ -234,7 +234,7 @@ export const useReviewStore = defineStore("review", {
       }
     },
 
-    async getSearchTotalReviewList(
+    async getSearchSortReviewList(
       sortType,
       title,
       page = 1
