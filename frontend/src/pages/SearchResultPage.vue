@@ -128,7 +128,7 @@
                       :aria-expanded="dropdownOpen.toString()"
                       class="_1rMfp _3NZzgf btn btn-select btn-lg"
                     >
-                      <span>최신순</span>
+                      <span>{{sortTypeTitle}}</span>
                       <svg
                         fill="currentColor"
                         width="16"
@@ -318,7 +318,8 @@ export default {
       query: "",
       searchType: "",
       title: "",
-      sortType: 1
+      sortType: 1,
+      sortTypeTitle: "최신순"
     };
   },
   async mounted() {
@@ -382,7 +383,13 @@ export default {
     },
     selectedSortType(sortType) {
       this.sortType = sortType;
-      console.log(sortType);
+      if(sortType === 1) {
+      this.sortTypeTitle = "최신순";
+    } else if(sortType === 2) {
+      this.sortTypeTitle = "인기순";
+    }
+    this.dropdownOpen = false;
+  }
     },
     changePage(page) {
       this.reviewStore.getSearchTotalReviewList(this.query, this.searchType, page);
@@ -400,7 +407,6 @@ export default {
     getSearchSortReviewList() {
       this.reviewStore.getSearchSortReviewList(this.sortType, this.title);
     }
-  },
 };
 </script>
 
