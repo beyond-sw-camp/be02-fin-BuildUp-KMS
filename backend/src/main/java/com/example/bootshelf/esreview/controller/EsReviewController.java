@@ -23,7 +23,7 @@ public class EsReviewController {
     // 메인 검색(통합)
     @GetMapping("/search/main")
     @ResponseBody
-    public ResponseEntity titleContentSearch(
+    public ResponseEntity titleSearchByMain(
             @RequestParam Integer selectedDropdownValue,
             @RequestParam String title,
             @PageableDefault(size = 20) Pageable pageable
@@ -44,6 +44,19 @@ public class EsReviewController {
             @PageableDefault(size = 20) Pageable pageable
     ) {
         BaseRes baseRes =  esReviewService.titleContentSearch(categoryIdx, sortType ,title, pageable);
+
+        return ResponseEntity.ok().body(baseRes);
+    }
+
+    // 제목+내용+정렬 (메인에서 검색 후 결과에서 또 검색)
+    @GetMapping("/search/result")
+    @ResponseBody
+    public ResponseEntity titleContentSearchResult(
+            @RequestParam Integer sortType,
+            @RequestParam String title,
+            @PageableDefault(size = 20) Pageable pageable
+    ) {
+        BaseRes baseRes =  esReviewService.titleContentSearchResult(sortType ,title, pageable);
 
         return ResponseEntity.ok().body(baseRes);
     }

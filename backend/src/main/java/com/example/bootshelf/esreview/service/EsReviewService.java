@@ -28,31 +28,31 @@ public class EsReviewService {
     // 메인 검색(통합)
     public BaseRes titleSearchByMain(@NotNull Integer selectedDropdownValue, String title, Pageable pageable) {
 
-            SearchHits<EsReview> searchHits = esReviewRepository.titleSearchByMain(selectedDropdownValue, title, pageable);
+        SearchHits<EsReview> searchHits = esReviewRepository.titleSearchByMain(selectedDropdownValue, title, pageable);
 
-            List<EsReview> searchContent = searchHits.get().map(SearchHit::getContent).collect(Collectors.toList());
-            List<ReviewSearchRes> reviewSearchRes = new ArrayList<>();
+        List<EsReview> searchContent = searchHits.get().map(SearchHit::getContent).collect(Collectors.toList());
+        List<ReviewSearchRes> reviewSearchRes = new ArrayList<>();
 
-            for (EsReview result : searchContent) {
-                ReviewSearchRes response = ReviewSearchRes.builder()
-                        .idx(Integer.valueOf(result.getId()))
-                        .reviewCategory(result.getReviewCategory())
-                        .reviewTitle(result.getReviewTitle())
-                        .reviewContent(result.getReviewContent())
-                        .courseName(result.getCourseName())
-                        .courseEvaluation(result.getCourseEvaluation())
-                        .viewCnt(result.getViewCnt())
-                        .upCnt(result.getUpCnt())
-                        .scrapCnt(result.getScrapCnt())
-                        .commentCnt(result.getCommentCnt())
-                        .createdAt(result.getCreatedAt())
-                        .updatedAt(result.getUpdatedAt())
-                        .nickName(result.getNickName())
-                        .profileImage(result.getProfileImage())
-                        .build();
+        for (EsReview result : searchContent) {
+            ReviewSearchRes response = ReviewSearchRes.builder()
+                    .idx(Integer.valueOf(result.getId()))
+                    .reviewCategory(result.getReviewCategory())
+                    .reviewTitle(result.getReviewTitle())
+                    .reviewContent(result.getReviewContent())
+                    .courseName(result.getCourseName())
+                    .courseEvaluation(result.getCourseEvaluation())
+                    .viewCnt(result.getViewCnt())
+                    .upCnt(result.getUpCnt())
+                    .scrapCnt(result.getScrapCnt())
+                    .commentCnt(result.getCommentCnt())
+                    .createdAt(result.getCreatedAt())
+                    .updatedAt(result.getUpdatedAt())
+                    .nickName(result.getNickName())
+                    .profileImage(result.getProfileImage())
+                    .build();
 
-                reviewSearchRes.add(response);
-            }
+            reviewSearchRes.add(response);
+        }
         ReviewSearchResResult result = ReviewSearchResResult.builder()
                 .totalHits(searchHits.getTotalHits())
                 //.totalPages() 페이지 추가하기..
@@ -60,12 +60,12 @@ public class EsReviewService {
                 .build();
 
 
-            BaseRes baseRes = BaseRes.builder()
-                    .isSuccess(true)
-                    .message("ES 메인 제목 검색 성공")
-                    .result(result)
-                    .build();
-            return baseRes;
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("ES 메인 제목 검색 성공")
+                .result(result)
+                .build();
+        return baseRes;
 
     }
 
@@ -130,6 +130,56 @@ public class EsReviewService {
                     .build();
 
             return baseRes;
+        }
+        return null;
+    }
+
+    // 메인 검색(통합)
+    public BaseRes titleContentSearchResult(@NotNull Integer sortType, String title, Pageable pageable) {
+        String[] fields = {"createdAt", "upCnt"}; // 필드 이름 배열
+
+        if (sortType >= 1 && sortType <= fields.length) {
+            String sortField = fields[sortType - 1];
+
+            SearchHits<EsReview> searchHits = esReviewRepository.titleContentSearchResult(sortField, title, pageable);
+
+            List<EsReview> searchContent = searchHits.get().map(SearchHit::getContent).collect(Collectors.toList());
+            List<ReviewSearchRes> reviewSearchRes = new ArrayList<>();
+
+            for (EsReview result : searchContent) {
+                ReviewSearchRes response = ReviewSearchRes.builder()
+                        .idx(Integer.valueOf(result.getId()))
+                        .reviewCategory(result.getReviewCategory())
+                        .reviewTitle(result.getReviewTitle())
+                        .reviewContent(result.getReviewContent())
+                        .courseName(result.getCourseName())
+                        .courseEvaluation(result.getCourseEvaluation())
+                        .viewCnt(result.getViewCnt())
+                        .upCnt(result.getUpCnt())
+                        .scrapCnt(result.getScrapCnt())
+                        .commentCnt(result.getCommentCnt())
+                        .createdAt(result.getCreatedAt())
+                        .updatedAt(result.getUpdatedAt())
+                        .nickName(result.getNickName())
+                        .profileImage(result.getProfileImage())
+                        .build();
+
+                reviewSearchRes.add(response);
+            }
+            ReviewSearchResResult result = ReviewSearchResResult.builder()
+                    .totalHits(searchHits.getTotalHits())
+                    //.totalPages() 페이지 추가하기..
+                    .list(reviewSearchRes)
+                    .build();
+
+
+            BaseRes baseRes = BaseRes.builder()
+                    .isSuccess(true)
+                    .message("ES 검색 성공")
+                    .result(result)
+                    .build();
+            return baseRes;
+
         }
         return null;
     }

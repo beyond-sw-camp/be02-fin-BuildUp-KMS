@@ -76,4 +76,27 @@ public class EsReviewRepository {
 
         return operations.search(build, EsReview.class);
     }
+
+    // 제목+내용+정렬 검색(메인-연결검색)
+    public SearchHits<EsReview> titleContentSearchResult(String sortField, String title, Pageable
+            pageable) {
+
+        MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(title,
+                "reviewTitle", "reviewContent");
+
+        HighlightBuilder highlightBuilder = new HighlightBuilder();
+        highlightBuilder.field("reviewTitle"); // 하이라이팅을 적용할 필드 지정
+        highlightBuilder.field("reviewContent"); // 하이라이팅을 적용할 필드 지정
+        highlightBuilder.preTags("<em>"); // 하이라이트 시작 태그
+        highlightBuilder.postTags("</em>"); // 하이라이트 종료 태그
+
+        NativeSearchQuery build = new NativeSearchQueryBuilder()
+                .withQuery(multiMatchQueryBuilder)
+                .withHighlightBuilder(highlightBuilder) // 하이라이트 설정 추가
+                .withPageable(pageable)
+                .withSort(SortBuilders.fieldSort(sortField).order(SortOrder.DESC))
+                .build();
+
+        return operations.search(build, EsReview.class);
+    }
 }
