@@ -240,7 +240,7 @@ public class UserService {
             helper.setTo(postSignUpUserReq.getEmail());
             helper.setSubject("[BootShelf] 회원가입을 완료하기 위해서 이메일 인증을 진행해 주세요");
             String uuid = UUID.randomUUID().toString();
-            String url = "http://localhost:8080/user/verify?email=" + postSignUpUserReq.getEmail() + "&uuid=" + uuid;
+            String url = "http://192.168.0.61/api/main/user/verify?email=" + postSignUpUserReq.getEmail() + "&uuid=" + uuid;
 
             // 이미지 파일 경로
             String imagePath = "https://github.com/hyungdoyou/devops/assets/148875644/f9dc322f-9d41-455d-b35c-e3cfcd7c008d";
