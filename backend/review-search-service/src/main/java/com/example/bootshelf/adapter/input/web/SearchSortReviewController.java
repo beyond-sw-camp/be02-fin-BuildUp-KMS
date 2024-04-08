@@ -21,7 +21,7 @@ public class SearchSortReviewController {
 
     private final SearchSortReviewUseCase searchSortReviewUseCase;
 
-    // 제목+내용+정렬 (메인에서 검색 후 결과에서 또 검색)
+    // 제목+내용+정렬 (메인에서 검색 후 결과에서 또 검색).
     @RequestMapping(method = RequestMethod.GET, value = "/sort/list")
     @ResponseBody
     public ResponseEntity<BaseRes> searchSortReview(
