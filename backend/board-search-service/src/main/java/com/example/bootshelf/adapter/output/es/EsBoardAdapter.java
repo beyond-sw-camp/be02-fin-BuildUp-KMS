@@ -28,14 +28,14 @@ public class EsBoardAdapter implements GetListBoardPort {
     public SearchHits<EsBoard> titleContentSearch(Integer categoryIdx, String sortField, String title, Pageable pageable) {
 
         MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(title,
-                "boardTitle", "boardContent");
+                "boardtitle", "boardcontent");
 
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
-                .filter(QueryBuilders.termQuery("boardCategory", categoryIdx));
+                .filter(QueryBuilders.termQuery("boardcategory_idx", categoryIdx));
 
         HighlightBuilder highlightBuilder = new HighlightBuilder();
-        highlightBuilder.field("boardTitle"); // 하이라이팅을 적용할 필드 지정
-        highlightBuilder.field("boardContent"); // 하이라이팅을 적용할 필드 지정
+        highlightBuilder.field("boardtitle"); // 하이라이팅을 적용할 필드 지정
+        highlightBuilder.field("boardcontent"); // 하이라이팅을 적용할 필드 지정
         highlightBuilder.preTags("<em>"); // 하이라이트 시작 태그
         highlightBuilder.postTags("</em>"); // 하이라이트 종료 태그
 

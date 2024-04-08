@@ -8,6 +8,7 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import javax.persistence.Id;
+import java.util.List;
 
 @Getter
 @Setter
@@ -53,4 +54,21 @@ public class EsBoard {
 
     //    @Field(type = FieldType.Date, format = {DateFormat.date_hour_minute_second_millis, DateFormat.epoch_millis})
     private String updatedAt;
+
+    @Field(type = FieldType.Nested)
+    private List<EsTag> tags;
+
+    public static class EsTag {
+
+        @Field(type = FieldType.Text, analyzer = "nori")
+        private String tagname;
+
+        public String getTagname() {
+            return tagname;
+        }
+
+        public void setTagname(String tagname) {
+            this.tagname = tagname;
+        }
+    }
 }
