@@ -59,16 +59,17 @@ public class EsBoardRepository {
     // search after 적용 ver
     public SearchHits<EsBoard> titleContentSearch2(Integer categoryIdx, String sortField, String title, int size, List<Object> searchAfter) {
         MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(title, "boardtitle", "boardcontent");
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery().filter(QueryBuilders.termQuery("boardcategory_idx", categoryIdx));
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
+                .must(multiMatchQueryBuilder)
+                .filter(QueryBuilders.termQuery("boardcategory_idx", categoryIdx));
 
         NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder()
-                .withQuery(multiMatchQueryBuilder)
-                .withFilter(boolQueryBuilder)
+                .withQuery(boolQueryBuilder)
                 .withSort(SortBuilders.fieldSort(sortField).order(SortOrder.ASC))
+                .withSort(SortBuilders.fieldSort("_id").order(SortOrder.ASC)) // 중복값이 있을 것을 대비해 id로 한 번 더 sorting
                 .withPageable(PageRequest.of(0, size));
 
         if (searchAfter != null && !searchAfter.isEmpty()) {
-            queryBuilder.withSort(SortBuilders.fieldSort("_id").order(SortOrder.ASC)); // Additional sort to ensure a stable order
             queryBuilder.withSearchAfter(searchAfter);
         }
 

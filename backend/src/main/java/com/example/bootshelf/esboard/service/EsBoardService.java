@@ -136,19 +136,25 @@ public class EsBoardService {
             boardSearchRes.add(response);
         }
 
+        // 기존의 코드
+        Object[] lastSearchAfter = searchHits.getSearchHits().size() > 0
+                ? searchHits.getSearchHits().get(searchHits.getSearchHits().size() - 1).getSortValues().toArray(new Object[0])
+                : null;
+
         long totalHits = searchHits.getTotalHits();
         int totalPages = (int) Math.ceil((double) totalHits / size);
 
-        BoardSearchResResult result = BoardSearchResResult.builder()
-                .totalHits(searchHits.getTotalHits())
+        BoardSearchResResult boardSearchResResult = BoardSearchResResult.builder()
+                .totalHits(totalHits)
                 .totalPages(totalPages)
                 .list(boardSearchRes)
+                .lastSearchAfter(lastSearchAfter)
                 .build();
 
         BaseRes baseRes = BaseRes.builder()
                 .isSuccess(true)
                 .message("ES 게시판 categoryIdx = " + categoryIdx + " 검색 성공")
-                .result(result)
+                .result(boardSearchResResult)
                 .build();
 
         return baseRes;
