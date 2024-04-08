@@ -81,7 +81,7 @@ public class EsReviewRepository {
 
         return operations.search(build, EsReview.class);
     }
-
+  
 
     /**
      *  아래부터 search after 적용 메소드

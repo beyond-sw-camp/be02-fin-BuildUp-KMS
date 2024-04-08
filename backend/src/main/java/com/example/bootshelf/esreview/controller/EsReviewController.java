@@ -27,7 +27,7 @@ public class EsReviewController {
     // 메인 검색(통합)
     @GetMapping("/search/main")
     @ResponseBody
-    public ResponseEntity titleContentSearch(
+    public ResponseEntity titleSearchByMain(
             @RequestParam Integer selectedDropdownValue,
             @RequestParam String title,
             @PageableDefault(size = 20) Pageable pageable
@@ -75,8 +75,8 @@ public class EsReviewController {
         BaseRes baseRes = esReviewService.titleSearchByMain2(selectedDropdownValue, title, size, searchAfter);
         return ResponseEntity.ok().body(baseRes);
     }
-
-
+  
+  
     // 제목+내용+정렬 (통합)
     @GetMapping("/search2")
     @ResponseBody
