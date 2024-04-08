@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
@@ -74,6 +75,7 @@ public class EsBoardService {
 
                 boardSearchRes.add(response);
             }
+
             BoardSearchResResult result = BoardSearchResResult.builder()
                     .totalHits(searchHits.getTotalHits())
                     //.totalPages() 페이지 추가하기..
@@ -89,5 +91,66 @@ public class EsBoardService {
             return baseRes;
         }
         return null;
+    }
+
+
+    // search after ver2
+    public BaseRes titleContentSearch2(Integer categoryIdx, Integer sortType, String title, int size, List<Object> searchAfter) {
+        String[] fields = {"createdAt", "upCnt", "viewCnt", "scrapCnt", "commentCnt"};
+        String sortField = sortType >= 1 && sortType <= fields.length ? fields[sortType - 1] : fields[0];
+
+        SearchHits<EsBoard> searchHits = esBoardRepository.titleContentSearch2(categoryIdx, sortField, title, size, searchAfter);
+
+        List<EsBoard> searchContent = searchHits.get().map(SearchHit::getContent).collect(Collectors.toList());
+
+        List<BoardSearchRes> boardSearchRes = new ArrayList<>();
+
+        for (EsBoard result : searchContent) {
+
+            String textContent = extractText(result.getBoardcontent());
+
+            BoardSearchRes response = BoardSearchRes.builder()
+                    .idx(Integer.valueOf(result.getId()))
+                    .boardCategory(result.getBoardcategory_idx())
+                    .boardTitle(result.getBoardtitle())
+                    .boardContent(textContent)
+                    .viewCnt(result.getViewcnt())
+                    .upCnt(result.getUpcnt())
+                    .scrapCnt(result.getScrapcnt())
+                    .commentCnt(result.getCommentcnt())
+                    .createdAt(result.getCreatedAt())
+                    .updatedAt(result.getUpdatedat())
+                    .profileImage(result.getProfileimage())
+                    .nickName(result.getNickname())
+                    .boardImage(result.getBoardImage())
+                    .tags(result.getTags())
+                    .build();
+
+            Document doc = Jsoup.parse(result.getBoardcontent());
+            Elements images = doc.select("img");
+
+            if (!images.isEmpty()) {
+                response.setBoardImage(images.get(0).attr("src"));
+            }
+
+            boardSearchRes.add(response);
+        }
+
+        long totalHits = searchHits.getTotalHits();
+        int totalPages = (int) Math.ceil((double) totalHits / size);
+
+        BoardSearchResResult result = BoardSearchResResult.builder()
+                .totalHits(searchHits.getTotalHits())
+                .totalPages(totalPages)
+                .list(boardSearchRes)
+                .build();
+
+        BaseRes baseRes = BaseRes.builder()
+                .isSuccess(true)
+                .message("ES 게시판 categoryIdx = " + categoryIdx + " 검색 성공")
+                .result(result)
+                .build();
+
+        return baseRes;
     }
 }
