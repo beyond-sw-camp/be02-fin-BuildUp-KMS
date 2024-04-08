@@ -360,7 +360,7 @@ export const useBoardStore = defineStore("board", {
     },
     async getCategoryBoardListByQuery(
       boardCategoryIdx,
-      query,
+      title,
       option,
       page = 1
     ) {
@@ -369,10 +369,11 @@ export const useBoardStore = defineStore("board", {
 
         let response = await axios.get(
           backend +
-            "/board/search/by/" +
+            "/es/board/search" +
+            "?categoryIdx="+
             boardCategoryIdx +
-            "?query=" +
-            query +
+            "&title=" +
+            title +
             "&sortType=" +
             option +
             "&page=" +
