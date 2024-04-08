@@ -11,17 +11,15 @@
           <div class="css-12i5occ">
             <div class="css-1jibmi3">
               <!--게시글 타이틀-->
-              <!-- <div class="css-cp47oo">
-                {{ boards.boardTitle }}
+              <div class="css-cp47oo">
+                {{ boards.boardtitle }}
               </div>
               <div class="css-14bssip">
-                {{ boards.boardContent }}
-              </div> -->
-              <div class="css-cp47oo">{{ highlightedTitle }}</div>
-              <div class="css-14bssip">{{ highlightedContent }}</div>
+                {{ boards.boardcontent }}
+              </div>
             </div>
             <!--태그 컴포넌트 자리-->
-            <TagComponent :tagNameList="boards.tagName" />
+            <TagComponent :tagNameList="boards.tag" />
           </div>
           <div class="css-bt1qy"></div>
           <!--사진-->
@@ -47,7 +45,7 @@
                   position: absolute;
                   inset: 0px;
                 ">
-                <img sizes="100vw" :src="boards.userProfileImage" decoding="async" data-nimg="fill" style="
+                <img sizes="100vw" :src="boards.profileImage" decoding="async" data-nimg="fill" style="
                     position: absolute;
                     inset: 0px;
                     box-sizing: border-box;
@@ -160,14 +158,6 @@ export default {
   },
   components: {
     TagComponent,
-  },
-  methods: {
-    highlight(boards) {
-      // 게시글 제목과 내용에 대한 하이라이팅된 내용이 boards 객체의 속성으로 포함되어 있다고 가정
-      // 예시로 직접 지정
-      this.highlightedTitle = boards.boardTitle; // 게시글 제목
-      this.highlightedContent = boards.boardContent; // 게시글 내용
-    }
   }
 };
 </script>
