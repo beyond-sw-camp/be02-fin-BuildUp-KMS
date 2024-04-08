@@ -2,8 +2,10 @@ package com.example.bootshelf.application.service;
 
 import com.example.bootshelf.adapter.output.es.entity.EsReview;
 import com.example.bootshelf.application.port.input.SearchReviewUseCase;
+import com.example.bootshelf.application.port.input.SearchSortReviewUseCase;
 import com.example.bootshelf.application.port.input.SearchTotalReviewUseCase;
 import com.example.bootshelf.application.port.output.GetListReviewPort;
+import com.example.bootshelf.application.port.output.GetSortListReviewPort;
 import com.example.bootshelf.application.port.output.GetTotalListReviewPort;
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.common.UseCase;
@@ -23,10 +25,11 @@ import java.util.stream.Collectors;
 
 @UseCase
 @RequiredArgsConstructor
-public class SearchReviewService implements SearchReviewUseCase, SearchTotalReviewUseCase {
+public class SearchReviewService implements SearchReviewUseCase, SearchTotalReviewUseCase, SearchSortReviewUseCase {
 
     private final GetListReviewPort getListReviewPort;
     private final GetTotalListReviewPort getTotalListReviewPort;
+    private final GetSortListReviewPort getSortListReviewPort;
 
     public static String extractText(String html) {
         Document doc = Jsoup.parse(html);
@@ -75,6 +78,56 @@ public class SearchReviewService implements SearchReviewUseCase, SearchTotalRevi
 
         return baseRes;
 
+    }
+
+    @Override
+    public BaseRes searchSortReview(Integer sortType, String title, Pageable pageable) {
+        String[] fields = {"createdAt", "upCnt"}; // 필드 이름 배열
+
+        if (sortType >= 1 && sortType <= fields.length) {
+            String sortField = fields[sortType - 1];
+
+            SearchHits<EsReview> searchHits = getSortListReviewPort.titleContentSearchResult(sortField, title, pageable);
+
+            List<EsReview> searchContent = searchHits.get().map(SearchHit::getContent).collect(Collectors.toList());
+            List<Review> reviewSearchRes = new ArrayList<>();
+
+            for (EsReview result : searchContent) {
+                Review response = Review.builder()
+                        .idx(Integer.valueOf(result.getId()))
+                        .reviewCategory(result.getReviewCategory())
+                        .reviewTitle(result.getReviewTitle())
+                        .reviewContent(result.getReviewContent())
+                        .courseName(result.getCourseName())
+                        .courseEvaluation(result.getCourseEvaluation())
+                        .viewCnt(result.getViewCnt())
+                        .upCnt(result.getUpCnt())
+                        .scrapCnt(result.getScrapCnt())
+                        .commentCnt(result.getCommentCnt())
+                        .createdAt(result.getCreatedAt())
+                        .updatedAt(result.getUpdatedAt())
+                        .nickName(result.getNickName())
+                        .profileImage(result.getProfileImage())
+                        .build();
+
+                reviewSearchRes.add(response);
+            }
+            ReviewResult result = ReviewResult.builder()
+                    .totalHits(searchHits.getTotalHits())
+                    //.totalPages() 페이지 추가하기..
+                    .list(reviewSearchRes)
+                    .build();
+
+
+            BaseRes baseRes = BaseRes.builder()
+                    .isSuccess(true)
+                    .message("ES 검색 성공")
+                    .result(result)
+                    .build();
+            return baseRes;
+
+        }
+        return null;
     }
 
     @Override
