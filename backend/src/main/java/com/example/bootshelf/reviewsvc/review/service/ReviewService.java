@@ -304,6 +304,48 @@ public class ReviewService {
                 .build();
     }
 
+    @Transactional(readOnly = true)
+    public BaseRes searchReviewListBySortType(String query, Integer searchType, Integer sortType, Pageable pageable) {
+
+        Page<Review> reviewList = reviewRepository.searchReviewListBySortType(query, searchType, sortType, pageable);
+
+        List<GetReviewListByQueryRes> getReviewListByQueryResList = new ArrayList<>();
+
+        for (Review review : reviewList) {
+
+            String textContent = extractText(review.getReviewContent());
+
+            GetReviewListByQueryRes getReviewListByQueryRes = GetReviewListByQueryRes.builder()
+                    .reviewIdx(review.getIdx())
+                    .reviewTitle(review.getReviewTitle())
+                    .reviewContent(textContent)
+                    .reviewCategoryName(review.getReviewCategory().getCategoryName())
+                    .nickName(review.getUser().getNickName())
+                    .createdAt(review.getCreatedAt())
+                    .viewCnt(review.getViewCnt())
+                    .commentCnt(review.getCommentCnt())
+                    .upCnt(review.getUpCnt())
+                    .build();
+
+            getReviewListByQueryResList.add(getReviewListByQueryRes);
+        }
+
+        Long totalCnt = reviewList.getTotalElements();
+        Integer totalPages = reviewList.getTotalPages();
+
+        GetReviewListByQueryResResult result = GetReviewListByQueryResResult.builder()
+                .totalCnt(totalCnt)
+                .totalPages(totalPages)
+                .list(getReviewListByQueryResList)
+                .build();
+
+        return BaseRes.builder()
+                .isSuccess(true)
+                .message("메인 페이지 검색 결과 조회 성공 <후기>")
+                .result(result)
+                .build();
+    }
+
     // 후기글 수정
     @Transactional(readOnly = false)
     public BaseRes updateReview(User user, PatchUpdateReviewReq patchUpdateReviewReq) {

@@ -162,6 +162,30 @@ public class ReviewRepositoryCustomImpl extends QuerydslRepositorySupport implem
         return new PageImpl<>(reviewList, pageable, pageableQuery.fetchCount());
     }
 
+    @Override
+    public Page<Review> searchReviewListBySortType(String query, Integer searchType, Integer sortType, Pageable pageable) {
+
+        QReview qReview = QReview.review;
+
+        BooleanExpression searchCondition = searchType == 1 ? titleContains(query)
+                : titleContains(query).or(contentContains(query));
+
+        OrderSpecifier[] orderSpecifiers = createOrderSpecifier(sortType, qReview);
+
+        // 조회 쿼리 생성 및 페이징 처리
+        JPQLQuery<Review> querySQL = from(qReview)
+                .leftJoin(qReview.user).fetchJoin()
+                .leftJoin(qReview.reviewCategory).fetchJoin()
+                .where(searchCondition.and(qReview.status.eq(true)))
+                .orderBy(orderSpecifiers);
+
+        // pagination 적용
+        JPQLQuery<Review> pageableQuery = getQuerydsl().applyPagination(pageable, querySQL);
+        List<Review> reviewList = pageableQuery.fetch();
+
+        return new PageImpl<>(reviewList, pageable, pageableQuery.fetchCount());
+    }
+
     private BooleanExpression titleContains(String query) {
         if (query == null || query.trim().isEmpty()) return null;
         return QReview.review.reviewTitle.containsIgnoreCase(query);
