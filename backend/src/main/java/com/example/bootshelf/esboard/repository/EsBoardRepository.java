@@ -56,6 +56,7 @@ public class EsBoardRepository {
         return operations.search(build, EsBoard.class);
     }
 
+
     // search after 적용 ver
     public SearchHits<EsBoard> titleContentSearch2(Integer categoryIdx, String sortField, String title, int size, List<Object> searchAfter) {
         MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(title, "boardtitle", "boardcontent");
