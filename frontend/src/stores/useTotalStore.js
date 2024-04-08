@@ -78,7 +78,7 @@ export const useTotalStore = defineStore("total", {
 
         let response = await axios.get(
           backend +
-            `/review/hotlist/${reviewCategoryIdx}/${sortType}/search?searchTerm=${encodeURIComponent(
+            `/main/review/hotlist/${reviewCategoryIdx}/${sortType}/search?searchTerm=${encodeURIComponent(
               searchTerm
             )}&${params}`
         );
@@ -150,7 +150,7 @@ export const useTotalStore = defineStore("total", {
 
         let response = await axios.get(
           backend +
-            `/board/hotlist/${boardCategoryIdx}/${sortType}/search?searchTerm=${encodeURIComponent(
+            `/main/board/hotlist/${boardCategoryIdx}/${sortType}/search?searchTerm=${encodeURIComponent(
               searchTerm
             )}&${params}`
         );
@@ -200,6 +200,19 @@ export const useTotalStore = defineStore("total", {
             headers,
           }
         );
+
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
 
         if (response.headers["new-access-token"] != null) {
           if (
@@ -259,6 +272,19 @@ export const useTotalStore = defineStore("total", {
           }
         );
 
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
+
         if (response.headers["new-access-token"] != null) {
           if (
             response.headers["new-access-token"] !=
@@ -313,6 +339,19 @@ export const useTotalStore = defineStore("total", {
             headers,
           }
         );
+
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
 
         if (response.headers["new-access-token"] != null) {
           if (
@@ -371,6 +410,19 @@ export const useTotalStore = defineStore("total", {
           }
         );
 
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
+
         if (response.headers["new-access-token"] != null) {
           if (
             response.headers["new-access-token"] !=
@@ -419,6 +471,19 @@ export const useTotalStore = defineStore("total", {
           headers,
         });
 
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
+
         if (response.headers["new-access-token"] != null) {
           if (
             response.headers["new-access-token"] !=
@@ -462,6 +527,19 @@ export const useTotalStore = defineStore("total", {
         let response = await axios.delete(backend + "/main/review/delete/" + idx, {
           headers,
         });
+
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
 
         if (response.headers["new-access-token"] != null) {
           if (
@@ -511,6 +589,19 @@ export const useTotalStore = defineStore("total", {
           }
         );
 
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
+
         if (response.headers["new-access-token"] != null) {
           if (
             response.headers["new-access-token"] !=
@@ -559,6 +650,19 @@ export const useTotalStore = defineStore("total", {
             headers,
           }
         );
+
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
 
         if (response.headers["new-access-token"] != null) {
           if (

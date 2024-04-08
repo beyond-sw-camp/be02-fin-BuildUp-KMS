@@ -344,7 +344,7 @@ export default {
   computed: {
     ...mapStores(useReviewStore, useUserStore, useReviewCommentStore),
     isLoggedIn() {
-      return !!localStorage.getItem("token");
+      return !!localStorage.getItem("accessToken");
     },
     userProfileImage() {
       // 사용자 정보 로딩 후 사용자 프로필 이미지 반환

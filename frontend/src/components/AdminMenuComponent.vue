@@ -137,7 +137,7 @@ export default {
     },
     methods: {
         logout() {
-            window.localStorage.removeItem("a_token");
+            window.localStorage.removeItem("accessToken");
             const store = useAdminStore();
             store.isAdminAuthenticated = false;
             store.adminDecodedToken = {};
