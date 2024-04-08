@@ -12,5 +12,6 @@ import java.util.List;
 public class BoardSearchResResult {
     private Long totalHits;
     private Integer totalPages;
+    private Object[] lastSearchAfter;
     private List<BoardSearchRes> list;
 }
