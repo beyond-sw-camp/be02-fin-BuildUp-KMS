@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: gateway-container
-          image: hyungdoyou/ge:6.VERSION
+          image: hyungdoyou/bootshelf-gateway:2.VERSION
           resources:
             requests:
               memory: "512Mi"
