@@ -9,7 +9,6 @@ import lombok.*;
 @Builder
 public class ReviewSearchRes {
     private Integer idx;
-    private Integer user;
     private String reviewTitle;
     private String reviewContent;
     private Integer reviewCategory;
@@ -21,8 +20,8 @@ public class ReviewSearchRes {
     private Integer scrapCnt;
     private String updatedAt;
     private Boolean status;
-    private Long totalHits;
     private String courseName;
     private Integer courseEvaluation;
-    private String reviewImg;
+    private String reviewImage;
+    private String profileImage;
 }

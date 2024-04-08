@@ -4,6 +4,7 @@ import lombok.*;
 import org.springframework.data.elasticsearch.annotations.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,16 +19,13 @@ public class EsBoard {
     private String id;
 
     @Field(type = FieldType.Integer)
-    private Integer user;
-
-    @Field(type = FieldType.Integer)
-    private Integer boardCategory;
+    private Integer boardcategory_idx;
 
     @Field(type = FieldType.Text, analyzer = "nori")
-    private String boardTitle;
+    private String boardtitle;
 
     @Field(type = FieldType.Text, analyzer = "nori")
-    private String boardContent;
+    private String boardcontent;
 
     @Field(type = FieldType.Integer)
     private Integer viewCnt;
@@ -41,12 +39,33 @@ public class EsBoard {
     @Field(type = FieldType.Integer)
     private Integer commentCnt;
 
-    @Field(type = FieldType.Boolean)
-    private Boolean status;
+    @Field(type = FieldType.Text)
+    private String nickName;
 
-//    @Field(type = FieldType.Date, format = DateFormat.custom, pattern = "yyyy-MM-dd")
+    @Field(type = FieldType.Text)
+    private String profileImage;
+
+    @Field(type = FieldType.Text)
+    private String boardImage;
+
     private String createdAt;
 
-//    @Field(type = FieldType.Date, format = DateFormat.custom, pattern = "yyyy-MM-dd")
     private String updatedAt;
+
+    @Field(type = FieldType.Nested)
+    private List<EsTag> tags;
+
+    public static class EsTag {
+
+        @Field(type = FieldType.Text, analyzer = "nori")
+        private String tagname;
+
+        public String getTagname() {
+            return tagname;
+        }
+
+        public void setTagname(String tagname) {
+            this.tagname = tagname;
+        }
+    }
 }
