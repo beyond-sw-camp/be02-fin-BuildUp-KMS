@@ -19,7 +19,7 @@
               </div>
             </div>
             <!--태그 컴포넌트 자리-->
-            <TagComponent :tagNameList="boards.tag" />
+            <TagComponent :tagNameList="boards.tags" />
           </div>
           <div class="css-bt1qy"></div>
           <!--사진-->

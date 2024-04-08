@@ -82,6 +82,8 @@
                         type="text"
                         value=""
                         placeholder="제목, 내용으로 질문을 찾아 보세요!"
+                        v-model="title"
+                        @keyup.enter="getSearchSortReviewList()"
                         class="FMUyj _1LD4c form-control-xl form-control"
                       /><svg
                         fill="currentColor"
@@ -101,6 +103,7 @@
                     <button
                       type="button"
                       class="flex-shrink-0 btn btn-outline-basic btn-xl"
+                      @click="getSearchSortReviewList()"
                     >
                       <div class="_2pYHs ODppI"><span>검색</span></div>
                     </button>
@@ -153,6 +156,7 @@
                         tabindex="0"
                         role="menuitem"
                         class="_3CkPsH dropdown-item active"
+                        @click="selectedSortType(1)"
                       >
                         <span>최신순</span>
                       </button>
@@ -161,8 +165,9 @@
                         tabindex="0"
                         role="menuitem"
                         class="_3CkPsH dropdown-item"
+                        @click="selectedSortType(2)"
                       >
-                        <span>인기순</span>
+                        <spa>인기순</spa>
                       </button>
                     </div>
                   </div>
@@ -312,6 +317,8 @@ export default {
       dropdownOpen: false,
       query: "",
       searchType: "",
+      title: "",
+      sortType: 1
     };
   },
   async mounted() {
@@ -373,6 +380,10 @@ export default {
     toggleDropdown() {
       this.dropdownOpen = !this.dropdownOpen;
     },
+    selectedSortType(sortType) {
+      this.sortType = sortType;
+      console.log(sortType);
+    },
     changePage(page) {
       this.reviewStore.getSearchTotalReviewList(this.query, this.searchType, page);
     },
@@ -386,6 +397,9 @@ export default {
       // visiblePages를 업데이트하기 위해 currentPage를 설정
       this.reviewStore.currentPage = nextPage;
     },
+    getSearchSortReviewList() {
+      this.reviewStore.getSearchSortReviewList(this.sortType, this.title);
+    }
   },
 };
 </script>

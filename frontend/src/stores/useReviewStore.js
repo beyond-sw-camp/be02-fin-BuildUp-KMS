@@ -234,6 +234,53 @@ export const useReviewStore = defineStore("review", {
       }
     },
 
+    async getSearchTotalReviewList(
+      sortType,
+      title,
+      page = 1
+    ) {
+      try {
+        this.isLoading = true;
+
+        const params = new URLSearchParams({
+          page: page - 1,
+        }).toString();
+
+        let response = await axios.get(
+          backend +
+            "/search/review/sort/list?sortType=" +
+            sortType +
+            "&title=" +
+            title +
+            "&" +
+            params,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        this.reviewList = response.data.result.list;
+        this.totalPages = response.data.result.totalPages;
+        this.currentPage = page;
+        // this.totalCnt = response.data.result.totalCnt;
+        this.totalCnt = response.data.result.totalHits;
+
+        if (this.reviewList.length === 0) {
+          this.isReviewExist = false;
+          this.isPageExist = false;
+        } else {
+          this.isReviewExist = true;
+          this.isPageExist = true;
+        }
+      } catch (e) {
+        console.log(e);
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
     async getReviewDetail(reviewIdx) {
       try {
         let response = await axios.get(backend + `/main/review/${reviewIdx}`, {
