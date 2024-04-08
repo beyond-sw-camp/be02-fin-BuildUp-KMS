@@ -8,7 +8,7 @@ eureka:
 spring:
   config:
     activate:
-      on-profile: k8s
+      on-profile: prod
 
   application:
     name: BOOTSHELF-GATEWAY-SERVICE
