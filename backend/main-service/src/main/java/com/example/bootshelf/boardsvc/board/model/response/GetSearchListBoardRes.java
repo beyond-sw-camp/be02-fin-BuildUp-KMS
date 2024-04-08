@@ -16,7 +16,7 @@ public class GetSearchListBoardRes {
 
     private String nickName;
 
-    private String userProfileImage;
+    private String profileImage;
 
     private String boardtitle;
 
