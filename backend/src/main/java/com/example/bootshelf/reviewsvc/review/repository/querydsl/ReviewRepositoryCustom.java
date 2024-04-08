@@ -17,5 +17,7 @@ public interface ReviewRepositoryCustom {
 
     Page<Review> searchReviewListByQuery(Pageable pageable, String query, Integer searchType);
 
+    Page<Review> searchReviewListBySortType(String query, Integer searchType, Integer sortType, Pageable pageable);
+
     Page<Review> searchReviewListByQueryV2(Pageable pageable, String query, Integer searchType);
 }
