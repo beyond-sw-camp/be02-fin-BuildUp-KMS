@@ -26,6 +26,6 @@ public class GetListHotBoardRes {
     private Integer commentCnt;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private List<String> tagNameList;
+    private List<GetTagNameRes> tags;
     private String type;
 }
