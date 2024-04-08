@@ -332,7 +332,7 @@ export default {
 
     // 후기글 목록 불러오기
     if(query !== null && query !== "") {
-      await this.reviewStore.getSearchTotalReviewList(query, searchType);
+      await this.reviewStore.getSearchTotalReviewList(searchType, query);
 
       if(this.reviewStore.reviewList.length === 0) {
         alert("해당하는 검색결과가 없습니다. 다른 검색어를 입력해주세요.")

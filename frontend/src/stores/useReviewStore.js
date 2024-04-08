@@ -159,7 +159,7 @@ export const useReviewStore = defineStore("review", {
             sortType +
             "&title=" +
             searchTerm +
-            "&page=" +
+            "&" +
             params,
           {
             headers: {
@@ -205,7 +205,7 @@ export const useReviewStore = defineStore("review", {
             selectedDropdownValue +
             "&title=" +
             title +
-            "&page=" +
+            "&" +
             params,
           {
             headers: {
