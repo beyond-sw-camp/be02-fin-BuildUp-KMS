@@ -330,11 +330,11 @@ export default {
     this.query = query;
     this.searchType = searchType;
 
-    // 게시판 목록 불러오기
+    // 후기글 목록 불러오기
     if(query !== null && query !== "") {
-      await this.boardStore.getBoardListByQuery(query, searchType);
+      await this.reviewStore.getSearchTotalReviewList(query, searchType);
 
-      if(this.boardStore.boardList.length === 0) {
+      if(this.reviewStore.reviewList.length === 0) {
         alert("해당하는 검색결과가 없습니다. 다른 검색어를 입력해주세요.")
         this.$router.push("/");
       }
@@ -343,6 +343,7 @@ export default {
       this.$router.push("/");
     }
   },
+  
   beforeUnmount() {
     // 동적으로 추가한 스타일시트를 ID로 찾아 제거
     const goormstrapLink = document.getElementById("goormstrap-css");

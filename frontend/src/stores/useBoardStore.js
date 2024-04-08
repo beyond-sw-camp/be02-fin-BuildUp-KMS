@@ -103,37 +103,37 @@ export const useBoardStore = defineStore("board", {
         }
       }
     },
-    async getBoardListByQuery(query, option, page = 1) {
-      try {
-        this.isLoading = true;
+    // async getBoardListByQuery(query, option, page = 1) {
+    //   try {
+    //     this.isLoading = true;
 
-        let response = await axios.get(
-          backend +
-            "/main/board/search?query=" +
-            query +
-            "&searchType=" +
-            option +
-            "&page=" +
-            (page - 1)
-        );
-        this.boardList = response.data.result.list;
-        this.totalPages = response.data.result.totalPages;
-        this.currentPage = page;
-        this.totalCnt = response.data.result.totalCnt;
+    //     let response = await axios.get(
+    //       backend +
+    //         "/main/board/search?query=" +
+    //         query +
+    //         "&searchType=" +
+    //         option +
+    //         "&page=" +
+    //         (page - 1)
+    //     );
+    //     this.boardList = response.data.result.list;
+    //     this.totalPages = response.data.result.totalPages;
+    //     this.currentPage = page;
+    //     this.totalCnt = response.data.result.totalCnt;
 
-        if (this.boardList.length === 0) {
-          this.isBoardExist = false;
-          this.isPageExist = false;
-        } else {
-          this.isBoardExist = true;
-          this.isPageExist = true;
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        this.isLoading = false;
-      }
-    },
+    //     if (this.boardList.length === 0) {
+    //       this.isBoardExist = false;
+    //       this.isPageExist = false;
+    //     } else {
+    //       this.isBoardExist = true;
+    //       this.isPageExist = true;
+    //     }
+    //   } catch (error) {
+    //     console.error(error);
+    //   } finally {
+    //     this.isLoading = false;
+    //   }
+    // },
 
     async findListByCategory(boardCategoryIdx, sortType, page = 1) {
       try {
