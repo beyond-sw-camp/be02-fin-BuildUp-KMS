@@ -8,7 +8,6 @@ const backend = "http://192.168.0.61/api";
 const accessToken = localStorage.getItem("accessToken");
 const refreshToken = localStorage.getItem("refreshToken");
 
-
 export const useBoardCommentStore = defineStore({
   id: "boardComment",
   state: () => ({
@@ -18,7 +17,6 @@ export const useBoardCommentStore = defineStore({
     isTokenExpired: false,
   }),
   actions: {
-
     validateToken() {
       const decodedAccessToken = VueJwtDecode.decode(accessToken);
       const expirationTime = decodedAccessToken.exp;
@@ -31,208 +29,204 @@ export const useBoardCommentStore = defineStore({
       }
     },
 
-   /** -------------------댓글 작성--------------------- **/
-   async createBoardComment(boardCommentContent, boardIdx) {
-    try {
+    /** -------------------댓글 작성--------------------- **/
+    async createBoardComment(boardCommentContent, boardIdx) {
+      try {
+        this.validateToken();
 
-      this.validateToken();
+        const headers = this.isTokenExpired
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+              RefreshToken: `Bearer ${refreshToken}`,
+              "Content-Type": "application/json",
+            }
+          : {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
 
-      const headers = this.isTokenExpired
-        ? {
-            Authorization: `Bearer ${accessToken}`,
-            RefreshToken: `Bearer ${refreshToken}`,
-            "Content-Type": "application/json",
+        console.log(accessToken);
+        const response = await axios.post(
+          backend + `/board/${boardIdx}/comment/create`,
+          { boardCommentContent: boardCommentContent },
+          {
+            headers,
           }
-        : {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
-          };
-
-      console.log(accessToken);
-      const response = await axios.post(
-        backend + `/board/${boardIdx}/comment/create`,
-        { boardCommentContent: boardCommentContent },
-        {
-          headers
-        }
-      );
-
-      if (response.headers["new-refresh-token"] != null) {
-        if (
-          response.headers["new-refresh-token"] !=
-          localStorage.getItem("refreshToken")
-        ) {
-          localStorage.setItem("refreshToken", "");
-          localStorage.setItem(
-            "refreshToken",
-            response.headers["new-refresh-token"]
-          );
-        }
-      }
-
-      if (response.headers["new-access-token"] != null) {
-        if (
-          response.headers["new-access-token"] !=
-          localStorage.getItem("accessToken")
-        ) {
-          localStorage.setItem("accessToken", "");
-          localStorage.setItem(
-            "accessToken",
-            response.headers["new-access-token"]
-          );
-        }
-      }
-
-      if(response.data.isSuccess === true) {
-        window.location.href = `/board/${boardIdx}`;
-      }
-
-    } catch (e) {
-      if (e.response && e.response.data){
-        console.log(e.response.data);
-        if (e.response.data.code === "COMMON-001") {
-          alert("댓글 내용을 입력해주세요.")
-        }
-      }
-    }
-  },
-
-  /** -------------------댓글 수정--------------------- **/
-
-  async updateBoardComment(boardCommentContent, commentIdx, boardIdx) {
-    try {
-
-      this.validateToken();
-
-      const headers = this.isTokenExpired
-        ? {
-            Authorization: `Bearer ${accessToken}`,
-            RefreshToken: `Bearer ${refreshToken}`,
-            "Content-Type": "application/json",
-          }
-        : {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
-          };
-
-      if (!accessToken) {
-        throw new Error(
-          "토큰이 없습니다. 사용자가 로그인되었는지 확인하세요."
         );
-      }
 
-      const response = await axios.patch(`${backend}/board/${boardIdx}/update/${commentIdx}`,
-        { boardCommentContent: boardCommentContent },
-        {
-          headers
-        }
-      );
-
-      if (response.headers["new-refresh-token"] != null) {
-        if (
-          response.headers["new-refresh-token"] !=
-          localStorage.getItem("refreshToken")
-        ) {
-          localStorage.setItem("refreshToken", "");
-          localStorage.setItem(
-            "refreshToken",
-            response.headers["new-refresh-token"]
-          );
-        }
-      }
-
-      if (response.headers["new-access-token"] != null) {
-        if (
-          response.headers["new-access-token"] !=
-          localStorage.getItem("accessToken")
-        ) {
-          localStorage.setItem("accessToken", "");
-          localStorage.setItem(
-            "accessToken",
-            response.headers["new-access-token"]
-          );
-        }
-      }
-      
-      if(response.data.isSuccess === true) {
-        window.location.href = `/board/${boardIdx}`;
-      }
-
-    } catch (e) {
-      if (e.response && e.response.data){
-        console.log(e.response.data);
-        if (e.response.data.code === "COMMON-001"){
-          alert("수정할 내용을 입력해주세요.")
-        }
-      }
-    }
-  },
-
-  /** -------------------댓글 삭제--------------------- **/
-
-  async deleteBoardComment(commentIdx, boardIdx, userIdx) {
-    try {
-
-      this.validateToken();
-
-      const headers = this.isTokenExpired
-        ? {
-            Authorization: `Bearer ${accessToken}`,
-            RefreshToken: `Bearer ${refreshToken}`,
-            "Content-Type": "application/json",
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
           }
-        : {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
-          };
+        }
 
-      if (!accessToken) {
-        throw new Error(
-          "토큰이 없습니다. 사용자가 로그인되었는지 확인하세요."
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
+
+        if (response.data.isSuccess === true) {
+          window.location.href = `/board/${boardIdx}`;
+        }
+      } catch (e) {
+        if (e.response && e.response.data) {
+          console.log(e.response.data);
+          if (e.response.data.code === "COMMON-001") {
+            alert("댓글 내용을 입력해주세요.");
+          }
+        }
+      }
+    },
+
+    /** -------------------댓글 수정--------------------- **/
+
+    async updateBoardComment(boardCommentContent, commentIdx, boardIdx) {
+      try {
+        this.validateToken();
+
+        const headers = this.isTokenExpired
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+              RefreshToken: `Bearer ${refreshToken}`,
+              "Content-Type": "application/json",
+            }
+          : {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
+
+        if (!accessToken) {
+          throw new Error(
+            "토큰이 없습니다. 사용자가 로그인되었는지 확인하세요."
+          );
+        }
+
+        const response = await axios.patch(
+          `${backend}/board/${boardIdx}/update/${commentIdx}`,
+          { boardCommentContent: boardCommentContent },
+          {
+            headers,
+          }
         );
-      }
 
-      const response = await axios.patch(`${backend}/board/${boardIdx}/delete/${commentIdx}`,
-        {userIdx : userIdx},
-        {
-          headers
-        } 
-      );
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
 
-      if (response.headers["new-refresh-token"] != null) {
-        if (
-          response.headers["new-refresh-token"] !=
-          localStorage.getItem("refreshToken")
-        ) {
-          localStorage.setItem("refreshToken", "");
-          localStorage.setItem(
-            "refreshToken",
-            response.headers["new-refresh-token"]
-          );
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
+
+        if (response.data.isSuccess === true) {
+          window.location.href = `/board/${boardIdx}`;
+        }
+      } catch (e) {
+        if (e.response && e.response.data) {
+          console.log(e.response.data);
+          if (e.response.data.code === "COMMON-001") {
+            alert("수정할 내용을 입력해주세요.");
+          }
         }
       }
+    },
 
-      if (response.headers["new-access-token"] != null) {
-        if (
-          response.headers["new-access-token"] !=
-          localStorage.getItem("accessToken")
-        ) {
-          localStorage.setItem("accessToken", "");
-          localStorage.setItem(
-            "accessToken",
-            response.headers["new-access-token"]
+    /** -------------------댓글 삭제--------------------- **/
+
+    async deleteBoardComment(commentIdx, boardIdx, userIdx) {
+      try {
+        this.validateToken();
+
+        const headers = this.isTokenExpired
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+              RefreshToken: `Bearer ${refreshToken}`,
+              "Content-Type": "application/json",
+            }
+          : {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
+
+        if (!accessToken) {
+          throw new Error(
+            "토큰이 없습니다. 사용자가 로그인되었는지 확인하세요."
           );
         }
-      }
 
-      if(response.data.isSuccess === true) {
-        window.location.href = `/board/${boardIdx}`;
-      }
+        const response = await axios.patch(
+          `${backend}/board/${boardIdx}/delete/${commentIdx}`,
+          { userIdx: userIdx },
+          {
+            headers,
+          }
+        );
 
-    } catch (error) {
-      console.error("삭제 실패 : ", error);
-    }
-  },
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
+
+        if (response.data.isSuccess === true) {
+          window.location.href = `/board/${boardIdx}`;
+        }
+      } catch (error) {
+        console.error("삭제 실패 : ", error);
+      }
+    },
 
     async getBoardCommentList(boardIdx) {
       try {
@@ -242,83 +236,83 @@ export const useBoardCommentStore = defineStore({
         console.log(this.commentList);
 
         for (let comment of this.commentList) {
-          let checkResponse = await this.checkBoardCommentUp(accessToken, comment.idx);
+          let checkResponse = await this.checkBoardCommentUp(
+            accessToken,
+            comment.idx
+          );
           if (checkResponse.data && checkResponse.data.result) {
             comment.isCommentRecommended = checkResponse.data.result.status;
           } else {
             comment.isCommentRecommended = false;
           }
         }
-
       } catch (error) {
         console.error(error);
       }
     },
 
-        //  대댓글 작성
-        async createBoardReply(boardReplyContent,commentIdx, boardIdx, ) {
-          try {
+    //  대댓글 작성
+    async createBoardReply(boardReplyContent, commentIdx, boardIdx) {
+      try {
+        this.validateToken();
 
-            this.validateToken();
-
-            const headers = this.isTokenExpired
-              ? {
-                  Authorization: `Bearer ${accessToken}`,
-                  RefreshToken: `Bearer ${refreshToken}`,
-                  "Content-Type": "application/json",
-                }
-              : {
-                  Authorization: `Bearer ${accessToken}`,
-                  "Content-Type": "application/json",
-                };
-
-            const response = await axios.post(
-              backend + `/board/${boardIdx}/comment/create/${commentIdx}`,
-              { boardReplyContent: boardReplyContent },
-              {
-                headers
-              }
-            );
-
-            if (response.headers["new-refresh-token"] != null) {
-              if (
-                response.headers["new-refresh-token"] !=
-                localStorage.getItem("refreshToken")
-              ) {
-                localStorage.setItem("refreshToken", "");
-                localStorage.setItem(
-                  "refreshToken",
-                  response.headers["new-refresh-token"]
-                );
-              }
+        const headers = this.isTokenExpired
+          ? {
+              Authorization: `Bearer ${accessToken}`,
+              RefreshToken: `Bearer ${refreshToken}`,
+              "Content-Type": "application/json",
             }
+          : {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
 
-            if (response.headers["new-access-token"] != null) {
-              if (
-                response.headers["new-access-token"] !=
-                localStorage.getItem("accessToken")
-              ) {
-                localStorage.setItem("accessToken", "");
-                localStorage.setItem(
-                  "accessToken",
-                  response.headers["new-access-token"]
-                );
-              }
-            }
-            
-            if(response.data.isSuccess === true) {
-              window.location.href = `/board/${boardIdx}`;
-            }
-
-          } catch (e) {
-            if (e.response && e.response.data){
-              console.log(e.response.data);
-              if (e.response.data.code === "COMMON-001"){
-                alert("댓글을 입력해주세요.")
-              }
-            }
+        const response = await axios.post(
+          backend + `/board/${boardIdx}/comment/create/${commentIdx}`,
+          { boardReplyContent: boardReplyContent },
+          {
+            headers,
           }
-        },
+        );
+
+        if (response.headers["new-refresh-token"] != null) {
+          if (
+            response.headers["new-refresh-token"] !=
+            localStorage.getItem("refreshToken")
+          ) {
+            localStorage.setItem("refreshToken", "");
+            localStorage.setItem(
+              "refreshToken",
+              response.headers["new-refresh-token"]
+            );
+          }
+        }
+
+        if (response.headers["new-access-token"] != null) {
+          if (
+            response.headers["new-access-token"] !=
+            localStorage.getItem("accessToken")
+          ) {
+            localStorage.setItem("accessToken", "");
+            localStorage.setItem(
+              "accessToken",
+              response.headers["new-access-token"]
+            );
+          }
+        }
+
+        if (response.data.isSuccess === true) {
+          window.location.href = `/board/${boardIdx}`;
+        }
+      } catch (e) {
+        if (e.response && e.response.data) {
+          console.log(e.response.data);
+          if (e.response.data.code === "COMMON-001") {
+            alert("댓글을 입력해주세요.");
+          }
+        }
+      }
+    },
 
     // async createBoardCommentUp(token, requestBody) {
     //   try {
@@ -338,7 +332,7 @@ export const useBoardCommentStore = defineStore({
 
     // async createBoardCommentUp(commentIdx) {
     //   try {
-    //     let response = await axios.post(backend + "/boardcomment/up/create", 
+    //     let response = await axios.post(backend + "/boardcomment/up/create",
     //     { boardCommentIdx: commentIdx }, {
     //       headers: {
     //         "Content-Type": "application/json",
