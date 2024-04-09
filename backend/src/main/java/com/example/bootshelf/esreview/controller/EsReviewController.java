@@ -53,11 +53,11 @@ public class EsReviewController {
     }
 
 
-    /**
+    /** ----------------------------------------------------------------------------------------------------
      *  search after 적용
      */
     // 메인 검색(통합)
-    @GetMapping("/search2/main")
+    @GetMapping("/v2/search/main")       // /search2/main
     @ResponseBody
     public ResponseEntity titleContentSearch2(
             @RequestParam Integer selectedDropdownValue,
@@ -75,10 +75,10 @@ public class EsReviewController {
         BaseRes baseRes = esReviewService.titleSearchByMain2(selectedDropdownValue, title, size, searchAfter);
         return ResponseEntity.ok().body(baseRes);
     }
-  
+
   
     // 제목+내용+정렬 (통합)
-    @GetMapping("/search2")
+    @GetMapping("/v2/search")               // /search2
     @ResponseBody
     public ResponseEntity titleContentSearch2(
             @RequestParam Integer categoryIdx,
@@ -95,6 +95,28 @@ public class EsReviewController {
         }
 
         BaseRes baseRes = esReviewService.titleContentSearch2(categoryIdx, sortType ,title, size, searchAfter);
+        return ResponseEntity.ok().body(baseRes);
+    }
+
+
+    // 메인 페이지 검색 -> 정렬에 사용되는 메소드
+    @GetMapping("/v2/search/order")
+    @ResponseBody
+    public ResponseEntity titleContentSearch3(
+            @RequestParam Integer selectedDropdownValue,
+            @RequestParam Integer sortType,
+            @RequestParam String title,
+            @RequestParam(required = false, defaultValue = "20") int size,
+            @RequestParam(required = false) String searchAfterStr
+    ) {
+        List<Object> searchAfter = null;
+
+        if (searchAfterStr != null && !searchAfterStr.isEmpty()) {
+            searchAfter = Arrays.stream(searchAfterStr.split(","))
+                    .collect(Collectors.toList());
+        }
+
+        BaseRes baseRes = esReviewService.titleContentSearch3(selectedDropdownValue, sortType, title, size, searchAfter);
         return ResponseEntity.ok().body(baseRes);
     }
 }

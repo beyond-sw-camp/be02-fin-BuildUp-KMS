@@ -145,7 +145,8 @@ public class EsReviewService {
     }
 
 
-    /**
+
+    /** ---------------------------------------------------------------------------------------------------------------------------
      * 아래부터 search after 적용 버전
      */
     // 메인 검색(통합)
@@ -267,6 +268,74 @@ public class EsReviewService {
             BaseRes baseRes = BaseRes.builder()
                     .isSuccess(true)
                     .message("ES 후기 categoryIdx = " + categoryIdx + " 검색 성공")
+                    .result(reviewSearchResResult)
+                    .build();
+
+            return baseRes;
+        }
+        return null;
+    }
+
+
+    /* 메인 검색 결과 페이지에서 정렬을 위한 메소드 */
+    public BaseRes titleContentSearch3(Integer selectedDropdownValue, Integer sortType, String title, int size, List<Object> searchAfter) {
+        String[] fields = {"createdAt", "upCnt", "viewCnt", "scrapCnt", "commentCnt"}; // 필드 이름 배열
+
+        if (sortType >= 1 && sortType <= fields.length) {
+            String sortField = fields[sortType - 1];
+
+            SearchHits<EsReview> searchHits = esReviewRepository.titleSearchByMain3(selectedDropdownValue, sortField, title, size, searchAfter);
+
+            List<EsReview> searchContent = searchHits.get().map(SearchHit::getContent).collect(Collectors.toList());
+            List<ReviewSearchRes> reviewSearchRes = new ArrayList<>();
+
+            for (EsReview result : searchContent) {
+                String textContent = extractText(result.getReviewContent());
+
+                ReviewSearchRes response = ReviewSearchRes.builder()
+                        .idx(Integer.valueOf(result.getId()))
+                        .reviewCategory(result.getReviewCategory())
+                        .reviewTitle(result.getReviewTitle())
+                        .reviewContent(textContent)
+                        .courseName(result.getCourseName())
+                        .courseEvaluation(result.getCourseEvaluation())
+                        .viewCnt(result.getViewCnt())
+                        .upCnt(result.getUpCnt())
+                        .scrapCnt(result.getScrapCnt())
+                        .commentCnt(result.getCommentCnt())
+                        .createdAt(result.getCreatedAt())
+                        .updatedAt(result.getUpdatedAt())
+                        .nickName(result.getNickName())
+                        .profileImage(result.getProfileImage())
+                        .build();
+
+                Document doc = Jsoup.parse(result.getReviewContent());
+                Elements images = doc.select("img");
+
+                if (!images.isEmpty()) {
+                    response.setReviewImage(images.get(0).attr("src"));
+                }
+
+                reviewSearchRes.add(response);
+            }
+
+            Object[] lastSearchAfter = searchHits.getSearchHits().size() > 0
+                    ? searchHits.getSearchHits().get(searchHits.getSearchHits().size() - 1).getSortValues().toArray(new Object[0])
+                    : null;
+
+            long totalHits = searchHits.getTotalHits();
+            int totalPages = (int) Math.ceil((double) totalHits / size);
+
+            ReviewSearchResResult reviewSearchResResult = ReviewSearchResResult.builder()
+                    .totalHits(totalHits)
+                    .totalPages(totalPages)
+                    .list(reviewSearchRes)
+                    .lastSearchAfter(lastSearchAfter)
+                    .build();
+
+            BaseRes baseRes = BaseRes.builder()
+                    .isSuccess(true)
+                    .message("ES 후기 검색 (정렬: sortField = " + sortField + " 검색 성공")
                     .result(reviewSearchResResult)
                     .build();
 
