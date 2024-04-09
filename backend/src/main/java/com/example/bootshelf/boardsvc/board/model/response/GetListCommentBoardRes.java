@@ -19,7 +19,7 @@ public class GetListCommentBoardRes {
     private String profileImage;
     private String boardCommentContent;
     private Integer upCnt;
-    private LocalDateTime updatedAt;
+    private String updatedAt;
     private List<GetListCommentBoardRes> children; // 대댓글 목록을 위한 필드 추가
 
 }

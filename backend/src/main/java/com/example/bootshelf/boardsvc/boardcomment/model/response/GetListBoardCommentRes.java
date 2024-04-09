@@ -18,8 +18,8 @@ public class GetListBoardCommentRes {
     private String profileImage;
     private String boardCommnetContent;
     private Integer upCnt;
-    private LocalDateTime createAt;
-    private LocalDateTime updateAt;
+    private String createdAt;
+    private String updatedAt;
     private Boolean status;
     private List<GetListBoardCommentRes> children; // 자식 댓글 목록
 

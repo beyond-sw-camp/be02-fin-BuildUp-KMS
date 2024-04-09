@@ -52,10 +52,10 @@ public class BoardComment {
     private Boolean status;
 
     @Column(nullable = false)
-    private LocalDateTime createdAt;
+    private String createdAt;
 
     @Column(nullable = false)
-    private LocalDateTime updatedAt;
+    private String updatedAt;
 
     public void increaseUpCnt() {
         this.upCnt += 1;
