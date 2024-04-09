@@ -115,8 +115,8 @@ public class ReviewController {
         return ResponseEntity.ok().body(baseRes);
     }
 
-    @Operation(summary = "Review 후기 검색어로 조회",
-            description = "후기 게시글을 검색어(키워드)로 조회하는 API입니다.")
+    @Operation(summary = "Review 후기 메인페이지 검색어로 조회",
+            description = "후기 게시글을 메인페이지에서 검색어(키워드)로 조회하는 API입니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
@@ -124,9 +124,24 @@ public class ReviewController {
     public ResponseEntity<BaseRes> searchReviewListByQuery(
             @RequestParam String query,
             @RequestParam Integer searchType,
-            @PageableDefault(size = 9) Pageable pageable
+            @PageableDefault(size = 20) Pageable pageable
     ) {
         return ResponseEntity.ok().body(reviewService.searchReviewListByQuery(query, searchType, pageable));
+    }
+
+    @Operation(summary = "Review 후기 메인페이지 검색 후 페이지에서 조회",
+            description = "후기 게시글을 메인페이지에서 검색 후 페이지에서 검색어(키워드)로 조회하는 API입니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
+    @GetMapping("/search/sort")
+    public ResponseEntity<BaseRes> searchReviewListBySortType(
+            @RequestParam String query,
+            @RequestParam Integer searchType,
+            @RequestParam Integer sortType,
+            @PageableDefault(size = 20) Pageable pageable
+    ) {
+        return ResponseEntity.ok().body(reviewService.searchReviewListBySortType(query, searchType, sortType, pageable));
     }
 
     @Operation(summary = "후기글 상세 조회",

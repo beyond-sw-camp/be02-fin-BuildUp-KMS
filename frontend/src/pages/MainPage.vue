@@ -35,7 +35,7 @@
               </div>
             </div>
             <input class="ContentSearch_searchInput__dVET9" v-model="searchQuery" v-on:keyup.enter="search" id="content-search" type="search"
-              placeholder="Search here..." />
+              placeholder="후기글에서 검색 할 단어를 입력하세요" />
             <span class="Icon_container__KMOfZ rotate-0 Icon_l-large__pSyZb Icon_m-large__BQ2ze"
               style="--color: var(rgb(84, 29, 112))" @click="search">
               <svg width="40" height="40" viewBox="0 0 20 20" fill="purple" xmlns="http://www.w3.org/2000/svg">
