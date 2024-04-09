@@ -118,8 +118,8 @@
                                   <span class="text-gray-900 font-weight-normal flex-shrink-0">{{ review.nickName
                                     }}</span>
                                   <span class="paragraph-sm">·</span>
-                                  <span class="text-gray-600 flex-shrink-0" title="2024. 2. 17. 오후 7:25:30">{{
-                                    review.updatedAt }}
+                                  <span class="text-gray-600 flex-shrink-0" :title="formatDate(review.updatedAt)">{{
+                                    formatDate(review.updatedAt) }}
                                   </span>
                                 </span>
                               </span>
@@ -299,6 +299,18 @@ export default {
       // 현재 검색어, 검색 타입, 그리고 마지막 검색의 'searchAfter' 값을 사용하여 다음 결과 불러오기
       await this.reviewStore.getReviewListByQueryNext(this.query, this.searchType, this.reviewStore.lastSearchAfter[0]);
     },
+
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      const seconds = String(date.getSeconds()).padStart(2, '0');
+
+      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    }
   },
 };
 </script>
