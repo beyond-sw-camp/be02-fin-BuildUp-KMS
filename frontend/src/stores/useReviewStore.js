@@ -21,6 +21,7 @@ export const useReviewStore = defineStore("review", {
     isLoading: false,
     isPageExist: true,
     isTokenExpired: false,
+    lastSearchAfter: []
   }),
   actions: {
 
@@ -136,14 +137,14 @@ export const useReviewStore = defineStore("review", {
       }
     },
 
-    /* es search after 적용 (첫 페이지)*/
+    /* es search after 적용 (첫 페이지) */
     async getReviewListByQuery(query, option) {
       try {
         this.isLoading = true;
 
         let response = await axios.get(
           backend +
-          "/es/review/search2/main?selectedDropdownValue=" +
+          "/es/review/v2/search/main?selectedDropdownValue=" +
           + option +
           "&title=" +
           query
@@ -167,6 +168,7 @@ export const useReviewStore = defineStore("review", {
       }
     },
 
+    /* es search after 적용 (더보기) */
     async getReviewListByQueryNext(query, option, searchAfterStr) {
       try {
         this.isLoading = true;
@@ -175,7 +177,7 @@ export const useReviewStore = defineStore("review", {
         const searchAfterQueryParam = searchAfterStr;
 
         let response = await axios.get(
-          `${backend}/es/review/search2/main?selectedDropdownValue=${option}&title=${query}&searchAfterStr=${searchAfterQueryParam}`
+          `${backend}/es/review/v2/search/main?selectedDropdownValue=${option}&title=${query}&searchAfterStr=${searchAfterQueryParam}`
         );
 
         if (response.data.result.list.length === 0) {
@@ -186,6 +188,70 @@ export const useReviewStore = defineStore("review", {
           this.totalCnt = response.data.result.totalHits;
           // `lastSearchAfter` 값을 새로운 검색 결과에 기반하여 업데이트
           this.lastSearchAfter = response.data.result.lastSearchAfter;
+          this.noMoreData = false; // 더 불러올 데이터가 있으므로 메시지 숨김
+        }
+      } catch (error) {
+        console.error(error);
+        this.isReviewExist = false;
+        this.isPageExist = false;
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
+    /* ---------------------------------------------------------------------------------------------- */
+    
+    /* es search after 적용 by order (첫 페이지) */
+    async getReviewListByQueryWithOrder(query, option, order) {
+      try {
+        this.isLoading = true;
+
+        let response = await axios.get(
+          backend +
+          "/es/review/v2/search/order?selectedDropdownValue=" +
+          + option +
+          "&title=" +
+          query + 
+          "&sortType=" + 
+          order
+        );
+
+        this.reviewList = response.data.result.list;
+        this.totalCnt = response.data.result.totalHits;
+        this.lastSearchAfter = response.data.result.lastSearchAfter;
+        console.log(this.totalCnt);
+
+        if (this.reviewList.length === 0) {
+          this.isReviewExist = false;
+          this.isPageExist = false;
+        } else {
+          this.isReviewExist = true;
+          this.isPageExist = true;
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
+    /* es search after 적용 by order (더보기) */
+    async getReviewListByQueryNextWithOrder(query, option, order, searchAfterStr) {
+      try {
+        this.isLoading = true;
+
+        let response = await axios.get(
+          `${backend}/es/review/v2/search/order?selectedDropdownValue=${option}&title=${query}&sortType=${order}&searchAfterStr=${searchAfterStr}`
+        );
+
+        if (response.data.result.list.length === 0) {
+          this.noMoreData = true; // 데이터가 더 이상 없음을 표시
+        } else {
+          // 새로운 검색 결과를 기존 목록에 추가
+          this.reviewList = [...this.reviewList, ...response.data.result.list];
+          this.totalCnt = response.data.result.totalHits;
+          // `lastSearchAfter` 값을 새로운 검색 결과에 기반하여 업데이트
+          this.searchAfterStr = `${response.data.result.lastSearchAfter[0]}, "${String(response.data.result.lastSearchAfter[1])}"`;
           this.noMoreData = false; // 더 불러올 데이터가 있으므로 메시지 숨김
         }
       } catch (error) {
