@@ -312,7 +312,7 @@ export default {
     },
   },
   async mounted() {
-    await this.reviewCommentStore.updateCommentRecommendationStatus();
+    // await this.reviewCommentStore.updateCommentRecommendationStatus();
   },
   methods: {
     cancelUpdateComment(reviewComment) {
