@@ -12,6 +12,10 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -32,5 +36,26 @@ public class EsBoardController {
         BaseRes baseRes =  esBoardService.titleContentSearch(categoryIdx, sortType ,title, pageable);
 
         return ResponseEntity.ok().body(baseRes);
+    }
+
+    // search after 적용
+    @GetMapping("/search2")
+    public ResponseEntity<BaseRes> titleContentSearch2(
+            @RequestParam Integer categoryIdx,
+            @RequestParam Integer sortType,
+            @RequestParam String title,
+            @RequestParam(required = false, defaultValue = "20") int size,
+            @RequestParam(required = false) String searchAfterStr
+    ) {
+        List<Object> searchAfter = null;
+
+        if (searchAfterStr != null && !searchAfterStr.isEmpty()) {
+            searchAfter = Arrays.stream(searchAfterStr.split(","))
+                    .collect(Collectors.toList());
+        }
+
+        BaseRes baseRes = esBoardService.titleContentSearch2(categoryIdx, sortType, title, size, searchAfter);
+        return ResponseEntity.ok().body(baseRes);
+
     }
 }

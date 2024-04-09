@@ -1,5 +1,5 @@
 <template>
-    <div class="loadingio-spinner-spinner" v-if="boardStore.isLoading">
+  <div class="loadingio-spinner-spinner" v-if="reviewStore.isLoading">
     <div class="ldio-f4nnk2ltl0v">
       <div></div>
       <div></div>
@@ -27,22 +27,14 @@
                     <h6 class="_3ZcrIA text-center mb-0">
                       <span>질문과 답변을 주고 받으며 함께 성장하세요!</span>
                     </h6>
-                    <router-link to="/board/new">
+                    <router-link to="/review/new">
                       <a class="_2-sdMj btn btn-primary btn-lg btn-block">
                         <div class="_2pYHs _1isiv">
-                          <svg
-                            fill="currentColor"
-                            width="16"
-                            height="16"
-                            viewBox="0 0 16 16"
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="_1CkmD _1vN1F"
-                          >
-                            <path
-                              fill-rule="evenodd"
-                              clip-rule="evenodd"
-                              d="M13.0498 7.3501V8.6501H8.65083V13.0501H7.34983V8.6501H2.94983V7.3501H7.34983V2.9501H8.65083V7.3501H13.0498Z"
-                            ></path>
+                          <svg fill="currentColor" width="16" height="16" viewBox="0 0 16 16"
+                            xmlns="http://www.w3.org/2000/svg" class="_1CkmD _1vN1F">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                              d="M13.0498 7.3501V8.6501H8.65083V13.0501H7.34983V8.6501H2.94983V7.3501H7.34983V2.9501H8.65083V7.3501H13.0498Z">
+                            </path>
                           </svg>
                           <span>새 질문 작성</span>
                         </div>
@@ -55,113 +47,55 @@
             <section class="flex-grow-1">
               <div class="overflow-hidden">
                 <div>
-                  <div
-                    class="_2kqp41 _2d5D_m _28qC73"
-                    style="--box-gap: 0.75rem"
-                  >
+                  <div class="_2kqp41 _2d5D_m _28qC73" style="--box-gap: 0.75rem">
                     <button type="button" class="_3Jflz btn btn-link btn-xl">
                       <div class="_2pYHs ODppI">
-                        <svg
-                          fill="currentColor"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 16 16"
-                          xmlns="http://www.w3.org/2000/svg"
-                          class="_1CkmD _1S27j"
-                        >
-                          <path
-                            fill-rule="evenodd"
-                            clip-rule="evenodd"
-                            d="M8 1.5L1.5 8L8 14.5L9.149 13.349L4.612 8.812H14.5V7.187H4.612L9.149 2.649L8 1.5Z"
-                          ></path>
+                        <svg fill="currentColor" width="16" height="16" viewBox="0 0 16 16"
+                          xmlns="http://www.w3.org/2000/svg" class="_1CkmD _1S27j">
+                          <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M8 1.5L1.5 8L8 14.5L9.149 13.349L4.612 8.812H14.5V7.187H4.612L9.149 2.649L8 1.5Z"></path>
                         </svg>
                       </div>
                     </button>
                     <div class="_1YCmw flex-grow-1">
-                      <input
-                        type="text"
-                        value=""
-                        placeholder="제목, 내용으로 질문을 찾아 보세요!"
-                        class="FMUyj _1LD4c form-control-xl form-control"
-                      /><svg
-                        fill="currentColor"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="A-RPq _2vGEB"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          clip-rule="evenodd"
-                          d="M11.46 10.54L10.54 11.46L8 8.92L5.46 11.46L4.54 10.54L7.08 8L4.54 5.46L5.46 4.54L8 7.08L10.54 4.54L11.46 5.46L8.92 8L11.46 10.54ZM8 1.5C4.412 1.5 1.5 4.412 1.5 8C1.5 11.588 4.412 14.5 8 14.5C11.588 14.5 14.5 11.588 14.5 8C14.5 4.412 11.588 1.5 8 1.5Z"
-                        ></path>
+                      <input type="text" v-model="searchQuery" v-on:keyup.enter="triggerSearch" placeholder="제목, 내용으로 질문을 찾아 보세요!"
+                        class="FMUyj _1LD4c form-control-xl form-control" /><svg fill="currentColor" width="16"
+                        height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" class="A-RPq _2vGEB">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                          d="M11.46 10.54L10.54 11.46L8 8.92L5.46 11.46L4.54 10.54L7.08 8L4.54 5.46L5.46 4.54L8 7.08L10.54 4.54L11.46 5.46L8.92 8L11.46 10.54ZM8 1.5C4.412 1.5 1.5 4.412 1.5 8C1.5 11.588 4.412 14.5 8 14.5C11.588 14.5 14.5 11.588 14.5 8C14.5 4.412 11.588 1.5 8 1.5Z">
+                        </path>
                       </svg>
                     </div>
-                    <button
-                      type="button"
-                      class="flex-shrink-0 btn btn-outline-basic btn-xl"
-                    >
+                    <button type="button" class="flex-shrink-0 btn btn-outline-basic btn-xl" @click="triggerSearch" >
                       <div class="_2pYHs ODppI"><span>검색</span></div>
                     </button>
                   </div>
                 </div>
-                <div
-                  class="d-flex justify-content-between mt-4 align-items-center"
-                >
+                <div class="d-flex justify-content-between mt-4 align-items-center">
                   <h5 class="mb-0">
                     <div class="_2kqp41 _2d5D_m" style="--box-gap: 0.5rem">
-                      <span><span>검색 결과</span></span
-                      ><span class="text-blue-500">{{
-                        boardStore.totalCnt
+                      <span><span>검색 결과</span></span><span class="text-blue-500">{{
+                        reviewStore.totalCnt
                       }}</span>
                     </div>
                   </h5>
                   <div class="dropdown">
-                    <button
-                      @click="toggleDropdown"
-                      type="button"
-                      aria-haspopup="true"
-                      :aria-expanded="dropdownOpen.toString()"
-                      class="_1rMfp _3NZzgf btn btn-select btn-lg"
-                    >
+                    <button @click="toggleDropdown" type="button" aria-haspopup="true"
+                      :aria-expanded="dropdownOpen.toString()" class="_1rMfp _3NZzgf btn btn-select btn-lg">
                       <span>최신순</span>
-                      <svg
-                        fill="currentColor"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="_2-Js2"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          clip-rule="evenodd"
-                          d="M7.99997 11.04L3.29797 6.33801L4.21697 5.41901L7.99997 9.20201L11.783 5.41901L12.702 6.33801L7.99997 11.04Z"
-                        ></path>
+                      <svg fill="currentColor" width="16" height="16" viewBox="0 0 16 16"
+                        xmlns="http://www.w3.org/2000/svg" class="_2-Js2">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                          d="M7.99997 11.04L3.29797 6.33801L4.21697 5.41901L7.99997 9.20201L11.783 5.41901L12.702 6.33801L7.99997 11.04Z">
+                        </path>
                       </svg>
                     </button>
-                    <div
-                      v-show="dropdownOpen"
-                      tabindex="-1"
-                      role="menu"
-                      aria-hidden="false"
-                      class="_20WMwO w-100 dropdown-menu"
-                    >
-                      <button
-                        type="button"
-                        tabindex="0"
-                        role="menuitem"
-                        class="_3CkPsH dropdown-item active"
-                      >
+                    <div v-show="dropdownOpen" tabindex="-1" role="menu" aria-hidden="false"
+                      class="_20WMwO w-100 dropdown-menu">
+                      <button type="button" tabindex="0" role="menuitem" class="_3CkPsH dropdown-item active">
                         <span>최신순</span>
                       </button>
-                      <button
-                        type="button"
-                        tabindex="0"
-                        role="menuitem"
-                        class="_3CkPsH dropdown-item"
-                      >
+                      <button type="button" tabindex="0" role="menuitem" class="_3CkPsH dropdown-item">
                         <span>인기순</span>
                       </button>
                     </div>
@@ -169,35 +103,23 @@
                 </div>
                 <ul class="_1PTI0R p-0 mb-4">
                   <span>
-                    <div v-for="board in boardStore.boardList" :key="board.idx">
+                    <div v-for="review in reviewStore.reviewList" :key="review.idx">
                       <li class="_3lQ639 _32Ay9Q" role="presentation">
-                        <div
-                          class="_2kqp41 flex-grow-1"
-                          style="--box-gap: 0.75rem"
-                        >
-                          <div
-                            class="_2kqp41 tttQ1F"
-                            style="--box-gap: 0.375rem"
-                          >
-                            <router-link :to="`board/${board.idx}`">
+                        <div class="_2kqp41 flex-grow-1" style="--box-gap: 0.75rem">
+                          <div class="_2kqp41 tttQ1F" style="--box-gap: 0.375rem">
+                            <router-link :to="`review/${review.idx}`">
                               <p class="_3yzn7O mb-0 _2Sv3IV">
-                                {{ board.title }}
+                                {{ review.reviewTitle }}
                               </p>
                             </router-link>
                             <div>
                               <span class="d-none d-md-block">
-                                <span
-                                  class="d-flex Dhz06G align-items-center text-gray-600"
-                                >
-                                  <span
-                                    class="text-gray-900 font-weight-normal flex-shrink-0"
-                                    >{{ board.nickName }}</span
-                                  >
+                                <span class="d-flex Dhz06G align-items-center text-gray-600">
+                                  <span class="text-gray-900 font-weight-normal flex-shrink-0">{{ review.nickName
+                                    }}</span>
                                   <span class="paragraph-sm">·</span>
-                                  <span
-                                    class="text-gray-600 flex-shrink-0"
-                                    title="2024. 2. 17. 오후 7:25:30"
-                                    >{{ this.$moment(board.createdAt).format('YYYY-MM-DD HH:mm:ss') }}
+                                  <span class="text-gray-600 flex-shrink-0" :title="formatDate(review.updatedAt)">{{
+                                    formatDate(review.updatedAt) }}
                                   </span>
                                 </span>
                               </span>
@@ -208,10 +130,9 @@
                               <ol class="breadcrumb _3cKvl flex-nowrap">
                                 <li
                                   class="d-inline-flex align-items-center iFcHCl _1OTYG _2amVj _285DO active breadcrumb-item"
-                                  aria-current="page"
-                                >
+                                  aria-current="page">
                                   <span class="_1t2_hP">{{
-                                    board.content
+                                    review.reviewContent
                                   }}</span>
                                 </li>
                               </ol>
@@ -219,58 +140,33 @@
                           </div>
                           <div class="d-flex justify-content-between">
                             <div class="d-flex align-items-center _1VWGjy">
-                              <span
-                                class="text-gray-600 d-inline-flex align-items-center _22s-QT"
-                                ><svg
-                                  fill="currentColor"
-                                  width="16"
-                                  height="16"
-                                  viewBox="0 0 16 16"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                >
-                                  <path
-                                    fill-rule="evenodd"
-                                    clip-rule="evenodd"
-                                    d="M1 8.07129C3.24 4.73829 5.24 3.07129 8 3.07129C10.761 3.07129 12.761 4.73829 15 8.07129C12.761 11.4043 10.761 13.0713 8 13.0713C5.24 13.0713 3.24 11.4043 1 8.07129ZM8 12.0713C10.209 12.0713 12 10.2803 12 8.07129C12 5.86229 10.209 4.07129 8 4.07129C5.791 4.07129 4 5.86229 4 8.07129C4 10.2803 5.791 12.0713 8 12.0713ZM8 10.0713C6.896 10.0713 6 9.17629 6 8.07129C6 6.96729 6.896 6.07129 8 6.07129C9.104 6.07129 10 6.96729 10 8.07129C10 9.17629 9.104 10.0713 8 10.0713Z"
-                                  ></path></svg
-                                ><span class="paragraph-sm">{{
-                                  board.viewCnt
-                                }}</span></span
-                              ><span
-                                class="text-gray-600 d-inline-flex align-items-center _22s-QT"
-                                ><svg
-                                  fill="currentColor"
-                                  width="16"
-                                  height="16"
-                                  viewBox="0 0 16 16"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                >
-                                  <path
-                                    fill-rule="evenodd"
-                                    clip-rule="evenodd"
-                                    d="M4 6.059H12V4.759H4V6.059ZM4 8.741H9.5V7.441H4V8.741ZM1.5 1.75V10.25V11.75V14.25L4 11.75H14.5V1.75H1.5Z"
-                                  ></path></svg
-                                ><span class="paragraph-sm">{{
-                                  board.commentCnt
-                                }}</span></span
-                              ><span
-                                class="text-gray-600 d-inline-flex align-items-center _22s-QT"
-                                ><svg
-                                  fill="currentColor"
-                                  width="16"
-                                  height="16"
-                                  viewBox="0 0 16 16"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                >
-                                  <path
-                                    fill-rule="evenodd"
-                                    clip-rule="evenodd"
-                                    d="M9.95312 5.75011L10.4471 4.20511C10.7831 3.15311 10.4811 2.00111 9.67112 1.25011L5.30012 5.75011V13.7501H13.0001L15.0001 8.78811V5.75011H9.95312ZM1.50012 13.7501H4.00012V6.25011H1.50012V13.7501Z"
-                                  ></path></svg
-                                ><span class="paragraph-sm">{{
-                                  board.upCnt
-                                }}</span></span
-                              >
+                              <span class="text-gray-600 d-inline-flex align-items-center _22s-QT"><svg
+                                  fill="currentColor" width="16" height="16" viewBox="0 0 16 16"
+                                  xmlns="http://www.w3.org/2000/svg">
+                                  <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M1 8.07129C3.24 4.73829 5.24 3.07129 8 3.07129C10.761 3.07129 12.761 4.73829 15 8.07129C12.761 11.4043 10.761 13.0713 8 13.0713C5.24 13.0713 3.24 11.4043 1 8.07129ZM8 12.0713C10.209 12.0713 12 10.2803 12 8.07129C12 5.86229 10.209 4.07129 8 4.07129C5.791 4.07129 4 5.86229 4 8.07129C4 10.2803 5.791 12.0713 8 12.0713ZM8 10.0713C6.896 10.0713 6 9.17629 6 8.07129C6 6.96729 6.896 6.07129 8 6.07129C9.104 6.07129 10 6.96729 10 8.07129C10 9.17629 9.104 10.0713 8 10.0713Z">
+                                  </path>
+                                </svg><span class="paragraph-sm">{{
+                                  review.viewCnt
+                                }}</span></span><span
+                                class="text-gray-600 d-inline-flex align-items-center _22s-QT"><svg fill="currentColor"
+                                  width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                                  <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M4 6.059H12V4.759H4V6.059ZM4 8.741H9.5V7.441H4V8.741ZM1.5 1.75V10.25V11.75V14.25L4 11.75H14.5V1.75H1.5Z">
+                                  </path>
+                                </svg><span class="paragraph-sm">{{
+                                  review.commentCnt
+                                }}</span></span><span
+                                class="text-gray-600 d-inline-flex align-items-center _22s-QT"><svg fill="currentColor"
+                                  width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                                  <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M9.95312 5.75011L10.4471 4.20511C10.7831 3.15311 10.4811 2.00111 9.67112 1.25011L5.30012 5.75011V13.7501H13.0001L15.0001 8.78811V5.75011H9.95312ZM1.50012 13.7501H4.00012V6.25011H1.50012V13.7501Z">
+                                  </path>
+                                </svg>
+                                <span class="paragraph-sm">{{
+                                  review.upCnt
+                                }}</span>
+                              </span>
                             </div>
                           </div>
                         </div>
@@ -279,14 +175,28 @@
                     </div>
                   </span>
                 </ul>
-                <div class="d-flex justify-content-center py-0 py-md-4">
+                <!-- <div class="d-flex justify-content-center py-0 py-md-4">
                   <PaginationComponent
                     :current-page="boardStore.currentPage"
                     :total-pages="boardStore.totalPages"
                     :isPageExist="boardStore.isPageExist"
                     @change-page="changePage"
                   />
-                </div>
+                </div> -->
+                <a class="_2-sdMj btn btn-primary btn-lg btn-block" @click="loadMoreReviews">
+                  <div class="_2pYHs _1isiv">
+                    <svg fill="currentColor" width="16" height="16" viewBox="0 0 16 16"
+                      xmlns="http://www.w3.org/2000/svg" class="_1CkmD _1vN1F">
+                      <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M13.0498 7.3501V8.6501H8.65083V13.0501H7.34983V8.6501H2.94983V7.3501H7.34983V2.9501H8.65083V7.3501H13.0498Z">
+                      </path>
+                    </svg>
+                    <span>더보기</span>
+                  </div>
+                </a>
+              </div>
+              <div v-if="noMoreData" class="text-center mt-3">
+                <span class="text-muted">더 이상 데이터가 없습니다.</span>
               </div>
             </section>
           </div>
@@ -299,19 +209,19 @@
 
 <script>
 import { mapStores } from "pinia";
-import { useBoardStore } from "/src/stores/useBoardStore";
-import PaginationComponent from "@/components/PaginationComponent.vue";
+// import { useBoardStore } from "/src/stores/useBoardStore";
+import { useReviewStore } from "@/stores/useReviewStore";
+// import PaginationComponent from "@/components/PaginationComponent.vue";
 
 export default {
   name: "SearchResultPage",
-  components: {
-    PaginationComponent,
-  },
   data() {
     return {
       dropdownOpen: false,
       query: "",
       searchType: "",
+      noMoreData: false,
+      searchQuery: ""
     };
   },
   async mounted() {
@@ -331,10 +241,10 @@ export default {
     this.searchType = searchType;
 
     // 게시판 목록 불러오기
-    if(query !== null && query !== "") {
-      await this.boardStore.getBoardListByQuery(query, searchType);
+    if (query !== null && query !== "") {
+      await this.reviewStore.getReviewListByQuery(query, searchType);
 
-      if(this.boardStore.boardList.length === 0) {
+      if (this.reviewStore.reviewList.length === 0) {
         alert("해당하는 검색결과가 없습니다. 다른 검색어를 입력해주세요.")
         this.$router.push("/");
       }
@@ -351,39 +261,68 @@ export default {
     }
   },
   computed: {
-    ...mapStores(useBoardStore),
-    visiblePages() {
-      // 최대 5개의 페이지 번호만 보이도록 계산
-      let pages = [];
-      const total = this.boardStore.totalPages;
-      let start = Math.max(1, this.boardStore.currentPage - 2);
-      let end = Math.min(total, start + 4);
-      if (end === total) {
-        // 마지막 페이지가 범위에 포함되면 시작점 조정
-        start = Math.max(1, end - 4);
-      }
-      for (let i = start; i <= end; i++) {
-        pages.push(i);
-      }
-      return pages;
-    },
+    ...mapStores(useReviewStore),
+    // visiblePages() {
+    //   // 최대 5개의 페이지 번호만 보이도록 계산
+    //   let pages = [];
+    //   const total = this.boardStore.totalPages;
+    //   let start = Math.max(1, this.boardStore.currentPage - 2);
+    //   let end = Math.min(total, start + 4);
+    //   if (end === total) {
+    //     // 마지막 페이지가 범위에 포함되면 시작점 조정
+    //     start = Math.max(1, end - 4);
+    //   }
+    //   for (let i = start; i <= end; i++) {
+    //     pages.push(i);
+    //   }
+    //   return pages;
+    // },
   },
   methods: {
     toggleDropdown() {
       this.dropdownOpen = !this.dropdownOpen;
     },
-    changePage(page) {
-      this.boardStore.getBoardListByQuery(this.query, this.searchType, page);
+    // changePage(page) {
+    //   this.boardStore.getBoardListByQuery(this.query, this.searchType, page);
+    // },
+    // jumpForward() {
+    //   // 현재 페이지에서 3페이지 앞으로 점프
+    //   let nextPage = Math.min(
+    //     this.boardStore.currentPage + 3,
+    //     this.boardStore.totalPages
+    //   );
+    //   this.changePage(nextPage);
+    //   // visiblePages를 업데이트하기 위해 currentPage를 설정
+    //   this.boardStore.currentPage = nextPage;
+    // },
+
+    async loadMoreReviews() {
+      // 현재 검색어, 검색 타입, 그리고 마지막 검색의 'searchAfter' 값을 사용하여 다음 결과 불러오기
+      await this.reviewStore.getReviewListByQueryNext(this.query, this.searchType, this.reviewStore.lastSearchAfter[0]);
     },
-    jumpForward() {
-      // 현재 페이지에서 3페이지 앞으로 점프
-      let nextPage = Math.min(
-        this.boardStore.currentPage + 3,
-        this.boardStore.totalPages
-      );
-      this.changePage(nextPage);
-      // visiblePages를 업데이트하기 위해 currentPage를 설정
-      this.boardStore.currentPage = nextPage;
+
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      const seconds = String(date.getSeconds()).padStart(2, '0');
+
+      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    },
+
+    async triggerSearch() {
+      if (!this.searchQuery.trim()) {
+        alert("검색어를 입력하세요!");
+        return;
+      }
+
+      this.query = this.searchQuery; 
+      await this.reviewStore.getReviewListByQuery(this.query, 1); 
+
+      this.searchQuery = "";
     },
   },
 };
@@ -416,15 +355,13 @@ export default {
   --toastify-text-color-error: #fff;
   --toastify-spinner-color: #616161;
   --toastify-spinner-color-empty-area: #e0e0e0;
-  --toastify-color-progress-light: linear-gradient(
-    90deg,
-    #4cd964,
-    #5ac8fa,
-    #007aff,
-    #34aadc,
-    #5856d6,
-    #ff2d55
-  );
+  --toastify-color-progress-light: linear-gradient(90deg,
+      #4cd964,
+      #5ac8fa,
+      #007aff,
+      #34aadc,
+      #5856d6,
+      #ff2d55);
   --toastify-color-progress-dark: #bb86fc;
   --toastify-color-progress-info: var(--toastify-color-info);
   --toastify-color-progress-success: var(--toastify-color-success);
@@ -517,7 +454,7 @@ element.style {
   flex-direction: row;
 }
 
-._2zXJMj > section {
+._2zXJMj>section {
   min-width: 0;
 }
 
@@ -570,7 +507,7 @@ element.style {
   pointer-events: none;
 }
 
-._2zXJMj > section {
+._2zXJMj>section {
   min-width: 0;
 }
 
@@ -791,7 +728,7 @@ li {
   line-height: 1.375rem;
 }
 
-._1OTYG + ._1OTYG:before {
+._1OTYG+._1OTYG:before {
   width: 1rem;
   height: 1rem;
   transform: none;
@@ -860,7 +797,7 @@ svg:not(:root) {
   overflow: hidden;
 }
 
-._1VYQb4 li + li {
+._1VYQb4 li+li {
   margin-left: 0.25rem;
 }
 
@@ -872,7 +809,7 @@ svg:not(:root) {
   margin-bottom: 0px;
 }
 
-._2zXJMj > section {
+._2zXJMj>section {
   min-width: 0;
 }
 
@@ -928,31 +865,40 @@ svg:not(:root) {
   -ms-flex-negative: 0;
   flex-shrink: 0;
 }
+
 /*--------로딩창-------------*/
 .loadingio-spinner-spinner {
   position: fixed;
   top: 0;
   left: 0%;
-  z-index: 1000; /* 다른 요소 위에 표시하기 위한 z-index 값 */
-  width: 100%; /* 전체 화면을 커버 */
+  z-index: 1000;
+  /* 다른 요소 위에 표시하기 위한 z-index 값 */
+  width: 100%;
+  /* 전체 화면을 커버 */
   height: 100%;
-  justify-content: center; /* 가운데 정렬 */
-  align-items: center; /* 세로 가운데 정렬 */
+  justify-content: center;
+  /* 가운데 정렬 */
+  align-items: center;
+  /* 세로 가운데 정렬 */
 }
+
 @keyframes ldio-f4nnk2ltl0v {
   0% {
     opacity: 1;
   }
+
   100% {
     opacity: 0;
   }
 }
+
 .ldio-f4nnk2ltl0v div {
   position: fixed;
   top: 30%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 999; /* 다른 요소 위에 표시하기 위한 z-index 값 */
+  z-index: 999;
+  /* 다른 요소 위에 표시하기 위한 z-index 값 */
   animation: ldio-f4nnk2ltl0v linear 1s infinite;
   background: #fe718d;
   width: 18.240000000000002px;
@@ -960,66 +906,79 @@ svg:not(:root) {
   border-radius: 9.120000000000001px / 18.240000000000002px;
   transform-origin: 9.120000000000001px 79.04px;
 }
+
 .ldio-f4nnk2ltl0v div:nth-child(1) {
   transform: rotate(0deg);
   animation-delay: -0.9166666666666666s;
   background: #fe718d;
 }
+
 .ldio-f4nnk2ltl0v div:nth-child(2) {
   transform: rotate(30deg);
   animation-delay: -0.8333333333333334s;
   background: #f47e60;
 }
+
 .ldio-f4nnk2ltl0v div:nth-child(3) {
   transform: rotate(60deg);
   animation-delay: -0.75s;
   background: #f8b26a;
 }
+
 .ldio-f4nnk2ltl0v div:nth-child(4) {
   transform: rotate(90deg);
   animation-delay: -0.6666666666666666s;
   background: #abbd81;
 }
+
 .ldio-f4nnk2ltl0v div:nth-child(5) {
   transform: rotate(120deg);
   animation-delay: -0.5833333333333334s;
   background: #849b87;
 }
+
 .ldio-f4nnk2ltl0v div:nth-child(6) {
   transform: rotate(150deg);
   animation-delay: -0.5s;
   background: #6492ac;
 }
+
 .ldio-f4nnk2ltl0v div:nth-child(7) {
   transform: rotate(180deg);
   animation-delay: -0.4166666666666667s;
   background: #637cb5;
 }
+
 .ldio-f4nnk2ltl0v div:nth-child(8) {
   transform: rotate(210deg);
   animation-delay: -0.3333333333333333s;
   background: #6a63b6;
 }
+
 .ldio-f4nnk2ltl0v div:nth-child(9) {
   transform: rotate(240deg);
   animation-delay: -0.25s;
   background: #fe718d;
 }
+
 .ldio-f4nnk2ltl0v div:nth-child(10) {
   transform: rotate(270deg);
   animation-delay: -0.16666666666666666s;
   background: #f47e60;
 }
+
 .ldio-f4nnk2ltl0v div:nth-child(11) {
   transform: rotate(300deg);
   animation-delay: -0.08333333333333333s;
   background: #f8b26a;
 }
+
 .ldio-f4nnk2ltl0v div:nth-child(12) {
   transform: rotate(330deg);
   animation-delay: 0s;
   background: #abbd81;
 }
+
 .loadingio-spinner-spinner-pz89b3jiaad {
   width: 304px;
   height: 304px;
@@ -1027,6 +986,7 @@ svg:not(:root) {
   overflow: hidden;
   background: #ffffff;
 }
+
 .ldio-f4nnk2ltl0v div {
   box-sizing: content-box;
 }

@@ -11,6 +11,10 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -23,49 +27,16 @@ public class EsReviewController {
     // 메인 검색(통합)
     @GetMapping("/search/main")
     @ResponseBody
-    public ResponseEntity titleContentSearch(
+    public ResponseEntity titleSearchByMain(
             @RequestParam Integer selectedDropdownValue,
             @RequestParam String title,
             @PageableDefault(size = 20) Pageable pageable
     ) {
-        BaseRes baseRes =  esReviewService.titleSearchByMain(selectedDropdownValue, title, pageable);
+        BaseRes baseRes = esReviewService.titleSearchByMain(selectedDropdownValue, title, pageable);
 
         return ResponseEntity.ok().body(baseRes);
     }
-//
-//    // 제목+내용 (메인)
-//    @GetMapping("/search/main/titlecontent")
-//    @ResponseBody
-//    public ResponseEntity titleContentSearchByMain(
-//            @RequestParam String title,
-//            @PageableDefault(size = 20) Pageable pageable
-//    ) {
-//        BaseRes baseRes =  esReviewService.titleContentSearchByMain(title, pageable);
-//
-//        return ResponseEntity.ok().body(baseRes);
-//    }
 
-    // 제목+내용+정렬 (과정후기)
-    @GetMapping("/search/course")
-    @ResponseBody
-    public SearchHits<EsReview> titleContentSearchByCourse(
-            @RequestParam Integer sortType,
-            @RequestParam String title,
-            @PageableDefault(size = 20) Pageable pageable
-    ) {
-        return esReviewService.titleContentSearchByCourse(sortType ,title, pageable);
-    }
-
-    // 제목+내용+정렬 (강사후기)
-    @GetMapping("/search/teacher")
-    @ResponseBody
-    public SearchHits<EsReview> titleContentSearchByTeacher(
-            @RequestParam Integer sortType,
-            @RequestParam String title,
-            @PageableDefault(size = 20) Pageable pageable
-    ) {
-        return esReviewService.titleContentSearchByTeacher(sortType ,title, pageable);
-    }
 
     // 제목+내용+정렬 (통합)
     @GetMapping("/search")
@@ -76,9 +47,54 @@ public class EsReviewController {
             @RequestParam String title,
             @PageableDefault(size = 20) Pageable pageable
     ) {
-        BaseRes baseRes =  esReviewService.titleContentSearch(categoryIdx, sortType ,title, pageable);
+        BaseRes baseRes = esReviewService.titleContentSearch(categoryIdx, sortType ,title, pageable);
 
         return ResponseEntity.ok().body(baseRes);
     }
 
+
+    /**
+     *  search after 적용
+     */
+    // 메인 검색(통합)
+    @GetMapping("/search2/main")
+    @ResponseBody
+    public ResponseEntity titleContentSearch2(
+            @RequestParam Integer selectedDropdownValue,
+            @RequestParam String title,
+            @RequestParam(required = false, defaultValue = "20") int size,
+            @RequestParam(required = false) String searchAfterStr
+    ) {
+        List<Object> searchAfter = null;
+
+        if (searchAfterStr != null && !searchAfterStr.isEmpty()) {
+            searchAfter = Arrays.stream(searchAfterStr.split(","))
+                    .collect(Collectors.toList());
+        }
+
+        BaseRes baseRes = esReviewService.titleSearchByMain2(selectedDropdownValue, title, size, searchAfter);
+        return ResponseEntity.ok().body(baseRes);
+    }
+  
+  
+    // 제목+내용+정렬 (통합)
+    @GetMapping("/search2")
+    @ResponseBody
+    public ResponseEntity titleContentSearch2(
+            @RequestParam Integer categoryIdx,
+            @RequestParam Integer sortType,
+            @RequestParam String title,
+            @RequestParam(required = false, defaultValue = "20") int size,
+            @RequestParam(required = false) String searchAfterStr
+    ) {
+        List<Object> searchAfter = null;
+
+        if (searchAfterStr != null && !searchAfterStr.isEmpty()) {
+            searchAfter = Arrays.stream(searchAfterStr.split(","))
+                    .collect(Collectors.toList());
+        }
+
+        BaseRes baseRes = esReviewService.titleContentSearch2(categoryIdx, sortType ,title, size, searchAfter);
+        return ResponseEntity.ok().body(baseRes);
+    }
 }

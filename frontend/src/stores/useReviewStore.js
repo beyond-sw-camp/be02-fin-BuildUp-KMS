@@ -2,8 +2,8 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import VueJwtDecode from "vue-jwt-decode";
 
-const backend = "http://192.168.0.61/api";
-// const backend = "http://localhost:8080";
+// const backend = "http://192.168.0.61/api";
+const backend = "http://localhost:8080";
 
 const accessToken = localStorage.getItem("accessToken");
 const refreshToken = localStorage.getItem("refreshToken");
@@ -41,14 +41,14 @@ export const useReviewStore = defineStore("review", {
 
         const headers = this.isTokenExpired
           ? {
-              Authorization: `Bearer ${accessToken}`,
-              RefreshToken: `Bearer ${refreshToken}`,
-              "Content-Type": "application/json",
-            }
+            Authorization: `Bearer ${accessToken}`,
+            RefreshToken: `Bearer ${refreshToken}`,
+            "Content-Type": "application/json",
+          }
           : {
-              Authorization: `Bearer ${accessToken}`,
-              "Content-Type": "application/json",
-            };
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          };
 
         let response = await axios.post(backend + `/review/create`, review, {
           headers,
@@ -133,6 +133,69 @@ export const useReviewStore = defineStore("review", {
       }
     },
 
+    /* es search after 적용 (첫 페이지)*/
+    async getReviewListByQuery(query, option) {
+      try {
+        this.isLoading = true;
+
+        let response = await axios.get(
+          backend +
+          "/es/review/search2/main?selectedDropdownValue=" +
+          + option +
+          "&title=" +
+          query
+        );
+        this.reviewList = response.data.result.list;
+        this.totalCnt = response.data.result.totalHits;
+        this.lastSearchAfter = response.data.result.lastSearchAfter;
+        console.log(this.totalCnt);
+
+        if (this.reviewList.length === 0) {
+          this.isReviewExist = false;
+          this.isPageExist = false;
+        } else {
+          this.isReviewExist = true;
+          this.isPageExist = true;
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
+    async getReviewListByQueryNext(query, option, searchAfterStr) {
+      try {
+        this.isLoading = true;
+
+        // `searchAfterStr` 배열을 쿼리 문자열로 변환
+        const searchAfterQueryParam = searchAfterStr;
+
+        let response = await axios.get(
+          `${backend}/es/review/search2/main?selectedDropdownValue=${option}&title=${query}&searchAfterStr=${searchAfterQueryParam}`
+        );
+
+        if (response.data.result.list.length === 0) {
+          this.noMoreData = true; // 데이터가 더 이상 없음을 표시
+        } else {
+          // 새로운 검색 결과를 기존 목록에 추가
+          this.reviewList = [...this.reviewList, ...response.data.result.list];
+          this.totalCnt = response.data.result.totalHits;
+          // `lastSearchAfter` 값을 새로운 검색 결과에 기반하여 업데이트
+          this.lastSearchAfter = response.data.result.lastSearchAfter;
+          this.noMoreData = false; // 더 불러올 데이터가 있으므로 메시지 숨김
+        }
+      } catch (error) {
+        console.error(error);
+        this.isReviewExist = false;
+        this.isPageExist = false;
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
+
+
     async getSearchReviewList(
       reviewCategoryIdx,
       searchTerm,
@@ -148,9 +211,9 @@ export const useReviewStore = defineStore("review", {
 
         let response = await axios.get(
           backend +
-            `/review/${reviewCategoryIdx}/${sortType}/search?searchTerm=${encodeURIComponent(
-              searchTerm
-            )}&${params}`,
+          `/review/${reviewCategoryIdx}/${sortType}/search?searchTerm=${encodeURIComponent(
+            searchTerm
+          )}&${params}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -202,14 +265,14 @@ export const useReviewStore = defineStore("review", {
 
         const headers = this.isTokenExpired
           ? {
-              Authorization: `Bearer ${accessToken}`,
-              RefreshToken: `Bearer ${refreshToken}`,
-              "Content-Type": "application/json",
-            }
+            Authorization: `Bearer ${accessToken}`,
+            RefreshToken: `Bearer ${refreshToken}`,
+            "Content-Type": "application/json",
+          }
           : {
-              Authorization: `Bearer ${accessToken}`,
-              "Content-Type": "application/json",
-            };
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          };
 
         let response = await axios.post(
           backend + "/reviewup/create",
@@ -258,14 +321,14 @@ export const useReviewStore = defineStore("review", {
 
         const headers = this.isTokenExpired
           ? {
-              Authorization: `Bearer ${accessToken}`,
-              RefreshToken: `Bearer ${refreshToken}`,
-              "Content-Type": "application/json",
-            }
+            Authorization: `Bearer ${accessToken}`,
+            RefreshToken: `Bearer ${refreshToken}`,
+            "Content-Type": "application/json",
+          }
           : {
-              Authorization: `Bearer ${accessToken}`,
-              "Content-Type": "application/json",
-            };
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          };
 
         let response = await axios.post(
           backend + "/reviewscrap/create",
@@ -436,14 +499,14 @@ export const useReviewStore = defineStore("review", {
 
         const headers = this.isTokenExpired
           ? {
-              Authorization: `Bearer ${accessToken}`,
-              RefreshToken: `Bearer ${refreshToken}`,
-              "Content-Type": "application/json",
-            }
+            Authorization: `Bearer ${accessToken}`,
+            RefreshToken: `Bearer ${refreshToken}`,
+            "Content-Type": "application/json",
+          }
           : {
-              Authorization: `Bearer ${accessToken}`,
-              "Content-Type": "application/json",
-            };
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          };
 
         let response = await axios.patch(
           `${backend}/reviewup/delete/${reviewUpIdx}`,
@@ -490,14 +553,14 @@ export const useReviewStore = defineStore("review", {
 
         const headers = this.isTokenExpired
           ? {
-              Authorization: `Bearer ${accessToken}`,
-              RefreshToken: `Bearer ${refreshToken}`,
-              "Content-Type": "application/json",
-            }
+            Authorization: `Bearer ${accessToken}`,
+            RefreshToken: `Bearer ${refreshToken}`,
+            "Content-Type": "application/json",
+          }
           : {
-              Authorization: `Bearer ${accessToken}`,
-              "Content-Type": "application/json",
-            };
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          };
 
         let response = await axios.patch(
           `${backend}/reviewscrap/delete/${reviewScrapIdx}`,
@@ -544,14 +607,14 @@ export const useReviewStore = defineStore("review", {
 
         const headers = this.isTokenExpired
           ? {
-              Authorization: `Bearer ${accessToken}`,
-              RefreshToken: `Bearer ${refreshToken}`,
-              "Content-Type": "application/json",
-            }
+            Authorization: `Bearer ${accessToken}`,
+            RefreshToken: `Bearer ${refreshToken}`,
+            "Content-Type": "application/json",
+          }
           : {
-              Authorization: `Bearer ${accessToken}`,
-              "Content-Type": "application/json",
-            };
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          };
 
         let response = await axios.post(
           backend + "/admin/review/create",
@@ -608,7 +671,7 @@ export const useReviewStore = defineStore("review", {
         );
 
         if (response.data.isSuccess === true) {
-          window.location.href = "/admin/review/category";
+          window.location.href = "/admin/review/category"
         }
       } catch (e) {
         console.error(e);
@@ -618,15 +681,16 @@ export const useReviewStore = defineStore("review", {
 
     async updateReviewCategory(reviewCategoryIdx, newCategoryName) {
       try {
-        let response = await axios.patch(
-          backend + "/admin/review/update/" + reviewCategoryIdx,
-          { categoryName: newCategoryName },
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        let response =
+          await axios.patch(
+            backend + "/admin/review/update/" + reviewCategoryIdx,
+            { categoryName: newCategoryName },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
         if (response.data.isSuccess === true) {
           alert(`카테고리 이름 수정 완료!`);
           this.$router.push({ path: `/admin/review/update` });
@@ -646,14 +710,14 @@ export const useReviewStore = defineStore("review", {
 
         const headers = this.isTokenExpired
           ? {
-              Authorization: `Bearer ${accessToken}`,
-              RefreshToken: `Bearer ${refreshToken}`,
-              "Content-Type": "application/json",
-            }
+            Authorization: `Bearer ${accessToken}`,
+            RefreshToken: `Bearer ${refreshToken}`,
+            "Content-Type": "application/json",
+          }
           : {
-              Authorization: `Bearer ${accessToken}`,
-              "Content-Type": "application/json",
-            };
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          };
 
         let response = await axios.get(
           `${backend}/review/mywrite/${reviewIdx}`,
@@ -702,14 +766,14 @@ export const useReviewStore = defineStore("review", {
 
         const headers = this.isTokenExpired
           ? {
-              Authorization: `Bearer ${accessToken}`,
-              RefreshToken: `Bearer ${refreshToken}`,
-              "Content-Type": "application/json",
-            }
+            Authorization: `Bearer ${accessToken}`,
+            RefreshToken: `Bearer ${refreshToken}`,
+            "Content-Type": "application/json",
+          }
           : {
-              Authorization: `Bearer ${accessToken}`,
-              "Content-Type": "application/json",
-            };
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          };
 
         let response = await axios.patch(`${backend}/review/update`, review, {
           headers,
@@ -753,7 +817,7 @@ export const useReviewStore = defineStore("review", {
               "후기글 제목이 이미 등록되어 있는 제목입니다. 제목을 변경해주세요."
             );
           } else if (e.response.data.code === "REVIEW-001") {
-            alert("수정하고자 하는 후기글을 찾을 수 없습니다.");
+            alert("수정하고자 하는 후기글을 찾을 수 없습니다.")
           }
         }
       }
