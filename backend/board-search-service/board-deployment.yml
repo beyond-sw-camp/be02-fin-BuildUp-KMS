@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: backend-container
-          image: hyungdoyou/be:6.VERSION
+          image: hyungdoyou/bootshelf-board:2.VERSION
           resources:
             requests:
               memory: "512Mi"
@@ -30,14 +30,14 @@ spec:
               cpu: "2000m"
           readinessProbe:
             httpGet:
-              path: /search/board/list?categoryIdx=1&sortType=1&title=백엔드
+              path: /search/board/list?categoryIdx=1&sortType=1&title=hello
               port: 8081
             initialDelaySeconds: 20
             periodSeconds: 10
             successThreshold: 1
           livenessProbe:
             httpGet:
-              path: /search/board/list?categoryIdx=1&sortType=1&title=백엔드
+              path: /search/board/list?categoryIdx=1&sortType=1&title=hello
               port: 8081
             initialDelaySeconds: 20
             periodSeconds: 10

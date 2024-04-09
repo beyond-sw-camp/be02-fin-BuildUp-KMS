@@ -26,8 +26,8 @@
             </div>
             <!--태그 컴포넌트 자리-->
             <TagComponent
-              :tagNameList="totals.tagNameList"
-              v-if="totals.tagNameList && totals.tagNameList.length > 0"
+              :tagNameList="totals.tags"
+              v-if="totals.tags && totals.tags.length > 0"
             />
           </div>
           <div class="css-bt1qy"></div>

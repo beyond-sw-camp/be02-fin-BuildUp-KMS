@@ -286,28 +286,32 @@ public class BoardService {
     @Transactional(readOnly = true)
     public BaseRes findListByCategory(Pageable pageable, Integer boardCategoryIdx, Integer sortIdx) {
         Page<Board> boardList = boardRepository.findBoardListByCategory(pageable, boardCategoryIdx, sortIdx);
-        List<GetListBoardRes> getListBoardResList = new ArrayList<>();
+        List<GetSearchListBoardRes> getSearchListBoardResList = new ArrayList<>();
 
         for (Board board : boardList) {
 
             List<BoardTag> boardTagList = board.getBoardTagList();
-            List<String> tagNames = new ArrayList<>();
+            List<GetTagNameRes> tagNames = new ArrayList<>();
 
             for (BoardTag boardTag : boardTagList) {
                 String tagName = boardTag.getTag().getTagName();
-                tagNames.add(tagName);
+                GetTagNameRes getTagNameRes = GetTagNameRes.builder()
+                        .tagname(tagName)
+                        .build();
+
+                tagNames.add(getTagNameRes);
             }
 
             String textContent = extractText(board.getBoardContent());
 
-            GetListBoardRes getListBoardRes = GetListBoardRes.builder()
+            GetSearchListBoardRes getSearchListBoardRes = GetSearchListBoardRes.builder()
                     .idx(board.getIdx())
                     .nickName(board.getUser().getNickName())
-                    .userProfileImage(board.getUser().getProfileImage())
-                    .title(board.getBoardTitle())
-                    .content(textContent)
+                    .profileImage(board.getUser().getProfileImage())
+                    .boardtitle(board.getBoardTitle())
+                    .boardcontent(textContent)
                     .boardCategoryIdx(board.getBoardCategory().getIdx())
-                    .tagNameList(tagNames)
+                    .tags(tagNames)
                     .viewCnt(board.getViewCnt())
                     .upCnt(board.getUpCnt())
                     .scrapCnt(board.getScrapCnt())
@@ -320,19 +324,19 @@ public class BoardService {
             Elements images = doc.select("img");
 
             if (!images.isEmpty()) {
-                getListBoardRes.setBoardImg(images.get(0).attr("src"));
+                getSearchListBoardRes.setBoardImg(images.get(0).attr("src"));
             }
 
-            getListBoardResList.add(getListBoardRes);
+            getSearchListBoardResList.add(getSearchListBoardRes);
         }
 
         Long totalCnt = boardList.getTotalElements();
         Integer totalPages = boardList.getTotalPages();
 
-        GetListBoardResResult result = GetListBoardResResult.builder()
+        GetSearchListBoardResResult result = GetSearchListBoardResResult.builder()
                 .totalCnt(totalCnt)
                 .totalPages(totalPages)
-                .list(getListBoardResList)
+                .list(getSearchListBoardResList)
                 .build();
 
         BaseRes baseRes = BaseRes.builder()
@@ -349,28 +353,32 @@ public class BoardService {
     @Transactional(readOnly = false)
     public BaseRes findListByTag(Pageable pageable, Integer tagIdx, Integer boardCategoryIdx, Integer sortIdx) {
         Page<Board> boardList = boardRepository.findBoardListByTag(pageable, tagIdx, boardCategoryIdx, sortIdx);
-        List<GetListBoardRes> getListBoardResList = new ArrayList<>();
+        List<GetSearchListBoardRes> getSearchListBoardResList = new ArrayList<>();
 
         for (Board board : boardList) {
 
             List<BoardTag> boardTagList = board.getBoardTagList();
-            List<String> tagNames = new ArrayList<>();
+            List<GetTagNameRes> tagNames = new ArrayList<>();
 
             for (BoardTag boardTag : boardTagList) {
                 String tagName = boardTag.getTag().getTagName();
-                tagNames.add(tagName);
+                GetTagNameRes getTagNameRes = GetTagNameRes.builder()
+                        .tagname(tagName)
+                        .build();
+
+                tagNames.add(getTagNameRes);
             }
 
             String textContent = extractText(board.getBoardContent());
 
-            GetListBoardRes getListBoardRes = GetListBoardRes.builder()
+            GetSearchListBoardRes getSearchListBoardRes = GetSearchListBoardRes.builder()
                     .idx(board.getIdx())
                     .nickName(board.getUser().getNickName())
-                    .userProfileImage(board.getUser().getProfileImage())
-                    .title(board.getBoardTitle())
-                    .content(textContent)
+                    .profileImage(board.getUser().getProfileImage())
+                    .boardtitle(board.getBoardTitle())
+                    .boardcontent(textContent)
                     .boardCategoryIdx(board.getBoardCategory().getIdx())
-                    .tagNameList(tagNames)
+                    .tags(tagNames)
                     .viewCnt(board.getViewCnt())
                     .upCnt(board.getUpCnt())
                     .scrapCnt(board.getScrapCnt())
@@ -383,19 +391,19 @@ public class BoardService {
             Elements images = doc.select("img");
 
             if (!images.isEmpty()) {
-                getListBoardRes.setBoardImg(images.get(0).attr("src"));
+                getSearchListBoardRes.setBoardImg(images.get(0).attr("src"));
             }
 
-            getListBoardResList.add(getListBoardRes);
+            getSearchListBoardResList.add(getSearchListBoardRes);
         }
 
         Long totalCnt = boardList.getTotalElements();
         Integer totalPages = boardList.getTotalPages();
 
-        GetListBoardResResult result = GetListBoardResResult.builder()
+        GetSearchListBoardResResult result = GetSearchListBoardResResult.builder()
                 .totalCnt(totalCnt)
                 .totalPages(totalPages)
-                .list(getListBoardResList)
+                .list(getSearchListBoardResList)
                 .build();
 
         BaseRes baseRes = BaseRes.builder()
@@ -412,28 +420,32 @@ public class BoardService {
     public BaseRes findSearchListByTag(Pageable pageable, Integer tagIdx, Integer boardCategoryIdx, String searchTerm, Integer sortIdx) {
 
         Page<Board> boardList = boardRepository.findBoardSearchListByTag(pageable, tagIdx, boardCategoryIdx, searchTerm, sortIdx);
-        List<GetListBoardRes> getListBoardResList = new ArrayList<>();
+        List<GetSearchListBoardRes> getSearchListBoardResList = new ArrayList<>();
 
         for (Board board : boardList) {
 
             List<BoardTag> boardTagList = board.getBoardTagList();
-            List<String> tagNames = new ArrayList<>();
+            List<GetTagNameRes> tagNames = new ArrayList<>();
 
             for (BoardTag boardTag : boardTagList) {
                 String tagName = boardTag.getTag().getTagName();
-                tagNames.add(tagName);
+                GetTagNameRes getTagNameRes = GetTagNameRes.builder()
+                        .tagname(tagName)
+                        .build();
+
+                tagNames.add(getTagNameRes);
             }
 
             String textContent = extractText(board.getBoardContent());
 
-            GetListBoardRes getListBoardRes = GetListBoardRes.builder()
+            GetSearchListBoardRes getSearchListBoardRes = GetSearchListBoardRes.builder()
                     .idx(board.getIdx())
                     .nickName(board.getUser().getNickName())
-                    .userProfileImage(board.getUser().getProfileImage())
-                    .title(board.getBoardTitle())
-                    .content(textContent)
+                    .profileImage(board.getUser().getProfileImage())
+                    .boardtitle(board.getBoardTitle())
+                    .boardcontent(textContent)
                     .boardCategoryIdx(board.getBoardCategory().getIdx())
-                    .tagNameList(tagNames)
+                    .tags(tagNames)
                     .viewCnt(board.getViewCnt())
                     .upCnt(board.getUpCnt())
                     .scrapCnt(board.getScrapCnt())
@@ -446,19 +458,19 @@ public class BoardService {
             Elements images = doc.select("img");
 
             if (!images.isEmpty()) {
-                getListBoardRes.setBoardImg(images.get(0).attr("src"));
+                getSearchListBoardRes.setBoardImg(images.get(0).attr("src"));
             }
 
-            getListBoardResList.add(getListBoardRes);
+            getSearchListBoardResList.add(getSearchListBoardRes);
         }
 
         Long totalCnt = boardList.getTotalElements();
         Integer totalPages = boardList.getTotalPages();
 
-        GetListBoardResResult result = GetListBoardResResult.builder()
+        GetSearchListBoardResResult result = GetSearchListBoardResResult.builder()
                 .totalCnt(totalCnt)
                 .totalPages(totalPages)
-                .list(getListBoardResList)
+                .list(getSearchListBoardResList)
                 .build();
 
         BaseRes baseRes = BaseRes.builder()
@@ -734,11 +746,15 @@ public class BoardService {
         for (Board board : boardList) {
 
             List<BoardTag> boardTagList = board.getBoardTagList();
-            List<String> tagNames = new ArrayList<>();
+            List<GetTagNameRes> tagNames = new ArrayList<>();
 
             for (BoardTag boardTag : boardTagList) {
                 String tagName = boardTag.getTag().getTagName();
-                tagNames.add(tagName);
+                GetTagNameRes getTagNameRes = GetTagNameRes.builder()
+                        .tagname(tagName)
+                        .build();
+
+                tagNames.add(getTagNameRes);
             }
 
             String textContent = extractText(board.getBoardContent());
@@ -750,7 +766,7 @@ public class BoardService {
                     .profileImage(board.getUser().getProfileImage())
                     .title(board.getBoardTitle())
                     .content(textContent)
-                    .tagNameList(tagNames)
+                    .tags(tagNames)
                     .viewCnt(board.getViewCnt())
                     .upCnt(board.getUpCnt())
                     .scrapCnt(board.getScrapCnt())
@@ -798,11 +814,15 @@ public class BoardService {
         for (Board board : boardList) {
 
             List<BoardTag> boardTagList = board.getBoardTagList();
-            List<String> tagNames = new ArrayList<>();
+            List<GetTagNameRes> tagNames = new ArrayList<>();
 
             for (BoardTag boardTag : boardTagList) {
                 String tagName = boardTag.getTag().getTagName();
-                tagNames.add(tagName);
+                GetTagNameRes getTagNameRes = GetTagNameRes.builder()
+                        .tagname(tagName)
+                        .build();
+
+                tagNames.add(getTagNameRes);
             }
 
             String textContent = extractText(board.getBoardContent());
@@ -814,7 +834,7 @@ public class BoardService {
                     .profileImage(board.getUser().getProfileImage())
                     .title(board.getBoardTitle())
                     .content(textContent)
-                    .tagNameList(tagNames)
+                    .tags(tagNames)
                     .viewCnt(board.getViewCnt())
                     .upCnt(board.getUpCnt())
                     .scrapCnt(board.getScrapCnt())

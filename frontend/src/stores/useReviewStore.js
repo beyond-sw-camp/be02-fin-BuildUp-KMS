@@ -187,11 +187,7 @@ export const useReviewStore = defineStore("review", {
       }
     },
 
-    async getSearchTotalReviewList(
-      selectedDropdownValue,
-      title,
-      page = 1
-    ) {
+    async getSearchTotalReviewList(selectedDropdownValue, title, page = 1) {
       try {
         this.isLoading = true;
 
@@ -234,11 +230,7 @@ export const useReviewStore = defineStore("review", {
       }
     },
 
-    async getSearchSortReviewList(
-      sortType,
-      title,
-      page = 1
-    ) {
+    async getSearchSortReviewList(searchType, sortType, title, page = 1) {
       try {
         this.isLoading = true;
 
@@ -248,7 +240,9 @@ export const useReviewStore = defineStore("review", {
 
         let response = await axios.get(
           backend +
-            "/search/review/sort/list?sortType=" +
+            "/search/review/sort/list?searchType=" +
+            searchType +
+            "&sortType=" +
             sortType +
             "&title=" +
             title +
