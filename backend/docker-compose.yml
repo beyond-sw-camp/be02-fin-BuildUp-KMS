@@ -11,15 +11,6 @@ services:
       MARIADB_DATABASE: bootshelf
       TZ: Asia/Seoul
 
-  redis:
-    image: redis:latest
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis-vol:/data
-
 volumes:
   db-vol:
-    driver: local
-  redis-vol:
     driver: local

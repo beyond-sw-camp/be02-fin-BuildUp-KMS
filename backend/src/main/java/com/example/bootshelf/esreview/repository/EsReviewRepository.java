@@ -22,6 +22,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static org.elasticsearch.search.sort.SortBuilders.fieldSort;
+
 @Repository
 @RequiredArgsConstructor
 @Getter
@@ -76,7 +78,7 @@ public class EsReviewRepository {
                 .withFilter(boolQueryBuilder)
                 .withHighlightBuilder(highlightBuilder) // 하이라이트 설정 추가
                 .withPageable(pageable)
-                .withSort(SortBuilders.fieldSort(sortField).order(SortOrder.ASC))
+                .withSort(fieldSort(sortField).order(SortOrder.ASC))
                 .build();
 
         return operations.search(build, EsReview.class);
@@ -94,7 +96,7 @@ public class EsReviewRepository {
 
             NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder()
                     .withQuery(matchQueryBuilder)
-                    .withSort(SortBuilders.fieldSort("_id").order(SortOrder.DESC)) // 중복값이 있을 것을 대비해 id로 한 번 더 sorting
+                    .withSort(fieldSort("_id").order(SortOrder.DESC)) // 중복값이 있을 것을 대비해 id로 한 번 더 sorting
                     .withPageable(PageRequest.of(0, size));
 
             if (searchAfter != null && !searchAfter.isEmpty()) {
@@ -110,7 +112,7 @@ public class EsReviewRepository {
 
             NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder()
                     .withQuery(multiMatchQueryBuilder)
-                    .withSort(SortBuilders.fieldSort("_id").order(SortOrder.DESC)) // 중복값이 있을 것을 대비해 id로 한 번 더 sorting
+                    .withSort(fieldSort("_id").order(SortOrder.DESC)) // 중복값이 있을 것을 대비해 id로 한 번 더 sorting
                     .withPageable(PageRequest.of(0, size));
 
             if (searchAfter != null && !searchAfter.isEmpty()) {
@@ -142,8 +144,8 @@ public class EsReviewRepository {
                 .withQuery(multiMatchQueryBuilder)
                 .withFilter(boolQueryBuilder)
                 .withHighlightBuilder(highlightBuilder) // 하이라이트 설정 추가
-                .withSort(SortBuilders.fieldSort(sortField).order(SortOrder.DESC))
-                .withSort(SortBuilders.fieldSort("_id").order(SortOrder.DESC)) // 중복값이 있을 것을 대비해 id로 한 번 더 sorting
+                .withSort(fieldSort(sortField).order(SortOrder.DESC))
+                .withSort(fieldSort("_id").order(SortOrder.DESC)) // 중복값이 있을 것을 대비해 id로 한 번 더 sorting
                 .withPageable(PageRequest.of(0, size));
 
         if (searchAfter != null && !searchAfter.isEmpty()) {
@@ -152,5 +154,54 @@ public class EsReviewRepository {
 
         Query searchQuery = queryBuilder.build();
         return operations.search(searchQuery, EsReview.class);
+    }
+
+
+    public SearchHits<EsReview> titleSearchByMain3(Integer selectedDropdownValue, String sortField, String title, int size, List<Object> searchAfter) {
+
+        if (selectedDropdownValue == 1) {
+            MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("reviewTitle", title);
+
+            HighlightBuilder highlightBuilder = new HighlightBuilder();
+            highlightBuilder.field("reviewTitle"); // 하이라이팅을 적용할 필드 지정
+            highlightBuilder.preTags("<em>"); // 하이라이트 시작 태그
+            highlightBuilder.postTags("</em>"); // 하이라이트 종료 태그
+
+            NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder()
+                    .withQuery(matchQueryBuilder)
+                    .withSort(fieldSort(sortField).order(SortOrder.DESC))
+                    .withSort(fieldSort("_id").order(SortOrder.DESC)) // 중복값이 있을 것을 대비해 id로 한 번 더 sorting
+                    .withPageable(PageRequest.of(0, size));
+
+            if (searchAfter != null && !searchAfter.isEmpty()) {
+                queryBuilder.withSearchAfter(searchAfter);
+            }
+
+            Query searchQuery = queryBuilder.build();
+            return operations.search(searchQuery, EsReview.class);
+
+        } else {
+            MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(title,
+                    "reviewTitle", "reviewContent");
+
+            HighlightBuilder highlightBuilder = new HighlightBuilder();
+            highlightBuilder.field("reviewTitle"); // 하이라이팅을 적용할 필드 지정
+            highlightBuilder.field("reviewContent"); // 하이라이팅을 적용할 필드 지정
+            highlightBuilder.preTags("<em>"); // 하이라이트 시작 태그
+            highlightBuilder.postTags("</em>"); // 하이라이트 종료 태그
+
+            NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder()
+                    .withQuery(multiMatchQueryBuilder)
+                    .withSort(fieldSort(sortField).order(SortOrder.DESC))
+                    .withSort(fieldSort("_id").order(SortOrder.DESC)) // 중복값이 있을 것을 대비해 id로 한 번 더 sorting
+                    .withPageable(PageRequest.of(0, size));
+
+            if (searchAfter != null && !searchAfter.isEmpty()) {
+                queryBuilder.withSearchAfter(searchAfter);
+            }
+
+            Query searchQuery = queryBuilder.build();
+            return operations.search(searchQuery, EsReview.class);
+        }
     }
 }
