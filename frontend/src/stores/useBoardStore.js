@@ -542,9 +542,7 @@ export const useBoardStore = defineStore("board", {
           this.noMoreData = true; // 데이터가 더 이상 없음을 표시
         } else {
           // 새로운 검색 결과를 기존 목록에 추가
-          console.log(this.boardList)
-          console.log(response.data.result)
-          this.boardList = [...this.boardList, ...response.data.result];
+          this.boardList.list = [...this.boardList.list, ...response.data.result.list];
 
           this.totalCnt = response.data.result.totalHits;
           // `lastSearchAfter` 값을 새로운 검색 결과에 기반하여 업데이트
