@@ -58,15 +58,16 @@
                       </div>
                     </button>
                     <div class="_1YCmw flex-grow-1">
-                      <input type="text" v-model="searchQuery" v-on:keyup.enter="triggerSearch" placeholder="제목, 내용으로 질문을 찾아 보세요!"
-                        class="FMUyj _1LD4c form-control-xl form-control" /><svg fill="currentColor" width="16"
-                        height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" class="A-RPq _2vGEB">
+                      <input type="text" v-model="searchQuery"
+                        placeholder="제목, 내용으로 질문을 찾아 보세요!" class="FMUyj _1LD4c form-control-xl form-control" /><svg
+                        fill="currentColor" width="16" height="16" viewBox="0 0 16 16"
+                        xmlns="http://www.w3.org/2000/svg" class="A-RPq _2vGEB">
                         <path fill-rule="evenodd" clip-rule="evenodd"
                           d="M11.46 10.54L10.54 11.46L8 8.92L5.46 11.46L4.54 10.54L7.08 8L4.54 5.46L5.46 4.54L8 7.08L10.54 4.54L11.46 5.46L8.92 8L11.46 10.54ZM8 1.5C4.412 1.5 1.5 4.412 1.5 8C1.5 11.588 4.412 14.5 8 14.5C11.588 14.5 14.5 11.588 14.5 8C14.5 4.412 11.588 1.5 8 1.5Z">
                         </path>
                       </svg>
                     </div>
-                    <button type="button" class="flex-shrink-0 btn btn-outline-basic btn-xl" @click="triggerSearch" >
+                    <button type="button" class="flex-shrink-0 btn btn-outline-basic btn-xl" @click="triggerSearch">
                       <div class="_2pYHs ODppI"><span>검색</span></div>
                     </button>
                   </div>
@@ -76,7 +77,7 @@
                     <div class="_2kqp41 _2d5D_m" style="--box-gap: 0.5rem">
                       <span><span>검색 결과</span></span><span class="text-blue-500">{{
                         reviewStore.totalCnt
-                      }}</span>
+                        }}</span>
                     </div>
                   </h5>
                   <div class="dropdown">
@@ -92,11 +93,20 @@
                     </button>
                     <div v-show="dropdownOpen" tabindex="-1" role="menu" aria-hidden="false"
                       class="_20WMwO w-100 dropdown-menu">
-                      <button type="button" tabindex="0" role="menuitem" class="_3CkPsH dropdown-item active">
+                      <button type="button" tabindex="0" role="menuitem" class="_3CkPsH dropdown-item active" @click="setSortOrder(1)">
                         <span>최신순</span>
                       </button>
-                      <button type="button" tabindex="0" role="menuitem" class="_3CkPsH dropdown-item">
+                      <button type="button" tabindex="0" role="menuitem" class="_3CkPsH dropdown-item" @click="setSortOrder(2)">
                         <span>인기순</span>
+                      </button>
+                      <button type="button" tabindex="0" role="menuitem" class="_3CkPsH dropdown-item" @click="setSortOrder(3)">
+                        <span>조회순</span>
+                      </button>
+                      <button type="button" tabindex="0" role="menuitem" class="_3CkPsH dropdown-item" @click="setSortOrder(4)">
+                        <span>스크랩순</span>
+                      </button>
+                      <button type="button" tabindex="0" role="menuitem" class="_3CkPsH dropdown-item" @click="setSortOrder(5)">
+                        <span>댓글순</span>
                       </button>
                     </div>
                   </div>
@@ -133,7 +143,7 @@
                                   aria-current="page">
                                   <span class="_1t2_hP">{{
                                     review.reviewContent
-                                  }}</span>
+                                    }}</span>
                                 </li>
                               </ol>
                             </nav>
@@ -148,7 +158,7 @@
                                   </path>
                                 </svg><span class="paragraph-sm">{{
                                   review.viewCnt
-                                }}</span></span><span
+                                  }}</span></span><span
                                 class="text-gray-600 d-inline-flex align-items-center _22s-QT"><svg fill="currentColor"
                                   width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
                                   <path fill-rule="evenodd" clip-rule="evenodd"
@@ -156,7 +166,7 @@
                                   </path>
                                 </svg><span class="paragraph-sm">{{
                                   review.commentCnt
-                                }}</span></span><span
+                                  }}</span></span><span
                                 class="text-gray-600 d-inline-flex align-items-center _22s-QT"><svg fill="currentColor"
                                   width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
                                   <path fill-rule="evenodd" clip-rule="evenodd"
@@ -165,7 +175,7 @@
                                 </svg>
                                 <span class="paragraph-sm">{{
                                   review.upCnt
-                                }}</span>
+                                  }}</span>
                               </span>
                             </div>
                           </div>
@@ -221,7 +231,9 @@ export default {
       query: "",
       searchType: "",
       noMoreData: false,
-      searchQuery: ""
+      searchQuery: "",
+      sortOrder: 1,
+      lastSearchAfter: []
     };
   },
   async mounted() {
@@ -242,7 +254,7 @@ export default {
 
     // 게시판 목록 불러오기
     if (query !== null && query !== "") {
-      await this.reviewStore.getReviewListByQuery(query, searchType);
+      await this.reviewStore.getReviewListByQueryWithOrder(query, searchType, 1);
 
       if (this.reviewStore.reviewList.length === 0) {
         alert("해당하는 검색결과가 없습니다. 다른 검색어를 입력해주세요.")
@@ -297,8 +309,21 @@ export default {
     // },
 
     async loadMoreReviews() {
-      // 현재 검색어, 검색 타입, 그리고 마지막 검색의 'searchAfter' 값을 사용하여 다음 결과 불러오기
-      await this.reviewStore.getReviewListByQueryNext(this.query, this.searchType, this.reviewStore.lastSearchAfter[0]);
+      // await this.reviewStore.getReviewListByQueryNext(this.query, this.searchType, this.reviewStore.lastSearchAfter[0]);
+      try {
+        const lastSearchAfter = this.reviewStore.lastSearchAfter;
+        if (!lastSearchAfter || lastSearchAfter.length < 2) {
+          throw new Error("Invalid lastSearchAfter value");
+        }
+
+        const searchAfterStr = `${lastSearchAfter[0]}, "${String(lastSearchAfter[1])}"`;
+
+        await this.reviewStore.getReviewListByQueryNextWithOrder(
+          this.query, this.searchType, this.sortOrder, searchAfterStr
+        );
+      } catch (error) {
+        console.error(error);
+      }
     },
 
     formatDate(dateString) {
@@ -319,11 +344,20 @@ export default {
         return;
       }
 
-      this.query = this.searchQuery; 
-      await this.reviewStore.getReviewListByQuery(this.query, 1); 
+      this.query = this.searchQuery;
+      await this.reviewStore.getReviewListByQuery(this.query, 1);
 
       this.searchQuery = "";
     },
+
+    setSortOrder(order) {
+      this.sortOrder = order;
+      this.getSearchResultByOrder();
+    },
+
+    async getSearchResultByOrder() {
+      await this.reviewStore.getReviewListByQueryWithOrder(this.query, this.searchType, this.sortOrder);
+    }
   },
 };
 </script>
