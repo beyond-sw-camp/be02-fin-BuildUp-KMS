@@ -91,7 +91,8 @@
             <!--여기서 본격 글 리스트-->
             <div class="css-1csvk83">
               <ul class="css-10c0kk0 e15eiqsa1">
-                <div class="css-k59gj9" v-for="boards in boardStore.boardList.list" :key="boards.boardIdx">
+                <div class="css-k59gj9" v-for="boards in boardStore.boardList.list"
+                 :key="boards.boardIdx">
                   <CategoryBoardComponent :boards="boards" />
                 </div>
               </ul>
@@ -111,13 +112,14 @@
             <!-- /본격 글 리스트 -->
           </div>
           <div class="d-flex justify-content-center py-0 py-md-4">
-            <!-- <PaginationComponent
+            <div class="scrollBtn" @click="lastSearchData" v-if="title">╋ 더보기</div>
+            <PaginationComponent
+            v-else
               :current-page="boardStore.currentPage"
               :total-pages="boardStore.totalPages"
               :isPageExist="boardStore.isPageExist"
               @change-page="changePage"
-            /> -->
-            <div @click="lastSearchData">더보기</div>
+            />
           </div>
         </div>
       </div>
@@ -131,7 +133,7 @@ import { useBoardStore } from "@/stores/useBoardStore.js";
 import { useBoardTagStore } from "../stores/useBoardTagStore";
 import CategoryBoardComponent from "@/components/CategoryBoardComponent.vue";
 import HotTagComponent from "@/components/HotTagComponent.vue";
-// import PaginationComponent from "@/components/PaginationComponent.vue";
+import PaginationComponent from "@/components/PaginationComponent.vue";
 
 export default {
   name: "KnowledgeBoardListPage",
@@ -141,8 +143,8 @@ export default {
       sortType: 1,
       boardCategoryIdx: "1",
       title: "",
-      lastCreateAt: "",
-      lastIdx: "",
+      // lastCreateAt: "",
+      // lastIdx: "",
       SearchData: ""
     };
   },
@@ -152,7 +154,7 @@ export default {
   components: {
     CategoryBoardComponent,
     HotTagComponent,
-    // PaginationComponent,
+    PaginationComponent,
   },
   mounted() {
     this.loadBoardList(1);
@@ -182,17 +184,25 @@ export default {
       this.loadBoardList(this.boardStore.currentPage);
     },
 
-    async loadBoardList(searchAfterStr = '', page = 1) {
-
-      // 조건에 따라 검색어 있는/없는 경우 분기 처리
-      await this.boardStore.getCategoryBoardListByQuery(
-        this.boardCategoryIdx,
-        this.title,
-        this.sortType,
-        page,
-        searchAfterStr // 올바르게 전달되도록 인자 추가
-      );
+    async loadBoardList(page) {
+      // 검색어가 있는 경우
+      if (this.title) {
+        await this.boardStore.getCategoryBoardListByQuery(
+          this.boardCategoryIdx,
+          this.title,
+          this.sortType,
+          page
+        );
+      } else {
+        // 검색어가 없는 경우
+        await this.boardStore.findListByCategory(
+          this.boardCategoryIdx,
+          this.sortType,
+          page
+        );
+      }
     },
+
     sendSearchData() {
       this.loadBoardList();
     },
@@ -247,6 +257,21 @@ export default {
 </script>
 
 <style scoped>
+.scrollBtn{
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: rgb(84, 29, 112);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  font-family: Pretendard, serif;
+}
+
 body,
 html {
   padding: 0;
