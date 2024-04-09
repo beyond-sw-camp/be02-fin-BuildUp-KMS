@@ -23,37 +23,38 @@ public class EsBoard {
     private String id;
 
     @Field(type = FieldType.Integer)
-    private Integer user;
-
-    @Field(type = FieldType.Integer)
-    private Integer boardCategory;
+    private Integer boardcategory_idx;
 
     @Field(type = FieldType.Text, analyzer = "nori")
-    private String boardTitle;
+    private String boardtitle;
 
     @Field(type = FieldType.Text, analyzer = "nori")
-    private String boardContent;
+    private String boardcontent;
 
     @Field(type = FieldType.Integer)
-    private Integer viewCnt;
+    private Integer viewcnt;
 
     @Field(type = FieldType.Integer)
-    private Integer upCnt;
+    private Integer upcnt;
 
     @Field(type = FieldType.Integer)
-    private Integer scrapCnt;
+    private Integer scrapcnt;
 
     @Field(type = FieldType.Integer)
-    private Integer commentCnt;
+    private Integer commentcnt;
 
-    @Field(type = FieldType.Boolean)
-    private Boolean status;
+    @Field(type = FieldType.Text)
+    private String nickname;
 
-    //    @Field(type = FieldType.Date, format = {DateFormat.date_hour_minute_second_millis, DateFormat.epoch_millis})
+    @Field(type = FieldType.Text)
+    private String profileimage;
+
+    @Field(type = FieldType.Text)
+    private String boardImage;
+
     private String createdAt;
 
-    //    @Field(type = FieldType.Date, format = {DateFormat.date_hour_minute_second_millis, DateFormat.epoch_millis})
-    private String updatedAt;
+    private String updatedat;
 
     @Field(type = FieldType.Nested)
     private List<EsTag> tags;

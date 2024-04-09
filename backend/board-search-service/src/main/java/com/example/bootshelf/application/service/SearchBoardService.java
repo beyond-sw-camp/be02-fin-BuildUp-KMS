@@ -49,27 +49,29 @@ public class SearchBoardService implements SearchBoardUseCase {
 
             for (EsBoard result : searchContent) {
 
-                String textContent = extractText(result.getBoardContent());
+                String textContent = extractText(result.getBoardcontent());
 
                 Board response = Board.builder()
                         .idx(Integer.valueOf(result.getId()))
-                        .user(result.getUser())
-                        .boardCategory(result.getBoardCategory())
-                        .boardTitle(result.getBoardTitle())
+                        .boardCategory(result.getBoardcategory_idx())
+                        .boardTitle(result.getBoardtitle())
                         .boardContent(textContent)
-                        .viewCnt(result.getViewCnt())
-                        .upCnt(result.getUpCnt())
-                        .scrapCnt(result.getScrapCnt())
-                        .commentCnt(result.getCommentCnt())
-                        .status(result.getStatus())
+                        .viewCnt(result.getViewcnt())
+                        .upCnt(result.getUpcnt())
+                        .scrapCnt(result.getScrapcnt())
+                        .commentCnt(result.getCommentcnt())
                         .createdAt(result.getCreatedAt())
-                        .updatedAt(result.getUpdatedAt())
+                        .updatedAt(result.getUpdatedat())
+                        .profileImage(result.getProfileimage())
+                        .nickName(result.getNickname())
+                        .boardImage(result.getBoardImage())
+                        .tags(result.getTags())
                         .build();
-                Document doc = Jsoup.parse(result.getBoardContent());
+                Document doc = Jsoup.parse(result.getBoardcontent());
                 Elements images = doc.select("img");
 
                 if (!images.isEmpty()) {
-                    response.setBoardImg(images.get(0).attr("src"));
+                    response.setBoardImage(images.get(0).attr("src"));
                 }
 
                 boardSearchRes.add(response);
