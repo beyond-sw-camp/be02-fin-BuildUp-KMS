@@ -26,11 +26,7 @@
               <div class="css-nw8p9d">
                 <div class="css-19831his"># 인기태그</div>
               </div>
-              <div
-                class="css-nw8p9d"
-                v-for="hotTags in boardTagStore.hotTagList"
-                :key="hotTags.tagIdx"
-              >
+              <div class="css-nw8p9d" v-for="hotTags in boardTagStore.hotTagList" :key="hotTags.tagIdx">
                 <HotTagComponent :hotTags="hotTags" />
               </div>
             </div>
@@ -74,7 +70,7 @@
                               class="css-search-002"
                               type="text"
                               placeholder="제목과 내용으로 검색할 단어를 입력하세요."
-                              v-model="searchTerm"
+                              v-model="title"
                               @keyup.enter="sendSearchData()"
                             />
                           </div>
@@ -110,7 +106,7 @@
               <ul class="css-10c0kk0 e15eiqsa1">
                 <div
                   class="css-k59gj9"
-                  v-for="boards in boardStore.boardList"
+                  v-for="boards in boardStore.boardList.list"
                   :key="boards.boardIdx"
                 >
                   <CategoryBoardComponent :boards="boards" />
@@ -132,7 +128,9 @@
             <!-- /본격 글 리스트 -->
           </div>
           <div class="d-flex justify-content-center py-0 py-md-4">
+            <div class="scrollBtn" @click="lastSearchData" v-if="title">╋ 더보기</div>
             <PaginationComponent
+              v-else
               :current-page="boardStore.currentPage"
               :total-pages="boardStore.totalPages"
               :isPageExist="boardStore.isPageExist"
@@ -160,7 +158,7 @@ export default {
       selectedSortType: "최신순",
       sortType: 1,
       boardCategoryIdx: "2",
-      searchTerm: "",
+      title: "",
     };
   },
   computed: {
@@ -200,10 +198,10 @@ export default {
     },
     async loadBoardList(page) {
       // 검색어가 있는 경우
-      if (this.searchTerm) {
+      if (this.title) {
         await this.boardStore.getCategoryBoardListByQuery(
           this.boardCategoryIdx,
-          this.searchTerm,
+          this.title,
           this.sortType,
           page
         );
@@ -232,11 +230,50 @@ export default {
 
       this.boardStore.currentPage = nextPage;
     },
+
+    async lastSearchData() {
+      try {
+        // `lastSearchAfter` 값을 가져와서 유효성 검사
+        const lastSearchAfter = this.boardStore.lastSearchAfter;
+        if (!lastSearchAfter || lastSearchAfter.length < 2) {
+          throw new Error("Invalid lastSearchAfter value");
+        }
+
+        // `searchAfterStr` 구성
+        const searchAfterStr = `${lastSearchAfter[0]}, "${String(lastSearchAfter[1])}"`;
+
+        // 다음 결과 불러오기
+        await this.boardStore.getBoardListByQueryNext(
+          this.boardCategoryIdx,
+          this.sortType,
+          this.title,
+          searchAfterStr
+        );
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    
   },
 };
 </script>
 
 <style scoped>
+.scrollBtn{
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: rgb(84, 29, 112);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  font-family: Pretendard, serif;
+}
+
 body,
 html {
   padding: 0;

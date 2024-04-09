@@ -511,7 +511,7 @@ export const useBoardStore = defineStore("board", {
         this.currentPage = page;
         this.totalCnt = response.data.result.totalCnt;
 
-        if (this.boardList.length === 0) {
+        if (this.boardList.list.length === 0) {
           this.isBoardExist = false;
           this.isPageExist = false;
         } else {
@@ -545,6 +545,14 @@ export const useBoardStore = defineStore("board", {
           this.searchAfterStr = `${response.data.result.lastSearchAfter[0]}, "${String(response.data.result.lastSearchAfter[1])}"`;
 
           this.noMoreData = false; // 더 불러올 데이터가 있으므로 메시지 숨김
+
+          if (this.boardList.list.length === 0) {
+            this.isBoardExist = false;
+            this.isPageExist = false;
+          } else {
+            this.isBoardExist = true;
+            this.isPageExist = true;
+          }
         }
       } catch (error) {
         console.error(error);
