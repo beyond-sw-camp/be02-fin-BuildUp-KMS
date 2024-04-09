@@ -56,5 +56,6 @@ public class EsBoardController {
 
         BaseRes baseRes = esBoardService.titleContentSearch2(categoryIdx, sortType, title, size, searchAfter);
         return ResponseEntity.ok().body(baseRes);
+
     }
 }
