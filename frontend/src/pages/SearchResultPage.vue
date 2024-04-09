@@ -58,7 +58,7 @@
                       </div>
                     </button>
                     <div class="_1YCmw flex-grow-1">
-                      <input type="text" value="" placeholder="제목, 내용으로 질문을 찾아 보세요!"
+                      <input type="text" v-model="searchQuery" v-on:keyup.enter="triggerSearch" placeholder="제목, 내용으로 질문을 찾아 보세요!"
                         class="FMUyj _1LD4c form-control-xl form-control" /><svg fill="currentColor" width="16"
                         height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" class="A-RPq _2vGEB">
                         <path fill-rule="evenodd" clip-rule="evenodd"
@@ -66,7 +66,7 @@
                         </path>
                       </svg>
                     </div>
-                    <button type="button" class="flex-shrink-0 btn btn-outline-basic btn-xl">
+                    <button type="button" class="flex-shrink-0 btn btn-outline-basic btn-xl" @click="triggerSearch" >
                       <div class="_2pYHs ODppI"><span>검색</span></div>
                     </button>
                   </div>
@@ -76,7 +76,7 @@
                     <div class="_2kqp41 _2d5D_m" style="--box-gap: 0.5rem">
                       <span><span>검색 결과</span></span><span class="text-blue-500">{{
                         reviewStore.totalCnt
-                        }}</span>
+                      }}</span>
                     </div>
                   </h5>
                   <div class="dropdown">
@@ -133,7 +133,7 @@
                                   aria-current="page">
                                   <span class="_1t2_hP">{{
                                     review.reviewContent
-                                    }}</span>
+                                  }}</span>
                                 </li>
                               </ol>
                             </nav>
@@ -148,7 +148,7 @@
                                   </path>
                                 </svg><span class="paragraph-sm">{{
                                   review.viewCnt
-                                  }}</span></span><span
+                                }}</span></span><span
                                 class="text-gray-600 d-inline-flex align-items-center _22s-QT"><svg fill="currentColor"
                                   width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
                                   <path fill-rule="evenodd" clip-rule="evenodd"
@@ -156,7 +156,7 @@
                                   </path>
                                 </svg><span class="paragraph-sm">{{
                                   review.commentCnt
-                                  }}</span></span><span
+                                }}</span></span><span
                                 class="text-gray-600 d-inline-flex align-items-center _22s-QT"><svg fill="currentColor"
                                   width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
                                   <path fill-rule="evenodd" clip-rule="evenodd"
@@ -165,7 +165,7 @@
                                 </svg>
                                 <span class="paragraph-sm">{{
                                   review.upCnt
-                                  }}</span>
+                                }}</span>
                               </span>
                             </div>
                           </div>
@@ -220,7 +220,8 @@ export default {
       dropdownOpen: false,
       query: "",
       searchType: "",
-      noMoreData: false
+      noMoreData: false,
+      searchQuery: ""
     };
   },
   async mounted() {
@@ -310,7 +311,19 @@ export default {
       const seconds = String(date.getSeconds()).padStart(2, '0');
 
       return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-    }
+    },
+
+    async triggerSearch() {
+      if (!this.searchQuery.trim()) {
+        alert("검색어를 입력하세요!");
+        return;
+      }
+
+      this.query = this.searchQuery; 
+      await this.reviewStore.getReviewListByQuery(this.query, 1); 
+
+      this.searchQuery = "";
+    },
   },
 };
 </script>
