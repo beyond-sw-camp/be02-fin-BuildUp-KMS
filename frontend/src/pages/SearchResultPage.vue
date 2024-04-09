@@ -388,6 +388,7 @@ export default {
     } else if(sortType === 2) {
       this.sortTypeTitle = "인기순";
     }
+    this.reviewStore.getSearchSortReviewList(this.sortType, this.title);
     this.dropdownOpen = false;
   }
     },
