@@ -55,4 +55,7 @@ public class EsReview {
 
     @Field(type = FieldType.Text)
     private String profileImage;
+
+    @Field(type = FieldType.Text)
+    private String reviewImage;
 }

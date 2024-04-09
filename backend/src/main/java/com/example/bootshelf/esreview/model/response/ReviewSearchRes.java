@@ -19,9 +19,8 @@ public class ReviewSearchRes {
     private Integer upCnt;
     private Integer scrapCnt;
     private String updatedAt;
-    private Boolean status;
     private String courseName;
     private Integer courseEvaluation;
-    private String reviewImg;
+    private String reviewImage;
     private String profileImage;
 }

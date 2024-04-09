@@ -11,15 +11,14 @@ import com.example.bootshelf.common.error.entityexception.AdminException;
 import com.example.bootshelf.config.aws.ImageUtils;
 import com.example.bootshelf.config.aws.S3Service;
 import com.example.bootshelf.config.utils.JwtUtils;
+import com.example.bootshelf.config.utils.RedisUtils;
 import com.example.bootshelf.course.Course;
 import com.example.bootshelf.common.error.entityexception.CourseException;
 import com.example.bootshelf.course.repository.CourseRepository;
 import com.example.bootshelf.common.error.entityexception.UserException;
 import com.example.bootshelf.user.model.entity.User;
-import com.example.bootshelf.user.model.entity.UserRefreshToken;
 import com.example.bootshelf.user.model.request.*;
 import com.example.bootshelf.user.model.response.*;
-import com.example.bootshelf.user.repository.UserRefreshTokenRepository;
 import com.example.bootshelf.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.joda.time.LocalDateTime;
@@ -35,7 +34,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -59,7 +57,7 @@ public class UserService {
     private final JavaMailSender emailSender;
     private final EmailVerifyService emailVerifyService;
     private final JwtUtils jwtUtils;
-    private final UserRefreshTokenRepository userRefreshTokenRepository;
+    private final RedisUtils redisUtils;
 
     @Transactional(readOnly = false)
     public User saveUser(PostSignUpUserReq postSignUpUserReq, MultipartFile profileImage) {
@@ -203,27 +201,17 @@ public class UserService {
             }
             PostLoginUserRes postLogInUserRes = PostLoginUserRes.builder().accessToken(jwtUtils.generateAccessToken(user, secretKey, expiredTimeMs)).build();
             // 로그인 시 리프레시 토큰이 존재할 때 지워준다.
-
-            Optional<UserRefreshToken> oldToken = userRefreshTokenRepository.findByUserIdx(user.getIdx());
-
-            if(oldToken.isPresent()) {
-                UserRefreshToken userRefreshToken = oldToken.get();
+            String res = redisUtils.getData(user.getEmail());
+            if(res!=null) {
+                redisUtils.deleteData(res);
                 String newRefreshToken = jwtUtils.generateRefreshToken(secretKey,expiredRefreshTokenTimeMs);
-
-                userRefreshToken.setRefreshToken(newRefreshToken);
-                userRefreshTokenRepository.save(userRefreshToken);
-
+                redisUtils.setDataExpire(user.getEmail(), newRefreshToken, expiredRefreshTokenTimeMs / 1000);
                 postLogInUserRes.setRefreshToken(newRefreshToken);
             } else {
 
                 String newRefreshToken = jwtUtils.generateRefreshToken(secretKey,expiredRefreshTokenTimeMs);
 
-                UserRefreshToken userRefreshToken = UserRefreshToken.builder()
-                        .refreshToken(newRefreshToken)
-                        .userIdx(user.getIdx())
-                        .build();
-
-                userRefreshTokenRepository.save(userRefreshToken);
+                redisUtils.setDataExpire(user.getEmail(), newRefreshToken, expiredRefreshTokenTimeMs / 1000);
 
                 postLogInUserRes.setRefreshToken(newRefreshToken);
             }
