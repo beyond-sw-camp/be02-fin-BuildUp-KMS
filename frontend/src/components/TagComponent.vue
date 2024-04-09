@@ -1,10 +1,18 @@
 <template>
   <div class="css-fortagcomponentgms">
-    <div v-for="(tagName, index) in tagNameList" :key="index" class="css-1kc14yj">
-      # {{tagName.tagname}}
+    <div v-for="(tagName, index) in tagNameList" :key="index" class="css-1kc14yj" :id="tagName.idx">
+      <!-- 객체인 경우 tagname 속성 사용 -->
+      <template v-if="typeof tagName === 'object'">
+        # {{ tagName.tagname }}
+      </template>
+      <!-- 문자열인 경우 tagName 직접 렌더링 -->
+      <template v-else>
+        # {{ tagName }}
+      </template>
     </div>
   </div>
 </template>
+
 
 <script>
 export default {
