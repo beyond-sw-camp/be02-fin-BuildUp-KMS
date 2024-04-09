@@ -1,14 +1,20 @@
 spring:
   data:
-    elasticsearch:
-      repositories:
-        enabled: true
-      url: ${ES_URL}
+#    elasticsearch:
+#      repositories:
+#        enabled: true
+#      url: ${ES_URL}
 
-    redis:
-      host: ${REDIS_URL}
-      port: ${REDIS_PORT}
-
+  redis:
+    master:
+      host: ${REDIS_MASTER_URL}
+      port: ${REDIS_MASTER_PORT}
+      password: ${REDIS_MASTER_PW}
+    slave:
+      host: ${REDIS_SLAVE1_URL}
+      port: ${REDIS_SLAVE1_PORT}
+#    - host: ${REDIS_SLAVE2_URL}
+#      port: ${REDIS_SLAVE2_PORT}
 
 
   mvc:
