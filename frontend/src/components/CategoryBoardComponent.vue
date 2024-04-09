@@ -12,14 +12,14 @@
             <div class="css-1jibmi3">
               <!--게시글 타이틀-->
               <div class="css-cp47oo">
-                {{ boards.boardtitle }}
+                {{ boards.boardTitle }}
               </div>
               <div class="css-14bssip">
-                {{ boards.boardcontent }}
+                {{ boards.boardContent }}
               </div>
             </div>
             <!--태그 컴포넌트 자리-->
-            <TagComponent :tagNameList="boards.tag" />
+            <TagComponent :tagNameList="boards.tags" />
           </div>
           <div class="css-bt1qy"></div>
           <!--사진-->
