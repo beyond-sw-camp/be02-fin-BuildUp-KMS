@@ -14,7 +14,7 @@ public class PatchUpdateBoardCommentRes {
     private Integer userIdx;
     private String nickName;
     private String boardCommentContent;
-    private LocalDateTime createAt;
-    private LocalDateTime updateAt;
+    private String createdAt;
+    private String updatedAt;
 
 }

@@ -38,17 +38,17 @@ public class EsBoardRepository {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
                 .filter(QueryBuilders.termQuery("boardcategory_idx", categoryIdx));
 
-        HighlightBuilder highlightBuilder = new HighlightBuilder();
-        highlightBuilder.field("boardtitle"); // 하이라이팅을 적용할 필드 지정
-        highlightBuilder.field("boardcontent"); // 하이라이팅을 적용할 필드 지정
-        highlightBuilder.preTags("<em>"); // 하이라이트 시작 태그
-        highlightBuilder.postTags("</em>"); // 하이라이트 종료 태그
+//        HighlightBuilder highlightBuilder = new HighlightBuilder();
+//        highlightBuilder.field("boardtitle"); // 하이라이팅을 적용할 필드 지정
+//        highlightBuilder.field("boardcontent"); // 하이라이팅을 적용할 필드 지정
+//        highlightBuilder.preTags("<em>"); // 하이라이트 시작 태그
+//        highlightBuilder.postTags("</em>"); // 하이라이트 종료 태그
 
 
         NativeSearchQuery build = new NativeSearchQueryBuilder()
                 .withQuery(multiMatchQueryBuilder)
                 .withFilter(boolQueryBuilder)
-                .withHighlightBuilder(highlightBuilder) // 하이라이트 설정 추가
+//                .withHighlightBuilder(highlightBuilder) // 하이라이트 설정 추가
                 .withPageable(pageable)
                 .withSort(SortBuilders.fieldSort(sortField).order(SortOrder.ASC))
                 .build();
