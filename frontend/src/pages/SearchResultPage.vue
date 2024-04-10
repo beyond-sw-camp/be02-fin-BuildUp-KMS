@@ -76,13 +76,13 @@
                     <div class="_2kqp41 _2d5D_m" style="--box-gap: 0.5rem">
                       <span><span>검색 결과</span></span><span class="text-blue-500">{{
                         reviewStore.totalCnt
-                      }}</span>
+                        }}</span>
                     </div>
                   </h5>
                   <div class="dropdown">
                     <button @click="toggleDropdown" type="button" aria-haspopup="true"
                       :aria-expanded="dropdownOpen.toString()" class="_1rMfp _3NZzgf btn btn-select btn-lg">
-                      <span>최신순</span>
+                      <span>{{ sortOrderTitle }}</span>
                       <svg fill="currentColor" width="16" height="16" viewBox="0 0 16 16"
                         xmlns="http://www.w3.org/2000/svg" class="_2-Js2">
                         <path fill-rule="evenodd" clip-rule="evenodd"
@@ -92,24 +92,34 @@
                     </button>
                     <div v-show="dropdownOpen" tabindex="-1" role="menu" aria-hidden="false"
                       class="_20WMwO w-100 dropdown-menu">
-                      <button type="button" tabindex="0" role="menuitem" class="_3CkPsH dropdown-item active"
-                        @click="setSortOrder(1)">
+                      <button type="button" tabindex="0" role="menuitem" :class="{
+                        '_3CkPsH dropdown-item': true,
+                        active: this.sortOrder === 1,
+                      }" @click="setSortOrder(1)">
                         <span>최신순</span>
                       </button>
-                      <button type="button" tabindex="0" role="menuitem" class="_3CkPsH dropdown-item"
-                        @click="setSortOrder(2)">
+                      <button type="button" tabindex="0" role="menuitem" :class="{
+                        '_3CkPsH dropdown-item': true,
+                        active: this.sortOrder === 2,
+                      }" @click="setSortOrder(2)">
                         <span>인기순</span>
                       </button>
-                      <button type="button" tabindex="0" role="menuitem" class="_3CkPsH dropdown-item"
-                        @click="setSortOrder(3)">
+                      <button type="button" tabindex="0" role="menuitem" :class="{
+                        '_3CkPsH dropdown-item': true,
+                        active: this.sortOrder === 3,
+                      }" @click="setSortOrder(3)">
                         <span>조회순</span>
                       </button>
-                      <button type="button" tabindex="0" role="menuitem" class="_3CkPsH dropdown-item"
-                        @click="setSortOrder(4)">
+                      <button type="button" tabindex="0" role="menuitem" :class="{
+                        '_3CkPsH dropdown-item': true,
+                        active: this.sortOrder === 4,
+                      }" @click="setSortOrder(4)">
                         <span>스크랩순</span>
                       </button>
-                      <button type="button" tabindex="0" role="menuitem" class="_3CkPsH dropdown-item"
-                        @click="setSortOrder(5)">
+                      <button type="button" tabindex="0" role="menuitem" :class="{
+                        '_3CkPsH dropdown-item': true,
+                        active: this.sortOrder === 5,
+                      }" @click="setSortOrder(5)">
                         <span>댓글순</span>
                       </button>
                     </div>
@@ -147,7 +157,7 @@
                                   aria-current="page">
                                   <span class="_1t2_hP">{{
                                     review.reviewContent
-                                  }}</span>
+                                    }}</span>
                                 </li>
                               </ol>
                             </nav>
@@ -162,7 +172,7 @@
                                   </path>
                                 </svg><span class="paragraph-sm">{{
                                   review.viewCnt
-                                }}</span></span><span
+                                  }}</span></span><span
                                 class="text-gray-600 d-inline-flex align-items-center _22s-QT"><svg fill="currentColor"
                                   width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
                                   <path fill-rule="evenodd" clip-rule="evenodd"
@@ -170,7 +180,7 @@
                                   </path>
                                 </svg><span class="paragraph-sm">{{
                                   review.commentCnt
-                                }}</span></span><span
+                                  }}</span></span><span
                                 class="text-gray-600 d-inline-flex align-items-center _22s-QT"><svg fill="currentColor"
                                   width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
                                   <path fill-rule="evenodd" clip-rule="evenodd"
@@ -179,7 +189,7 @@
                                 </svg>
                                 <span class="paragraph-sm">{{
                                   review.upCnt
-                                }}</span>
+                                  }}</span>
                               </span>
                             </div>
                           </div>
@@ -188,6 +198,18 @@
                       <hr class="m-0 p-0" />
                     </div>
                   </span>
+                  <!---검색결과 없을 때-->
+                  <div class="css-6g4q8b" v-show="!reviewStore.isReviewExist">
+                    <div class="css-aa80it">
+                      <img src="@/assets/img/002.png" class="css-1baht8c" />
+                      <div class="css-dhqp8i">
+                        <div class="css-c7zvxr">검색 결과가 없습니다.</div>
+                        <div class="css-1mcux1f">
+                          질문을 직접 남겨서 궁금증을 해결해 보세요!
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </ul>
                 <!-- <div class="d-flex justify-content-center py-0 py-md-4">
                   <PaginationComponent
@@ -237,7 +259,8 @@ export default {
       noMoreData: false,
       searchQuery: "",
       sortOrder: 1,
-      lastSearchAfter: []
+      lastSearchAfter: [],
+      sortOrderTitle: "최신순",
     };
   },
   async mounted() {
@@ -258,14 +281,13 @@ export default {
 
     // 게시판 목록 불러오기
     if (query !== null && query !== "") {
-      await this.reviewStore.getReviewListByQueryWithOrder(query, searchType, 1);
-
-      if (this.reviewStore.reviewList.length === 0) {
-        alert("해당하는 검색결과가 없습니다. 다른 검색어를 입력해주세요.")
-        this.$router.push("/");
-      }
+      await this.reviewStore.getReviewListByQueryWithOrder(
+        query,
+        searchType,
+        1
+      );
     } else {
-      alert("검색할 내용을 입력해주세요.")
+      alert("검색할 내용을 입력해주세요.");
       this.$router.push("/");
     }
   },
@@ -320,10 +342,15 @@ export default {
           throw new Error("Invalid lastSearchAfter value");
         }
 
-        const searchAfterStr = `${lastSearchAfter[0]}, "${String(lastSearchAfter[1])}"`;
+        const searchAfterStr = `${lastSearchAfter[0]}, "${String(
+          lastSearchAfter[1]
+        )}"`;
 
         await this.reviewStore.getReviewListByQueryNextWithOrder(
-          this.query, this.searchType, this.sortOrder, searchAfterStr
+          this.query,
+          this.searchType,
+          this.sortOrder,
+          searchAfterStr
         );
       } catch (error) {
         console.error(error);
@@ -333,11 +360,12 @@ export default {
     formatDate(dateString) {
       const date = new Date(dateString);
       const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-      const hours = String(date.getHours()).padStart(2, '0');
-      const minutes = String(date.getMinutes()).padStart(2, '0');
-      const seconds = String(date.getSeconds()).padStart(2, '0');
+     
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      const hours = String(date.getHours()).padStart(2, "0");
+      const minutes = String(date.getMinutes()).padStart(2, "0");
+      const seconds = String(date.getSeconds()).padStart(2, "0");
 
       return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     },
@@ -349,14 +377,35 @@ export default {
       }
 
       this.query = this.searchQuery;
-      await this.reviewStore.getReviewListByQuery(this.query, 1);
+      await this.reviewStore.getReviewListByQueryWithOrder(this.query, 1, 1);
 
       this.searchQuery = "";
     },
 
     setSortOrder(order) {
       this.sortOrder = order;
+
+      if (order === 1) {
+        this.sortOrderTitle = "최신순";
+      } else if (order === 2) {
+        this.sortOrderTitle = "추천순";
+      } else if (order === 3) {
+        this.sortOrderTitle = "조회순";
+      } else if (order === 4) {
+        this.sortOrderTitle = "스크랩순";
+      } else if (order === 5) {
+        this.sortOrderTitle = "댓글순";
+      }
       this.getSearchResultByOrder();
+      this.dropdownOpen = false;
+    },
+
+    async getSearchResultByOrder() {
+      await this.reviewStore.getReviewListByQueryWithOrder(
+        this.query,
+        this.searchType,
+        this.sortOrder
+      );
     },
 
     async getSearchResultByOrder() {

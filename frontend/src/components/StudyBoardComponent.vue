@@ -4,18 +4,18 @@
       <h2 aria-description="글 제목">
         <span>
           {{ boards.boardTitle }}
-          {{ boards.title }}
+          {{ boards.boardtitle }}
         </span>
       </h2>
       <h3 aria-description="글 내용">
         {{ boards.boardContent }}
-        {{ boards.content }}
+        {{ boards.boardcontent }}
       </h3>
       <TagComponent :tagNameList="boards.tagNameList" />
       <div class="css-k57yxr epbh2v51">
         <img
           alt="닉네임입니당 프로필 이미지"
-          :src="boards.userProfileImage"
+          :src="boards.profileImage"
           width="20"
           height="20"
           decoding="async"
@@ -26,8 +26,8 @@
         <p>
           <span aria-description="유저 닉네임" class="css-1bf50wt epbh2v52"
             >{{ boards.nickName }}</span
-          ><span aria-description="글 생성일" class="css-1mmbkao epbh2v53"
-            >{{ this.$moment(boards.updatedAt).format('YYYY-MM-DD HH:mm:ss') }}</span
+          ><span aria-description="글 생성일" class="css-1mmbkao epbh2v53" :title="formatDate(boards.updatedAt)"
+            >{{ formatDate(boards.updatedAt) }}</span
           >
         </p>
       </div>
@@ -72,6 +72,19 @@ export default {
   components: {
     TagComponent,
   },
+  methods:{
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      const seconds = String(date.getSeconds()).padStart(2, '0');
+
+      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    },
+  }
 };
 </script>
 
