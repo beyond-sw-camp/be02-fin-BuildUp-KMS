@@ -66,4 +66,5 @@ describe("일반회원 회원가입 테스트", () => {
 
     expect(alertText).toContain("이미 사용중인 이메일입니다.");
   });
+
 });
