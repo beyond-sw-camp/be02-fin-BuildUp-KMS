@@ -30,11 +30,19 @@
                     <router-link to="/review/new">
                       <a class="_2-sdMj btn btn-primary btn-lg btn-block">
                         <div class="_2pYHs _1isiv">
-                          <svg fill="currentColor" width="16" height="16" viewBox="0 0 16 16"
-                            xmlns="http://www.w3.org/2000/svg" class="_1CkmD _1vN1F">
-                            <path fill-rule="evenodd" clip-rule="evenodd"
-                              d="M13.0498 7.3501V8.6501H8.65083V13.0501H7.34983V8.6501H2.94983V7.3501H7.34983V2.9501H8.65083V7.3501H13.0498Z">
-                            </path>
+                          <svg
+                            fill="currentColor"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 16 16"
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="_1CkmD _1vN1F"
+                          >
+                            <path
+                              fill-rule="evenodd"
+                              clip-rule="evenodd"
+                              d="M13.0498 7.3501V8.6501H8.65083V13.0501H7.34983V8.6501H2.94983V7.3501H7.34983V2.9501H8.65083V7.3501H13.0498Z"
+                            ></path>
                           </svg>
                           <span>새 질문 작성</span>
                         </div>
@@ -47,69 +55,158 @@
             <section class="flex-grow-1">
               <div class="overflow-hidden">
                 <div>
-                  <div class="_2kqp41 _2d5D_m _28qC73" style="--box-gap: 0.75rem">
+                  <div
+                    class="_2kqp41 _2d5D_m _28qC73"
+                    style="--box-gap: 0.75rem"
+                  >
                     <button type="button" class="_3Jflz btn btn-link btn-xl">
                       <div class="_2pYHs ODppI">
-                        <svg fill="currentColor" width="16" height="16" viewBox="0 0 16 16"
-                          xmlns="http://www.w3.org/2000/svg" class="_1CkmD _1S27j">
-                          <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M8 1.5L1.5 8L8 14.5L9.149 13.349L4.612 8.812H14.5V7.187H4.612L9.149 2.649L8 1.5Z"></path>
+                        <svg
+                          fill="currentColor"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="_1CkmD _1S27j"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            d="M8 1.5L1.5 8L8 14.5L9.149 13.349L4.612 8.812H14.5V7.187H4.612L9.149 2.649L8 1.5Z"
+                          ></path>
                         </svg>
                       </div>
                     </button>
                     <div class="_1YCmw flex-grow-1">
-                      <input type="text" v-model="searchQuery" placeholder="제목, 내용으로 질문을 찾아 보세요!"
-                        class="FMUyj _1LD4c form-control-xl form-control" /><svg fill="currentColor" width="16"
-                        height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" class="A-RPq _2vGEB">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                          d="M11.46 10.54L10.54 11.46L8 8.92L5.46 11.46L4.54 10.54L7.08 8L4.54 5.46L5.46 4.54L8 7.08L10.54 4.54L11.46 5.46L8.92 8L11.46 10.54ZM8 1.5C4.412 1.5 1.5 4.412 1.5 8C1.5 11.588 4.412 14.5 8 14.5C11.588 14.5 14.5 11.588 14.5 8C14.5 4.412 11.588 1.5 8 1.5Z">
-                        </path>
+                      <input
+                        type="text"
+                        v-model="searchQuery"
+                        placeholder="제목, 내용으로 질문을 찾아 보세요!"
+                        class="FMUyj _1LD4c form-control-xl form-control"
+                      /><svg
+                        fill="currentColor"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="A-RPq _2vGEB"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M11.46 10.54L10.54 11.46L8 8.92L5.46 11.46L4.54 10.54L7.08 8L4.54 5.46L5.46 4.54L8 7.08L10.54 4.54L11.46 5.46L8.92 8L11.46 10.54ZM8 1.5C4.412 1.5 1.5 4.412 1.5 8C1.5 11.588 4.412 14.5 8 14.5C11.588 14.5 14.5 11.588 14.5 8C14.5 4.412 11.588 1.5 8 1.5Z"
+                        ></path>
                       </svg>
                     </div>
-                    <button type="button" class="flex-shrink-0 btn btn-outline-basic btn-xl" @click="triggerSearch">
+                    <button
+                      type="button"
+                      class="flex-shrink-0 btn btn-outline-basic btn-xl"
+                      @click="triggerSearch"
+                    >
                       <div class="_2pYHs ODppI"><span>검색</span></div>
                     </button>
                   </div>
                 </div>
-                <div class="d-flex justify-content-between mt-4 align-items-center">
+                <div
+                  class="d-flex justify-content-between mt-4 align-items-center"
+                >
                   <h5 class="mb-0">
                     <div class="_2kqp41 _2d5D_m" style="--box-gap: 0.5rem">
-                      <span><span>검색 결과</span></span><span class="text-blue-500">{{
+                      <span><span>검색 결과</span></span
+                      ><span class="text-blue-500">{{
                         reviewStore.totalCnt
                       }}</span>
                     </div>
                   </h5>
                   <div class="dropdown">
-                    <button @click="toggleDropdown" type="button" aria-haspopup="true"
-                      :aria-expanded="dropdownOpen.toString()" class="_1rMfp _3NZzgf btn btn-select btn-lg">
-                      <span>최신순</span>
-                      <svg fill="currentColor" width="16" height="16" viewBox="0 0 16 16"
-                        xmlns="http://www.w3.org/2000/svg" class="_2-Js2">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                          d="M7.99997 11.04L3.29797 6.33801L4.21697 5.41901L7.99997 9.20201L11.783 5.41901L12.702 6.33801L7.99997 11.04Z">
-                        </path>
+                    <button
+                      @click="toggleDropdown"
+                      type="button"
+                      aria-haspopup="true"
+                      :aria-expanded="dropdownOpen.toString()"
+                      class="_1rMfp _3NZzgf btn btn-select btn-lg"
+                    >
+                      <span>{{ sortOrderTitle }}</span>
+                      <svg
+                        fill="currentColor"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="_2-Js2"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M7.99997 11.04L3.29797 6.33801L4.21697 5.41901L7.99997 9.20201L11.783 5.41901L12.702 6.33801L7.99997 11.04Z"
+                        ></path>
                       </svg>
                     </button>
-                    <div v-show="dropdownOpen" tabindex="-1" role="menu" aria-hidden="false"
-                      class="_20WMwO w-100 dropdown-menu">
-                      <button type="button" tabindex="0" role="menuitem" class="_3CkPsH dropdown-item active"
-                        @click="setSortOrder(1)">
+                    <div
+                      v-show="dropdownOpen"
+                      tabindex="-1"
+                      role="menu"
+                      aria-hidden="false"
+                      class="_20WMwO w-100 dropdown-menu"
+                    >
+                      <button
+                        type="button"
+                        tabindex="0"
+                        role="menuitem"
+                        :class="{
+                          '_3CkPsH dropdown-item': true,
+                          active: this.sortOrder === 1,
+                        }"
+                        @click="setSortOrder(1)"
+                      >
                         <span>최신순</span>
                       </button>
-                      <button type="button" tabindex="0" role="menuitem" class="_3CkPsH dropdown-item"
-                        @click="setSortOrder(2)">
+                      <button
+                        type="button"
+                        tabindex="0"
+                        role="menuitem"
+                        :class="{
+                          '_3CkPsH dropdown-item': true,
+                          active: this.sortOrder === 2,
+                        }"
+                        @click="setSortOrder(2)"
+                      >
                         <span>인기순</span>
                       </button>
-                      <button type="button" tabindex="0" role="menuitem" class="_3CkPsH dropdown-item"
-                        @click="setSortOrder(3)">
+                      <button
+                        type="button"
+                        tabindex="0"
+                        role="menuitem"
+                        :class="{
+                          '_3CkPsH dropdown-item': true,
+                          active: this.sortOrder === 3,
+                        }"
+                        @click="setSortOrder(3)"
+                      >
                         <span>조회순</span>
                       </button>
-                      <button type="button" tabindex="0" role="menuitem" class="_3CkPsH dropdown-item"
-                        @click="setSortOrder(4)">
+                      <button
+                        type="button"
+                        tabindex="0"
+                        role="menuitem"
+                        :class="{
+                          '_3CkPsH dropdown-item': true,
+                          active: this.sortOrder === 4,
+                        }"
+                        @click="setSortOrder(4)"
+                      >
                         <span>스크랩순</span>
                       </button>
-                      <button type="button" tabindex="0" role="menuitem" class="_3CkPsH dropdown-item"
-                        @click="setSortOrder(5)">
+                      <button
+                        type="button"
+                        tabindex="0"
+                        role="menuitem"
+                        :class="{
+                          '_3CkPsH dropdown-item': true,
+                          active: this.sortOrder === 5,
+                        }"
+                        @click="setSortOrder(5)"
+                      >
                         <span>댓글순</span>
                       </button>
                     </div>
@@ -117,10 +214,19 @@
                 </div>
                 <ul class="_1PTI0R p-0 mb-4">
                   <span>
-                    <div v-for="review in reviewStore.reviewList" :key="review.idx">
+                    <div
+                      v-for="review in reviewStore.reviewList"
+                      :key="review.idx"
+                    >
                       <li class="_3lQ639 _32Ay9Q" role="presentation">
-                        <div class="_2kqp41 flex-grow-1" style="--box-gap: 0.75rem">
-                          <div class="_2kqp41 tttQ1F" style="--box-gap: 0.375rem">
+                        <div
+                          class="_2kqp41 flex-grow-1"
+                          style="--box-gap: 0.75rem"
+                        >
+                          <div
+                            class="_2kqp41 tttQ1F"
+                            style="--box-gap: 0.375rem"
+                          >
                             <router-link :to="`review/${review.idx}`">
                               <p class="_3yzn7O mb-0 _2Sv3IV">
                                 {{ review.reviewTitle }}
@@ -128,12 +234,18 @@
                             </router-link>
                             <div>
                               <span class="d-none d-md-block">
-                                <span class="d-flex Dhz06G align-items-center text-gray-600">
-                                  <span class="text-gray-900 font-weight-normal flex-shrink-0">{{ review.nickName
-                                    }}</span>
+                                <span
+                                  class="d-flex Dhz06G align-items-center text-gray-600"
+                                >
+                                  <span
+                                    class="text-gray-900 font-weight-normal flex-shrink-0"
+                                    >{{ review.nickName }}</span
+                                  >
                                   <span class="paragraph-sm">·</span>
-                                  <span class="text-gray-600 flex-shrink-0" :title="formatDate(review.updatedAt)">{{
-                                    formatDate(review.updatedAt) }}
+                                  <span
+                                    class="text-gray-600 flex-shrink-0"
+                                    :title="formatDate(review.updatedAt)"
+                                    >{{ formatDate(review.updatedAt) }}
                                   </span>
                                 </span>
                               </span>
@@ -144,7 +256,8 @@
                               <ol class="breadcrumb _3cKvl flex-nowrap">
                                 <li
                                   class="d-inline-flex align-items-center iFcHCl _1OTYG _2amVj _285DO active breadcrumb-item"
-                                  aria-current="page">
+                                  aria-current="page"
+                                >
                                   <span class="_1t2_hP">{{
                                     review.reviewContent
                                   }}</span>
@@ -154,28 +267,54 @@
                           </div>
                           <div class="d-flex justify-content-between">
                             <div class="d-flex align-items-center _1VWGjy">
-                              <span class="text-gray-600 d-inline-flex align-items-center _22s-QT"><svg
-                                  fill="currentColor" width="16" height="16" viewBox="0 0 16 16"
-                                  xmlns="http://www.w3.org/2000/svg">
-                                  <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M1 8.07129C3.24 4.73829 5.24 3.07129 8 3.07129C10.761 3.07129 12.761 4.73829 15 8.07129C12.761 11.4043 10.761 13.0713 8 13.0713C5.24 13.0713 3.24 11.4043 1 8.07129ZM8 12.0713C10.209 12.0713 12 10.2803 12 8.07129C12 5.86229 10.209 4.07129 8 4.07129C5.791 4.07129 4 5.86229 4 8.07129C4 10.2803 5.791 12.0713 8 12.0713ZM8 10.0713C6.896 10.0713 6 9.17629 6 8.07129C6 6.96729 6.896 6.07129 8 6.07129C9.104 6.07129 10 6.96729 10 8.07129C10 9.17629 9.104 10.0713 8 10.0713Z">
-                                  </path>
-                                </svg><span class="paragraph-sm">{{
+                              <span
+                                class="text-gray-600 d-inline-flex align-items-center _22s-QT"
+                                ><svg
+                                  fill="currentColor"
+                                  width="16"
+                                  height="16"
+                                  viewBox="0 0 16 16"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    fill-rule="evenodd"
+                                    clip-rule="evenodd"
+                                    d="M1 8.07129C3.24 4.73829 5.24 3.07129 8 3.07129C10.761 3.07129 12.761 4.73829 15 8.07129C12.761 11.4043 10.761 13.0713 8 13.0713C5.24 13.0713 3.24 11.4043 1 8.07129ZM8 12.0713C10.209 12.0713 12 10.2803 12 8.07129C12 5.86229 10.209 4.07129 8 4.07129C5.791 4.07129 4 5.86229 4 8.07129C4 10.2803 5.791 12.0713 8 12.0713ZM8 10.0713C6.896 10.0713 6 9.17629 6 8.07129C6 6.96729 6.896 6.07129 8 6.07129C9.104 6.07129 10 6.96729 10 8.07129C10 9.17629 9.104 10.0713 8 10.0713Z"
+                                  ></path></svg
+                                ><span class="paragraph-sm">{{
                                   review.viewCnt
-                                }}</span></span><span
-                                class="text-gray-600 d-inline-flex align-items-center _22s-QT"><svg fill="currentColor"
-                                  width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                                  <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M4 6.059H12V4.759H4V6.059ZM4 8.741H9.5V7.441H4V8.741ZM1.5 1.75V10.25V11.75V14.25L4 11.75H14.5V1.75H1.5Z">
-                                  </path>
-                                </svg><span class="paragraph-sm">{{
+                                }}</span></span
+                              ><span
+                                class="text-gray-600 d-inline-flex align-items-center _22s-QT"
+                                ><svg
+                                  fill="currentColor"
+                                  width="16"
+                                  height="16"
+                                  viewBox="0 0 16 16"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    fill-rule="evenodd"
+                                    clip-rule="evenodd"
+                                    d="M4 6.059H12V4.759H4V6.059ZM4 8.741H9.5V7.441H4V8.741ZM1.5 1.75V10.25V11.75V14.25L4 11.75H14.5V1.75H1.5Z"
+                                  ></path></svg
+                                ><span class="paragraph-sm">{{
                                   review.commentCnt
-                                }}</span></span><span
-                                class="text-gray-600 d-inline-flex align-items-center _22s-QT"><svg fill="currentColor"
-                                  width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                                  <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M9.95312 5.75011L10.4471 4.20511C10.7831 3.15311 10.4811 2.00111 9.67112 1.25011L5.30012 5.75011V13.7501H13.0001L15.0001 8.78811V5.75011H9.95312ZM1.50012 13.7501H4.00012V6.25011H1.50012V13.7501Z">
-                                  </path>
+                                }}</span></span
+                              ><span
+                                class="text-gray-600 d-inline-flex align-items-center _22s-QT"
+                                ><svg
+                                  fill="currentColor"
+                                  width="16"
+                                  height="16"
+                                  viewBox="0 0 16 16"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    fill-rule="evenodd"
+                                    clip-rule="evenodd"
+                                    d="M9.95312 5.75011L10.4471 4.20511C10.7831 3.15311 10.4811 2.00111 9.67112 1.25011L5.30012 5.75011V13.7501H13.0001L15.0001 8.78811V5.75011H9.95312ZM1.50012 13.7501H4.00012V6.25011H1.50012V13.7501Z"
+                                  ></path>
                                 </svg>
                                 <span class="paragraph-sm">{{
                                   review.upCnt
@@ -197,13 +336,24 @@
                     @change-page="changePage"
                   />
                 </div> -->
-                <a class="_2-sdMj btn btn-primary btn-lg btn-block" @click="loadMoreReviews">
+                <a
+                  class="_2-sdMj btn btn-primary btn-lg btn-block"
+                  @click="loadMoreReviews"
+                >
                   <div class="_2pYHs _1isiv">
-                    <svg fill="currentColor" width="16" height="16" viewBox="0 0 16 16"
-                      xmlns="http://www.w3.org/2000/svg" class="_1CkmD _1vN1F">
-                      <path fill-rule="evenodd" clip-rule="evenodd"
-                        d="M13.0498 7.3501V8.6501H8.65083V13.0501H7.34983V8.6501H2.94983V7.3501H7.34983V2.9501H8.65083V7.3501H13.0498Z">
-                      </path>
+                    <svg
+                      fill="currentColor"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="_1CkmD _1vN1F"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M13.0498 7.3501V8.6501H8.65083V13.0501H7.34983V8.6501H2.94983V7.3501H7.34983V2.9501H8.65083V7.3501H13.0498Z"
+                      ></path>
                     </svg>
                     <span>더보기</span>
                   </div>
@@ -237,7 +387,8 @@ export default {
       noMoreData: false,
       searchQuery: "",
       sortOrder: 1,
-      lastSearchAfter: []
+      lastSearchAfter: [],
+      sortOrderTitle: "최신순",
     };
   },
   async mounted() {
@@ -258,14 +409,18 @@ export default {
 
     // 게시판 목록 불러오기
     if (query !== null && query !== "") {
-      await this.reviewStore.getReviewListByQueryWithOrder(query, searchType, 1);
+      await this.reviewStore.getReviewListByQueryWithOrder(
+        query,
+        searchType,
+        1
+      );
 
       if (this.reviewStore.reviewList.length === 0) {
-        alert("해당하는 검색결과가 없습니다. 다른 검색어를 입력해주세요.")
+        alert("해당하는 검색결과가 없습니다. 다른 검색어를 입력해주세요.");
         this.$router.push("/");
       }
     } else {
-      alert("검색할 내용을 입력해주세요.")
+      alert("검색할 내용을 입력해주세요.");
       this.$router.push("/");
     }
   },
@@ -320,10 +475,15 @@ export default {
           throw new Error("Invalid lastSearchAfter value");
         }
 
-        const searchAfterStr = `${lastSearchAfter[0]}, "${String(lastSearchAfter[1])}"`;
+        const searchAfterStr = `${lastSearchAfter[0]}, "${String(
+          lastSearchAfter[1]
+        )}"`;
 
         await this.reviewStore.getReviewListByQueryNextWithOrder(
-          this.query, this.searchType, this.sortOrder, searchAfterStr
+          this.query,
+          this.searchType,
+          this.sortOrder,
+          searchAfterStr
         );
       } catch (error) {
         console.error(error);
@@ -333,11 +493,11 @@ export default {
     formatDate(dateString) {
       const date = new Date(dateString);
       const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-      const hours = String(date.getHours()).padStart(2, '0');
-      const minutes = String(date.getMinutes()).padStart(2, '0');
-      const seconds = String(date.getSeconds()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      const hours = String(date.getHours()).padStart(2, "0");
+      const minutes = String(date.getMinutes()).padStart(2, "0");
+      const seconds = String(date.getSeconds()).padStart(2, "0");
 
       return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     },
@@ -356,12 +516,28 @@ export default {
 
     setSortOrder(order) {
       this.sortOrder = order;
+      if (order === 1) {
+        this.sortOrderTitle = "최신순";
+      } else if (order === 2) {
+        this.sortOrderTitle = "추천순";
+      } else if (order === 3) {
+        this.sortOrderTitle = "조회순";
+      } else if (order === 4) {
+        this.sortOrderTitle = "스크랩순";
+      } else if (order === 5) {
+        this.sortOrderTitle = "댓글순";
+      }
       this.getSearchResultByOrder();
+      this.dropdownOpen = false;
     },
 
     async getSearchResultByOrder() {
-      await this.reviewStore.getReviewListByQueryWithOrder(this.query, this.searchType, this.sortOrder);
-    }
+      await this.reviewStore.getReviewListByQueryWithOrder(
+        this.query,
+        this.searchType,
+        this.sortOrder
+      );
+    },
   },
 };
 </script>
@@ -393,13 +569,15 @@ export default {
   --toastify-text-color-error: #fff;
   --toastify-spinner-color: #616161;
   --toastify-spinner-color-empty-area: #e0e0e0;
-  --toastify-color-progress-light: linear-gradient(90deg,
-      #4cd964,
-      #5ac8fa,
-      #007aff,
-      #34aadc,
-      #5856d6,
-      #ff2d55);
+  --toastify-color-progress-light: linear-gradient(
+    90deg,
+    #4cd964,
+    #5ac8fa,
+    #007aff,
+    #34aadc,
+    #5856d6,
+    #ff2d55
+  );
   --toastify-color-progress-dark: #bb86fc;
   --toastify-color-progress-info: var(--toastify-color-info);
   --toastify-color-progress-success: var(--toastify-color-success);
@@ -492,7 +670,7 @@ element.style {
   flex-direction: row;
 }
 
-._2zXJMj>section {
+._2zXJMj > section {
   min-width: 0;
 }
 
@@ -545,7 +723,7 @@ element.style {
   pointer-events: none;
 }
 
-._2zXJMj>section {
+._2zXJMj > section {
   min-width: 0;
 }
 
@@ -766,7 +944,7 @@ li {
   line-height: 1.375rem;
 }
 
-._1OTYG+._1OTYG:before {
+._1OTYG + ._1OTYG:before {
   width: 1rem;
   height: 1rem;
   transform: none;
@@ -835,7 +1013,7 @@ svg:not(:root) {
   overflow: hidden;
 }
 
-._1VYQb4 li+li {
+._1VYQb4 li + li {
   margin-left: 0.25rem;
 }
 
@@ -847,7 +1025,7 @@ svg:not(:root) {
   margin-bottom: 0px;
 }
 
-._2zXJMj>section {
+._2zXJMj > section {
   min-width: 0;
 }
 
