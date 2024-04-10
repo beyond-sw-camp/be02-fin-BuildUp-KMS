@@ -12,16 +12,16 @@
             <div class="css-1jibmi3">
               <!--게시글 타이틀-->
               <div class="css-cp47oo">
-                {{ boards.boardTitle }}
+                {{ boards.boardtitle }}
                 {{ boards.title }}
               </div>
               <div class="css-14bssip">
-                {{ boards.boardContent }}
+                {{ boards.boardcontent }}
                 {{ boards.content }}
               </div>
             </div>
             <!--태그 컴포넌트 자리-->
-            <TagComponent v-if="boards.boardTitle" :tagNameList="boards.tags" />
+            <TagComponent v-if="boards.boardtitle" :tagNameList="boards.tags" />
             <TagComponent v-else :tagNameList="boards.tagNameList" />
           </div>
           <div class="css-bt1qy"></div>

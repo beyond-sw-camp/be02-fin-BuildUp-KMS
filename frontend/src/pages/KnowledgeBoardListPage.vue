@@ -91,7 +91,7 @@
             <!--여기서 본격 글 리스트-->
             <div class="css-1csvk83">
               <ul class="css-10c0kk0 e15eiqsa1">
-                <div class="css-k59gj9" v-for="boards in boardStore.boardList.list"
+                <div class="css-k59gj9" v-for="boards in boardStore.boardList"
                  :key="boards.boardIdx">
                   <CategoryBoardComponent :boards="boards" />
                 </div>
