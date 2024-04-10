@@ -327,6 +327,18 @@
                       <hr class="m-0 p-0" />
                     </div>
                   </span>
+                  <!---검색결과 없을 때-->
+                  <div class="css-6g4q8b" v-show="!reviewStore.isReviewExist">
+                    <div class="css-aa80it">
+                      <img src="@/assets/img/002.png" class="css-1baht8c" />
+                      <div class="css-dhqp8i">
+                        <div class="css-c7zvxr">검색 결과가 없습니다.</div>
+                        <div class="css-1mcux1f">
+                          질문을 직접 남겨서 궁금증을 해결해 보세요!
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </ul>
                 <!-- <div class="d-flex justify-content-center py-0 py-md-4">
                   <PaginationComponent
@@ -414,11 +426,6 @@ export default {
         searchType,
         1
       );
-
-      if (this.reviewStore.reviewList.length === 0) {
-        alert("해당하는 검색결과가 없습니다. 다른 검색어를 입력해주세요.");
-        this.$router.push("/");
-      }
     } else {
       alert("검색할 내용을 입력해주세요.");
       this.$router.push("/");
