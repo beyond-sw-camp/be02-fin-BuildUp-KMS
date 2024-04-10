@@ -1,0 +1,27 @@
+server:
+  port: 9999
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  application:
+    name: BOOTSHELF-GATEWAY-SERVICE
+  cloud:
+    gateway:
+      routes:
+        - id: main-service
+          uri: lb://BOOTSHELF-MAIN-SERVICE
+          predicates:
+            - Path=/main/**
+
+        - id: board-search-service
+          uri: lb://BOOTSHELF-BOARD-SEARCH-SERVICE
+          predicates:
+            - Path=/search/board/**
+
+        - id: review-search-service
+          uri: lb://BOOTSHELF-REVIEW-SEARCH-SERVICE
+          predicates:
+            - Path=/search/review/**

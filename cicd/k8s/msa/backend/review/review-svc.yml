@@ -1,0 +1,12 @@
+apiVersion: v1 
+kind: Service 
+
+metadata: 
+  name: review-svc
+
+spec: 
+  selector: 
+    type: review
+  ports: 
+    - port: 8082
+      targetPort: 8082

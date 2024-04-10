@@ -1,0 +1,47 @@
+apiVersion: apps/v1 # main
+kind: Deployment
+
+metadata:
+  name: main-deployment
+
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+  revisionHistoryLimit: 1
+  minReadySeconds: 10
+  selector:
+    matchLabels:
+      type: main
+  template:
+    metadata:
+      labels:
+        type: main
+    spec:
+      containers:
+        - name: main-container
+          image: hyungdoyou/bootshelf-main:2.VERSION
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "100m"
+            limits:
+              memory: "3Gi"
+              cpu: "2000m"
+          readinessProbe:
+            httpGet:
+              path: /main/review/list/1/1?page=0
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+          livenessProbe:
+            httpGet:
+              path: /main/review/list/1/1?page=0
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          envFrom:
+            - configMapRef:
+                name: main-config
+      terminationGracePeriodSeconds: 5
