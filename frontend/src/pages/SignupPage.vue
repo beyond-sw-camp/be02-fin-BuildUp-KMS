@@ -68,6 +68,7 @@
           <div class="css-1b8vwo3">이메일</div>
           <div class="css-666rgn">
             <input
+              id="custEmail"
               placeholder="이메일을 입력해 주세요."
               type="string"
               autocapitalize="off"
@@ -84,6 +85,7 @@
           <div class="css-1b8vwo3-1">비밀번호</div>
           <div class="css-666rgn">
             <input
+              id="custPw"
               placeholder="비밀번호를 입력해주세요."
               type="password"
               autocapitalize="off"
@@ -99,6 +101,7 @@
           <div class="css-1b8vwo3-2">이름</div>
           <div class="css-666rgn">
             <input
+              id="custName"
               placeholder="이름을 입력해주세요."
               type="string"
               autocapitalize="off"
@@ -111,6 +114,7 @@
           <div class="css-1b8vwo3-3">닉네임</div>
           <div class="css-666rgn">
             <input
+              id="custNickName"
               placeholder="닉네임을 입력해주세요."
               type="string"
               autocapitalize="off"
@@ -121,7 +125,7 @@
           <div direction="vertical" size="32" class="css-h23ofx"></div>
           <div class="css-17w7nyr"></div>
           <div class="css-8luw5u">
-            <button class="css-27eumk" @click="toggleAllAgreements">
+            <button id="agree" class="css-27eumk" @click="toggleAllAgreements">
               <svg
                 width="20"
                 height="20"
@@ -189,6 +193,7 @@
           </div>
           <div direction="vertical" size="40" class="css-ygt1wz"></div>
           <button
+            id="signupBtn"
             :class="['css-j27xag', { 'button-disabled': !isSubmitEnabled }]"
             :disabled="!isSubmitEnabled"
             @click="signUpData"
