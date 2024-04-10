@@ -1,5 +1,5 @@
 <template>
-    <div class="message-container">
+    <div id="emailVerify" class="message-container">
       <router-link to="/">
           <img src="@/assets/img/002.png" class="css-1k8svhy">
         </router-link>
