@@ -1,11 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="3" failures="0" errors="0" time="0.814">
-  <testsuite name="AdminLoginPage" errors="0" failures="0" skipped="0" timestamp="2024-03-22T06:05:02" time="0.445" tests="3">
-    <testcase classname="AdminLoginPage 헤더 &amp; 푸터 숨김 true mount 설정" name="AdminLoginPage 헤더 &amp; 푸터 숨김 true mount 설정" time="0.013">
+<testsuites name="jest tests" tests="12" failures="2" errors="0" time="9.533">
+  <testsuite name="일반회원 회원가입 테스트" errors="0" failures="1" skipped="0" timestamp="2024-04-10T12:13:50" time="4.472" tests="1">
+    <testcase classname="일반회원 회원가입 테스트 회원가입 성공 케이스 테스트" name="일반회원 회원가입 테스트 회원가입 성공 케이스 테스트" time="0">
+      <failure>WebDriverError: unknown error: net::ERR_CONNECTION_REFUSED
+  (Session info: chrome-headless-shell=123.0.6312.106)
+    at Object.throwDecodedError (C:\Users\yhd4286\Desktop\최종 프로젝트\msafront1\be02-fin-BuildUp-KMS\frontend\node_modules\selenium-webdriver\lib\error.js:521:15)
+    at parseHttpResponse (C:\Users\yhd4286\Desktop\최종 프로젝트\msafront1\be02-fin-BuildUp-KMS\frontend\node_modules\selenium-webdriver\lib\http.js:510:13)
+    at Executor.execute (C:\Users\yhd4286\Desktop\최종 프로젝트\msafront1\be02-fin-BuildUp-KMS\frontend\node_modules\selenium-webdriver\lib\http.js:443:28)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at Driver.execute (C:\Users\yhd4286\Desktop\최종 프로젝트\msafront1\be02-fin-BuildUp-KMS\frontend\node_modules\selenium-webdriver\lib\webdriver.js:740:17)
+    at C:\Users\yhd4286\Desktop\최종 프로젝트\msafront1\be02-fin-BuildUp-KMS\frontend\tests\integration\signupSuccess.spec.js:15:5</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="일반회원 회원가입 테스트" errors="0" failures="1" skipped="0" timestamp="2024-04-10T12:13:55" time="3.14" tests="1">
+    <testcase classname="일반회원 회원가입 테스트 회원가입 실패 케이스 테스트 - 이메일 중복" name="일반회원 회원가입 테스트 회원가입 실패 케이스 테스트 - 이메일 중복" time="0">
+      <failure>WebDriverError: unknown error: net::ERR_CONNECTION_REFUSED
+  (Session info: chrome-headless-shell=123.0.6312.106)
+    at Object.throwDecodedError (C:\Users\yhd4286\Desktop\최종 프로젝트\msafront1\be02-fin-BuildUp-KMS\frontend\node_modules\selenium-webdriver\lib\error.js:521:15)
+    at parseHttpResponse (C:\Users\yhd4286\Desktop\최종 프로젝트\msafront1\be02-fin-BuildUp-KMS\frontend\node_modules\selenium-webdriver\lib\http.js:510:13)
+    at Executor.execute (C:\Users\yhd4286\Desktop\최종 프로젝트\msafront1\be02-fin-BuildUp-KMS\frontend\node_modules\selenium-webdriver\lib\http.js:443:28)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at Driver.execute (C:\Users\yhd4286\Desktop\최종 프로젝트\msafront1\be02-fin-BuildUp-KMS\frontend\node_modules\selenium-webdriver\lib\webdriver.js:740:17)
+    at C:\Users\yhd4286\Desktop\최종 프로젝트\msafront1\be02-fin-BuildUp-KMS\frontend\tests\integration\signupFailed.spec.js:15:5</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="AdminLoginPage" errors="0" failures="0" skipped="0" timestamp="2024-04-10T12:13:58" time="0.241" tests="3">
+    <testcase classname="AdminLoginPage 헤더 &amp; 푸터 숨김 true mount 설정" name="AdminLoginPage 헤더 &amp; 푸터 숨김 true mount 설정" time="0.015">
     </testcase>
     <testcase classname="AdminLoginPage form 형식으로 email, password 입력을 통한 관리자 로그인" name="AdminLoginPage form 형식으로 email, password 입력을 통한 관리자 로그인" time="0.007">
     </testcase>
-    <testcase classname="AdminLoginPage 관리자 로그인 성공 시 /admin/tag/register 경로로 이동" name="AdminLoginPage 관리자 로그인 성공 시 /admin/tag/register 경로로 이동" time="0.006">
+    <testcase classname="AdminLoginPage 관리자 로그인 성공 시 /admin/tag/register 경로로 이동" name="AdminLoginPage 관리자 로그인 성공 시 /admin/tag/register 경로로 이동" time="0.004">
+    </testcase>
+  </testsuite>
+  <testsuite name="퀵메뉴 컴포넌트 테스트" errors="0" failures="0" skipped="0" timestamp="2024-04-10T12:13:58" time="0.082" tests="2">
+    <testcase classname="퀵메뉴 컴포넌트 테스트 위로 가기 버튼 클릭 테스트" name="퀵메뉴 컴포넌트 테스트 위로 가기 버튼 클릭 테스트" time="0.006">
+    </testcase>
+    <testcase classname="퀵메뉴 컴포넌트 테스트 아래로 가기 버튼 클릭 테스트" name="퀵메뉴 컴포넌트 테스트 아래로 가기 버튼 클릭 테스트" time="0.003">
+    </testcase>
+  </testsuite>
+  <testsuite name="일반회원 회원가입 페이지 테스트" errors="0" failures="0" skipped="0" timestamp="2024-04-10T12:13:58" time="0.631" tests="2">
+    <testcase classname="일반회원 회원가입 페이지 테스트 전체 약관 동의 버튼 클릭" name="일반회원 회원가입 페이지 테스트 전체 약관 동의 버튼 클릭" time="0.013">
+    </testcase>
+    <testcase classname="일반회원 회원가입 페이지 테스트 프로필 이미지 업로드 테스트" name="일반회원 회원가입 페이지 테스트 프로필 이미지 업로드 테스트" time="0.005">
+    </testcase>
+  </testsuite>
+  <testsuite name="후기 작성 페이지 테스트" errors="0" failures="0" skipped="0" timestamp="2024-04-10T12:13:59" time="0.354" tests="3">
+    <testcase classname="후기 작성 페이지 테스트 별점 선택 버튼 클릭 시 선택창이 표시되는지 확인" name="후기 작성 페이지 테스트 별점 선택 버튼 클릭 시 선택창이 표시되는지 확인" time="0.025">
+    </testcase>
+    <testcase classname="후기 작성 페이지 테스트 별점 선택 후 선택창이 닫히는지 확인" name="후기 작성 페이지 테스트 별점 선택 후 선택창이 닫히는지 확인" time="0.007">
+    </testcase>
+    <testcase classname="후기 작성 페이지 테스트 별점 선택 후 선택한 별점이 버튼에 표시되는지 확인" name="후기 작성 페이지 테스트 별점 선택 후 선택한 별점이 버튼에 표시되는지 확인" time="0.004">
     </testcase>
   </testsuite>
 </testsuites>

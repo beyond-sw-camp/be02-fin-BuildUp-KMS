@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: board-deployment
+
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+  revisionHistoryLimit: 1
+  minReadySeconds: 10
+  selector:
+    matchLabels:
+      type: board
+  template:
+    metadata:
+      labels:
+        type: board
+    spec:
+      containers:
+        - name: backend-container
+          image: hyungdoyou/bootshelf-board:2.VERSION
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "100m"
+            limits:
+              memory: "3Gi"
+              cpu: "2000m"
+          readinessProbe:
+            httpGet:
+              path: /search/board/list?categoryIdx=1&sortType=1&title=hello
+              port: 8081
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            successThreshold: 1
+          livenessProbe:
+            httpGet:
+              path: /search/board/list?categoryIdx=1&sortType=1&title=hello
+              port: 8081
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          envFrom:
+            - configMapRef:
+                name: board-config
+      terminationGracePeriodSeconds: 5
