@@ -17,5 +17,6 @@ public class BoardResult {
     private Long totalHits;
     private Integer totalPages;
     private List<Board> list;
+    private Object[] lastSearchAfter;
 
 }
