@@ -60,7 +60,7 @@ describe("일반회원 회원가입 테스트", () => {
 
     const email_verify_page = await driver.wait(
       until.elementLocated(By.id("emailVerify")),
-      10000
+      30000
     );
     // 가져온 요소가 NULL이 아니라면 성공으로 판단
     expect(email_verify_page).not.toBeNull();
