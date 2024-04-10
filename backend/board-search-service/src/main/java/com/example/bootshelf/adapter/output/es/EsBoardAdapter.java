@@ -10,12 +10,16 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -50,4 +54,27 @@ public class EsBoardAdapter implements GetListBoardPort {
 
         return operations.search(build, EsBoard.class);
     }
+
+    // search after 적용 ver
+    @Override
+    public SearchHits<EsBoard> searchAfterBoard(Integer categoryIdx, String sortField, String title, Integer size, List<Object> searchAfter) {
+        MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(title, "boardtitle", "boardcontent");
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
+                .must(multiMatchQueryBuilder)
+                .filter(QueryBuilders.termQuery("boardcategory_idx", categoryIdx));
+
+        NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder()
+                .withQuery(boolQueryBuilder)
+                .withSort(SortBuilders.fieldSort(sortField).order(SortOrder.DESC))
+                .withSort(SortBuilders.fieldSort("_id").order(SortOrder.DESC)) // 중복값이 있을 것을 대비해 id로 한 번 더 sorting
+                .withPageable(PageRequest.of(0, size));
+
+        if (searchAfter != null && !searchAfter.isEmpty()) {
+            queryBuilder.withSearchAfter(searchAfter);
+        }
+
+        Query searchQuery = queryBuilder.build();
+        return operations.search(searchQuery, EsBoard.class);
+    }
+
 }
