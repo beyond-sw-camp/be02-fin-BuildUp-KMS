@@ -360,6 +360,7 @@ export default {
     formatDate(dateString) {
       const date = new Date(dateString);
       const year = date.getFullYear();
+     
       const month = String(date.getMonth() + 1).padStart(2, "0");
       const day = String(date.getDate()).padStart(2, "0");
       const hours = String(date.getHours()).padStart(2, "0");
@@ -383,6 +384,7 @@ export default {
 
     setSortOrder(order) {
       this.sortOrder = order;
+
       if (order === 1) {
         this.sortOrderTitle = "최신순";
       } else if (order === 2) {
@@ -405,6 +407,10 @@ export default {
         this.sortOrder
       );
     },
+
+    async getSearchResultByOrder() {
+      await this.reviewStore.getReviewListByQueryWithOrder(this.query, this.searchType, this.sortOrder);
+    }
   },
 };
 </script>

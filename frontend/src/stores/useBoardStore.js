@@ -547,14 +547,14 @@ export const useBoardStore = defineStore("board", {
             "&sortType=" +
             option
         );
-        
         this.boardList = response.data.result.list;
+
         this.lastSearchAfter = response.data.result.lastSearchAfter;
         this.totalPages = response.data.result.totalPages;
         this.currentPage = page;
         this.totalCnt = response.data.result.totalHits;
 
-        if (this.boardList.length === 0) {
+        if (this.boardList.list.length === 0) {
           this.isBoardExist = false;
           this.isPageExist = false;
         } else {
