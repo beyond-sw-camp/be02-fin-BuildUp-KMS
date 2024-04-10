@@ -12,14 +12,17 @@
             <div class="css-1jibmi3">
               <!--게시글 타이틀-->
               <div class="css-cp47oo">
-                {{ boards.boardtitle }}
+                {{ boards.boardTitle }}
+                {{ boards.title }}
               </div>
               <div class="css-14bssip">
-                {{ boards.boardcontent }}
+                {{ boards.boardContent }}
+                {{ boards.content }}
               </div>
             </div>
             <!--태그 컴포넌트 자리-->
-            <TagComponent :tagNameList="boards.tags" />
+            <TagComponent v-if="boards.boardTitle" :tagNameList="boards.tags" />
+            <TagComponent v-else :tagNameList="boards.tagNameList" />
           </div>
           <div class="css-bt1qy"></div>
           <!--사진-->
@@ -60,6 +63,21 @@
                     min-height: 100%;
                     max-height: 100%;
                   " />
+                  <img sizes="100vw" :src="boards.userProfileImage" decoding="async" data-nimg="fill" style="
+                    position: absolute;
+                    inset: 0px;
+                    box-sizing: border-box;
+                    padding: 0px;
+                    border: none;
+                    margin: auto;
+                    display: block;
+                    width: 0px;
+                    height: 0px;
+                    min-width: 100%;
+                    max-width: 100%;
+                    min-height: 100%;
+                    max-height: 100%;
+                  " />  
               </span>
             </div>
             <div class="css-5zcuov">
@@ -71,7 +89,8 @@
                 </svg>
               </div>
               <div class="css-1ry6usa"></div>
-              <div class="css-updatedTimeGms">{{ this.$moment(boards.createdAt).format('YYYY-MM-DD HH:mm:ss') }}</div>
+              <!-- <div class="css-updatedTimeGms">{{ this.$moment(boards.createdAt).format('YYYY-MM-DD HH:mm:ss') }}</div> -->
+              <div class="css-updatedTimeGms" :title="formatDate(boards.updatedAt)">{{ formatDate(boards.updatedAt) }}</div>
             </div>
           </div>
           <!-- 여기서부터 추천수 댓글수 등등 표시-->
@@ -158,6 +177,19 @@ export default {
   },
   components: {
     TagComponent,
+  },
+  methods:{
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      const seconds = String(date.getSeconds()).padStart(2, '0');
+
+      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    },
   }
 };
 </script>
