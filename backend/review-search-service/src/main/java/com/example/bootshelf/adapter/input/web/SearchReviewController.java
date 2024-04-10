@@ -21,7 +21,7 @@ public class SearchReviewController {
 
     private final SearchReviewUseCase searchReviewUseCase;
 
-    // 후기 페이지에서 검색
+    // 후기 페이지에서 검색.
     @RequestMapping(method = RequestMethod.GET, value = "/list")
     @ResponseBody
     public ResponseEntity<BaseRes> searchReview(

@@ -10,7 +10,7 @@ spec:
     kind: Deployment
     name: main-deployment 
   minReplicas: 2
-  maxReplicas: 6 
+  maxReplicas: 4 
   metrics: 
     - type: Resource 
       resource: 

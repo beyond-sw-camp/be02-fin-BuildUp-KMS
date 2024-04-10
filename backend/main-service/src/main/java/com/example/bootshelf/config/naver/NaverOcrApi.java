@@ -169,7 +169,7 @@ public class NaverOcrApi {
             return "";
         }
 
-        // 모든 공백과 특수 문자 제거
+        // 모든 공백과 특수 문자 제거.
         StringBuilder courseNameBuilder = new StringBuilder();
         for (int i = startIndex; i < result.size(); i++) {
             String cleanedText = result.get(i).replaceAll("[^a-zA-Z0-9가-힣]", "");

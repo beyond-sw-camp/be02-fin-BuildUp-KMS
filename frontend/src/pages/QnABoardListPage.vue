@@ -1,148 +1,146 @@
 <template>
-    <div class="loadingio-spinner-spinner" v-if="boardStore.isLoading">
-    <div class="ldio-f4nnk2ltl0v">
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
+  <div class="loadingio-spinner-spinner" v-if="boardStore.isLoading">
+  <div class="ldio-f4nnk2ltl0v">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
   </div>
-  <div class="css-1hnxdb7">
-    <div class="css-mbwamd">
-      <div class="css-1b9to7p">
-        <!-- 여기는 왼쪽 사이드바-->
-        <div class="css-vsssfb">
-          <div class="css-110bgim">
-            <div class="css-28nsux">
-              <!-- HOT TAG 컴포넌트 -->
-              <div class="css-nw8p9d">
-                <div class="css-19831his"># 인기태그</div>
-              </div>
-              <div
-                class="css-nw8p9d"
-                v-for="hotTags in boardTagStore.hotTagList"
-                :key="hotTags.tagIdx"
-              >
-                <HotTagComponent :hotTags="hotTags" />
-              </div>
+</div>
+<div class="css-1hnxdb7">
+  <div class="css-mbwamd">
+    <div class="css-1b9to7p">
+      <!-- 여기는 왼쪽 사이드바-->
+      <div class="css-vsssfb">
+        <div class="css-110bgim">
+          <div class="css-28nsux">
+            <!-- HOT TAG 컴포넌트 -->
+            <div class="css-nw8p9d">
+              <div class="css-19831his"># 인기태그</div>
+            </div>
+            <div class="css-nw8p9d" v-for="hotTags in boardTagStore.hotTagList" :key="hotTags.tagIdx">
+              <HotTagComponent :hotTags="hotTags" />
             </div>
           </div>
         </div>
-        <!--여기서부터는 게시판 쪽-->
-        <div class="css-33zep3">
-          <div class="css-17t7asl">
-            <div class="css-1jibmi3">
-              <div class="css-1mpmq0i">
-                <div class="css-18vdxik">Q & A 게시판</div>
-              </div>
-              <!--부제-->
-              <div class="css-1qzbd5x">
-                평소에 궁금했던 질문들을 자유롭게 이야기해보세요!
-              </div>
+      </div>
+      <!--여기서부터는 게시판 쪽-->
+      <div class="css-33zep3">
+        <div class="css-17t7asl">
+          <div class="css-1jibmi3">
+            <div class="css-1mpmq0i">
+              <div class="css-18vdxik">Q & A 게시판</div>
+            </div>
+            <!--부제-->
+            <div class="css-1qzbd5x">
+              평소에 궁금했던 질문들을 자유롭게 이야기해보세요!
             </div>
           </div>
-          <!--여기서부터 우리거 적용-->
-          <div class="css-1rw3qt4">
-            <!--게시글 작성 버튼-->
-            <div class="css-6cwwok">
-              <div class="css-1hbxc4s">
+        </div>
+        <!--여기서부터 우리거 적용-->
+        <div class="css-1rw3qt4">
+          <!--게시글 작성 버튼-->
+          <div class="css-6cwwok">
+            <div class="css-1hbxc4s">
+              <div class="css-ogh6wd">
+                <div class="css-1tttep5">
+                  <div class="css-1pbcmmt-001">
+                    <div class="css-5ala5m-001">
+                      <router-link to="/board/new">
+                        <div class="css-nmdn6a-001">작성하기</div>
+                      </router-link>
+                    </div>
+                  </div>
+                </div>
+                <!-- 검색창 -->
                 <div class="css-ogh6wd">
                   <div class="css-1tttep5">
-                    <div class="css-1pbcmmt-001">
-                      <div class="css-5ala5m-001">
-                        <router-link to="/board/new">
-                          <div class="css-nmdn6a-001">작성하기</div>
-                        </router-link>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- 검색창 -->
-                  <div class="css-ogh6wd">
-                    <div class="css-1tttep5">
-                      <div class="css-1pbcmmt-002">
-                        <div class="css-5ala5m-002">
-                          <div class="css-nmdn6a-002">
-                            <input
-                              class="css-search-002"
-                              type="text"
-                              placeholder="제목과 내용으로 검색할 단어를 입력하세요."
-                              v-model="searchTerm"
-                              @keyup.enter="sendSearchData()"
-                            />
-                          </div>
-                          <img
-                            class="css-search-img"
-                            src="https://img.icons8.com/ios-glyphs/30/search--v1.png"
-                            alt="search--v1"
-                            @click="sendSearchData()"
+                    <div class="css-1pbcmmt-002">
+                      <div class="css-5ala5m-002">
+                        <div class="css-nmdn6a-002">
+                          <input
+                            class="css-search-002"
+                            type="text"
+                            placeholder="제목과 내용으로 검색할 단어를 입력하세요."
+                            v-model="title"
+                            @keyup.enter="sendSearchData()"
                           />
                         </div>
+                        <img
+                          class="css-search-img"
+                          src="https://img.icons8.com/ios-glyphs/30/search--v1.png"
+                          alt="search--v1"
+                          @click="sendSearchData()"
+                        />
                       </div>
                     </div>
                   </div>
-                  <!-- 정렬 순서 셀렉터 -->
-                  <div class="css-select000">
-                    <select
-                      class="css-select001"
-                      v-model="selectedSortType"
-                      @change="updateSortType"
-                    >
-                      <option value="최신순">최신순</option>
-                      <option value="추천순">추천순</option>
-                      <option value="조회순">조회순</option>
-                      <option value="스크랩순">스크랩순</option>
-                      <option value="댓글순">댓글순</option>
-                    </select>
+                </div>
+                <!-- 정렬 순서 셀렉터 -->
+                <div class="css-select000">
+                  <select
+                    class="css-select001"
+                    v-model="selectedSortType"
+                    @change="updateSortType"
+                  >
+                    <option value="최신순">최신순</option>
+                    <option value="추천순">추천순</option>
+                    <option value="조회순">조회순</option>
+                    <option value="스크랩순">스크랩순</option>
+                    <option value="댓글순">댓글순</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--여기서 본격 글 리스트-->
+          <div class="css-1csvk83">
+            <ul class="css-10c0kk0 e15eiqsa1">
+              <div
+                class="css-k59gj9"
+                v-for="boards in boardStore.boardList"
+                :key="boards.boardIdx"
+              >
+                <CategoryBoardComponent :boards="boards" />
+              </div>
+            </ul>
+            <!---검색결과 없을 때-->
+            <div class="css-6g4q8b" v-show="!boardStore.isBoardExist">
+              <div class="css-aa80it">
+                <img src="@/assets/img/002.png" class="css-1baht8c" />
+                <div class="css-dhqp8i">
+                  <div class="css-c7zvxr">검색 결과가 없습니다.</div>
+                  <div class="css-1mcux1f">
+                    질문을 직접 남겨서 궁금증을 해결해 보세요!
                   </div>
                 </div>
               </div>
             </div>
-            <!--여기서 본격 글 리스트-->
-            <div class="css-1csvk83">
-              <ul class="css-10c0kk0 e15eiqsa1">
-                <div
-                  class="css-k59gj9"
-                  v-for="boards in boardStore.boardList"
-                  :key="boards.boardIdx"
-                >
-                  <CategoryBoardComponent :boards="boards" />
-                </div>
-              </ul>
-              <!---검색결과 없을 때-->
-              <div class="css-6g4q8b" v-show="!boardStore.isBoardExist">
-                <div class="css-aa80it">
-                  <img src="@/assets/img/002.png" class="css-1baht8c" />
-                  <div class="css-dhqp8i">
-                    <div class="css-c7zvxr">검색 결과가 없습니다.</div>
-                    <div class="css-1mcux1f">
-                      질문을 직접 남겨서 궁금증을 해결해 보세요!
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- /본격 글 리스트 -->
           </div>
-          <div class="d-flex justify-content-center py-0 py-md-4">
-            <PaginationComponent
-              :current-page="boardStore.currentPage"
-              :total-pages="boardStore.totalPages"
-              :isPageExist="boardStore.isPageExist"
-              @change-page="changePage"
-            />
-          </div>
+          <!-- /본격 글 리스트 -->
+        </div>
+        <div class="d-flex justify-content-center py-0 py-md-4">
+          <div class="scrollBtn" @click="lastSearchData" v-if="title">╋ 더보기</div>
+          <PaginationComponent
+            v-else
+            :current-page="boardStore.currentPage"
+            :total-pages="boardStore.totalPages"
+            :isPageExist="boardStore.isPageExist"
+            @change-page="changePage"
+          />
         </div>
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -160,7 +158,7 @@ export default {
       selectedSortType: "최신순",
       sortType: 1,
       boardCategoryIdx: "2",
-      searchTerm: "",
+      title: "",
     };
   },
   computed: {
@@ -200,10 +198,10 @@ export default {
     },
     async loadBoardList(page) {
       // 검색어가 있는 경우
-      if (this.searchTerm) {
+      if (this.title) {
         await this.boardStore.getCategoryBoardListByQuery(
           this.boardCategoryIdx,
-          this.searchTerm,
+          this.title,
           this.sortType,
           page
         );
@@ -232,11 +230,50 @@ export default {
 
       this.boardStore.currentPage = nextPage;
     },
+
+    async lastSearchData() {
+      try {
+        // `lastSearchAfter` 값을 가져와서 유효성 검사
+        const lastSearchAfter = this.boardStore.lastSearchAfter;
+        if (!lastSearchAfter || lastSearchAfter.length < 2) {
+          throw new Error("Invalid lastSearchAfter value");
+        }
+
+        // `searchAfterStr` 구성
+        const searchAfterStr = `${lastSearchAfter[0]}, "${String(lastSearchAfter[1])}"`;
+
+        // 다음 결과 불러오기
+        await this.boardStore.getBoardListByQueryNext(
+          this.boardCategoryIdx,
+          this.sortType,
+          this.title,
+          searchAfterStr
+        );
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    
   },
 };
 </script>
 
+
 <style scoped>
+.scrollBtn{
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: rgb(84, 29, 112);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  font-family: Pretendard, serif;
+}
 body,
 html {
   padding: 0;

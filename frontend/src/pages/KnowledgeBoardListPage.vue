@@ -26,11 +26,7 @@
               <div class="css-nw8p9d">
                 <div class="css-19831his"># 인기태그</div>
               </div>
-              <div
-                class="css-nw8p9d"
-                v-for="hotTags in boardTagStore.hotTagList"
-                :key="hotTags.tagIdx"
-              >
+              <div class="css-nw8p9d" v-for="hotTags in boardTagStore.hotTagList" :key="hotTags.tagIdx">
                 <HotTagComponent :hotTags="hotTags" />
               </div>
             </div>
@@ -70,31 +66,18 @@
                       <div class="css-1pbcmmt-002">
                         <div class="css-5ala5m-002">
                           <div class="css-nmdn6a-002">
-                            <input
-                              class="css-search-002"
-                              type="text"
-                              placeholder="제목과 내용으로 검색할 단어를 입력하세요."
-                              v-model="title"
-                              @keyup.enter="sendSearchData()"
-                            />
+                            <input class="css-search-002" type="text" placeholder="제목과 내용으로 검색할 단어를 입력하세요."
+                              v-model="title" @keyup.enter="sendSearchData()" />
                           </div>
-                          <img
-                            class="css-search-img"
-                            src="https://img.icons8.com/ios-glyphs/30/search--v1.png"
-                            alt="search--v1"
-                            @click="sendSearchData()"
-                          />
+                          <img class="css-search-img" src="https://img.icons8.com/ios-glyphs/30/search--v1.png"
+                            alt="search--v1" @click="sendSearchData()" />
                         </div>
                       </div>
                     </div>
                   </div>
                   <!-- 정렬 순서 셀렉터 -->
                   <div class="css-select000">
-                    <select
-                      class="css-select001"
-                      v-model="selectedSortType"
-                      @change="updateSortType"
-                    >
+                    <select class="css-select001" v-model="selectedSortType" @change="updateSortType">
                       <option value="최신순">최신순</option>
                       <option value="추천순">추천순</option>
                       <option value="조회순">조회순</option>
@@ -108,11 +91,8 @@
             <!--여기서 본격 글 리스트-->
             <div class="css-1csvk83">
               <ul class="css-10c0kk0 e15eiqsa1">
-                <div
-                  class="css-k59gj9"
-                  v-for="boards in boardStore.boardList"
-                  :key="boards.boardIdx"
-                >
+                <div class="css-k59gj9" v-for="boards in boardStore.boardList"
+                 :key="boards.boardIdx">
                   <CategoryBoardComponent :boards="boards" />
                 </div>
               </ul>
@@ -132,7 +112,9 @@
             <!-- /본격 글 리스트 -->
           </div>
           <div class="d-flex justify-content-center py-0 py-md-4">
+            <div class="scrollBtn" @click="lastSearchData" v-if="title">╋ 더보기</div>
             <PaginationComponent
+            v-else
               :current-page="boardStore.currentPage"
               :total-pages="boardStore.totalPages"
               :isPageExist="boardStore.isPageExist"
@@ -232,11 +214,48 @@ export default {
 
       this.boardStore.currentPage = nextPage;
     },
+    async lastSearchData() {
+      try {
+        // `lastSearchAfter` 값을 가져와서 유효성 검사
+        const lastSearchAfter = this.boardStore.lastSearchAfter;
+        if (!lastSearchAfter || lastSearchAfter.length < 2) {
+          throw new Error("Invalid lastSearchAfter value");
+        }
+
+        // `searchAfterStr` 구성
+        const searchAfterStr = `${lastSearchAfter[0]}, "${String(lastSearchAfter[1])}"`;
+        console.log(searchAfterStr);
+
+        // 다음 결과 불러오기
+        await this.boardStore.getBoardListByQueryNext(
+          this.boardCategoryIdx,
+          this.sortType,
+          this.title,
+          searchAfterStr
+        );
+      } catch (error) {
+        console.error(error);
+      }
+    }
   },
 };
 </script>
 
 <style scoped>
+.scrollBtn{
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: rgb(84, 29, 112);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  font-family: Pretendard, serif;
+}
 body,
 html {
   padding: 0;
