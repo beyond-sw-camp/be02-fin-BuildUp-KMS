@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @WebAdapter
 @CrossOrigin("*")
-@RequestMapping("/es/review")
+@RequestMapping("/search/review/es/review")
 public class EsReviewController {
     private final EsReviewUseCase esReviewUseCase;
 
