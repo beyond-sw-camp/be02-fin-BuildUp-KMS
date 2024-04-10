@@ -179,9 +179,9 @@
 
 ### 📚 프로젝트 기획
 
-### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🔗 [WBS 바로가기](https://docs.google.com/spreadsheets/d/13p4rbHRj4yU6FU8hGdU-2VQ5eIj3EGHB/edit#gid=1297511367)
+### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🔗 [WBS 바로가기](https://docs.google.com/spreadsheets/d/1P9ZJ1jCy1megQmtT3-xhUXCt2b3tVTGE/edit#gid=1297511367)
 
-### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ✍ [요구사항 정의서 바로가기](https://docs.google.com/spreadsheets/d/1zWRshDDYx6A5WiRITPbgeP8Y-cxG2I0w/edit#gid=19011910)
+### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ✍ [요구사항 정의서 바로가기](https://docs.google.com/spreadsheets/d/1ZnRru2FoqcQMvPQtX1LrMiSKr2wyKgWh/edit#gid=19011910)
 
 <br>
 
@@ -218,55 +218,7 @@
 <br>
 
 <details>
-<summary><b>CI/CD 적용 전</b></summary>
-
-<br>
-
-<img src="./img/시스템 아키텍처.png">
-
-#### ➡ 프론트엔드 서버 : Nginx
-
-- Vue.js가 배포되어 있는 Nginx 서버로 클라이언트가 HTTP 요청을 보낸다.
-
-- 요청 URL 은 http://[프론트엔드 서버 IP]/api 형태이며, Nginx 서버 **Reverse Proxy 설정**을 통해 URL에 "/api" 가
-
-&nbsp;&nbsp;&nbsp;&nbsp;　포함되어 있는 요청을 백엔드 서버로 보내준다.
-
-#### ➡ 백엔드 서버 : Spring Boot
-
-- Spring Boot로 개발하였으며, 레이어드 아키텍처를 적용하였다.
-
-- 벡엔드 서버에서는 **"Spring Security"** 를 이용하여 헤더에 포함된 JWT 토큰을 통해
-  사용자의 권한을 확인 후
-
-&nbsp;&nbsp;&nbsp;&nbsp;　**권한에 따라 서비스 이용을 제한적으로 허가**해준다.
-
-- 백엔드 서버는 데이터 처리를 위해 Spring Data JPA를 사용하여 DB 서버 (MariaDB) 에 접근하며,
-  조회 (SELECT)
-
-&nbsp;&nbsp;&nbsp;&nbsp;　요청은 N+1 문제를 해결하기 위해 QueryDSL을 사용하였다.
-
-#### ➡ DB 서버 : MariaDB
-
-- MariaDB를 **Master - Slave 이중화로 구성**하였으며, 부하 분산을 위해 Read 요청은
-  Slave 서버에게, Write 요청은
-
-&nbsp;&nbsp;&nbsp;&nbsp;　 Master에게 전달한다.
-
-#### ➡ 이미지 저장 : AWS S3
-
-- 게시글, 후기 및 프로필 이미지를 AWS S3에 각 버킷별로 저장하고, DB에는 각각 저장된 이미지의 URL을
-
-&nbsp;&nbsp;&nbsp;&nbsp;　저장한다.
-
-- 클라이언트가 이미지를 요청하면, 이미지가 저장된 URL을 반환, AWS S3에서 이미지를 불러와서 보여준다.
-
-</details>
-
-<br>
-
-<details>
-<summary><b>CI/CD 적용 후</b></summary>
+<summary><b>상세 설명</b></summary>
 
 <br>
 
@@ -274,45 +226,53 @@
 
 #### ➡ 형상관리 : GitHub
 
-- 각각의 브랜치( ex : backend/feature/user/login ) 에 최신 버전의 백엔드 또는 프론트엔드 프로젝트를 
+- 각각의 브랜치( ex : backend/feature/user/login ) 에서 개발을 완료 후 백엔드 또는 프론트엔드 
 
-&nbsp;&nbsp;&nbsp;&nbsp;　"Push" 한다.
+&nbsp;&nbsp;&nbsp;&nbsp;　프로젝트를 "Push" 후 “Pull Request” 를 생성한다.
 
-- 깃허브 develop 브랜치에 최신 버전의 프로젝트가 이상없는 것을 확인 후 "Pull requests" 를 통해
+- 생성된 Pull Request를 모든 팀원이 이상이 없는지 확인 후 댓글을 남기고, 모든 팀원이 댓글을 남기면 
 
-&nbsp;&nbsp;&nbsp;&nbsp;　 **라벨(backend 또는 frontend) 을 달고 Merge** 시킨다.
+&nbsp;&nbsp;&nbsp;&nbsp;　**라벨( frontend, main, gateway, review, board )** 을 달고 Merge 시킨다.
 
-- develop 브랜치에 Merge 시 깃허브는 젠킨스에게 WebHook을 보낸다.
+- develop 브랜치에 Merge 시 깃허브는 젠킨스에게 Generic WebHook을 보낸다.
 
 #### ➡ CI/CD 도구 : Jenkins, Slack
 
-- 깃허브로부터 WebHook을 수신한 젠킨스에서는 **라벨을 확인**하여, "backend" 라벨이면 백엔드 파이프라인으로,
+- 깃허브로부터 Generic WebHook을 수신한 젠킨스에서는 라벨을 확인하여, 라벨명에 따라 해당하는 파이프라인으로 
 
-&nbsp;&nbsp;&nbsp;&nbsp;　"frontend" 라벨이면 프론트엔드 파이프라인으로 요청이 들어온다.
+&nbsp;&nbsp;&nbsp;&nbsp;　요청이 들어온다.
 
 - 깃 클론 후 각각의 파이프라인 단계별 절차를 진행하며, 절차 진행 간 성공, 실패 여부를 **슬랙 알람**으로 보낸다.
 
 #### ➡ 컨테이너화 플랫폼 : 도커
 
-- 프론트엔드, 백엔드 프로젝트 수정 시 젠킨스 빌드 번호를 버전으로 하는 도커 이미지를 생성, 도커허브로
+- 각각의 서비스 수정/개발 시 젠킨스 빌드 번호를 버전으로 하는 도커 이미지를 생성, 도커허브로 
 
 &nbsp;&nbsp;&nbsp;&nbsp;　푸쉬한다.
 
-&nbsp;&nbsp;&nbsp;&nbsp;　🎨 **프론트엔드 : bootshelf-fe:2.VERSION**
+&nbsp;&nbsp;&nbsp;&nbsp;　🎨 **프론트엔드 : bootshelf-frontend:2.VERSION**
 
-&nbsp;&nbsp;&nbsp;&nbsp;　🧑‍💻 **백엔드 : bootshelf-be:2.VERSION**
+&nbsp;&nbsp;&nbsp;&nbsp;　🚧 **게이트웨이 : bootshelf-gateway:2.VERSION**
+
+&nbsp;&nbsp;&nbsp;&nbsp;　🔖 **메인 서비스 : bootshelf-main:2.VERSION**
+
+&nbsp;&nbsp;&nbsp;&nbsp;　🔖 **후기글 검색 서비스 : bootshelf-review:2.VERSION**
+
+&nbsp;&nbsp;&nbsp;&nbsp;　🔖 **게시글 검색 서비스 : bootshelf-board:2.VERSION**
 
 #### ➡ 컨테이너 오케스트레이션 툴 : 쿠버네티스 (k8s)
 
-- 프론트엔드, 백엔드 서버는 각각 **Deployment 로 파드를 생성**, DB 서버는 **StatefulSet 으로 파드를 생성**한다.
+- 프론트엔드, 백엔드, Redis 서버는 각각 **Deployment 로 파드를 생성**, DB 서버는 **StatefulSet 으로**
+
+&nbsp;&nbsp;&nbsp;&nbsp;　**Master-Slave를 설정하여 파드를 생성**한다.
 
 - 프론트엔드, 백엔드 파드에는 **HPA(Horizontal Pod Autoscaler) 설정을 통해 리소스를 자동으로 관리**한다.
 
 - 클라이언트는 **LoadBalancer 타입의 서비스**를 통해 프론트엔드 서버에 접근하고, Nginx Reverse Proxy 설정을
 
-&nbsp;&nbsp;&nbsp;&nbsp;　통해 백엔드 서비스로 요청을 보낸다. 
+&nbsp;&nbsp;&nbsp;&nbsp;　통해 Gateway 서버로 요청을 보낸다.
 
-- 백엔드와 DB 간의 통신은 **ClusterIP 타입의 서비스**를 통해서 서비스 내부에서 이루어진다.
+- Gateway 서버는 요청 URL에 따라 해당하는 Micro Service로 클라이언트의 요청을 보낸다.
 
 <br>
 </details>
@@ -323,8 +283,8 @@
 
 ### 💥 개발 폴더로 이동하기
 
-#### ➡ [프론트엔드 바로가기](https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/tree/develop/frontend)
+#### ➡ [프론트엔드 바로가기](https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/tree/main/frontend)
 
-#### ➡ [백엔드 바로가기](https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/tree/develop/backend)
+#### ➡ [백엔드 바로가기](https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/tree/main/backend)
 
-#### ➡ [CI/CD 바로가기](https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/tree/develop/cicd)
+#### ➡ [CI/CD 바로가기](https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/tree/main/cicd)
