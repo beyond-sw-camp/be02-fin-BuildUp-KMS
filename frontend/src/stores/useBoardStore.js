@@ -3,8 +3,7 @@ import axios from "axios";
 import VueJwtDecode from "vue-jwt-decode";
 
 // const backend = "http://192.168.0.61/api";
-const backend = "http://localhost:8080";
-const backend2 = "http://localhost:8081";
+const backend = "http://localhost:9999";
 
 const accessToken = localStorage.getItem("accessToken");
 const refreshToken = localStorage.getItem("refreshToken");
@@ -141,7 +140,7 @@ export const useBoardStore = defineStore("board", {
         this.isLoading = true;
 
         let response = await axios.get(
-          `${backend2}/search/board/list/scroll?categoryIdx=${categoryIdx}&sortType=${sortType}&title=${title}&searchAfterStr=${searchAfterStr}`
+          `${backend}/search/board/list/scroll?categoryIdx=${categoryIdx}&sortType=${sortType}&title=${title}&searchAfterStr=${searchAfterStr}`
         );
 
         if (response.data.result.list.length === 0) {
@@ -539,7 +538,7 @@ export const useBoardStore = defineStore("board", {
         this.isLoading = true;
 
         let response = await axios.get(
-          backend2 +
+          backend +
           "/search/board/list/scroll" +
             "?categoryIdx="+
             boardCategoryIdx +
@@ -549,13 +548,13 @@ export const useBoardStore = defineStore("board", {
             option
         );
         
-        this.boardList = response.data.result;
+        this.boardList = response.data.result.list;
         this.lastSearchAfter = response.data.result.lastSearchAfter;
         this.totalPages = response.data.result.totalPages;
         this.currentPage = page;
-        this.totalCnt = response.data.result.totalCnt;
+        this.totalCnt = response.data.result.totalHits;
 
-        if (this.boardList.list.length === 0) {
+        if (this.boardList.length === 0) {
           this.isBoardExist = false;
           this.isPageExist = false;
         } else {

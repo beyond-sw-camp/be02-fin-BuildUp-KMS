@@ -106,7 +106,7 @@
               <ul class="css-10c0kk0 e15eiqsa1">
                 <li
                   class="css-li-001"
-                  v-for="boards in boardStore.boardList.list"
+                  v-for="boards in boardStore.boardList"
                  :key="boards.boardIdx"
                 >
                   <StudyBoardComponent :boards="boards" />
