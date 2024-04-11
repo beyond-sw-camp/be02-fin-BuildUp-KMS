@@ -58,7 +58,7 @@ public class EsBoardAdapter implements GetListBoardPort {
     // search after 적용 ver
     @Override
     public SearchHits<EsBoard> searchAfterBoard(Integer categoryIdx, String sortField, String title, Integer size, List<Object> searchAfter) {
-        MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(title, "boardtitle", "boardcontent");
+        MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(title, "boardTitle", "boardContent");
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
                 .must(multiMatchQueryBuilder)
                 .filter(QueryBuilders.termQuery("boardcategory_idx", categoryIdx));

@@ -26,35 +26,35 @@ public class EsBoard {
     private Integer boardcategory_idx;
 
     @Field(type = FieldType.Text, analyzer = "nori")
-    private String boardtitle;
+    private String boardTitle;
 
     @Field(type = FieldType.Text, analyzer = "nori")
-    private String boardcontent;
+    private String boardContent;
 
     @Field(type = FieldType.Integer)
-    private Integer viewcnt;
+    private Integer viewCnt;
 
     @Field(type = FieldType.Integer)
-    private Integer upcnt;
+    private Integer upCnt;
 
     @Field(type = FieldType.Integer)
-    private Integer scrapcnt;
+    private Integer scrapCnt;
 
     @Field(type = FieldType.Integer)
-    private Integer commentcnt;
+    private Integer commentCnt;
 
     @Field(type = FieldType.Text)
-    private String nickname;
+    private String nickName;
 
     @Field(type = FieldType.Text)
-    private String profileimage;
+    private String profileImage;
 
     @Field(type = FieldType.Text)
     private String boardImage;
 
     private String createdAt;
 
-    private String updatedat;
+    private String updatedAt;
 
     @Field(type = FieldType.Nested)
     private List<EsTag> tags;

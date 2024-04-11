@@ -163,4 +163,33 @@ public class EsReviewAdapter implements GetListReviewPort, GetTotalListReviewPor
             return operations.search(searchQuery, EsReview.class);
         }
     }
+
+    @Override
+    public SearchHits<EsReview> esReviewSearch2(Integer categoryIdx, String sortField, String title, int size, List<Object> searchAfter) {
+
+        MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("reviewTitle", title);
+
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
+                .filter(QueryBuilders.termQuery("reviewCategory", categoryIdx));
+
+        HighlightBuilder highlightBuilder = new HighlightBuilder();
+        highlightBuilder.field("reviewTitle"); // 하이라이팅을 적용할 필드 지정
+        highlightBuilder.preTags("<em>"); // 하이라이트 시작 태그
+        highlightBuilder.postTags("</em>"); // 하이라이트 종료 태그
+
+        NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder()
+                .withQuery(matchQueryBuilder)
+                .withFilter(boolQueryBuilder)
+                .withSort(fieldSort(sortField).order(SortOrder.DESC))
+                .withSort(fieldSort("_id").order(SortOrder.DESC)) // 중복값이 있을 것을 대비해 id로 한 번 더 sorting
+                .withPageable(PageRequest.of(0, size));
+
+        if (searchAfter != null && !searchAfter.isEmpty()) {
+            queryBuilder.withSearchAfter(searchAfter);
+        }
+
+        Query searchQuery = queryBuilder.build();
+        return operations.search(searchQuery, EsReview.class);
+
+    }
 }

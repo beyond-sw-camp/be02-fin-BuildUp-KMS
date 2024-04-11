@@ -1,5 +1,6 @@
 package com.example.bootshelf.domain;
 
+import com.example.bootshelf.adapter.output.es.entity.EsBoard;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,8 +16,7 @@ import java.util.List;
 public class BoardResult {
 
     private Long totalHits;
-    private Integer totalPages;
-    private List<Board> list;
+    private List<EsBoard> list;
     private Object[] lastSearchAfter;
 
 }

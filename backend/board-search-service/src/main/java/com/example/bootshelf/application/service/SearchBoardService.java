@@ -45,30 +45,30 @@ public class SearchBoardService implements SearchBoardUseCase {
 
             // EsOperation의 검색 결과를 가져온다. map(SearchHit 객체에서 getContent() 호출 후 해당 문서의 내용인 EsBoard 객체를 추출).collect(추출된 EsBoard 객체들를 List로)
             List<EsBoard> searchContent = searchHits.get().map(SearchHit::getContent).collect(Collectors.toList());
-            List<Board> boardSearchRes = new ArrayList<>();
+            List<EsBoard> boardSearchRes = new ArrayList<>();
 
             for (EsBoard result : searchContent) {
 
-                String textContent = extractText(result.getBoardcontent());
+                String textContent = extractText(result.getBoardContent());
 
-                Board response = Board.builder()
-                        .idx(Integer.valueOf(result.getId()))
-                        .boardCategory(result.getBoardcategory_idx())
-                        .boardTitle(result.getBoardtitle())
+                EsBoard response = EsBoard.builder()
+                        .id(result.getId())
+                        .boardcategory_idx(result.getBoardcategory_idx())
+                        .boardTitle(result.getBoardTitle())
                         .boardContent(textContent)
-                        .viewCnt(result.getViewcnt())
-                        .upCnt(result.getUpcnt())
-                        .scrapCnt(result.getScrapcnt())
-                        .commentCnt(result.getCommentcnt())
+                        .viewCnt(result.getViewCnt())
+                        .upCnt(result.getUpCnt())
+                        .scrapCnt(result.getScrapCnt())
+                        .commentCnt(result.getCommentCnt())
                         .createdAt(result.getCreatedAt())
-                        .updatedAt(result.getUpdatedat())
-                        .profileImage(result.getProfileimage())
-                        .nickName(result.getNickname())
+                        .updatedAt(result.getUpdatedAt())
+                        .profileImage(result.getProfileImage())
+                        .nickName(result.getNickName())
                         .boardImage(result.getBoardImage())
                         .tags(result.getTags())
                         .build();
 
-                Document doc = Jsoup.parse(result.getBoardcontent());
+                Document doc = Jsoup.parse(result.getBoardContent());
                 Elements images = doc.select("img");
 
                 if (!images.isEmpty()) {
@@ -79,7 +79,6 @@ public class SearchBoardService implements SearchBoardUseCase {
             }
             BoardResult result = BoardResult.builder()
                     .totalHits(searchHits.getTotalHits())
-                    //.totalPages() 페이지 추가하기..
                     .list(boardSearchRes)
                     .build();
 
@@ -103,30 +102,30 @@ public class SearchBoardService implements SearchBoardUseCase {
 
         List<EsBoard> searchContent = searchHits.get().map(SearchHit::getContent).collect(Collectors.toList());
 
-        List<Board> boardSearchRes = new ArrayList<>();
+        List<EsBoard> boardSearchRes = new ArrayList<>();
 
         for (EsBoard result : searchContent) {
 
-            String textContent = extractText(result.getBoardcontent());
+            String textContent = extractText(result.getBoardContent());
 
-            Board response = Board.builder()
-                    .idx(Integer.valueOf(result.getId()))
-                    .boardCategory(result.getBoardcategory_idx())
-                    .boardTitle(result.getBoardtitle())
+            EsBoard response = EsBoard.builder()
+                    .id(result.getId())
+                    .boardcategory_idx(result.getBoardcategory_idx())
+                    .boardTitle(result.getBoardTitle())
                     .boardContent(textContent)
-                    .viewCnt(result.getViewcnt())
-                    .upCnt(result.getUpcnt())
-                    .scrapCnt(result.getScrapcnt())
-                    .commentCnt(result.getCommentcnt())
+                    .viewCnt(result.getViewCnt())
+                    .upCnt(result.getUpCnt())
+                    .scrapCnt(result.getScrapCnt())
+                    .commentCnt(result.getCommentCnt())
                     .createdAt(result.getCreatedAt())
-                    .updatedAt(result.getUpdatedat())
-                    .profileImage(result.getProfileimage())
-                    .nickName(result.getNickname())
+                    .updatedAt(result.getUpdatedAt())
+                    .profileImage(result.getProfileImage())
+                    .nickName(result.getNickName())
                     .boardImage(result.getBoardImage())
                     .tags(result.getTags())
                     .build();
 
-            Document doc = Jsoup.parse(result.getBoardcontent());
+            Document doc = Jsoup.parse(result.getBoardContent());
             Elements images = doc.select("img");
 
             if (!images.isEmpty()) {
@@ -141,11 +140,9 @@ public class SearchBoardService implements SearchBoardUseCase {
                 : null;
 
         long totalHits = searchHits.getTotalHits();
-        int totalPages = (int) Math.ceil((double) totalHits / size);
 
         BoardResult boardResult = BoardResult.builder()
                 .totalHits(totalHits)
-                .totalPages(totalPages)
                 .list(boardSearchRes)
                 .lastSearchAfter(lastSearchAfter)
                 .build();

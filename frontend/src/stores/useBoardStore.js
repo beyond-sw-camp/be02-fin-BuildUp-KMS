@@ -2,8 +2,8 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import VueJwtDecode from "vue-jwt-decode";
 
-const backend = "http://192.168.0.61/api";
-// const backend = "http://localhost:9999";
+// const backend = "http://192.168.0.61/api";
+const backend = "http://localhost:9998";
 
 const accessToken = localStorage.getItem("accessToken");
 const refreshToken = localStorage.getItem("refreshToken");
@@ -554,7 +554,7 @@ export const useBoardStore = defineStore("board", {
         this.currentPage = page;
         this.totalCnt = response.data.result.totalHits;
 
-        if (this.boardList.list.length === 0) {
+        if (this.boardList.length === 0) {
           this.isBoardExist = false;
           this.isPageExist = false;
         } else {

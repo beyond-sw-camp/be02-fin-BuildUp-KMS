@@ -1063,7 +1063,7 @@ ul {
   background-color: #fff;
   border-radius: 20px;
   gap: 0.5rem;
-  padding: 12px;
+  padding: 20px;
   /* border: 2px solid rgb(84, 29, 112, 0.3); */
   background-color: rgb(84, 29, 112, 0.1);
 }
@@ -1429,7 +1429,7 @@ ul {
   background-color: #fff;
   border-radius: 20px;
   gap: 0.5rem;
-  padding: 12px;
+  padding: 20px;
   /* border: 2px solid rgb(84, 29, 112, 0.3); */
   background-color: rgb(84, 29, 112, 0.1);
 }
