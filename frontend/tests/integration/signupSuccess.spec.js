@@ -12,7 +12,7 @@ describe("일반회원 회원가입 테스트", () => {
       )
       .build();
 
-    await driver.get("http://localhost:8081/signup");
+    await driver.get("http://192.168.0.61/signup");
 
     await driver.wait(() =>
       driver
