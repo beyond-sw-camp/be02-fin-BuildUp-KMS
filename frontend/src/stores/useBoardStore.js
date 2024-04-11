@@ -135,6 +135,50 @@ export const useBoardStore = defineStore("board", {
       }
     },
 
+        /* es 검색!!! */
+        async getCategoryBoardListByQuery(
+          boardCategoryIdx,
+          title,
+          option,
+          page = 1
+        ) {
+          try {
+            this.isLoading = true;
+    
+            let response = await axios.get(
+              backend +
+              "/search/board/list/scroll" +
+                "?categoryIdx="+
+                boardCategoryIdx +
+                "&title=" +
+                title +
+                "&sortType=" +
+                option
+            );
+            this.boardList = response.data.result.list;
+            console.log(this.boardList);
+    
+            this.lastSearchAfter = response.data.result.lastSearchAfter;
+            console.log(this.lastSearchAfter);
+            this.totalPages = response.data.result.totalPages;
+            this.currentPage = page;
+            this.totalCnt = response.data.result.totalHits;
+    
+            if (this.boardList.length === 0) {
+              this.isBoardExist = false;
+              this.isPageExist = false;
+            } else {
+              this.isBoardExist = true;
+              this.isPageExist = true;
+            }
+          } catch (error) {
+            console.error(error);
+          } finally {
+            this.isLoading = false;
+          }
+        },
+
+    /* es 더보기 */
     async getBoardListByQueryNext(categoryIdx, sortType, title, searchAfterStr) {
       try {
         this.isLoading = true;
@@ -147,7 +191,7 @@ export const useBoardStore = defineStore("board", {
           this.noMoreData = true; // 데이터가 더 이상 없음을 표시
         } else {
           // 새로운 검색 결과를 기존 목록에 추가
-          this.boardList.list = [...this.boardList.list, ...response.data.result.list];
+          this.boardList = [...this.boardList, ...response.data.result.list];
 
           this.totalCnt = response.data.result.totalHits;
           // `lastSearchAfter` 값을 새로운 검색 결과에 기반하여 업데이트
@@ -156,7 +200,7 @@ export const useBoardStore = defineStore("board", {
 
           this.noMoreData = false; // 더 불러올 데이터가 있으므로 메시지 숨김
 
-          if (this.boardList.list.length === 0) {
+          if (this.boardList.length === 0) {
             this.isBoardExist = false;
             this.isPageExist = false;
           } else {
@@ -526,45 +570,6 @@ export const useBoardStore = defineStore("board", {
       } catch (e) {
         console.error(e);
         throw e;
-      }
-    },
-    async getCategoryBoardListByQuery(
-      boardCategoryIdx,
-      title,
-      option,
-      page = 1
-    ) {
-      try {
-        this.isLoading = true;
-
-        let response = await axios.get(
-          backend +
-          "/search/board/list/scroll" +
-            "?categoryIdx="+
-            boardCategoryIdx +
-            "&title=" +
-            title +
-            "&sortType=" +
-            option
-        );
-        this.boardList = response.data.result.list;
-
-        this.lastSearchAfter = response.data.result.lastSearchAfter;
-        this.totalPages = response.data.result.totalPages;
-        this.currentPage = page;
-        this.totalCnt = response.data.result.totalHits;
-
-        if (this.boardList.length === 0) {
-          this.isBoardExist = false;
-          this.isPageExist = false;
-        } else {
-          this.isBoardExist = true;
-          this.isPageExist = true;
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        this.isLoading = false;
       }
     },
 

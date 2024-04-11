@@ -974,7 +974,7 @@ export const useReviewStore = defineStore("review", {
       }
     },
 
-    /* es search after 적용 by order (첫 페이지) */
+    /* 리뷰 페이지 적용 */
     async getCategoryReviewListByQuery(reviewCategoryIdx, title, sortType) {
       try {
         this.isLoading = true;
@@ -989,10 +989,12 @@ export const useReviewStore = defineStore("review", {
             sortType
         );
 
+
         this.reviewList = response.data.result.list;
         this.totalCnt = response.data.result.totalHits;
+        console.log("totalHits = " + this.totalCnt);
         this.lastSearchAfter = response.data.result.lastSearchAfter;
-        console.log(this.totalCnt);
+        console.log(this.lastSearchAfter);
 
         if (this.reviewList.length === 0) {
           this.isReviewExist = false;
@@ -1008,18 +1010,13 @@ export const useReviewStore = defineStore("review", {
       }
     },
 
-    /* es search after 적용 by order (더보기) */
-    async getReviewListByQueryNext2(
-      reviewCategoryIdx,
-      title,
-      sortType,
-      searchAfterStr
-    ) {
+    /* 리뷰 더보기 */
+    async getReviewListByQueryNext2(reviewCategoryIdx, sortType, title, searchAfterStr) {
       try {
         this.isLoading = true;
 
         let response = await axios.get(
-          `${backend}/search/review/es/review/v2/search/order2?categoryIdx=${reviewCategoryIdx}&title=${title}&sortType=${sortType}&searchAfterStr=${searchAfterStr}`
+          `${backend}/search/review/es/review/v2/search/order2?categoryIdx=${reviewCategoryIdx}&sortType=${sortType}&title=${title}&searchAfterStr=${searchAfterStr}`
         );
 
         if (response.data.result.list.length === 0) {
@@ -1027,19 +1024,24 @@ export const useReviewStore = defineStore("review", {
         } else {
           // 새로운 검색 결과를 기존 목록에 추가
           this.reviewList = [...this.reviewList, ...response.data.result.list];
-          this.totalCnt = response.data.result.totalHits;
-          // `lastSearchAfter` 값을 새로운 검색 결과에 기반하여 업데이트
-          this.searchAfterStr = `${
-            response.data.result.lastSearchAfter[0]
-          }, "${String(response.data.result.lastSearchAfter[1])}"`;
 
+          this.totalCnt = response.data.result.totalHits;
+          this.searchAfterStr = `${response.data.result.lastSearchAfter[0]}, "${String(response.data.result.lastSearchAfter[1])}"`;
           console.log(searchAfterStr);
 
           this.noMoreData = false; // 더 불러올 데이터가 있으므로 메시지 숨김
+
+          if (this.reviewList.list.length === 0) {
+            this.isBoardExist = false;
+            this.isPageExist = false;
+          } else {
+            this.isBoardExist = true;
+            this.isPageExist = true;
+          }
         }
       } catch (error) {
         console.error(error);
-        this.isReviewExist = false;
+        this.isBoardExist = false;
         this.isPageExist = false;
       } finally {
         this.isLoading = false;
