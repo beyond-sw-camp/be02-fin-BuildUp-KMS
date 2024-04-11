@@ -15,7 +15,6 @@ import com.example.bootshelf.user.model.request.PostSignUpUserReq;
 import com.example.bootshelf.user.model.response.GetListUserRes;
 import com.example.bootshelf.user.model.response.PostLoginUserRes;
 import com.example.bootshelf.user.model.response.PostSignUpUserRes;
-import com.example.bootshelf.user.repository.UserRefreshTokenRepository;
 import com.example.bootshelf.user.repository.UserRepository;
 import com.example.bootshelf.user.service.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -102,9 +101,6 @@ class UserControllerTest {
 
     @MockBean
     private PasswordEncoder passwordEncoder;
-
-    @MockBean
-    private UserRefreshTokenRepository userRefreshTokenRepository;
 
     @MockBean
     private RefreshTokenService refreshTokenService;
