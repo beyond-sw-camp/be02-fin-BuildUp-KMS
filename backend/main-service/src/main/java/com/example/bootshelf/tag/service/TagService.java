@@ -1,8 +1,10 @@
 package com.example.bootshelf.tag.service;
 
 
+import com.example.bootshelf.boardsvc.boardtag.repository.BoardTagRepository;
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.common.error.ErrorCode;
+import com.example.bootshelf.common.error.entityexception.BoardTagException;
 import com.example.bootshelf.common.error.entityexception.TagException;
 import com.example.bootshelf.tag.model.entity.Tag;
 import com.example.bootshelf.tag.model.request.PatchUpdateTagReq;
@@ -26,6 +28,7 @@ import java.util.Optional;
 public class TagService {
 
     private final TagRepository tagRepository;
+    private final BoardTagRepository boardTagRepository;
 
     // [관리자] 태그 생성 또는 [사용자] 태그 생성
     @Transactional(readOnly = false)
@@ -119,6 +122,12 @@ public class TagService {
 
         if(!result.isPresent()) {
             throw new TagException(ErrorCode.TAG_NOT_EXISTS, String.format("Tag Idx [ %s ] is not exists.", tagIdx));
+        }
+
+        Integer deleteBoardTag = boardTagRepository.deleteAllByTag_Idx(tagIdx);
+
+        if(deleteBoardTag.equals(0)) {
+            throw new BoardTagException(ErrorCode.BOARD_TAG_NOT_EXISTS, String.format("BoardTag include tagIdx [ %s ] is not exists.", tagIdx));
         }
 
         tagRepository.deleteById(tagIdx);

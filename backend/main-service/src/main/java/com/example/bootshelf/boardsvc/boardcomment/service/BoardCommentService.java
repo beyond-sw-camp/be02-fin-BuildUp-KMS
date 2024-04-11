@@ -16,6 +16,7 @@ import com.example.bootshelf.boardsvc.boardcommentup.repository.BoardCommentUpRe
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.common.error.ErrorCode;
 import com.example.bootshelf.common.error.entityexception.BoardCommentException;
+import com.example.bootshelf.common.error.entityexception.BoardException;
 import com.example.bootshelf.user.model.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.joda.time.LocalDateTime;
@@ -40,7 +41,7 @@ public class BoardCommentService {
 
         // 댓글을 작성하려는 게시글이 존재하지 않을 때
         if (!findBoard.isPresent()) {
-            throw new BoardCommentException(ErrorCode.BOARD_COMMENT_NOT_EXISTS, String.format("Board with idx %d not found.", boardIdx));
+            throw new BoardException(ErrorCode.BOARD_NOT_EXISTS, String.format("Board with idx %d not found.", boardIdx));
         }
 
         // 댓글의 내용이 비어있을 때
@@ -203,7 +204,7 @@ public class BoardCommentService {
         return BaseRes.builder()
                 .isSuccess(true)
                 .message("댓글 삭제 성공")
-                .result("후기글 댓글 삭제 성공")
+                .result("게시글 댓글 삭제 성공")
                 .build();
     }
 
@@ -227,7 +228,7 @@ public class BoardCommentService {
 
         // 상위댓글이 없을 때
         if (parentBoardComment.equals(0)) {
-            throw new BoardCommentException(ErrorCode.BOARD_COMMENT_NOT_EXISTS, String.format("parentIdx [ idx : %s ] is not exists.", parentIdx));
+            throw new BoardCommentException(ErrorCode.BOARD_COMMENT_NOT_EXISTS, String.format("ParentIdx [ idx : %s ] is not exists.", parentIdx));
         }
 
         // 대댓글의 내용이 비어있을 때
@@ -259,7 +260,7 @@ public class BoardCommentService {
 
         BaseRes baseRes = BaseRes.builder()
                 .isSuccess(true)
-                .message("댓글 등록 성공")
+                .message("대댓글 등록 성공")
                 .result(postCreateBoardReplyRes)
                 .build();
 

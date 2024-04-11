@@ -43,7 +43,7 @@ public class ReviewCommentService {
 
         // 댓글을 작성하려는 후기글이 존재하지 않을 때
         if (!findReview.isPresent()) {
-            throw new BoardCommentException(ErrorCode.REVIEW_COMMENT_NOT_EXISTS, String.format("Board with idx %d not found.", reviewIdx));
+            throw new ReviewException(ErrorCode.REVIEW_NOT_EXISTS, String.format("Review with idx %d not found.", reviewIdx));
         }
 
         // 댓글의 내용이 비어있을 때
@@ -73,7 +73,7 @@ public class ReviewCommentService {
 
         BaseRes baseRes = BaseRes.builder()
                 .isSuccess(true)
-                .message("댓글 등록 성공")
+                .message("후기글 댓글 등록 성공")
                 .result(postCreateReviewCommentRes)
                 .build();
 
@@ -234,7 +234,7 @@ public class ReviewCommentService {
 
         // 상위댓글이 없을 때
         if (parentReviewComment.equals(0)) {
-            throw new ReviewException(ErrorCode.REVIEW_COMMENT_NOT_EXISTS, String.format("parentIdx [ idx : %s ] is not exists.", parentIdx));
+            throw new ReviewException(ErrorCode.REVIEW_COMMENT_NOT_EXISTS, String.format("ParentIdx [ idx : %s ] is not exists.", parentIdx));
         }
 
         // 대댓글의 내용이 비어있을 때
