@@ -33,6 +33,7 @@ public class ReviewCategoryService {
     private final ReviewRepository reviewRepository;
 
     // 카테고리 추가
+    @Transactional(readOnly = false)
     public BaseRes createReviewCategory(PostCreateReviewCategoryReq postCreateReviewCategoryReq) {
 
         Optional<ReviewCategory> result = reviewCategoryRepository.findByCategoryName(postCreateReviewCategoryReq.getCategoryName());
@@ -93,6 +94,7 @@ public class ReviewCategoryService {
     }
 
     // 수정
+    @Transactional(readOnly = false)
     public BaseRes updateReviewCategory(PatchUpdateReviewCategoryReq patchUpdateReviewCategoryReq, Integer reviewCategoryIdx) {
         Optional<ReviewCategory> result = reviewCategoryRepository.findById(reviewCategoryIdx);
         Optional<ReviewCategory> resultCategoryName = reviewCategoryRepository.findByCategoryName(patchUpdateReviewCategoryReq.getCategoryName());
@@ -133,7 +135,6 @@ public class ReviewCategoryService {
         // 삭제하고자 하는 카테고리를 찾지 못할 때
         if (!result.isPresent()) {
             throw new ReviewCategoryException(ErrorCode.REVIEW_CATEGORY_NOT_EXISTS, String.format("Review Category [ idx : %s ] is not exists.", reviewCategoryIdx));
-
         }
         ReviewCategory reviewCategory = result.get();
         List<Review> reviewList = reviewCategory.getReviewList();

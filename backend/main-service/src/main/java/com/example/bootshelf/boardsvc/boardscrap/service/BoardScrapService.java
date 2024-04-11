@@ -176,7 +176,7 @@ public class BoardScrapService {
 
         BaseRes baseRes = BaseRes.builder()
                 .isSuccess(true)
-                .message("메인 페이지 검색 결과 조회 성공 <게시판>")
+                .message("스크랩 한 게시글 목록 조회 성공")
                 .result(result)
                 .build();
 
@@ -199,7 +199,8 @@ public class BoardScrapService {
 
                 return BaseRes.builder()
                         .isSuccess(true)
-                        .message("게시글 스크랩 삭제 성공")
+                        .message("요청 성공")
+                        .result("게시글 스크랩이 삭제되었습니다.")
                         .build();
             }
             throw new BoardScrapException(ErrorCode.UNAUTHORIZED_BOARD_SCRAP,

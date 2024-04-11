@@ -17,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Tag(name = "후기", description = "후기 CRUD")
 @Api(tags = "후기 추천")
 @RestController
@@ -37,7 +39,7 @@ public class ReviewUpController {
     @PostMapping("/create")
     public ResponseEntity<BaseRes> createReviewUp(
             @AuthenticationPrincipal User user,
-            @RequestBody PostCreateReviewUpReq postCreateReviewUpReq
+            @RequestBody @Valid PostCreateReviewUpReq postCreateReviewUpReq
     ) {
         return ResponseEntity.ok().body(reviewUpService.createReviewUp(user, postCreateReviewUpReq));
     }
