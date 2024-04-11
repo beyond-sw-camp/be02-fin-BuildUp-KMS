@@ -10,6 +10,20 @@ spring:
     name: BOOTSHELF-GATEWAY-SERVICE
   cloud:
     gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PATCH
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+
       routes:
         - id: main-service
           uri: lb://BOOTSHELF-MAIN-SERVICE
