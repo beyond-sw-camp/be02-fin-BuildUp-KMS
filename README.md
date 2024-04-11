@@ -222,7 +222,7 @@
 
 <br>
 
-<img src="./img/전체 시스템 아키텍처.png">
+<img src="./img/시스템 아키텍처.png">
 
 #### ➡ 형상관리 : GitHub
 
