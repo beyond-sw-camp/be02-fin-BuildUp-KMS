@@ -9,6 +9,6 @@ import lombok.*;
 @Builder
 public class PostCreateBoardCategoryRes {
 
-    String categoryName;
+    private String categoryName;
 
 }

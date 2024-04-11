@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BoardTagRepository extends JpaRepository<BoardTag, Integer>, BoardTagRepositoryCustom {
     void deleteAllByBoard_Idx(Integer idx);
+
+    Integer deleteAllByTag_Idx(Integer idx);
 }

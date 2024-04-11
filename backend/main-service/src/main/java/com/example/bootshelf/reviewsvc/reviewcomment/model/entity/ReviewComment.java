@@ -43,7 +43,7 @@ public class ReviewComment {
     @OneToMany(mappedBy = "reviewComment")
     private List<ReviewCommentUp> reviewCommentUpList = new ArrayList<>();
 
-
+    @Column(nullable = false, length = 5000)
     private String reviewCommentContent;
 
     @ColumnDefault("0")
