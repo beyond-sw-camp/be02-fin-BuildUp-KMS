@@ -407,10 +407,6 @@ export default {
         this.sortOrder
       );
     },
-
-    async getSearchResultByOrder() {
-      await this.reviewStore.getReviewListByQueryWithOrder(this.query, this.searchType, this.sortOrder);
-    }
   },
 };
 </script>
