@@ -2,8 +2,8 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import VueJwtDecode from "vue-jwt-decode";
 
-// const backend = "http://192.168.0.61/api";
-const backend = "http://localhost:9998";
+const backend = "http://192.168.0.61/api";
+// const backend = "http://localhost:9999";
 
 const accessToken = localStorage.getItem("accessToken");
 const refreshToken = localStorage.getItem("refreshToken");
@@ -156,10 +156,8 @@ export const useBoardStore = defineStore("board", {
                 option
             );
             this.boardList = response.data.result.list;
-            console.log(this.boardList);
     
             this.lastSearchAfter = response.data.result.lastSearchAfter;
-            console.log(this.lastSearchAfter);
             this.totalPages = response.data.result.totalPages;
             this.currentPage = page;
             this.totalCnt = response.data.result.totalHits;
@@ -189,6 +187,8 @@ export const useBoardStore = defineStore("board", {
 
         if (response.data.result.list.length === 0) {
           this.noMoreData = true; // 데이터가 더 이상 없음을 표시
+          this.isLoading = false;  // 로딩 상태 해제
+          setTimeout(() => alert("마지막 게시글입니다."), 250); // alert 창을 약간 지연시켜 띄움
         } else {
           // 새로운 검색 결과를 기존 목록에 추가
           this.boardList = [...this.boardList, ...response.data.result.list];

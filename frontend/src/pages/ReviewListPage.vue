@@ -318,7 +318,7 @@ export default {
 
         await this.reviewStore.getReviewListByQueryNext2(
           this.reviewCategoryIdx,
-          this.searchType,
+          this.sortType,
           this.title,
           searchAfterStr
         );
