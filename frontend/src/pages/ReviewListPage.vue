@@ -74,7 +74,7 @@
                               class="css-search-002"
                               type="text"
                               placeholder="제목과 내용으로 검색할 단어를 입력하세요."
-                              v-model="searchTerm"
+                              v-model="title"
                               @keyup.enter="sendSearchData()"
                             />
                           </div>
@@ -177,7 +177,7 @@
                 <div
                   class="css-k59gj9"
                   v-for="reviews in reviewStore.reviewList"
-                  :key="reviews.reviewIdx"
+                  :key="reviews.idx"
                 >
                   <ReviewBoardComponent :reviews="reviews" />
                 </div>
@@ -198,7 +198,8 @@
             <!-- /본격 글 리스트 -->
           </div>
           <div class="d-flex justify-content-center py-0 py-md-4">
-            <PaginationComponent
+            <div class="scrollBtn" @click="lastSearchData" v-if="title">╋ 더보기</div>
+            <PaginationComponent v-else
               :current-page="reviewStore.currentPage"
               :total-pages="reviewStore.totalPages"
               :isPageExist="reviewStore.isPageExist"
@@ -226,7 +227,7 @@ export default {
       sortType: 1,
       reviewCategoryIdx: "1",
       selectedReviewType: "course",
-      searchTerm: "",
+      title: "",
     };
   },
   computed: {
@@ -270,13 +271,13 @@ export default {
       this.loadReviewList(1); // 리뷰 카테고리 변경 시 첫 페이지로 돌아감.
     },
     async loadReviewList(page) {
+      
       // 검색어가 있는 경우
-      if (this.searchTerm) {
-        await this.reviewStore.getSearchReviewList(
+      if (this.title) {
+        await this.reviewStore.getCategoryReviewListByQuery(
           this.reviewCategoryIdx,
-          this.searchTerm,
+          this.title,
           this.sortType,
-          page
         );
       } else {
         // 검색어가 없는 경우
@@ -303,11 +304,49 @@ export default {
 
       this.reviewStore.currentPage = nextPage;
     },
+
+    async lastSearchData() {
+      try {
+        const lastSearchAfter = this.reviewStore.lastSearchAfter;
+        if (!lastSearchAfter || lastSearchAfter.length < 2) {
+          throw new Error("Invalid lastSearchAfter value");
+        }
+
+        const searchAfterStr = `${lastSearchAfter[0]}, "${String(
+          lastSearchAfter[1]
+        )}"`;
+
+        await this.reviewStore.getReviewListByQueryNext2(
+          this.reviewCategoryIdx,
+          this.sortType,
+          this.title,
+          searchAfterStr
+        );
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
   },
 };
 </script>
 
 <style scoped>
+.scrollBtn{
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: rgb(84, 29, 112);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  font-family: Pretendard, serif;
+}
+
 body,
 html {
   padding: 0;

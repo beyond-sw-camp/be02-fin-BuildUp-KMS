@@ -38,4 +38,24 @@ public class EsReviewController {
         BaseRes baseRes = esReviewUseCase.esSearchReview(selectedDropdownValue, sortType, title, size, searchAfter);
         return ResponseEntity.ok().body(baseRes);
     }
+
+    @GetMapping("/v2/search/order2")
+    @ResponseBody
+    public ResponseEntity titleContentSearch4(
+            @RequestParam Integer categoryIdx,
+            @RequestParam Integer sortType,
+            @RequestParam String title,
+            @RequestParam(required = false, defaultValue = "20") int size,
+            @RequestParam(required = false) String searchAfterStr
+    ) {
+        List<Object> searchAfter = null;
+
+        if (searchAfterStr != null && !searchAfterStr.isEmpty()) {
+            searchAfter = Arrays.stream(searchAfterStr.split(","))
+                    .collect(Collectors.toList());
+        }
+
+        BaseRes baseRes = esReviewUseCase.esSearchReview2(categoryIdx, sortType, title, size, searchAfter);
+        return ResponseEntity.ok().body(baseRes);
+    }
 }
