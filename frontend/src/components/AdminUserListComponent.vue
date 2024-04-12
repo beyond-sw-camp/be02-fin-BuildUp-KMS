@@ -44,14 +44,14 @@ export default {
     const deleteUser = async () => {
       try {
         let response = await userStore.deleteUser(props.users.userIdx);
-        if (response.data.isSuccess) {
+        if (response.data.isSuccess == true) {
           alert('회원이 삭제되었습니다.');
           window.location.reload();
         }
         
       } catch (error) {
         console.error('회원 삭제 에러:', error);
-        alert('회원 삭제에 실패했습니다.');
+        window.location.reload();
       }
     };
 
