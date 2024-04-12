@@ -74,7 +74,7 @@
             </button>
             <!-- 로그인 되었을 때 닉네임을 표시. -->
             <div id="userNickName" v-if="isAuthenticated" class="user-info">
-              <span class="user-nickname">{{ decodedToken.nickName }}</span>
+              <span class="user-nickname">{{ userStore.user.nickName }}</span>
             </div>
           </div>
           <div
