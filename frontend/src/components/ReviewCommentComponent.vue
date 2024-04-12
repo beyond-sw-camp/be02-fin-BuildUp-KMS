@@ -1044,6 +1044,7 @@ html {
   letter-spacing: 0.07em;
   font-size: 10px;
   white-space: pre-wrap;
+  word-break: break-all;
 }
 
 ::v-deep .ql-container {
@@ -1062,5 +1063,6 @@ html {
   font-family: Monaco;
   letter-spacing: 0.07em;
   font-size: 10px;
+  word-break: break-all;
 }
 </style>

@@ -875,6 +875,7 @@ img {
   font-family: Monaco;
   letter-spacing: 0.07em;
   font-size: 12px;
+  word-break: break-all;
 }
 
 ::v-deep .editedQ_QContent .ql-align-center {
@@ -1341,6 +1342,7 @@ span.btn.black {
   max-width: 90vw;
   white-space: pre;
   line-height: 1.42;
+  word-break: break-all;
 }
 
 /* editor */
@@ -1589,6 +1591,7 @@ span.btn.black {
   font-family: Monaco;
   letter-spacing: 0.07em;
   font-size: 10px;
+  word-break: break-all;
 }
 
 </style>
