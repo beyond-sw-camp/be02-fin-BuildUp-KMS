@@ -264,7 +264,7 @@ class UserControllerTest {
                 .result(getListUserRes)
                 .build();
 
-        // given
+        // given.
         ObjectMapper mapper = new ObjectMapper();
 
         given(userService.list(any()))

@@ -24,6 +24,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 @Tag(name = "관리자", description = "Board Category CRUD")
 @Api(tags = "게시판 카테고리")
@@ -44,7 +46,7 @@ public class BoardCategoryController {
     @RequestMapping(method = RequestMethod.POST, value = "/create")
     public ResponseEntity<BaseRes> createBoardCategory(
             @AuthenticationPrincipal User user,
-            @RequestBody PostCreateBoardCategoryReq postCreateBoardCategoryReq
+            @RequestBody @Valid PostCreateBoardCategoryReq postCreateBoardCategoryReq
     ) {
         BaseRes baseRes = boardCategoryService.createBoardCategory(postCreateBoardCategoryReq);
         return ResponseEntity.ok().body(baseRes);
@@ -69,7 +71,7 @@ public class BoardCategoryController {
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
     @RequestMapping(method = RequestMethod.PATCH, value = "/update/{categoryBoardIdx}")
-    public ResponseEntity<BaseRes> updateBoardCategory(@PathVariable  Integer categoryBoardIdx, @RequestBody PatchUpdateBoardCategoryReq patchUpdateBoardCategoryReq) {
+    public ResponseEntity<BaseRes> updateBoardCategory(@PathVariable @NotNull @Positive Integer categoryBoardIdx, @RequestBody @Valid PatchUpdateBoardCategoryReq patchUpdateBoardCategoryReq) {
         BaseRes baseRes = boardCategoryService.updateBoardCategory(patchUpdateBoardCategoryReq, categoryBoardIdx);
         return ResponseEntity.ok().body(baseRes);
     }
@@ -81,9 +83,8 @@ public class BoardCategoryController {
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
     @RequestMapping(method = RequestMethod.DELETE,value = "/delete/{boardCategoryIdx}")
-    public ResponseEntity<BaseRes> updateBoardCategory(@PathVariable Integer boardCategoryIdx) {
+    public ResponseEntity<BaseRes> updateBoardCategory(@PathVariable @NotNull @Positive Integer boardCategoryIdx) {
         BaseRes baseRes = boardCategoryService.deleteBoardCategory(boardCategoryIdx);
         return ResponseEntity.ok().body(baseRes);
     }
-
 }

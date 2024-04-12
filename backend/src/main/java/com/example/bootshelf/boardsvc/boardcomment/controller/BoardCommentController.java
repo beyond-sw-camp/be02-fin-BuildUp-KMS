@@ -101,7 +101,7 @@ public class BoardCommentController {
     public ResponseEntity createBoardReply(
             @AuthenticationPrincipal User user,
             @PathVariable @NotNull @Positive Integer boardIdx,
-            @RequestBody PostCreateBoardReplyReq postCreateBoardReplyReq,
+            @RequestBody @Valid PostCreateBoardReplyReq postCreateBoardReplyReq,
             @PathVariable @NotNull @Positive Integer parentIdx) {
         BaseRes baseRes = boardCommentService.createBoardReply(user, boardIdx, parentIdx, postCreateBoardReplyReq);
 
