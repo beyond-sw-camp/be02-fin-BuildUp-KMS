@@ -1,0 +1,43 @@
+PLAIN
+K 11
+targetHosts
+V 0
+
+K 9
+validated
+V 1
+0
+END
+ENDREP
+id: 0-2.0.r3/59
+type: file
+pred: 0-2.0.r2/894
+count: 1
+text: 2 0 822 2104 0e380ef5ba8d75b6f29a9463a634e499 3a08bc925e4254b357f84e3ee65ab338d1d1496a 2-2/_1
+props: 3 0 46 46 536bcf2a8ad0af566c24c817dde35b51
+cpath: /Alpha-Searcher..groovy
+copyroot: 0 /
+
+PLAIN
+K 14
+.gitconfig.yml
+V 17
+file 0-1.0.r1/346
+K 22
+Alpha-Searcher..groovy
+V 16
+file 0-2.0.r3/59
+END
+ENDREP
+id: 0.0.r3/420
+type: dir
+pred: 0.0.r2/1240
+count: 3
+text: 3 310 97 97 e68e802ed3ecc8f90acdcc4aa6cb1fbe
+cpath: /
+copyroot: 0 /
+
+0-2.0.t2-2 modify-file true true /Alpha-Searcher..groovy
+
+
+420 547
