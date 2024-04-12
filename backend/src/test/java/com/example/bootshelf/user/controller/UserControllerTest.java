@@ -340,7 +340,7 @@ class UserControllerTest {
                 .andDo(print());
     }
 
-    @DisplayName("회원탈퇴 실패")
+    @DisplayName("회원탈퇴 실패 - 회원 미존재")
     @WithCustomMockUser
     @Test
     void userController_cancel_failed() throws Exception {
