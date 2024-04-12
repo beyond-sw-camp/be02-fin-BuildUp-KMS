@@ -47,17 +47,9 @@
       >
         취소
       </button>
-      <!-- <ConfirmDialogComponent
-        v-if="showMyPageConfirmDialog"
-        :isVisible="showMyPageConfirmDialog"
-        message="For real?"
-        :onConfirm="checkDelete"
-        :onCancel="cancelDelete"
-      /> -->
-      <!--사진-->
     </div>
     <div class="css-99cwur">
-      <div class="css-1ry6usa">{{ this.$moment(totals.updatedAt).format('YYYY-MM-DD HH:mm:ss') }}</div>
+      <div class="css-1ry6usa">{{ this.$moment(totals.createdAt).format('YYYY-MM-DD HH:mm:ss') }}</div>
       <div class="css-o01lup">
         <div class="css-ts29it">
           <div class="css-1ry6usa">댓글</div>
@@ -125,7 +117,6 @@
 import { mapStores } from "pinia";
 import { useTotalStore } from "@/stores/useTotalStore";
 import TagComponent from "@/components/TagComponent.vue";
-// import ConfirmDialogComponent from "./ConfirmDialogComponent.vue";
 
 export default {
   name: "MyPageBoardComponent",
@@ -178,7 +169,6 @@ export default {
   },
   components: {
     TagComponent,
-    // ConfirmDialogComponent,
   },
 };
 </script>
