@@ -198,8 +198,8 @@ export function imageHandler() {
     quill.deleteText(range.index, 1);
 
     try {
-      // const backend = "http://192.168.0.61/api";
-      const backend = "http://localhost:8080";
+      const backend = "http://192.168.0.61/api";
+      // const backend = "http://localhost:8080";
 
       let response = await axios({
         method: "POST",
