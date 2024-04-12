@@ -71,7 +71,7 @@
             @click="toggleReplyForm(comment)"
             v-if="!comment.isEditing"
           >
-            대댓글쓰기
+            대댓글 작성하기
           </p>
           <button
             class="css-update"
@@ -671,7 +671,7 @@ html {
   align-items: center;
   justify-content: center;
   gap: 4px;
-  margin-left: 233px;
+  margin-left: 200px;
 }
 
 .css-wqf8ry {
