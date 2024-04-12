@@ -95,7 +95,7 @@ public class BoardService {
     }
 
     // 게시글 상세 조회
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = false)
     public BaseRes findBoardByIdx(Integer boardIdx) {
         Optional<Board> result = boardRepository.findByIdx(boardIdx);
 

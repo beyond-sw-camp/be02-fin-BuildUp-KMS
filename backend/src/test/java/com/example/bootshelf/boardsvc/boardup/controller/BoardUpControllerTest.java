@@ -128,7 +128,7 @@ class BoardUpControllerTest {
     }
 
     @Test
-    @DisplayName("게시글 추천 실패 - boardIdx 존재하지 않음")
+    @DisplayName("게시글 추천 실패 - boardIdx 미존재")
     @WithCustomMockUser
     void boardUpController_createBoardUp_fail() throws Exception {
         //Given

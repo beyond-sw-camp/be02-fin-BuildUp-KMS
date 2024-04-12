@@ -93,7 +93,7 @@ class ReviewScrapControllerTest {
                 .build();
     }
 
-    @DisplayName("리뷰 스크랩 테스트")
+    @DisplayName("후기글 스크랩 성공")
     @WithMockUser
     @Test
     void reviewScrapController_create_success() throws Exception {
