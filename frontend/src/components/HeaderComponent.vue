@@ -58,6 +58,7 @@
         <div class="css-1butcu">
           <div>
             <button
+              id="loginStep-1"
               class="css-login-button"
               @click="openLoginModal()"
               v-if="!isAuthenticated"
@@ -72,7 +73,7 @@
               회원가입
             </button>
             <!-- 로그인 되었을 때 닉네임을 표시. -->
-            <div v-if="isAuthenticated" class="user-info">
+            <div id="userNickName" v-if="isAuthenticated" class="user-info">
               <span class="user-nickname">{{ decodedToken.nickName }}</span>
             </div>
           </div>
@@ -330,6 +331,7 @@
             </button>
           <div direction="vertical" size="16" class="css-10vhklm"></div>
           <button
+            id="loginStep-2"
             color="#141617"
             class="css-fqtlj"
             @click="openEmailLoginModal()"
@@ -407,6 +409,7 @@
           <form id="loginForm" @submit.prevent="onLoginFormSubmit">
             <div direction="vertical" size="40" class="css-ygt1wz"></div>
             <input
+              id="custEmail"
               placeholder="이메일 입력"
               type="string"
               autocapitalize="off"
@@ -415,6 +418,7 @@
             />
             <div direction="vertical" size="12" class="css-j86f64"></div>
             <input
+              id="custPw"
               placeholder="비밀번호 입력"
               type="password"
               autocapitalize="off"
@@ -422,7 +426,7 @@
               v-model="password"
             />
             <div direction="vertical" size="40" class="css-ygt1wz"></div>
-            <button color="#FFFFFF" class="css-uscuon">로그인</button>
+            <button id="loginBtn" color="#FFFFFF" class="css-uscuon">로그인</button>
           </form>
         </div>
         <div class="css-1sfln3b">
@@ -606,7 +610,7 @@
       </div>
     </div>
   </div>
-  <!----------------여기부터 비밀번호 찾기 모달창------------------------>
+  <!----------------여기부터 비밀번호 찾기 모달창------------------------->
   <div class="css-1gpya5f" v-show="isFindPassword">
     <div class="css-4oebd2">
       <div class="css-1n1k95p">
@@ -840,8 +844,8 @@ export default {
   },
   methods: {
     loginKakao() {
-      // window.location.href = "http://localhost:8080/oauth2/authorization/kakao";
-      window.location.href = "http://192.168.0.61/api/oauth2/authorization/kakao";
+      // window.location.href = "http://localhost:9999/main/oauth2/authorization/kakao";
+      window.location.href = "http://192.168.0.61/api/main/oauth2/authorization/kakao";
     },
     openLoginModal() {
       this.isLogin = true;
