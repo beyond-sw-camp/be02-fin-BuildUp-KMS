@@ -160,7 +160,7 @@
                       </div>
                       <div class="css-1ry6usa">
                         {{
-                          this.$moment(reviewStore.review.updatedAt).format(
+                          this.$moment(reviewStore.review.createdAt).format(
                             "YYYY-MM-DD HH:mm:ss"
                           )
                         }}

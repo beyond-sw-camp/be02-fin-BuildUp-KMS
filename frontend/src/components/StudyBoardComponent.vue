@@ -25,7 +25,7 @@
           <span aria-description="유저 닉네임" class="css-1bf50wt epbh2v52"
             >{{ boards.nickName }}</span
           ><span aria-description="글 생성일" class="css-1mmbkao epbh2v53"
-            >{{ this.$moment(boards.updatedAt).format('YYYY-MM-DD HH:mm:ss') }}</span
+            >{{ this.$moment(boards.createdAt).format('YYYY-MM-DD HH:mm:ss') }}</span
           >
         </p>
       </div>

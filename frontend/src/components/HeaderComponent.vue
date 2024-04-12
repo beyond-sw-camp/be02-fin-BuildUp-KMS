@@ -58,6 +58,7 @@
         <div class="css-1butcu">
           <div>
             <button
+              id="loginStep-1"
               class="css-login-button"
               @click="openLoginModal()"
               v-if="!isAuthenticated"
@@ -72,7 +73,7 @@
               회원가입
             </button>
             <!-- 로그인 되었을 때 닉네임을 표시. -->
-            <div v-if="isAuthenticated" class="user-info">
+            <div id="userNickName" v-if="isAuthenticated" class="user-info">
               <span class="user-nickname">{{ decodedToken.nickName }}</span>
             </div>
           </div>
@@ -149,7 +150,7 @@
                 <div class="css-1s9cv9y">
                   <div>
                     <div>
-                      <div class="css-13fd4ke">
+                      <div class="css-13fd4ke" @click="goMyProfile()">
                         <div class="css-1jibmi3">
                           <div class="css-16regn8">
                             <svg
@@ -167,13 +168,13 @@
                                 d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"
                               ></path>
                             </svg>
-                            <div class="css-17gywxx" @click="goMyProfile()">
+                            <div class="css-17gywxx">
                               프로필
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div class="css-13fd4ke">
+                      <div class="css-13fd4ke" @click="goMyPage()">
                         <div class="css-1jibmi3">
                           <div class="css-16regn8">
                             <svg
@@ -199,13 +200,13 @@
                                 stroke-linejoin="round"
                               ></path>
                             </svg>
-                            <div class="css-17gywxx" @click="goMyPage()">
+                            <div class="css-17gywxx">
                               활동내역
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div class="css-13fd4ke" v-if="isAdminLogin">
+                      <div class="css-13fd4ke" v-if="isAdminLogin"  @click="goAdminPage()">
                         <div class="css-1jibmi3">
                           <div class="css-16regn8">
                             <svg
@@ -228,7 +229,7 @@
                                 d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
                               ></path>
                             </svg>
-                            <div class="css-17gywxx" @click="goAdminPage()">
+                            <div class="css-17gywxx">
                               관리자 페이지
                             </div>
                           </div>
@@ -238,7 +239,7 @@
                   </div>
                 </div>
                 <div class="css-1o9qtii"></div>
-                <div class="css-1s9cv9y">
+                <div class="css-1s9cv9y" @click.prevent="logout">
                   <div class="css-ik70s9">
                     <div class="css-1jibmi3">
                       <div class="css-28a73i">
@@ -257,7 +258,7 @@
                             d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"
                           ></path>
                         </svg>
-                        <div class="css-4l7ba3" @click.prevent="logout">
+                        <div class="css-4l7ba3">
                           로그아웃
                         </div>
                       </div>
@@ -330,6 +331,7 @@
             </button>
           <div direction="vertical" size="16" class="css-10vhklm"></div>
           <button
+            id="loginStep-2"
             color="#141617"
             class="css-fqtlj"
             @click="openEmailLoginModal()"
@@ -407,6 +409,7 @@
           <form id="loginForm" @submit.prevent="onLoginFormSubmit">
             <div direction="vertical" size="40" class="css-ygt1wz"></div>
             <input
+              id="custEmail"
               placeholder="이메일 입력"
               type="string"
               autocapitalize="off"
@@ -415,6 +418,7 @@
             />
             <div direction="vertical" size="12" class="css-j86f64"></div>
             <input
+              id="custPw"
               placeholder="비밀번호 입력"
               type="password"
               autocapitalize="off"
@@ -422,7 +426,7 @@
               v-model="password"
             />
             <div direction="vertical" size="40" class="css-ygt1wz"></div>
-            <button color="#FFFFFF" class="css-uscuon">로그인</button>
+            <button id="loginBtn" color="#FFFFFF" class="css-uscuon">로그인</button>
           </form>
         </div>
         <div class="css-1sfln3b">
@@ -606,7 +610,7 @@
       </div>
     </div>
   </div>
-  <!----------------여기부터 비밀번호 찾기 모달창------------------------>
+  <!----------------여기부터 비밀번호 찾기 모달창------------------------->
   <div class="css-1gpya5f" v-show="isFindPassword">
     <div class="css-4oebd2">
       <div class="css-1n1k95p">
@@ -840,8 +844,8 @@ export default {
   },
   methods: {
     loginKakao() {
-      // window.location.href = "http://localhost:8080/oauth2/authorization/kakao";
-      window.location.href = "http://192.168.0.61/api/oauth2/authorization/kakao";
+      // window.location.href = "http://localhost:9999/main/oauth2/authorization/kakao";
+      window.location.href = "http://192.168.0.61/api/main/oauth2/authorization/kakao";
     },
     openLoginModal() {
       this.isLogin = true;
@@ -924,7 +928,7 @@ export default {
       window.location.href = "/mypage";
     },
     goAdminPage() {
-      window.location.href = "/admin/";
+      window.location.href = "/admin/user";
     },
     decodeToken(accessToken) {
       const base64Url = accessToken.split(".")[1];
