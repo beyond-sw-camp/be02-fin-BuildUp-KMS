@@ -203,7 +203,6 @@ export function imageHandler() {
 
       let response = await axios({
         method: "POST",
-        // url: "http://192.168.0.61/api/board/image/upload",
         url: backend + "/main/board/image/upload",
         headers: {
           Authorization: `Bearer ${accessToken}`,
