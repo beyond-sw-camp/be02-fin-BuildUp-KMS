@@ -262,7 +262,7 @@
                                     class="text-gray-600 flex-shrink-0"
                                     title="2024. 2. 17. 오후 7:25:30"
                                     >{{
-                                      this.$moment(review.updatedAt).format(
+                                      this.$moment(review.createdAt).format(
                                         "YYYY-MM-DD HH:mm:ss"
                                       )
                                     }}

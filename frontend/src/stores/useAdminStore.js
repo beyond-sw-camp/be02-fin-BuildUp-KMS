@@ -2,8 +2,8 @@ import axios from "axios";
 import { defineStore } from "pinia";
 import VueJwtDecode from "vue-jwt-decode";
 
-const backend = "http://192.168.0.61/api";
-// const backend = "http://localhost:8080";
+      // const backend = "http://192.168.0.61/api";
+      const backend = "http://localhost:8080";
 
 export const useAdminStore = defineStore("admin", {
   state: () => ({
