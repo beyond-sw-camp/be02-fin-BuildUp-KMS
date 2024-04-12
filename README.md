@@ -181,7 +181,7 @@
 
 ### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🔗 [WBS 바로가기](https://docs.google.com/spreadsheets/d/1P9ZJ1jCy1megQmtT3-xhUXCt2b3tVTGE/edit#gid=1297511367)
 
-### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ✍ [요구사항 정의서 바로가기](https://docs.google.com/spreadsheets/d/1ZnRru2FoqcQMvPQtX1LrMiSKr2wyKgWh/edit#gid=19011910)
+### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ✍ [요구사항 정의서 바로가기](https://docs.google.com/spreadsheets/d/10GemQ4WU0JfbGxWrzxHDNN1uAYcvDp7Z/edit#gid=19011910)
 
 <br>
 
@@ -209,7 +209,7 @@
 ---
 ### 🌈 [화면 설계도 ( Figma ) 바로가기](https://www.figma.com/file/EPxkgc0NKKEkoXUjaHuRRm/BuildUp-%ED%99%94%EB%A9%B4-%EC%84%A4%EA%B3%84%EC%84%9C?type=design&node-id=0-1&mode=design&t=qNlrkmOxFiZFf7ZB-0)
 
-### 💻 [API 명세서 바로가기](https://www.notion.so/tessssssssy/API-b9cae26489e94c9eaa65003a5f707157?pvs=4)
+### 💻 [API 명세서 바로가기](https://tessssssssy.notion.site/API-b9cae26489e94c9eaa65003a5f707157)
 
 ---
 
