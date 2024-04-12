@@ -1161,5 +1161,6 @@ ul {
   font-family: Monaco;
   letter-spacing: 0.07em;
   font-size: 12px;
+  word-break: break-all;
 }
 </style>
