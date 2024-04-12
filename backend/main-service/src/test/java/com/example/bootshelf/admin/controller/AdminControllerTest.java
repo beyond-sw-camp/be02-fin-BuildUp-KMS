@@ -126,7 +126,7 @@ public class AdminControllerTest {
                 .name("test01")
                 .build();
 
-//        String content = mapper.writeValueAsString(request);.
+//        String content = mapper.writeValueAsString(request);
 
         given(userService.adminSignup(any(PostSignUpAdminReq.class)))
                 .willReturn(baseRes);
