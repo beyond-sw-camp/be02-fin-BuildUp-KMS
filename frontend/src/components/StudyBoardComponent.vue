@@ -26,8 +26,8 @@
         <p>
           <span aria-description="유저 닉네임" class="css-1bf50wt epbh2v52"
             >{{ boards.nickName }}</span
-          ><span aria-description="글 생성일" class="css-1mmbkao epbh2v53" :title="formatDate(boards.updatedAt)"
-            >{{ formatDate(boards.updatedAt) }}</span
+          ><span aria-description="글 생성일" class="css-1mmbkao epbh2v53" :title="formatDate(boards.createdAt)"
+            >{{ formatDate(boards.createdAt) }}</span
           >
         </p>
       </div>
