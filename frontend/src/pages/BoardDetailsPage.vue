@@ -152,7 +152,7 @@
                       </div>
                       <div class="css-1ry6usa">
                         {{
-                          this.$moment(boardDetail.updatedAt).format(
+                          this.$moment(boardDetail.createdAt).format(
                             "YYYY-MM-DD HH:mm:ss"
                           )
                         }}
