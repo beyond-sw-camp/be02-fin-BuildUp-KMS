@@ -167,8 +167,8 @@ export function imageHandler() {
     quill.deleteText(range.index, 1);
 
     try {
-      // const backend = "http://192.168.0.61/api";
-      const backend = "http://localhost:9999";
+      const backend = "http://192.168.0.61/api";
+      // const backend = "http://localhost:9999";
 
       let response = await axios({
         method: "POST",
@@ -1044,5 +1044,6 @@ input {
   font-family: Monaco;
   letter-spacing: 0.07em;
   font-size: 12px;
+  word-break: break-all;
 }
 </style>

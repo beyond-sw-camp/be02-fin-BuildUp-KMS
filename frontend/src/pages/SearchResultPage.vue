@@ -142,8 +142,8 @@
                                   <span class="text-gray-900 font-weight-normal flex-shrink-0">{{ review.nickName
                                     }}</span>
                                   <span class="paragraph-sm">·</span>
-                                  <span class="text-gray-600 flex-shrink-0" :title="formatDate(review.updatedAt)">{{
-                                    formatDate(review.updatedAt) }}
+                                  <span class="text-gray-600 flex-shrink-0" :title="formatDate(review.createdAt)">{{
+                                    formatDate(review.createdAt) }}
                                   </span>
                                 </span>
                               </span>
@@ -407,10 +407,6 @@ export default {
         this.sortOrder
       );
     },
-
-    async getSearchResultByOrder() {
-      await this.reviewStore.getReviewListByQueryWithOrder(this.query, this.searchType, this.sortOrder);
-    }
   },
 };
 </script>

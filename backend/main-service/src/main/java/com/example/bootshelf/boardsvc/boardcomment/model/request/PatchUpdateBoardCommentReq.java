@@ -15,7 +15,7 @@ public class PatchUpdateBoardCommentReq {
 
 
     @NotNull
-    @Length(min=1, max=200)
-    @ApiModelProperty(value = "댓글내용(200자 이하)", example = "이 글보고 부트캠프 신청했어요!", required = true)
+    @Length(min=1)
+    @ApiModelProperty(value = "댓글 내용", example = "이 글보고 부트캠프 신청했어요!", required = true)
     private String boardCommentContent;
 }

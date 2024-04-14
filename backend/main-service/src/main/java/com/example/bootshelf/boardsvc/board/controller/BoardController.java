@@ -67,7 +67,7 @@ public class BoardController {
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
     @RequestMapping(method = RequestMethod.GET, value = "/mylist/{sortType}")
     public ResponseEntity<BaseRes> myList(
-            @PageableDefault(size = 9) Pageable pageable,
+            @PageableDefault(size = 20) Pageable pageable,
             @PathVariable @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") @ApiParam(value = "정렬유형 : 1 (최신순), 2 (추천수 순), 3 (조회수 순), 4 (스크랩수 순), 5 (댓글수 순)") Integer sortType
     ) {
         User user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
@@ -100,7 +100,7 @@ public class BoardController {
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
     @RequestMapping(method = RequestMethod.GET, value = "/category/{boardCategoryIdx}/{sortType}")
     public ResponseEntity<BaseRes> boardListbyCategory(
-            @PageableDefault(size = 9) Pageable pageable,
+            @PageableDefault(size = 20) Pageable pageable,
             @PathVariable(value = "boardCategoryIdx") Integer boardCategoryIdx,
             @PathVariable @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") @ApiParam(value = "정렬유형 : 1 (최신순), 2 (추천수 순), 3 (조회수 순), 4 (스크랩수 순), 5 (댓글수 순)") Integer sortType
     ) {
@@ -116,7 +116,7 @@ public class BoardController {
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
     @RequestMapping(method = RequestMethod.GET, value = "/tag/{tagIdx}/{boardCategoryIdx}/{sortType}")
     public ResponseEntity<BaseRes> boardListbyTag(
-            @PageableDefault(size = 9) Pageable pageable,
+            @PageableDefault(size = 20) Pageable pageable,
             @PathVariable Integer tagIdx,
             @PathVariable Integer boardCategoryIdx,
             @PathVariable @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") @ApiParam(value = "정렬유형 : 1 (최신순), 2 (추천수 순), 3 (조회수 순), 4 (스크랩수 순), 5 (댓글수 순)") Integer sortType
@@ -133,7 +133,7 @@ public class BoardController {
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
     @RequestMapping(method = RequestMethod.GET, value = "/tag/{tagIdx}/{boardCategoryIdx}/{sortType}/search")
     public ResponseEntity<BaseRes> boardSearchListbyTag(
-            @PageableDefault(size = 9) Pageable pageable,
+            @PageableDefault(size = 20) Pageable pageable,
             @PathVariable Integer tagIdx,
             @PathVariable Integer boardCategoryIdx,
             @RequestParam String searchTerm,
@@ -180,7 +180,7 @@ public class BoardController {
     public ResponseEntity<BaseRes> searchBoardListByQueryAndCategory(
             @RequestParam String query,
             @PathVariable(value = "boardCategoryIdx") Integer boardCategoryIdx,
-            @PageableDefault(size = 9) Pageable pageable,
+            @PageableDefault(size = 20) Pageable pageable,
             @RequestParam @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") @ApiParam(value = "정렬유형 : 1 (최신순), 2 (추천수 순), 3 (조회수 순), 4 (스크랩수 순), 5 (댓글수 순)") Integer sortType
     ) {
         return ResponseEntity.ok().body(boardService.searchBoardListByQueryAndCategory(boardCategoryIdx, query, sortType, pageable));
@@ -257,7 +257,7 @@ public class BoardController {
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")})
     @RequestMapping(method = RequestMethod.GET, value = "/hotlist/{boardCategoryIdx}/{sortType}")
     public ResponseEntity<BaseRes> listHotBoard(
-            @PageableDefault(size = 9) Pageable pageable,
+            @PageableDefault(size = 20) Pageable pageable,
             @PathVariable @NotNull @Positive Integer boardCategoryIdx,
             @PathVariable @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") @ApiParam(value = "정렬유형 : 1 (최신순), 2 (추천수 순), 3 (조회수 순), 4 (스크랩수 순), 5 (댓글수 순)") Integer sortType
     ) {
@@ -276,7 +276,7 @@ public class BoardController {
             @PathVariable @NotNull(message = "후기 카테고리 IDX는 필수 입력 항목입니다.") @Positive(message = "후기 카테고리 IDX는 1이상의 양수입니다.") Integer boardCategoryIdx,
             @PathVariable @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") @ApiParam(value = "정렬유형 : 1 (최신순), 2 (추천수 순), 3 (조회수 순), 4 (스크랩수 순), 5 (댓글수 순)") Integer sortType,
             @RequestParam String searchTerm,
-            @PageableDefault(size = 9) Pageable pageable
+            @PageableDefault(size = 20) Pageable pageable
     ) {
         BaseRes baseRes = boardService.searchHotBoard(boardCategoryIdx, searchTerm, sortType, pageable);
         return ResponseEntity.ok().body(baseRes);

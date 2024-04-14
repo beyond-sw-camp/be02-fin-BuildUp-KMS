@@ -17,7 +17,6 @@ import com.example.bootshelf.user.controller.mock.WithCustomMockUser;
 import com.example.bootshelf.user.exception.security.CustomAccessDeniedHandler;
 import com.example.bootshelf.user.exception.security.CustomAuthenticationEntryPoint;
 import com.example.bootshelf.user.model.entity.User;
-import com.example.bootshelf.user.repository.UserRefreshTokenRepository;
 import com.example.bootshelf.user.repository.UserRepository;
 import com.example.bootshelf.user.service.RefreshTokenService;
 import com.example.bootshelf.user.service.UserOAuth2Service;
@@ -35,7 +34,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -96,9 +94,6 @@ public class ReviewControllerTest {
 
     @MockBean
     private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
-
-    @MockBean
-    private UserRefreshTokenRepository userRefreshTokenRepository;
 
     @MockBean
     private RefreshTokenService refreshTokenService;

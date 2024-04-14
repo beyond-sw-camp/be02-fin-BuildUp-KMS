@@ -1,6 +1,7 @@
 package com.example.bootshelf.application.service;
 
 import com.example.bootshelf.adapter.output.es.entity.EsBoard;
+import com.example.bootshelf.adapter.output.es.response.BoardSearchRes;
 import com.example.bootshelf.application.port.input.SearchBoardUseCase;
 import com.example.bootshelf.application.port.output.GetListBoardPort;
 import com.example.bootshelf.common.BaseRes;
@@ -45,30 +46,30 @@ public class SearchBoardService implements SearchBoardUseCase {
 
             // EsOperation의 검색 결과를 가져온다. map(SearchHit 객체에서 getContent() 호출 후 해당 문서의 내용인 EsBoard 객체를 추출).collect(추출된 EsBoard 객체들를 List로)
             List<EsBoard> searchContent = searchHits.get().map(SearchHit::getContent).collect(Collectors.toList());
-            List<Board> boardSearchRes = new ArrayList<>();
+            List<BoardSearchRes> boardSearchRes = new ArrayList<>();
 
             for (EsBoard result : searchContent) {
 
-                String textContent = extractText(result.getBoardcontent());
+                String textContent = extractText(result.getBoardContent());
 
-                Board response = Board.builder()
+                BoardSearchRes response = BoardSearchRes.builder()
                         .idx(Integer.valueOf(result.getId()))
                         .boardCategory(result.getBoardcategory_idx())
-                        .boardTitle(result.getBoardtitle())
+                        .boardTitle(result.getBoardTitle())
                         .boardContent(textContent)
-                        .viewCnt(result.getViewcnt())
-                        .upCnt(result.getUpcnt())
-                        .scrapCnt(result.getScrapcnt())
-                        .commentCnt(result.getCommentcnt())
+                        .viewCnt(result.getViewCnt())
+                        .upCnt(result.getUpCnt())
+                        .scrapCnt(result.getScrapCnt())
+                        .commentCnt(result.getCommentCnt())
                         .createdAt(result.getCreatedAt())
-                        .updatedAt(result.getUpdatedat())
-                        .profileImage(result.getProfileimage())
-                        .nickName(result.getNickname())
+                        .updatedAt(result.getUpdatedAt())
+                        .profileImage(result.getProfileImage())
+                        .nickName(result.getNickName())
                         .boardImage(result.getBoardImage())
                         .tags(result.getTags())
                         .build();
 
-                Document doc = Jsoup.parse(result.getBoardcontent());
+                Document doc = Jsoup.parse(result.getBoardContent());
                 Elements images = doc.select("img");
 
                 if (!images.isEmpty()) {
@@ -79,7 +80,6 @@ public class SearchBoardService implements SearchBoardUseCase {
             }
             BoardResult result = BoardResult.builder()
                     .totalHits(searchHits.getTotalHits())
-                    //.totalPages() 페이지 추가하기..
                     .list(boardSearchRes)
                     .build();
 
@@ -95,68 +95,68 @@ public class SearchBoardService implements SearchBoardUseCase {
     }
 
     @Override
-    public BaseRes searchAfterBoard(Integer categoryIdx, Integer sortType, String title, Integer size, List<Object> searchAfter) {
+    public BaseRes searchAfterBoard(Integer categoryIdx, Integer sortType, String title, int size, List<Object> searchAfterStr) {
         String[] fields = {"createdAt", "upCnt", "viewCnt", "scrapCnt", "commentCnt"};
-        String sortField = sortType >= 1 && sortType <= fields.length ? fields[sortType - 1] : fields[0];
 
-        SearchHits<EsBoard> searchHits = getListBoardPort.searchAfterBoard(categoryIdx, sortField, title, size, searchAfter);
+        if (sortType >= 1 && sortType <= fields.length) {
+            String sortField = fields[sortType - 1];
 
-        List<EsBoard> searchContent = searchHits.get().map(SearchHit::getContent).collect(Collectors.toList());
+            SearchHits<EsBoard> searchHits = getListBoardPort.searchAfterBoard(categoryIdx, sortField, title, size, searchAfterStr);
 
-        List<Board> boardSearchRes = new ArrayList<>();
+            List<EsBoard> searchContent = searchHits.get().map(SearchHit::getContent).collect(Collectors.toList());
+            List<BoardSearchRes> boardSearchRes = new ArrayList<>();
 
-        for (EsBoard result : searchContent) {
+            for (EsBoard result : searchContent) {
+                String textContent = extractText(result.getBoardContent());
 
-            String textContent = extractText(result.getBoardcontent());
+                BoardSearchRes response = BoardSearchRes.builder()
+                        .idx(Integer.valueOf(result.getId()))
+                        .boardCategory(result.getBoardcategory_idx())
+                        .boardTitle(result.getBoardTitle())
+                        .boardContent(textContent)
+                        .viewCnt(result.getViewCnt())
+                        .upCnt(result.getUpCnt())
+                        .scrapCnt(result.getScrapCnt())
+                        .commentCnt(result.getCommentCnt())
+                        .createdAt(result.getCreatedAt())
+                        .updatedAt(result.getUpdatedAt())
+                        .profileImage(result.getProfileImage())
+                        .nickName(result.getNickName())
+                        .boardImage(result.getBoardImage())
+                        .tags(result.getTags())
+                        .build();
 
-            Board response = Board.builder()
-                    .idx(Integer.valueOf(result.getId()))
-                    .boardCategory(result.getBoardcategory_idx())
-                    .boardTitle(result.getBoardtitle())
-                    .boardContent(textContent)
-                    .viewCnt(result.getViewcnt())
-                    .upCnt(result.getUpcnt())
-                    .scrapCnt(result.getScrapcnt())
-                    .commentCnt(result.getCommentcnt())
-                    .createdAt(result.getCreatedAt())
-                    .updatedAt(result.getUpdatedat())
-                    .profileImage(result.getProfileimage())
-                    .nickName(result.getNickname())
-                    .boardImage(result.getBoardImage())
-                    .tags(result.getTags())
-                    .build();
+                Document doc = Jsoup.parse(result.getBoardContent());
+                Elements images = doc.select("img");
 
-            Document doc = Jsoup.parse(result.getBoardcontent());
-            Elements images = doc.select("img");
+                if (!images.isEmpty()) {
+                    response.setBoardImage(images.get(0).attr("src"));
+                }
 
-            if (!images.isEmpty()) {
-                response.setBoardImage(images.get(0).attr("src"));
+                boardSearchRes.add(response);
             }
 
-            boardSearchRes.add(response);
+            Object[] lastSearchAfter = searchHits.getSearchHits().size() > 0
+                    ? searchHits.getSearchHits().get(searchHits.getSearchHits().size() - 1).getSortValues().toArray(new Object[0])
+                    : null;
+
+            long totalHits = searchHits.getTotalHits();
+
+            BoardResult boardResult = BoardResult.builder()
+                    .totalHits(totalHits)
+                    .list(boardSearchRes)
+                    .lastSearchAfter(lastSearchAfter)
+                    .build();
+
+            BaseRes baseRes = BaseRes.builder()
+                    .isSuccess(true)
+                    .message("ES 게시판 categoryIdx = " + categoryIdx + " 검색 성공")
+                    .result(boardResult)
+                    .build();
+
+            return baseRes;
         }
-
-        Object[] lastSearchAfter = searchHits.getSearchHits().size() > 0
-                ? searchHits.getSearchHits().get(searchHits.getSearchHits().size() - 1).getSortValues().toArray(new Object[0])
-                : null;
-
-        long totalHits = searchHits.getTotalHits();
-        int totalPages = (int) Math.ceil((double) totalHits / size);
-
-        BoardResult boardResult = BoardResult.builder()
-                .totalHits(totalHits)
-                .totalPages(totalPages)
-                .list(boardSearchRes)
-                .lastSearchAfter(lastSearchAfter)
-                .build();
-
-        BaseRes baseRes = BaseRes.builder()
-                .isSuccess(true)
-                .message("ES 게시판 categoryIdx = " + categoryIdx + " 검색 성공")
-                .result(boardResult)
-                .build();
-
-        return baseRes;
+        return null;
     }
 
 }

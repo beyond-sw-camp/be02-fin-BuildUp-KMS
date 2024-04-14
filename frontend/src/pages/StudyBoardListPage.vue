@@ -107,7 +107,7 @@
                 <li
                   class="css-li-001"
                   v-for="boards in boardStore.boardList"
-                 :key="boards.boardIdx"
+                 :key="boards.idx"
                 >
                   <StudyBoardComponent :boards="boards" />
                 </li>
@@ -240,8 +240,7 @@ export default {
         }
 
         // `searchAfterStr` 구성
-        const searchAfterStr = `${lastSearchAfter[0]}, "${String(lastSearchAfter[1])}"`;
-        console.log(searchAfterStr);
+        const searchAfterStr = `${lastSearchAfter[0]}, ${lastSearchAfter[1]}`;
 
         // 다음 결과 불러오기
         await this.boardStore.getBoardListByQueryNext(
@@ -250,6 +249,11 @@ export default {
           this.title,
           searchAfterStr
         );
+
+        if (this.boardStore.searchAfterStr) {
+          const newLastSearchAfter = this.boardStore.searchAfterStr.split(', ').map(Number);
+          this.boardStore.lastSearchAfter = newLastSearchAfter;
+        }
       } catch (error) {
         console.error(error);
       }
@@ -1063,7 +1067,7 @@ ul {
   background-color: #fff;
   border-radius: 20px;
   gap: 0.5rem;
-  padding: 12px;
+  padding: 20px;
   /* border: 2px solid rgb(84, 29, 112, 0.3); */
   background-color: rgb(84, 29, 112, 0.1);
 }
@@ -1429,7 +1433,7 @@ ul {
   background-color: #fff;
   border-radius: 20px;
   gap: 0.5rem;
-  padding: 12px;
+  padding: 20px;
   /* border: 2px solid rgb(84, 29, 112, 0.3); */
   background-color: rgb(84, 29, 112, 0.1);
 }

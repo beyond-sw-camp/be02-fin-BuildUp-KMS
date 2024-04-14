@@ -1,9 +1,7 @@
 apiVersion: apps/v1 # main
 kind: Deployment
-
 metadata:
   name: main-deployment
-
 spec:
   replicas: 2
   strategy:

@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface EsReviewUseCase {
     BaseRes esSearchReview(Integer selectedDropdownValue, Integer sortType, String title, int size, List<Object> searchAfterStr);
+    BaseRes esSearchReview2(Integer categoryIdx, Integer sortType, String title, int size, List<Object> searchAfterStr);
+
 }

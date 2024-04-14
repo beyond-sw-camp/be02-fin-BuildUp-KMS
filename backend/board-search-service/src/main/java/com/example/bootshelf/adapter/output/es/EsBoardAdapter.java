@@ -57,8 +57,8 @@ public class EsBoardAdapter implements GetListBoardPort {
 
     // search after 적용 ver
     @Override
-    public SearchHits<EsBoard> searchAfterBoard(Integer categoryIdx, String sortField, String title, Integer size, List<Object> searchAfter) {
-        MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(title, "boardtitle", "boardcontent");
+    public SearchHits<EsBoard> searchAfterBoard(Integer categoryIdx, String sortField, String title, int size, List<Object> searchAfter) {
+        MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(title, "boardTitle", "boardContent");
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
                 .must(multiMatchQueryBuilder)
                 .filter(QueryBuilders.termQuery("boardcategory_idx", categoryIdx));
@@ -66,7 +66,7 @@ public class EsBoardAdapter implements GetListBoardPort {
         NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder()
                 .withQuery(boolQueryBuilder)
                 .withSort(SortBuilders.fieldSort(sortField).order(SortOrder.DESC))
-                .withSort(SortBuilders.fieldSort("_id").order(SortOrder.DESC)) // 중복값이 있을 것을 대비해 id로 한 번 더 sorting
+                .withSort(SortBuilders.fieldSort("id").order(SortOrder.DESC)) // 중복값이 있을 것을 대비해 id로 한 번 더 sorting
                 .withPageable(PageRequest.of(0, size));
 
         if (searchAfter != null && !searchAfter.isEmpty()) {

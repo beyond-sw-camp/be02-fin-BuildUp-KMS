@@ -15,6 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 @Tag(name = "게시판", description = "게시판 CRUD")
 @Api(tags = "게시판 추천")
 @RestController
@@ -36,7 +39,7 @@ public class BoardUpController {
     @PostMapping("/create")
     public ResponseEntity<BaseRes> createBoardUp(
             @AuthenticationPrincipal User user,
-            @RequestBody PostCreateBoardUpReq postCreateBoardUpReq
+            @RequestBody @Valid PostCreateBoardUpReq postCreateBoardUpReq
     ) {
         return ResponseEntity.ok().body(boardUpService.createBoardUp(user, postCreateBoardUpReq));
     }

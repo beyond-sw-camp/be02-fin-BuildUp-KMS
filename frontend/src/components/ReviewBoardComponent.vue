@@ -84,7 +84,7 @@
               </svg>
             </div>
             <div class="css-1ry6usa">
-              {{ this.$moment(reviews.updatedAt).format('YYYY-MM-DD HH:mm:ss') }}
+              {{ this.$moment(reviews.createdAt).format('YYYY-MM-DD HH:mm:ss') }}
             </div>
           </div>
           <div class="css-5zcuovs">

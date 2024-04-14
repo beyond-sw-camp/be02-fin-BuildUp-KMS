@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface GetEsReviewPort {
     SearchHits<EsReview> esReviewSearch(Integer selectedDropdownValue, String sortField, String title, int size, List<Object> searchAfter);
+    SearchHits<EsReview> esReviewSearch2(Integer categoryIdx, String sortField, String title, int size, List<Object> searchAfter);
+
 }

@@ -1,64 +1,38 @@
 <template>
   <!-- 스터디 게시글 컴포넌트 -->
-    <a class="css-1myomkm epbh2v50"  :href="'/board/' + boards.idx">
-      <h2 aria-description="글 제목">
-        <span>
-          {{ boards.boardTitle }}
-          {{ boards.boardtitle }}
-        </span>
-      </h2>
-      <h3 aria-description="글 내용">
-        {{ boards.boardContent }}
-        {{ boards.boardcontent }}
-      </h3>
-      <TagComponent :tagNameList="boards.tagNameList" />
-      <div class="css-k57yxr epbh2v51">
-        <img
-          alt="닉네임입니당 프로필 이미지"
-          :src="boards.profileImage"
-          width="20"
-          height="20"
-          decoding="async"
-          data-nimg="1"
-          loading="lazy"
-          style="color: transparent"
-        />
-        <p>
-          <span aria-description="유저 닉네임" class="css-1bf50wt epbh2v52"
-            >{{ boards.nickName }}</span
-          ><span aria-description="글 생성일" class="css-1mmbkao epbh2v53" :title="formatDate(boards.updatedAt)"
-            >{{ formatDate(boards.updatedAt) }}</span
-          >
-        </p>
-      </div>
-      <ul class="css-1k3qs23 epbh2v54">
-        <li aria-description="댓글수" class="css-17j46fn epbh2v55">
-          <img
-            width="10px"
-            height="10px"
-            src="../assets/img/comment-icon.png"
-            alt="chat--v1"
-          />{{ boards.commentCnt }}
-        </li>
-        <li aria-description="좋아요수" class="css-17j46fn epbh2v55">
-          <img
-            width="14px"
-            height="14px"
-            src="../assets/img/like-icon.png"
-            alt="facebook-like"
-          />{{ boards.upCnt }}
-        </li>
-        <li aria-description="조회수" class="css-17j46fn epbh2v55">
-          <img
-            width="10px"
-            height="10px"
-            src="../assets/img/eye-icon.png"
-            alt="visible--v1"
-            style="color: grey"
-          />{{ boards.viewCnt }}
-        </li>
-      </ul>
-    </a>
+  <a class="css-1myomkm epbh2v50" :href="'/board/' + boards.idx">
+    <div data-v-95dfc640="" class="board-title" aria-description="글 제목">
+      {{ boards.boardTitle }}
+      {{ boards.boardtitle }}
+    </div>
+    <div data-v-95dfc640="" class="board-content" aria-description="글 제목">
+      {{ boards.boardContent }}
+      {{ boards.boardcontent }}
+    </div>
+    <TagComponent v-if="boards.boardtitle" :tagNameList="boards.tags" />
+    <TagComponent v-else :tagNameList="boards.tags" />
+    <div class="css-k57yxr epbh2v51">
+      <img alt="닉네임입니당 프로필 이미지" :src="boards.profileImage" width="20" height="20" decoding="async" data-nimg="1"
+        loading="lazy" style="color: transparent" />
+      <p>
+        <span aria-description="유저 닉네임" class="css-1bf50wt epbh2v52">{{ boards.nickName }}</span><span
+          aria-description="글 생성일" class="css-1mmbkao epbh2v53" :title="formatDate(boards.updatedAt)">{{
+    formatDate(boards.updatedAt) }}</span>
+      </p>
+    </div>
+    <ul class="css-1k3qs23 epbh2v54">
+      <li aria-description="댓글수" class="css-17j46fn epbh2v55">
+        <img width="10px" height="10px" src="../assets/img/comment-icon.png" alt="chat--v1" />{{ boards.commentCnt }}
+      </li>
+      <li aria-description="좋아요수" class="css-17j46fn epbh2v55">
+        <img width="14px" height="14px" src="../assets/img/like-icon.png" alt="facebook-like" />{{ boards.upCnt }}
+      </li>
+      <li aria-description="조회수" class="css-17j46fn epbh2v55">
+        <img width="10px" height="10px" src="../assets/img/eye-icon.png" alt="visible--v1" style="color: grey" />{{
+    boards.viewCnt }}
+      </li>
+    </ul>
+  </a>
   <!-- / 스터디 게시글 컴포넌트 -->
 </template>
 
@@ -72,7 +46,7 @@ export default {
   components: {
     TagComponent,
   },
-  methods:{
+  methods: {
     formatDate(dateString) {
       const date = new Date(dateString);
       const year = date.getFullYear();
@@ -89,6 +63,32 @@ export default {
 </script>
 
 <style scoped>
+.board-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #000;
+  font-family: Pretendard;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+  word-break: break-all;
+  height: 30px; /* 고정할 높이 */
+}
+
+.board-content {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #777;
+  font-family: Pretendard;
+  font-size: 13px;
+  line-height: 1.2;
+  word-break: break-all;
+  height: 70px; /* 고정할 높이 */
+}
+
+
 html {
   padding: 0;
   margin: 0;
@@ -187,7 +187,7 @@ ul {
   background-color: #fff;
   border-radius: 20px;
   gap: 0.5rem;
-  padding: 12px;
+  padding: 20px;
   background-color: rgb(84, 29, 112, 0.1);
 }
 
@@ -213,7 +213,8 @@ a {
   font-family: Pretendard;
   font-size: 14px;
   font-weight: 700;
-  line-height: 8px;
+  /* line-height: 8px; */
+  /* 이 부분을 주석 처리하거나 삭제하세요 */
   opacity: 1;
   display: -webkit-box;
   text-overflow: ellipsis;
@@ -221,6 +222,7 @@ a {
   min-height: 2.5rem;
   word-break: keep-all;
 }
+
 
 .css-1myomkm h3 {
   color: #777;
@@ -254,7 +256,7 @@ a {
   flex-shrink: 0;
 }
 
-.css-k57yxr > p {
+.css-k57yxr>p {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -286,7 +288,7 @@ a {
   opacity: 1;
 }
 
-.css-k57yxr > p {
+.css-k57yxr>p {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -336,5 +338,4 @@ a {
   border: 2px solid rgb(84, 29, 112, 0.3);
   border-radius: 20px;
 }
-
 </style>

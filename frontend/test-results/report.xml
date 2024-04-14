@@ -1,39 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="12" failures="0" errors="0" time="18.827">
-  <testsuite name="퀵메뉴 컴포넌트 테스트" errors="0" failures="0" skipped="0" timestamp="2024-04-10T13:07:26" time="1.212" tests="2">
-    <testcase classname="퀵메뉴 컴포넌트 테스트 위로 가기 버튼 클릭 테스트" name="퀵메뉴 컴포넌트 테스트 위로 가기 버튼 클릭 테스트" time="0.027">
+<testsuites name="jest tests" tests="3" failures="0" errors="0" time="0.814">
+  <testsuite name="AdminLoginPage" errors="0" failures="0" skipped="0" timestamp="2024-03-22T06:05:02" time="0.445" tests="3">
+    <testcase classname="AdminLoginPage 헤더 &amp; 푸터 숨김 true mount 설정" name="AdminLoginPage 헤더 &amp; 푸터 숨김 true mount 설정" time="0.013">
     </testcase>
-    <testcase classname="퀵메뉴 컴포넌트 테스트 아래로 가기 버튼 클릭 테스트" name="퀵메뉴 컴포넌트 테스트 아래로 가기 버튼 클릭 테스트" time="0.006">
+    <testcase classname="AdminLoginPage form 형식으로 email, password 입력을 통한 관리자 로그인" name="AdminLoginPage form 형식으로 email, password 입력을 통한 관리자 로그인" time="0.007">
     </testcase>
-  </testsuite>
-  <testsuite name="AdminLoginPage" errors="0" failures="0" skipped="0" timestamp="2024-04-10T13:07:26" time="1.346" tests="3">
-    <testcase classname="AdminLoginPage 헤더 &amp; 푸터 숨김 true mount 설정" name="AdminLoginPage 헤더 &amp; 푸터 숨김 true mount 설정" time="0.028">
-    </testcase>
-    <testcase classname="AdminLoginPage form 형식으로 email, password 입력을 통한 관리자 로그인" name="AdminLoginPage form 형식으로 email, password 입력을 통한 관리자 로그인" time="0.01">
-    </testcase>
-    <testcase classname="AdminLoginPage 관리자 로그인 성공 시 /admin/tag/register 경로로 이동" name="AdminLoginPage 관리자 로그인 성공 시 /admin/tag/register 경로로 이동" time="0.008">
-    </testcase>
-  </testsuite>
-  <testsuite name="일반회원 회원가입 페이지 테스트" errors="0" failures="0" skipped="0" timestamp="2024-04-10T13:07:26" time="2.227" tests="2">
-    <testcase classname="일반회원 회원가입 페이지 테스트 전체 약관 동의 버튼 클릭" name="일반회원 회원가입 페이지 테스트 전체 약관 동의 버튼 클릭" time="0.029">
-    </testcase>
-    <testcase classname="일반회원 회원가입 페이지 테스트 프로필 이미지 업로드 테스트" name="일반회원 회원가입 페이지 테스트 프로필 이미지 업로드 테스트" time="0.007">
-    </testcase>
-  </testsuite>
-  <testsuite name="후기 작성 페이지 테스트" errors="0" failures="0" skipped="0" timestamp="2024-04-10T13:07:26" time="2.379" tests="3">
-    <testcase classname="후기 작성 페이지 테스트 별점 선택 버튼 클릭 시 선택창이 표시되는지 확인" name="후기 작성 페이지 테스트 별점 선택 버튼 클릭 시 선택창이 표시되는지 확인" time="0.05">
-    </testcase>
-    <testcase classname="후기 작성 페이지 테스트 별점 선택 후 선택창이 닫히는지 확인" name="후기 작성 페이지 테스트 별점 선택 후 선택창이 닫히는지 확인" time="0.007">
-    </testcase>
-    <testcase classname="후기 작성 페이지 테스트 별점 선택 후 선택한 별점이 버튼에 표시되는지 확인" name="후기 작성 페이지 테스트 별점 선택 후 선택한 별점이 버튼에 표시되는지 확인" time="0.006">
-    </testcase>
-  </testsuite>
-  <testsuite name="일반회원 회원가입 테스트" errors="0" failures="0" skipped="0" timestamp="2024-04-10T13:07:26" time="3.76" tests="1">
-    <testcase classname="일반회원 회원가입 테스트 회원가입 실패 케이스 테스트 - 이메일 중복" name="일반회원 회원가입 테스트 회원가입 실패 케이스 테스트 - 이메일 중복" time="0.39">
-    </testcase>
-  </testsuite>
-  <testsuite name="일반회원 회원가입 테스트" errors="0" failures="0" skipped="0" timestamp="2024-04-10T13:07:26" time="17.365" tests="1">
-    <testcase classname="일반회원 회원가입 테스트 회원가입 성공 케이스 테스트" name="일반회원 회원가입 테스트 회원가입 성공 케이스 테스트" time="14.288">
+    <testcase classname="AdminLoginPage 관리자 로그인 성공 시 /admin/tag/register 경로로 이동" name="AdminLoginPage 관리자 로그인 성공 시 /admin/tag/register 경로로 이동" time="0.006">
     </testcase>
   </testsuite>
 </testsuites>

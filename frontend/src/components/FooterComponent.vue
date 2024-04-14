@@ -5,10 +5,8 @@
                 <ul class="css-zkzuyb">
                     <div class="css-t0ptnf">
                         <li class="css-516vln"><a target="_blank"
-                                href="https://teamsparta.notion.site/7b1dc644460946f08bab08b794de685f"
                                 class="css-y8zw8d">개인정보처리방침</a></li>
                         <li class="css-516vln"><a target="_blank"
-                                href="https://teamsparta.notion.site/247d57da1322424d8e8c551df21a048e"
                                 class="css-1vh48ao">서비스
                                 이용약관</a></li>
                     </div>
@@ -19,32 +17,31 @@
                     <h4 class="css-16omddv">(주)BOOTSHELF 사업자 정보<!-- -->&nbsp;</h4>
                     <dl class="css-hdat01">
                         <div class="css-5znsbo">
-                            <dt class="css-184cnz3">대표자:</dt>
-                            <dd class="css-184cnz3">북셸프</dd><span class="css-17y1dcm"> | </span>
+                            <dt class="css-184cnz3">대표자 :</dt>
+                            <dd class="css-184cnz3">BuildUp</dd><span class="css-17y1dcm"> | </span>
                         </div>
                         <div class="css-5znsbo">
-                            <dt class="css-184cnz3">사업자 등록번호:</dt>
+                            <dt class="css-184cnz3">사업자 등록번호 :</dt>
                             <dd class="css-184cnz3">000-000-0000</dd><span class="css-17y1dcm"> | </span>
                         </div>
                         <div class="css-5znsbo">
-                            <dt class="css-184cnz3">통신판매업 신고번호:</dt>
+                            <dt class="css-184cnz3">통신판매업 신고번호 :</dt>
                             <dd class="css-184cnz3">0000-서울동작-00000</dd><span class="css-17y1dcm"> | </span>
                         </div>
                         <div class="css-5znsbo"><a target="_blank"
-                                href="https://drive.google.com/file/d/1xtT3BX_uowATTC7X788a0EYYTkVx551r/view?usp=sharing"
                                 class="css-v0a2uo">평생교육시설 신고번호: 제 000호</a></div>
                         <div class="css-5znsbo">
-                            <dt class="css-184cnz3">주소:</dt>
+                            <dt class="css-184cnz3">주소 :</dt>
                             <dd class="css-184cnz3">서울특별시 동작구 보라매로 87 신이빌딩 402호</dd><span class="css-17y1dcm"> |
                             </span>
                         </div>
                         <div class="css-5znsbo">
-                            <dt class="css-184cnz3">이메일:</dt>
+                            <dt class="css-184cnz3">이메일 :</dt>
                             <dd class="css-184cnz3">bootshelf@ohyeah.com</dd><span class="css-17y1dcm"> |
                             </span>
                         </div>
                         <div class="css-5znsbo">
-                            <dt class="css-184cnz3">전화: </dt>
+                            <dt class="css-184cnz3">전화 : </dt>
                             <dd class="css-184cnz3">0000-0000</dd>
                         </div>
                     </dl>

@@ -48,14 +48,14 @@ export const useBoardStore = defineStore("board", {
 
         const headers = this.isTokenExpired
           ? {
-              Authorization: `Bearer ${accessToken}`,
-              RefreshToken: `Bearer ${refreshToken}`,
-              "Content-Type": "application/json",
-            }
+            Authorization: `Bearer ${accessToken}`,
+            RefreshToken: `Bearer ${refreshToken}`,
+            "Content-Type": "application/json",
+          }
           : {
-              Authorization: `Bearer ${accessToken}`,
-              "Content-Type": "application/json",
-            };
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          };
 
 
         let response = await axios.post(backend + `/main/board/create`, board, {
@@ -97,7 +97,7 @@ export const useBoardStore = defineStore("board", {
           console.log(e.response.data);
           if (e.response.data.code === "BOARD-002") {
             alert("이미 사용중인 제목입니다. 제목을 변경해주세요.");
-          } else if(e.response.data.code === "COMMON-001") {
+          } else if (e.response.data.code === "COMMON-001") {
             alert("카테고리, 제목은 필수로 입력하셔야 합니다.")
           }
         }
@@ -109,12 +109,12 @@ export const useBoardStore = defineStore("board", {
 
         let response = await axios.get(
           backend +
-            "/main/board/search?query=" +
-            query +
-            "&searchType=" +
-            option +
-            "&page=" +
-            (page - 1)
+          "/main/board/search?query=" +
+          query +
+          "&searchType=" +
+          option +
+          "&page=" +
+          (page - 1)
         );
         this.boardList = response.data.result.list;
         this.totalPages = response.data.result.totalPages;
@@ -135,6 +135,48 @@ export const useBoardStore = defineStore("board", {
       }
     },
 
+    /* es 검색!!! */
+    async getCategoryBoardListByQuery(
+      boardCategoryIdx,
+      title,
+      option,
+      page = 1
+    ) {
+      try {
+        this.isLoading = true;
+
+        let response = await axios.get(
+          backend +
+          "/search/board/list/scroll" +
+          "?categoryIdx=" +
+          boardCategoryIdx +
+          "&title=" +
+          title +
+          "&sortType=" +
+          option
+        );
+        this.boardList = response.data.result.list;
+
+        this.lastSearchAfter = response.data.result.lastSearchAfter;
+        this.totalPages = response.data.result.totalPages;
+        this.currentPage = page;
+        this.totalCnt = response.data.result.totalHits;
+
+        if (this.boardList.length === 0) {
+          this.isBoardExist = false;
+          this.isPageExist = false;
+        } else {
+          this.isBoardExist = true;
+          this.isPageExist = true;
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
+    /* es 더보기 */
     async getBoardListByQueryNext(categoryIdx, sortType, title, searchAfterStr) {
       try {
         this.isLoading = true;
@@ -145,18 +187,18 @@ export const useBoardStore = defineStore("board", {
 
         if (response.data.result.list.length === 0) {
           this.noMoreData = true; // 데이터가 더 이상 없음을 표시
+          this.isLoading = false;  // 로딩 상태 해제
+          setTimeout(() => alert("마지막 게시글입니다."), 250); // alert 창을 약간 지연시켜 띄움
         } else {
           // 새로운 검색 결과를 기존 목록에 추가
-          this.boardList.list = [...this.boardList.list, ...response.data.result.list];
+          this.boardList = [...this.boardList, ...response.data.result.list];
 
           this.totalCnt = response.data.result.totalHits;
-          // `lastSearchAfter` 값을 새로운 검색 결과에 기반하여 업데이트
-          //this.lastSearchAfter = response.data.result.lastSearchAfter[0];
-          this.searchAfterStr = `${response.data.result.lastSearchAfter[0]}, "${String(response.data.result.lastSearchAfter[1])}"`;
+          this.searchAfterStr = `${response.data.result.lastSearchAfter[0]}, ${response.data.result.lastSearchAfter[1]}`;
 
           this.noMoreData = false; // 더 불러올 데이터가 있으므로 메시지 숨김
 
-          if (this.boardList.list.length === 0) {
+          if (this.boardList.length === 0) {
             this.isBoardExist = false;
             this.isPageExist = false;
           } else {
@@ -179,12 +221,12 @@ export const useBoardStore = defineStore("board", {
 
         let response = await axios.get(
           backend +
-            "/main/board/category/" +
-            boardCategoryIdx +
-            "/" +
-            sortType +
-            "?page=" +
-            (page - 1)
+          "/main/board/category/" +
+          boardCategoryIdx +
+          "/" +
+          sortType +
+          "?page=" +
+          (page - 1)
         );
 
         this.boardList = response.data.result.list;
@@ -211,9 +253,9 @@ export const useBoardStore = defineStore("board", {
 
         let response = await axios.get(
           backend +
-            `/search/board/list?categoryIdx=${categoryIdx}&sortType=${sortType}&title=${encodeURIComponent(
-              title
-            )}`,
+          `/search/board/list?categoryIdx=${categoryIdx}&sortType=${sortType}&title=${encodeURIComponent(
+            title
+          )}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -255,14 +297,14 @@ export const useBoardStore = defineStore("board", {
 
         const headers = this.isTokenExpired
           ? {
-              Authorization: `Bearer ${accessToken}`,
-              RefreshToken: `Bearer ${refreshToken}`,
-              "Content-Type": "application/json",
-            }
+            Authorization: `Bearer ${accessToken}`,
+            RefreshToken: `Bearer ${refreshToken}`,
+            "Content-Type": "application/json",
+          }
           : {
-              Authorization: `Bearer ${accessToken}`,
-              "Content-Type": "application/json",
-            };
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          };
 
         let response = await axios.post(
           backend + "/main/boardup/create",
@@ -310,14 +352,14 @@ export const useBoardStore = defineStore("board", {
 
         const headers = this.isTokenExpired
           ? {
-              Authorization: `Bearer ${accessToken}`,
-              RefreshToken: `Bearer ${refreshToken}`,
-              "Content-Type": "application/json",
-            }
+            Authorization: `Bearer ${accessToken}`,
+            RefreshToken: `Bearer ${refreshToken}`,
+            "Content-Type": "application/json",
+          }
           : {
-              Authorization: `Bearer ${accessToken}`,
-              "Content-Type": "application/json",
-            };
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          };
 
 
         let response = await axios.post(
@@ -366,14 +408,14 @@ export const useBoardStore = defineStore("board", {
 
         const headers = this.isTokenExpired
           ? {
-              Authorization: `Bearer ${accessToken}`,
-              RefreshToken: `Bearer ${refreshToken}`,
-              "Content-Type": "application/json",
-            }
+            Authorization: `Bearer ${accessToken}`,
+            RefreshToken: `Bearer ${refreshToken}`,
+            "Content-Type": "application/json",
+          }
           : {
-              Authorization: `Bearer ${accessToken}`,
-              "Content-Type": "application/json",
-            };
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          };
 
         let response = await axios.get(`${backend}/main/boardup/check/${boardIdx}`, {
           headers
@@ -419,14 +461,14 @@ export const useBoardStore = defineStore("board", {
 
         const headers = this.isTokenExpired
           ? {
-              Authorization: `Bearer ${accessToken}`,
-              RefreshToken: `Bearer ${refreshToken}`,
-              "Content-Type": "application/json",
-            }
+            Authorization: `Bearer ${accessToken}`,
+            RefreshToken: `Bearer ${refreshToken}`,
+            "Content-Type": "application/json",
+          }
           : {
-              Authorization: `Bearer ${accessToken}`,
-              "Content-Type": "application/json",
-            };
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          };
         let response = await axios.get(
           `${backend}/main/boardscrap/check/${boardIdx}`,
           {
@@ -459,7 +501,7 @@ export const useBoardStore = defineStore("board", {
           }
         }
 
-        
+
 
         this.isScrapped = response.data.result.status;
 
@@ -476,14 +518,14 @@ export const useBoardStore = defineStore("board", {
 
         const headers = this.isTokenExpired
           ? {
-              Authorization: `Bearer ${accessToken}`,
-              RefreshToken: `Bearer ${refreshToken}`,
-              "Content-Type": "application/json",
-            }
+            Authorization: `Bearer ${accessToken}`,
+            RefreshToken: `Bearer ${refreshToken}`,
+            "Content-Type": "application/json",
+          }
           : {
-              Authorization: `Bearer ${accessToken}`,
-              "Content-Type": "application/json",
-            };
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          };
 
         await axios.patch(
           `${backend}/main/boardup/delete/${boardUpIdx}`,
@@ -492,7 +534,7 @@ export const useBoardStore = defineStore("board", {
             headers
           }
         );
-        
+
       } catch (e) {
         console.error(e);
         throw e;
@@ -505,16 +547,16 @@ export const useBoardStore = defineStore("board", {
 
         const headers = this.isTokenExpired
           ? {
-              Authorization: `Bearer ${accessToken}`,
-              RefreshToken: `Bearer ${refreshToken}`,
-              "Content-Type": "application/json",
-            }
+            Authorization: `Bearer ${accessToken}`,
+            RefreshToken: `Bearer ${refreshToken}`,
+            "Content-Type": "application/json",
+          }
           : {
-              Authorization: `Bearer ${accessToken}`,
-              "Content-Type": "application/json",
-            };
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          };
 
-            
+
 
         await axios.patch(
           `${backend}/main/boardscrap/delete/${boardScrapIdx}`,
@@ -526,45 +568,6 @@ export const useBoardStore = defineStore("board", {
       } catch (e) {
         console.error(e);
         throw e;
-      }
-    },
-    async getCategoryBoardListByQuery(
-      boardCategoryIdx,
-      title,
-      option,
-      page = 1
-    ) {
-      try {
-        this.isLoading = true;
-
-        let response = await axios.get(
-          backend +
-          "/search/board/list/scroll" +
-            "?categoryIdx="+
-            boardCategoryIdx +
-            "&title=" +
-            title +
-            "&sortType=" +
-            option
-        );
-        this.boardList = response.data.result.list;
-
-        this.lastSearchAfter = response.data.result.lastSearchAfter;
-        this.totalPages = response.data.result.totalPages;
-        this.currentPage = page;
-        this.totalCnt = response.data.result.totalHits;
-
-        if (this.boardList.list.length === 0) {
-          this.isBoardExist = false;
-          this.isPageExist = false;
-        } else {
-          this.isBoardExist = true;
-          this.isPageExist = true;
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        this.isLoading = false;
       }
     },
 
@@ -600,14 +603,14 @@ export const useBoardStore = defineStore("board", {
 
         const headers = this.isTokenExpired
           ? {
-              Authorization: `Bearer ${accessToken}`,
-              RefreshToken: `Bearer ${refreshToken}`,
-              "Content-Type": "application/json",
-            }
+            Authorization: `Bearer ${accessToken}`,
+            RefreshToken: `Bearer ${refreshToken}`,
+            "Content-Type": "application/json",
+          }
           : {
-              Authorization: `Bearer ${accessToken}`,
-              "Content-Type": "application/json",
-            };
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          };
 
         this.isLoading = true;
 
@@ -658,16 +661,16 @@ export const useBoardStore = defineStore("board", {
 
         const headers = this.isTokenExpired
           ? {
-              Authorization: `Bearer ${accessToken}`,
-              RefreshToken: `Bearer ${refreshToken}`,
-              "Content-Type": "application/json",
-            }
+            Authorization: `Bearer ${accessToken}`,
+            RefreshToken: `Bearer ${refreshToken}`,
+            "Content-Type": "application/json",
+          }
           : {
-              Authorization: `Bearer ${accessToken}`,
-              "Content-Type": "application/json",
-            };
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          };
 
-          
+
         let response = await axios.patch(`${backend}/main/board/update`, board, {
           headers
         });
@@ -722,14 +725,14 @@ export const useBoardStore = defineStore("board", {
 
         let response = await axios.get(
           backend +
-            "/main/board/tag/" +
-            selectTagIdx +
-            "/" +
-            boardCategoryIdx +
-            "/" +
-            sortType +
-            "?page=" +
-            (page - 1)
+          "/main/board/tag/" +
+          selectTagIdx +
+          "/" +
+          boardCategoryIdx +
+          "/" +
+          sortType +
+          "?page=" +
+          (page - 1)
         );
         this.boardList = response.data.result.list;
         this.totalPages = response.data.result.totalPages;
@@ -765,9 +768,9 @@ export const useBoardStore = defineStore("board", {
 
         let response = await axios.get(
           backend +
-            `/main/board/tag/${selectTagIdx}/${boardCategoryIdx}/${sortType}/search?searchTerm=${encodeURIComponent(
-              searchTerm
-            )}&${params}`,
+          `/main/board/tag/${selectTagIdx}/${boardCategoryIdx}/${sortType}/search?searchTerm=${encodeURIComponent(
+            searchTerm
+          )}&${params}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -834,23 +837,23 @@ export const useBoardStore = defineStore("board", {
 
         const headers = this.isTokenExpired
           ? {
-              Authorization: `Bearer ${accessToken}`,
-              RefreshToken: `Bearer ${refreshToken}`,
-              "Content-Type": "application/json",
-            }
+            Authorization: `Bearer ${accessToken}`,
+            RefreshToken: `Bearer ${refreshToken}`,
+            "Content-Type": "application/json",
+          }
           : {
-              Authorization: `Bearer ${accessToken}`,
-              "Content-Type": "application/json",
-            };
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          };
 
         let response = await axios.get(
           backend +
-            "/main/board/mylist/" +
-            boardCategoryIdx +
-            "/" +
-            option +
-            "?page=" +
-            (page - 1),
+          "/main/board/mylist/" +
+          boardCategoryIdx +
+          "/" +
+          option +
+          "?page=" +
+          (page - 1),
           {
             headers
           }
@@ -903,23 +906,23 @@ export const useBoardStore = defineStore("board", {
 
         const headers = this.isTokenExpired
           ? {
-              Authorization: `Bearer ${accessToken}`,
-              RefreshToken: `Bearer ${refreshToken}`,
-              "Content-Type": "application/json",
-            }
+            Authorization: `Bearer ${accessToken}`,
+            RefreshToken: `Bearer ${refreshToken}`,
+            "Content-Type": "application/json",
+          }
           : {
-              Authorization: `Bearer ${accessToken}`,
-              "Content-Type": "application/json",
-            };
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          };
 
         let response = await axios.get(
           backend +
-            "/main/boardscrap/list/" +
-            boardCategoryIdx +
-            "/" +
-            option +
-            "?page=" +
-            (page - 1),
+          "/main/boardscrap/list/" +
+          boardCategoryIdx +
+          "/" +
+          option +
+          "?page=" +
+          (page - 1),
           {
             headers
           }
@@ -973,14 +976,14 @@ export const useBoardStore = defineStore("board", {
 
         const headers = this.isTokenExpired
           ? {
-              Authorization: `Bearer ${accessToken}`,
-              RefreshToken: `Bearer ${refreshToken}`,
-              "Content-Type": "application/json",
-            }
+            Authorization: `Bearer ${accessToken}`,
+            RefreshToken: `Bearer ${refreshToken}`,
+            "Content-Type": "application/json",
+          }
           : {
-              Authorization: `Bearer ${accessToken}`,
-              "Content-Type": "application/json",
-            };
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          };
 
         let response = await axios.delete(
           backend + "/main/board/delete/" + boardIdx,

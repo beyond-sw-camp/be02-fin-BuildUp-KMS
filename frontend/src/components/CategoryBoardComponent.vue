@@ -21,8 +21,8 @@
               </div>
             </div>
             <!--태그 컴포넌트 자리-->
-            <TagComponent v-if="boards.boardtitle" :tagNameList="boards.tags" />
-            <TagComponent v-else :tagNameList="boards.tagNameList" />
+            <TagComponent v-if="boards.boardTitle" :tagNameList="boards.tags" />
+            <TagComponent v-else :tagNameList="boards.tags" />
           </div>
           <div class="css-bt1qy"></div>
           <!--사진-->
@@ -90,7 +90,7 @@
               </div>
               <div class="css-1ry6usa"></div>
               <!-- <div class="css-updatedTimeGms">{{ this.$moment(boards.createdAt).format('YYYY-MM-DD HH:mm:ss') }}</div> -->
-              <div class="css-updatedTimeGms" :title="formatDate(boards.updatedAt)">{{ formatDate(boards.updatedAt) }}</div>
+              <div class="css-updatedTimeGms" :title="formatDate(boards.createdAt)">{{ formatDate(boards.createdAt) }}</div>
             </div>
           </div>
           <!-- 여기서부터 추천수 댓글수 등등 표시-->
