@@ -129,7 +129,7 @@ public class EsReviewAdapter implements GetListReviewPort, GetTotalListReviewPor
             NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder()
                     .withQuery(matchQueryBuilder)
                     .withSort(fieldSort(sortField).order(SortOrder.DESC))
-                    .withSort(fieldSort("_id").order(SortOrder.DESC)) // 중복값이 있을 것을 대비해 id로 한 번 더 sorting
+                    .withSort(fieldSort("id").order(SortOrder.DESC)) // 중복값이 있을 것을 대비해 id로 한 번 더 sorting
                     .withPageable(PageRequest.of(0, size));
 
             if (searchAfter != null && !searchAfter.isEmpty()) {
@@ -152,7 +152,7 @@ public class EsReviewAdapter implements GetListReviewPort, GetTotalListReviewPor
             NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder()
                     .withQuery(multiMatchQueryBuilder)
                     .withSort(fieldSort(sortField).order(SortOrder.DESC))
-                    .withSort(fieldSort("_id").order(SortOrder.DESC)) // 중복값이 있을 것을 대비해 id로 한 번 더 sorting
+                    .withSort(fieldSort("id").order(SortOrder.DESC)) // 중복값이 있을 것을 대비해 id로 한 번 더 sorting
                     .withPageable(PageRequest.of(0, size));
 
             if (searchAfter != null && !searchAfter.isEmpty()) {
@@ -181,7 +181,7 @@ public class EsReviewAdapter implements GetListReviewPort, GetTotalListReviewPor
                 .withQuery(matchQueryBuilder)
                 .withFilter(boolQueryBuilder)
                 .withSort(fieldSort(sortField).order(SortOrder.DESC))
-                .withSort(fieldSort("_id").order(SortOrder.DESC)) // 중복값이 있을 것을 대비해 id로 한 번 더 sorting
+                .withSort(fieldSort("id").order(SortOrder.DESC)) // 중복값이 있을 것을 대비해 id로 한 번 더 sorting
                 .withPageable(PageRequest.of(0, size));
 
         if (searchAfter != null && !searchAfter.isEmpty()) {
