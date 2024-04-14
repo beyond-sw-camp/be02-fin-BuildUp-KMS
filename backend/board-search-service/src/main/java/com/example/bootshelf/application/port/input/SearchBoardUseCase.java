@@ -9,5 +9,5 @@ public interface SearchBoardUseCase {
 
     BaseRes searchBoard(Integer categoryIdx, Integer sortType, String title, Pageable pageable);
 
-    BaseRes searchAfterBoard(Integer categoryIdx, Integer sortType, String title, Integer size, List<Object> searchAfter);
+    BaseRes searchAfterBoard(Integer categoryIdx, Integer sortType, String title, int size, List<Object> searchAfterStr);
 }

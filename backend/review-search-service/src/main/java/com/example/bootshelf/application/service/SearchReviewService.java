@@ -246,11 +246,9 @@ public class SearchReviewService implements SearchReviewUseCase, SearchTotalRevi
                     : null;
 
             long totalHits = searchHits.getTotalHits();
-            int totalPages = (int) Math.ceil((double) totalHits / size);
 
             ReviewSearchResResult reviewSearchResResult = ReviewSearchResResult.builder()
                     .totalHits(totalHits)
-                    .totalPages(totalPages)
                     .list(reviewSearchRes)
                     .lastSearchAfter(lastSearchAfter)
                     .build();
@@ -313,11 +311,9 @@ public class SearchReviewService implements SearchReviewUseCase, SearchTotalRevi
                     : null;
 
             long totalHits = searchHits.getTotalHits();
-            int totalPages = (int) Math.ceil((double) totalHits / size);
 
             ReviewSearchResResult reviewSearchResResult = ReviewSearchResResult.builder()
                     .totalHits(totalHits)
-                    .totalPages(totalPages)
                     .list(reviewSearchRes)
                     .lastSearchAfter(lastSearchAfter)
                     .build();
