@@ -9,5 +9,5 @@ import java.util.List;
 public interface GetListBoardPort {
 
     SearchHits<EsBoard> titleContentSearch(Integer categoryIdx, String sortField, String title, Pageable pageable);
-    SearchHits<EsBoard> searchAfterBoard(Integer categoryIdx, String sortField, String title, Integer size, List<Object> searchAfter);
+    SearchHits<EsBoard> searchAfterBoard(Integer categoryIdx, String sortField, String title, int size, List<Object> searchAfter);
 }

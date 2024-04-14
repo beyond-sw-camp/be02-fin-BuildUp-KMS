@@ -62,14 +62,14 @@ public class EsBoard {
     public static class EsTag {
 
         @Field(type = FieldType.Text, analyzer = "nori")
-        private String tagname;
+        private String tagName;
 
         public String getTagname() {
-            return tagname;
+            return tagName;
         }
 
-        public void setTagname(String tagname) {
-            this.tagname = tagname;
+        public void setTagname(String tagName) {
+            this.tagName = tagName;
         }
     }
 }
