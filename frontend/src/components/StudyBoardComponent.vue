@@ -10,7 +10,7 @@
       {{ boards.boardcontent }}
     </div>
     <TagComponent v-if="boards.boardtitle" :tagNameList="boards.tags" />
-    <TagComponent v-else :tagNameList="boards.tagNameList" />
+    <TagComponent v-else :tagNameList="boards.tags" />
     <div class="css-k57yxr epbh2v51">
       <img alt="닉네임입니당 프로필 이미지" :src="boards.profileImage" width="20" height="20" decoding="async" data-nimg="1"
         loading="lazy" style="color: transparent" />

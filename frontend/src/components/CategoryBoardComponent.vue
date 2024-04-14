@@ -21,8 +21,8 @@
               </div>
             </div>
             <!--태그 컴포넌트 자리-->
-            <TagComponent v-if="boards.boardtitle" :tagNameList="boards.tags" />
-            <TagComponent v-else :tagNameList="boards.tagNameList" />
+            <TagComponent v-if="boards.boardTitle" :tagNameList="boards.tags" />
+            <TagComponent v-else :tagNameList="boards.tags" />
           </div>
           <div class="css-bt1qy"></div>
           <!--사진-->
