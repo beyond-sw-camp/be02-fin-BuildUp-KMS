@@ -1023,7 +1023,7 @@ export const useReviewStore = defineStore("review", {
           this.reviewList = [...this.reviewList, ...response.data.result.list];
 
           this.totalCnt = response.data.result.totalHits;
-          this.searchAfterStr = `${response.data.result.lastSearchAfter[0]}, "${String(response.data.result.lastSearchAfter[1])}"`;
+          this.searchAfterStr = `${response.data.result.lastSearchAfter[0]}, "${response.data.result.lastSearchAfter[1]}"`;
 
           this.noMoreData = false; // 더 불러올 데이터가 있으므로 메시지 숨김
 
