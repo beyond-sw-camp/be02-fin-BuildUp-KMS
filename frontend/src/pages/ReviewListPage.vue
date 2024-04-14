@@ -271,6 +271,7 @@ export default {
       this.loadReviewList(1); // 리뷰 카테고리 변경 시 첫 페이지로 돌아감.
     },
     async loadReviewList(page) {
+      
       // 검색어가 있는 경우
       if (this.title) {
         await this.reviewStore.getCategoryReviewListByQuery(
@@ -306,17 +307,15 @@ export default {
 
     async lastSearchData() {
       try {
-        // `lastSearchAfter` 값을 가져와서 유효성 검사
-        const lastSearchAfter = this.boardStore.lastSearchAfter;
+        const lastSearchAfter = this.reviewStore.lastSearchAfter;
         if (!lastSearchAfter || lastSearchAfter.length < 2) {
           throw new Error("Invalid lastSearchAfter value");
         }
 
-        // `searchAfterStr` 구성
-        const searchAfterStr = `${lastSearchAfter[0]}, "${String(lastSearchAfter[1])}"`;
-        console.log(searchAfterStr);
+        const searchAfterStr = `${lastSearchAfter[0]}, "${String(
+          lastSearchAfter[1]
+        )}"`;
 
-        // 다음 결과 불러오기
         await this.reviewStore.getReviewListByQueryNext2(
           this.reviewCategoryIdx,
           this.sortType,
@@ -326,7 +325,8 @@ export default {
       } catch (error) {
         console.error(error);
       }
-    }
+    },
+
   },
 };
 </script>

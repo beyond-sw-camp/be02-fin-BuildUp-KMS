@@ -16,6 +16,10 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+
 @Tag(name = "관리자", description = "Review Category CRUD")
 @Api(tags = "후기 카테고리")
 @RestController
@@ -34,7 +38,7 @@ public class ReviewCategoryController {
     })
     @RequestMapping(method = RequestMethod.POST, value = "/create")
     public ResponseEntity<BaseRes> createReviewCategory(
-            @RequestBody PostCreateReviewCategoryReq postCreateReviewCategoryReq
+            @RequestBody @Valid PostCreateReviewCategoryReq postCreateReviewCategoryReq
     ) {
         BaseRes baseRes = reviewCategoryService.createReviewCategory(postCreateReviewCategoryReq);
         return ResponseEntity.ok().body(baseRes);
@@ -59,7 +63,7 @@ public class ReviewCategoryController {
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
     @RequestMapping(method = RequestMethod.PATCH, value = "/update/{reviewCategoryIdx}")
-    public ResponseEntity<BaseRes> updateReviewCategory(@PathVariable  Integer reviewCategoryIdx, @RequestBody PatchUpdateReviewCategoryReq patchUpdateReviewCategoryReq) {
+    public ResponseEntity<BaseRes> updateReviewCategory(@PathVariable @NotNull @Positive Integer reviewCategoryIdx, @RequestBody @Valid PatchUpdateReviewCategoryReq patchUpdateReviewCategoryReq) {
         BaseRes baseRes = reviewCategoryService.updateReviewCategory(patchUpdateReviewCategoryReq, reviewCategoryIdx);
         return ResponseEntity.ok().body(baseRes);
     }
@@ -71,7 +75,7 @@ public class ReviewCategoryController {
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
     @RequestMapping(method = RequestMethod.DELETE,value = "/delete/{reviewCategoryIdx}")
-    public ResponseEntity<BaseRes> deleteReviewCategory(@PathVariable Integer reviewCategoryIdx) {
+    public ResponseEntity<BaseRes> deleteReviewCategory(@PathVariable @NotNull @Positive Integer reviewCategoryIdx) {
         BaseRes baseRes = reviewCategoryService.deleteReviewCategory(reviewCategoryIdx);
         return ResponseEntity.ok().body(baseRes);
     }

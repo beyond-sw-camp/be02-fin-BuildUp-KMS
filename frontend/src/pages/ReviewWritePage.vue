@@ -212,7 +212,6 @@ export function imageHandler() {
 
       let response = await axios({
         method: "POST",
-        // url: "http://192.168.0.61/api/review/image/upload",
         url: backend + "/main/review/image/upload",
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -1267,5 +1266,6 @@ ul {
   font-family: Monaco;
   letter-spacing: 0.07em;
   font-size: 12px;
+  word-break: break-all;
 }
 </style>

@@ -87,7 +87,7 @@ public class ReviewController {
     public ResponseEntity<BaseRes> listReview(
             @PathVariable @NotNull(message = "후기 카테고리 IDX는 필수 입력 항목입니다.") @Positive(message = "후기 카테고리 IDX는 1이상의 양수입니다.") Integer reviewCategoryIdx,
             @PathVariable @NotNull(message = "조건 유형은 필수 입력 항목입니다.") @Positive(message = "조건 유형은 1이상의 양수입니다.") @ApiParam(value = "정렬유형 : 1 (최신순), 2 (추천수 순), 3 (조회수 순), 4 (스크랩수 순), 5 (댓글수 순)") Integer sortType,
-            @PageableDefault(size = 9) Pageable pageable
+            @PageableDefault(size = 20) Pageable pageable
     ) {
         BaseRes baseRes = reviewService.listReview(reviewCategoryIdx, sortType, pageable);
 

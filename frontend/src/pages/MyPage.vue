@@ -615,12 +615,14 @@ a {
   border-radius: 1.5rem;
   padding: 4rem 4.8rem;
   margin-bottom: 4rem;
+  height: 1220px;
 }
 @media (min-width: 820px) {
   .css-1rw3qt4 {
     gap: 16px;
     background-color: #ffffff;
     min-height: 800px;
+    height: 1220px;
   }
 }
 .css-vmaf1p {
