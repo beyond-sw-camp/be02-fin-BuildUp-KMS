@@ -9,7 +9,7 @@
                         <div class="app-brand justify-content-center">
                             <router-link to="/admin/tag">
                                 <span class="app-brand-logo demo">
-                                    <img src="../assets/img/logo.png" alt="BOOKSHELF 로고" width="140px">
+                                    <img src="@/assets/img/logo.png" alt="BOOKSHELF 로고" width="140px">
                                 </span>
                             </router-link>
                         </div>

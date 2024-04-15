@@ -6,12 +6,12 @@
             <a href="#" class="app-brand-link" @click.prevent="toggleMenu">
                 <router-link to="/admin/tag">
                     <span class="app-brand-logo demo">
-                        <img src="../assets/img/icon.png" alt="icon" width="30px" />
+                        <img src="@/assets/img/icon.png" alt="icon" width="30px" />
                     </span>
                 </router-link>
                 <router-link to="/admin/tag">
                     <span class="app-brand-text demo menu-text fw-bold ms-2">
-                        <img src="../assets/img/logo.png" alt="logo" width="120px" />
+                        <img src="@/assets/img/logo.png" alt="logo" width="120px" />
                     </span>
                 </router-link>
             </a>
