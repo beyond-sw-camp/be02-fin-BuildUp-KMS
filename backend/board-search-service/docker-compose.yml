@@ -1,0 +1,38 @@
+version: '3'
+services:
+  mysql:
+    image: mariadb:latest
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-vol:/var/lib/mysql
+    environment:
+      MARIADB_ROOT_PASSWORD: qwer1234
+      MARIADB_DATABASE: bootshelf
+      TZ: Asia/Seoul
+
+  controller:
+    container_name: ngrinder-controller
+    image: ngrinder/controller:latest
+    environment:
+      - TZ=Asia/Seoul
+    ports:
+      - "9000:80"
+      - "16001:16001"
+      - "12000-12009:12000-12009"
+    volumes:
+      - /tmp/ngrinder-controller:/opt/ngrinder-controller
+    sysctls:
+      - net.core.somaxconn=65000
+
+  agent-1:
+    container_name: ngrinder-agent-1
+    image: ngrinder/agent:latest
+    links:
+      - controller
+    environment:
+      - TZ=Asia/Seoul
+
+volumes:
+  db-vol:
+    driver: local
