@@ -81,7 +81,11 @@
 ---
 <br>
 
-### <center>📚 [BOOTSHELF 데모 사이트 바로가기]() 📚</center>
+<div align="center">
+
+### 📚 [BOOTSHELF 데모 사이트 바로가기](링크_주소_여기에_입력) 📚
+
+</div>
 
 <br>
 
