@@ -14,7 +14,7 @@ describe("회원 로그인 테스트", () => {
       )
       .build();
 
-    await driver.get("http://localhost:8083/");
+    await driver.get("http://192.168.0.61/");
 
     await driver.wait(() =>
       driver
