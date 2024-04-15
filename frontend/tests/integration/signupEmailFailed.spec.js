@@ -5,14 +5,16 @@ const chrome = require("selenium-webdriver/chrome");
 describe("일반회원 회원가입 테스트", () => {
   let driver;
   beforeAll(async () => {
+    jest.setTimeout(60000);
+
     driver = await new Builder()
       .forBrowser("chrome")
-      .setChromeOptions(
-        new chrome.Options().addArguments("--headless") // 크롬을 띄우지 않도록 설정
-      )
+      // .setChromeOptions(
+      //   new chrome.Options().addArguments("--headless") // 크롬을 띄우지 않도록 설정
+      // )
       .build();
 
-    await driver.get("http://localhost:8081/signup");
+    await driver.get("http://localhost:8083/signup");
 
     await driver.wait(() =>
       driver
@@ -23,7 +25,7 @@ describe("일반회원 회원가입 테스트", () => {
 
   afterAll(async () => {
     await driver.quit();
-  }, 40000);
+  }, 60000);
 
   test("회원가입 실패 케이스 테스트 - 이메일 중복", async () => {
     const input_email = await driver.wait(
