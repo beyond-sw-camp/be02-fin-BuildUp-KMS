@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 
-// const backend = "http://192.168.0.61/api";
-const backend = "http://localhost:9999";
+const backend = "http://192.168.0.61/api";
+// const backend = "http://localhost:9999";
 
 export const useTagStore = defineStore("tag", {
   state: () => ({
