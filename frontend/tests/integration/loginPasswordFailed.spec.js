@@ -5,14 +5,16 @@ const chrome = require("selenium-webdriver/chrome");
 describe("회원 로그인 실패 테스트", () => {
   let driver;
   beforeAll(async () => {
+    jest.setTimeout(60000);
+
     driver = await new Builder()
       .forBrowser("chrome")
-      .setChromeOptions(
-        new chrome.Options().addArguments("--headless") // 크롬을 띄우지 않도록 설정
-      )
+      // .setChromeOptions(
+      //   new chrome.Options().addArguments("--headless") // 크롬을 띄우지 않도록 설정
+      // )
       .build();
 
-    await driver.get("http://192.168.0.61/");
+    await driver.get("http://localhost:8083/");
 
     await driver.wait(() =>
       driver
@@ -23,7 +25,7 @@ describe("회원 로그인 실패 테스트", () => {
 
   afterAll(async () => {
     await driver.quit();
-  }, 40000);
+  }, 60000);
 
   test("회원 로그인 실패 - 비밀번호 불일치", async () => {
     const loginStep1_btn = await driver.wait(

@@ -14,6 +14,6 @@ const config = {
   transformIgnorePatterns: [
     "/node_modules/(?!axios|quillEditor|quill-image-uploader).+\\.js$",
   ],
-  testTimeout: 30000,
+  testTimeout: 60000,
 };
 module.exports = config;
