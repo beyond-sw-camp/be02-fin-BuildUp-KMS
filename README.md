@@ -110,6 +110,8 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;　➡ 인증과정 : 네이버 CLOVA OCR API를 사용하여 HRD-NET 수강이력을 캡처 후 업로드
 
+- **보다 자세한 내용은 [wiki](https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/wiki/0.-BOOTSHELF-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%F0%9F%93%9A) 에서 확인하실 수 있습니다.**
+
 ---
 
 ### 🚩 프로젝트 목표
