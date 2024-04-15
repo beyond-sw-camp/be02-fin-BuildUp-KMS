@@ -9,9 +9,9 @@ describe("일반회원 회원가입 테스트", () => {
 
     driver = await new Builder()
       .forBrowser("chrome")
-      // .setChromeOptions(
-      //   new chrome.Options().addArguments("--headless") // 크롬을 띄우지 않도록 설정
-      // )
+      .setChromeOptions(
+        new chrome.Options().addArguments("--headless") // 크롬을 띄우지 않도록 설정
+      )
       .build();
 
     await driver.get("http://localhost:8083/signup");
