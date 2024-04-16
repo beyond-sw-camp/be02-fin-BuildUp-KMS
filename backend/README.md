@@ -28,7 +28,7 @@
          <summary><b>KMS_003_USER-003. 과정명 확인</b></summary>
                   <br>
          <p><b> ➡️ 회원이 캡처한 사진의 과정명이 DB에 있는지 확인하여 인증 회원가입을 진행한다.</b></p><br>
-         <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/536f7f6c-fbcd-4d4d-91bf-dece525adcec"/></p>
+         <p><img src="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148943354/8278a355-2c59-445b-8ac4-6ab2ca568792"/></p>
          </details><br>
           <details>
          <summary><b>KMS_004_USER_004. 이메일 인증</b></summary>
