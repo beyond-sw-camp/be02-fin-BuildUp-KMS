@@ -485,10 +485,9 @@ export const useBoardStore = defineStore("board", {
 
         let response = await axios.get(
           backend +
-            "/es/board/search" +
-            "?categoryIdx=" +
+            "/board/search/by/" +
             boardCategoryIdx +
-            "&title=" +
+            "?query=" +
             title +
             "&sortType=" +
             option +

@@ -7,14 +7,13 @@ import router from "@/router";
 
 export default {
   created() {
-    const receivedToken = this.$route.params.token;
-    // const currentUrl = window.location.href;
-    // const urlParams = new URLSearchParams(currentUrl);
-    // const receivedToken = urlParams.get("token");
+    const accessToken = this.$route.query.accessToken;
+    const refreshToken = this.$route.query.refreshToken;
 
-    console.log("token", receivedToken);
-    if (receivedToken) {
-      localStorage.setItem("token", receivedToken);
+
+    if (accessToken && refreshToken) {
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
       // window.location.href="/";
       router.push({ path: "/" });
     } else {
