@@ -8,16 +8,10 @@ import com.example.bootshelf.common.error.entityexception.UserException;
 import com.example.bootshelf.config.SecurityConfig;
 import com.example.bootshelf.config.handler.OAuth2AuthenticationSuccessHandler;
 import com.example.bootshelf.config.utils.JwtUtils;
-import com.example.bootshelf.reviewsvc.review.controller.ReviewController;
-import com.example.bootshelf.reviewsvc.review.repository.ReviewRepository;
-import com.example.bootshelf.reviewsvc.review.service.ReviewService;
 import com.example.bootshelf.user.exception.security.CustomAccessDeniedHandler;
 import com.example.bootshelf.user.exception.security.CustomAuthenticationEntryPoint;
 import com.example.bootshelf.user.model.request.PostLoginUserReq;
-import com.example.bootshelf.user.model.request.PostSignUpUserReq;
 import com.example.bootshelf.user.model.response.PostLoginUserRes;
-import com.example.bootshelf.user.model.response.PostSignUpUserRes;
-import com.example.bootshelf.user.repository.UserRefreshTokenRepository;
 import com.example.bootshelf.user.repository.UserRepository;
 import com.example.bootshelf.user.service.RefreshTokenService;
 import com.example.bootshelf.user.service.UserOAuth2Service;
@@ -33,7 +27,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -43,15 +36,11 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.nio.charset.StandardCharsets;
-
 import static com.example.bootshelf.common.error.ErrorCode.DIFFERENT_USER_PASSWORD;
 import static com.example.bootshelf.common.error.ErrorCode.DUPLICATE_SIGNUP_EMAIL;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.http.MediaType.MULTIPART_FORM_DATA;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -98,9 +87,6 @@ public class AdminControllerTest {
 
     @MockBean
     private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
-
-    @MockBean
-    private UserRefreshTokenRepository userRefreshTokenRepository;
 
     @MockBean
     private RefreshTokenService refreshTokenService;

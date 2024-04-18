@@ -17,9 +17,6 @@ import com.example.bootshelf.user.controller.mock.WithCustomMockUser;
 import com.example.bootshelf.user.exception.security.CustomAccessDeniedHandler;
 import com.example.bootshelf.user.exception.security.CustomAuthenticationEntryPoint;
 import com.example.bootshelf.user.model.entity.User;
-import com.example.bootshelf.user.model.request.PatchUpdateUserReq;
-import com.example.bootshelf.user.model.response.GetListUserRes;
-import com.example.bootshelf.user.repository.UserRefreshTokenRepository;
 import com.example.bootshelf.user.repository.UserRepository;
 import com.example.bootshelf.user.service.RefreshTokenService;
 import com.example.bootshelf.user.service.UserOAuth2Service;
@@ -97,9 +94,6 @@ public class ReviewControllerTest {
 
     @MockBean
     private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
-
-    @MockBean
-    private UserRefreshTokenRepository userRefreshTokenRepository;
 
     @MockBean
     private RefreshTokenService refreshTokenService;

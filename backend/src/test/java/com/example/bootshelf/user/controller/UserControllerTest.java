@@ -2,24 +2,19 @@ package com.example.bootshelf.user.controller;
 
 import com.example.bootshelf.common.BaseRes;
 import com.example.bootshelf.common.error.ErrorCode;
-import com.example.bootshelf.common.error.ErrorResponse;
 import com.example.bootshelf.common.error.entityexception.UserException;
-import com.example.bootshelf.common.error.exception.BusinessException;
-import com.example.bootshelf.common.error.exception.GlobalExceptionHandler;
 import com.example.bootshelf.config.SecurityConfig;
 import com.example.bootshelf.config.handler.OAuth2AuthenticationSuccessHandler;
 import com.example.bootshelf.config.utils.JwtUtils;
 import com.example.bootshelf.user.controller.mock.WithCustomMockUser;
 import com.example.bootshelf.user.exception.security.CustomAccessDeniedHandler;
 import com.example.bootshelf.user.exception.security.CustomAuthenticationEntryPoint;
-import com.example.bootshelf.user.model.entity.User;
 import com.example.bootshelf.user.model.request.PatchUpdateUserReq;
 import com.example.bootshelf.user.model.request.PostLoginUserReq;
 import com.example.bootshelf.user.model.request.PostSignUpUserReq;
 import com.example.bootshelf.user.model.response.GetListUserRes;
 import com.example.bootshelf.user.model.response.PostLoginUserRes;
 import com.example.bootshelf.user.model.response.PostSignUpUserRes;
-import com.example.bootshelf.user.repository.UserRefreshTokenRepository;
 import com.example.bootshelf.user.repository.UserRepository;
 import com.example.bootshelf.user.service.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,13 +29,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.mock.web.MockPart;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -48,18 +38,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.multipart.MultipartFile;
 
 
 import java.nio.charset.StandardCharsets;
 
 import static com.example.bootshelf.common.error.ErrorCode.DIFFERENT_USER_PASSWORD;
-import static com.example.bootshelf.common.error.ErrorCode.USER_NOT_EXISTS;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -115,9 +102,6 @@ class UserControllerTest {
 
     @MockBean
     private PasswordEncoder passwordEncoder;
-
-    @MockBean
-    private UserRefreshTokenRepository userRefreshTokenRepository;
 
     @MockBean
     private RefreshTokenService refreshTokenService;
