@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import VueJwtDecode from "vue-jwt-decode";
 
-const backend = "http://192.168.0.61/api";
+const backend = "http://www.bootshelf-yhd.kro.kr/api";
 // const backend = "http://localhost:8080";
 
 const accessToken = localStorage.getItem("accessToken");

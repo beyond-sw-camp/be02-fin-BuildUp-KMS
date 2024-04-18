@@ -214,7 +214,7 @@ const routes = [
   { path: "/admin/signup", component: AdminSignUpPage },
   { path: "/admin/login", component: AdminLoginPage },
   { path: "/review/mywrite/:reviewIdx", component: ReviewUpdatePage },
-  { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFoundPage },
+  // { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFoundPage },
 
 ];
 

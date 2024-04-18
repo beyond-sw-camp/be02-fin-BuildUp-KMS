@@ -72,10 +72,10 @@ public class UserController {
         if (emailVerifyService.verify(email)) {
             userService.updateStatus(email); // 이메일 인증이 완료되면 회원의 status를 바꿔줌
 
-            return new RedirectView("http://192.168.0.61/");
+            return new RedirectView("http://www.bootshelf-yhd.kro.kr/");
         } else {
 
-            return new RedirectView("http://192.168.0.61/email/verify");
+            return new RedirectView("http://www.bootshelf-yhd.kro.kr/email/verify");
         }
     }
 

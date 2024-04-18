@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import VueJwtDecode from "vue-jwt-decode";
 
-const backend = "http://192.168.0.61/api";
+const backend = "http://www.bootshelf-yhd.kro.kr/api";
 // const backend = "http://localhost:8080";
 
 const accessToken = localStorage.getItem("accessToken");
@@ -27,7 +27,6 @@ export const useUserStore = defineStore("user", {
     isTokenExpired: false,
   }),
   actions: {
-
     validateToken() {
       const decodedAccessToken = VueJwtDecode.decode(accessToken);
       const expirationTime = decodedAccessToken.exp;
@@ -94,7 +93,6 @@ export const useUserStore = defineStore("user", {
 
     async getUserInfo() {
       try {
-
         this.validateToken();
 
         const headers = this.isTokenExpired
@@ -260,7 +258,6 @@ export const useUserStore = defineStore("user", {
       };
       if (data.nickName !== null || data.password !== null) {
         try {
-
           this.validateToken();
 
           const headers = this.isTokenExpired
@@ -275,7 +272,7 @@ export const useUserStore = defineStore("user", {
               };
 
           let response = await axios.patch(backend + "/user/update", data, {
-            headers
+            headers,
           });
           if (response.data.isSuccess === true) {
             alert("회원정보를 수정하였습니다.");
@@ -307,7 +304,6 @@ export const useUserStore = defineStore("user", {
               );
             }
           }
-
         } catch (e) {
           if (e.response && e.response.data) {
             if (e.response.data.code === "USER-002") {
@@ -332,7 +328,6 @@ export const useUserStore = defineStore("user", {
       formData.append("profileImage", profileImage);
 
       try {
-
         this.validateToken();
 
         const headers = this.isTokenExpired
@@ -350,7 +345,7 @@ export const useUserStore = defineStore("user", {
           backend + "/user/update/image",
           formData,
           {
-            headers
+            headers,
           }
         );
 
@@ -398,7 +393,6 @@ export const useUserStore = defineStore("user", {
     // 회원탈퇴
     async submitCancel() {
       try {
-
         this.validateToken();
 
         const headers = this.isTokenExpired
@@ -413,7 +407,7 @@ export const useUserStore = defineStore("user", {
             };
 
         let response = await axios.delete(backend + "/user/cancel", {
-          headers
+          headers,
         });
 
         if (response.data.isSuccess === true) {

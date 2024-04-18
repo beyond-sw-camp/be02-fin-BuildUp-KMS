@@ -61,7 +61,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     }
 
     private String makeRedirectUrl(String token) {
-        return UriComponentsBuilder.fromUriString("http://192.168.0.61/KakaoLogIn/"+token)
+        return UriComponentsBuilder.fromUriString("http://www.bootshelf-yhd.kro.kr/KakaoLogIn/"+token)
 //        return UriComponentsBuilder.fromUriString("https://www.lonuashop.kro.kr/KakaoLogIn/"+token)
                 .build().toUriString();
     }
