@@ -47,7 +47,7 @@ public class JwtUtils {
         return token;
     }
 
-    public String generateRefreshToken(String secretKey, Long refreshExpiredTimeMs){
+    public static String generateRefreshToken(String secretKey, Long refreshExpiredTimeMs){
 
         byte[] secretBytes = secretKey.getBytes();
 

@@ -48,9 +48,10 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         Optional<User> result = userRepository.findByEmail(nickname+"@kakao.com");
 
         User user = result.get();
-        String jwt = JwtUtils.generateAccessTokenForOAuth(user, secretKey, expiredTimeMs);
+        String accessToken = JwtUtils.generateAccessTokenForOAuth(user, secretKey, expiredTimeMs);
+        String refreshToken = JwtUtils.generateRefreshToken(secretKey, expiredTimeMs);
 
-        String url = makeRedirectUrl(jwt); // 리다이렉트 url 생성
+        String url = makeRedirectUrl(accessToken, refreshToken); // 리다이렉트 url 생성
         System.out.println("url: " + url);
 
         if (response.isCommitted()) {
@@ -60,9 +61,14 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         getRedirectStrategy().sendRedirect(request, response, url); // 생성된 리다이렉트 url로 리다이렉트 시킴
     }
 
-    private String makeRedirectUrl(String token) {
-        return UriComponentsBuilder.fromUriString("http://192.168.0.61/KakaoLogIn/"+token)
+    private String makeRedirectUrl(String accessToken, String refreshToken) {
+//        return UriComponentsBuilder.fromUriString("http://www.bootshelf-yhd.kro.kr/KakaoLogIn/"+ accessToken + refreshToken)
 //        return UriComponentsBuilder.fromUriString("https://www.lonuashop.kro.kr/KakaoLogIn/"+token)
-                .build().toUriString();
+//                .build().toUriString();
+        return UriComponentsBuilder.fromUriString("http://www.bootshelf-yhd.kro.kr/KakaoLogIn")
+                .queryParam("accessToken", accessToken)
+                .queryParam("refreshToken", refreshToken)
+                .build()
+                .toUriString();
     }
 }
