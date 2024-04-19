@@ -83,7 +83,7 @@
 
 <div align="center">
 
-### 📚 [BOOTSHELF 데모 사이트 바로가기](링크_주소_여기에_입력) 📚
+### 📚 [BOOTSHELF 데모 사이트 바로가기](http://www.bootshelf.kro.kr) 📚
 
 </div>
 
