@@ -62,10 +62,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     }
 
     private String makeRedirectUrl(String accessToken, String refreshToken) {
-//        return UriComponentsBuilder.fromUriString("http://www.bootshelf-yhd.kro.kr/KakaoLogIn/"+ accessToken + refreshToken)
-//        return UriComponentsBuilder.fromUriString("https://www.lonuashop.kro.kr/KakaoLogIn/"+token)
-//                .build().toUriString();
-        return UriComponentsBuilder.fromUriString("http://www.bootshelf-yhd.kro.kr/KakaoLogIn")
+        return UriComponentsBuilder.fromUriString("http://www.bootshelf.kro.kr/KakaoLogIn")
                 .queryParam("accessToken", accessToken)
                 .queryParam("refreshToken", refreshToken)
                 .build()

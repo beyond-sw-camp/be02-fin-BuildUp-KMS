@@ -17,7 +17,7 @@ spring:
               - profile_nickname
               - profile_image
             authorization-grant-type: authorization_code
-            redirect-uri:  http://192.168.0.61/api/logino/oauth2/code/kaka
+            redirect-uri:  http://www.bootshelf-yhd.kro.kr/api/login/oauth2/code/kakao
             client-name: Kakao
             client-authentication-method: POST
         provider:

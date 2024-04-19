@@ -39,7 +39,7 @@ public class SendEmailService {
                     "[ " + name + " ] 회원님의 임시 비밀번호는" + "[ " + str + " ] 입니다. " +
                     "</p>" + "<p style='color: #333; height: 100%; margin: 0; text-align: center; font-size: 25px; line-height: 3;'>" +
                     "임시 비밀번호로 로그인 후 비밀번호를 변경해주세요 <br/>" + "</p>" + "<div style='text-align: center; line-height: 3;'>\n" +
-                    "<a href=`http://www.bootshelf-kro.kr` style='color: #fff; text-decoration: none; background-color: rgb(84, 29, 122); padding: 10px 20px; border-radius: 5px; border: 2px solid rgb(84, 29, 122); display: inline-block; font-size: 20px; line-height: 1;'>\n" +
+                    "<a href=`http://www.bootshelf.kro.kr` style='color: #fff; text-decoration: none; background-color: rgb(84, 29, 122); padding: 10px 20px; border-radius: 5px; border: 2px solid rgb(84, 29, 122); display: inline-block; font-size: 20px; line-height: 1;'>\n" +
                     "로그인 하기\n" + "</a>\n" + "</div>" + "</body></html>";
 
             helper.setText(content, true);
