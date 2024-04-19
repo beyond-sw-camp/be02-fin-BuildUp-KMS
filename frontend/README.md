@@ -316,7 +316,7 @@
 ➡ 일반/인증회원은 모든 게시판의 게시글에 댓글을 작성할 수 있다.  
 ➡ 게시글 상세 조회 페이지에서 댓글 작성이 가능하다.
 
-  <img src ="./docs/gif/댓글작성.gif" width="600" height="400">
+  <img src ="./docs/gif/댓글 작성.gif" width="600" height="400">
 
   </details>
 
