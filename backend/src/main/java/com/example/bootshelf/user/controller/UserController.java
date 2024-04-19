@@ -74,7 +74,6 @@ public class UserController {
 
             return new RedirectView("http://www.bootshelf.kro.kr/");
         } else {
-
             return new RedirectView("http://www.bootshelf.kro.kr/email/verify");
         }
     }

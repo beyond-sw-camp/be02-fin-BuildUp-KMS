@@ -14,5 +14,6 @@ const config = {
   transformIgnorePatterns: [
     "/node_modules/(?!axios|quillEditor|quill-image-uploader).+\\.js$",
   ],
+  transformIgnorePatterns: ['<rootDir>/node_modules/(?!axios)'],
 };
 module.exports = config;

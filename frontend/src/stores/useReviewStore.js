@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import VueJwtDecode from "vue-jwt-decode";
 
-const backend = "http://192.168.0.61/api";
+const backend = "http://www.bootshelf.kro.kr/api";
 // const backend = "http://localhost:8080";
 
 const accessToken = localStorage.getItem("accessToken");
@@ -177,11 +177,7 @@ export const useReviewStore = defineStore("review", {
       }
     },
 
-    async searchReviewListByQuery(
-      searchType,
-      query,
-      page = 1
-    ) {
+    async searchReviewListByQuery(searchType, query, page = 1) {
       try {
         this.isLoading = true;
 
@@ -220,12 +216,7 @@ export const useReviewStore = defineStore("review", {
       }
     },
 
-    async searchReviewListBySortType(
-      searchType,
-      sortType,
-      query,
-      page = 1
-    ) {
+    async searchReviewListBySortType(searchType, sortType, query, page = 1) {
       try {
         this.isLoading = true;
 

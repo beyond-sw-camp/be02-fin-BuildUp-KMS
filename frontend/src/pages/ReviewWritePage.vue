@@ -207,7 +207,7 @@ export function imageHandler() {
     quill.deleteText(range.index, 1);
 
     try {
-      const backend = "http://192.168.0.61/api";
+      const backend = "http://www.bootshelf.kro.kr/api";
       // const backend = "http://localhost:8080";
 
       let response = await axios({
