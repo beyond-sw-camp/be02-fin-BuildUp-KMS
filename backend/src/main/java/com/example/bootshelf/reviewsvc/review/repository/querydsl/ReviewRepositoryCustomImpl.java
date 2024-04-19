@@ -135,7 +135,8 @@ public class ReviewRepositoryCustomImpl extends QuerydslRepositorySupport implem
         long total = from(review)
                 .leftJoin(review.reviewCategory, reviewCategory)
                 .leftJoin(review.user, user)
-                .where(searchCondition)
+                .where(review.reviewCategory.idx.eq(reviewCategoryIdx)
+                        .and(searchCondition).and(review.status.eq(true)))
                 .fetchCount();
 
         return new PageImpl<>(result, pageable, total);
