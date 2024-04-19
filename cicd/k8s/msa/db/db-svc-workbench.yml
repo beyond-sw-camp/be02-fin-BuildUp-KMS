@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mariadb-master-service
+  labels:
+    app: mariadb
+spec:
+  ports:
+  - port: 3306
+    name: mariadb-port
+  selector:
+    app: mariadb
+    role: master
+type: LoadBalancer

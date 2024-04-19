@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mariadb-config
+data:
+  primary.cnf: |
+    [mariadb]
+    log-bin                         # enable binary logging
+    log-basename=my-mariadb         # used to be independent of hostname changes (otherwise is in datadir/mysql)
+  replica.cnf: |
+    [mariadb]
+    log-basename=my-mariadb         # used to be independent of hostname changes (otherwise is in datadir/mysql)
+  primary.sql: |
+    CREATE USER 'test01'@'%' IDENTIFIED BY 'qwer1234';
+    GRANT REPLICATION REPLICA ON *.* TO 'test01'@'%';
+    CREATE DATABASE bootshelf;
+    #GRANT ALL PRIVILEGES ON *.* TO 'test01'@'%';
+
+  secondary.sql: |
+    # We have to know name of sts (`mariadb-sts`) and 
+    # service `mariadb-service` in advance as an FQDN.
+    # No need to use master_port
+    CHANGE MASTER TO 
+    MASTER_HOST='mariadb-sts-0.mariadb-service.default.svc.cluster.local',
+    MASTER_USER='test01',
+    MASTER_PASSWORD='qwer1234';
