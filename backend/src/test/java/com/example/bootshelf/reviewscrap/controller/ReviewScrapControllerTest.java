@@ -10,7 +10,6 @@ import com.example.bootshelf.reviewsvc.reviewscrap.service.ReviewScrapService;
 import com.example.bootshelf.user.exception.security.CustomAccessDeniedHandler;
 import com.example.bootshelf.user.exception.security.CustomAuthenticationEntryPoint;
 import com.example.bootshelf.user.model.entity.User;
-import com.example.bootshelf.user.repository.UserRefreshTokenRepository;
 import com.example.bootshelf.user.repository.UserRepository;
 import com.example.bootshelf.user.service.RefreshTokenService;
 import com.example.bootshelf.user.service.UserOAuth2Service;
@@ -78,9 +77,6 @@ class ReviewScrapControllerTest {
 
     @MockBean
     private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
-
-    @MockBean
-    private UserRefreshTokenRepository userRefreshTokenRepository;
 
     @MockBean
     private RefreshTokenService refreshTokenService;

@@ -66,7 +66,7 @@ public class UserService {
 
         if (profileImage == null || profileImage.isEmpty()) {
             // 프로필 이미지가 없는 경우 기본 이미지 경로를 설정
-            savePath = "https://bootshelf-profile.s3.ap-northeast-2.amazonaws.com/2024/03/14/6a0ac29b-55c8-4fd0-808a-fcd1b9deda76_default.png";
+            savePath = "https://bootshelfprofile.s3.ap-northeast-2.amazonaws.com/2024/04/18/00abb22b-bf7c-4576-83d0-08fbdb8a1ad3_kakaodefault.png";
         } else {
             // 프로필 이미지가 있는 경우 S3에 업로드
             savePath = ImageUtils.makeImagePath(profileImage.getOriginalFilename());
@@ -240,7 +240,7 @@ public class UserService {
             helper.setTo(postSignUpUserReq.getEmail());
             helper.setSubject("[BootShelf] 회원가입을 완료하기 위해서 이메일 인증을 진행해 주세요");
             String uuid = UUID.randomUUID().toString();
-            String url = "http://localhost:8080/user/verify?email=" + postSignUpUserReq.getEmail() + "&uuid=" + uuid;
+            String url = "http://www.bootshelf.kro.kr/api/user/verify?email=" + postSignUpUserReq.getEmail() + "&uuid=" + uuid;
 
             // 이미지 파일 경로
             String imagePath = "https://github.com/hyungdoyou/devops/assets/148875644/f9dc322f-9d41-455d-b35c-e3cfcd7c008d";
