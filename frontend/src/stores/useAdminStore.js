@@ -2,7 +2,7 @@ import axios from "axios";
 import { defineStore } from "pinia";
 import VueJwtDecode from "vue-jwt-decode";
 
-const backend = "http://www.bootshelf-yhd.kro.kr/api";
+const backend = "http://www.bootshelf.kro.kr/api";
 // const backend = "http://localhost:8080";
 
 export const useAdminStore = defineStore("admin", {

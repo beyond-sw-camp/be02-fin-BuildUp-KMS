@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 
-const backend = "http://www.bootshelf-yhd.kro.kr/api";
+const backend = "http://www.bootshelf.kro.kr/api";
 // const backend = "http://localhost:8080";
 
 export const useTagStore = defineStore("tag", {
