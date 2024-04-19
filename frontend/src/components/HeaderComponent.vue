@@ -405,7 +405,7 @@
       </div>
       <div class="css-1djguz4">
         <div class="css-yj1ay2">
-          <div class="css-bbe5fx">이메일 로그인</div>
+          <div class="css-bbe5fx">이메일 로그인(로그인 버튼 바로 클릭)</div>
           <form id="loginForm" @submit.prevent="onLoginFormSubmit">
             <div direction="vertical" size="40" class="css-ygt1wz"></div>
             <input
@@ -797,8 +797,8 @@ export default {
       isCheckPassword: false,
       isAdminLogin: false,
       isDropdownOpen: false,
-      email: "",
-      password: "",
+      email: "test01@gmail.com",
+      password: "Qwer1234@",
       profileImage: "",
       nickName: "",
       name: "",
@@ -844,8 +844,7 @@ export default {
   },
   methods: {
     loginKakao() {
-      // window.location.href = "http://localhost:9999/main/oauth2/authorization/kakao";
-      window.location.href = "http://192.168.0.61/api/main/oauth2/authorization/kakao";
+      window.location.href = "http://www.bootshelf.kro.kr/api/oauth2/authorization/kakao";
     },
     openLoginModal() {
       this.isLogin = true;

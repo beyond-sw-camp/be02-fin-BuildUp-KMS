@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import VueJwtDecode from "vue-jwt-decode";
 
-const backend = "http://192.168.0.61/api";
+const backend = "http://www.bootshelf.kro.kr/api";
 // const backend = "http://localhost:8080";
 
 const accessToken = localStorage.getItem("accessToken");
@@ -27,7 +27,6 @@ export const useBoardStore = defineStore("board", {
   }),
 
   actions: {
-
     validateToken() {
       const decodedAccessToken = VueJwtDecode.decode(accessToken);
       const expirationTime = decodedAccessToken.exp;
@@ -41,9 +40,7 @@ export const useBoardStore = defineStore("board", {
     },
 
     async createBoard(board) {
-
       try {
-
         this.validateToken();
 
         const headers = this.isTokenExpired
@@ -57,9 +54,8 @@ export const useBoardStore = defineStore("board", {
               "Content-Type": "application/json",
             };
 
-
         let response = await axios.post(backend + `/board/create`, board, {
-          headers
+          headers,
         });
 
         if (response.headers["new-refresh-token"] != null) {
@@ -97,8 +93,8 @@ export const useBoardStore = defineStore("board", {
           console.log(e.response.data);
           if (e.response.data.code === "BOARD-002") {
             alert("이미 사용중인 제목입니다. 제목을 변경해주세요.");
-          } else if(e.response.data.code === "COMMON-001") {
-            alert("카테고리, 제목은 필수로 입력하셔야 합니다.")
+          } else if (e.response.data.code === "COMMON-001") {
+            alert("카테고리, 제목은 필수로 입력하셔야 합니다.");
           }
         }
       }
@@ -212,7 +208,6 @@ export const useBoardStore = defineStore("board", {
     },
     async createBoardUp(accessToken, requestBody) {
       try {
-
         this.validateToken();
 
         const headers = this.isTokenExpired
@@ -230,7 +225,7 @@ export const useBoardStore = defineStore("board", {
           backend + "/boardup/create",
           requestBody,
           {
-            headers
+            headers,
           }
         );
         if (response.headers["new-refresh-token"] != null) {
@@ -267,7 +262,6 @@ export const useBoardStore = defineStore("board", {
     },
     async createBoardScrap(accessToken, requestBody) {
       try {
-
         this.validateToken();
 
         const headers = this.isTokenExpired
@@ -281,12 +275,11 @@ export const useBoardStore = defineStore("board", {
               "Content-Type": "application/json",
             };
 
-
         let response = await axios.post(
           backend + "/boardscrap/create",
           requestBody,
           {
-            headers
+            headers,
           }
         );
         if (response.headers["new-refresh-token"] != null) {
@@ -323,7 +316,6 @@ export const useBoardStore = defineStore("board", {
     },
     async checkBoardUp(accessToken, boardIdx) {
       try {
-
         this.validateToken();
 
         const headers = this.isTokenExpired
@@ -338,7 +330,7 @@ export const useBoardStore = defineStore("board", {
             };
 
         let response = await axios.get(`${backend}/boardup/check/${boardIdx}`, {
-          headers
+          headers,
         });
         if (response.headers["new-refresh-token"] != null) {
           if (
@@ -376,7 +368,6 @@ export const useBoardStore = defineStore("board", {
     },
     async checkBoardScrap(accessToken, boardIdx) {
       try {
-
         this.validateToken();
 
         const headers = this.isTokenExpired
@@ -392,7 +383,7 @@ export const useBoardStore = defineStore("board", {
         let response = await axios.get(
           `${backend}/boardscrap/check/${boardIdx}`,
           {
-            headers
+            headers,
           }
         );
         if (response.headers["new-refresh-token"] != null) {
@@ -421,8 +412,6 @@ export const useBoardStore = defineStore("board", {
           }
         }
 
-        
-
         this.isScrapped = response.data.result.status;
 
         return response;
@@ -433,7 +422,6 @@ export const useBoardStore = defineStore("board", {
     },
     async cancelBoardUp(accessToken, boardUpIdx) {
       try {
-
         this.validateToken();
 
         const headers = this.isTokenExpired
@@ -451,10 +439,9 @@ export const useBoardStore = defineStore("board", {
           `${backend}/boardup/delete/${boardUpIdx}`,
           {},
           {
-            headers
+            headers,
           }
         );
-        
       } catch (e) {
         console.error(e);
         throw e;
@@ -462,7 +449,6 @@ export const useBoardStore = defineStore("board", {
     },
     async cancelBoardScrap(accessToken, boardScrapIdx) {
       try {
-
         this.validateToken();
 
         const headers = this.isTokenExpired
@@ -476,13 +462,11 @@ export const useBoardStore = defineStore("board", {
               "Content-Type": "application/json",
             };
 
-            
-
         await axios.patch(
           `${backend}/boardscrap/delete/${boardScrapIdx}`,
           {},
           {
-            headers
+            headers,
           }
         );
       } catch (e) {
@@ -556,7 +540,6 @@ export const useBoardStore = defineStore("board", {
 
     async findBoardDetailByUserIdx(boardIdx) {
       try {
-
         this.validateToken();
 
         const headers = this.isTokenExpired
@@ -573,7 +556,7 @@ export const useBoardStore = defineStore("board", {
         this.isLoading = true;
 
         let response = await axios.get(`${backend}/board/mywrite/${boardIdx}`, {
-          headers
+          headers,
         });
 
         if (response.headers["new-refresh-token"] != null) {
@@ -612,9 +595,7 @@ export const useBoardStore = defineStore("board", {
       }
     },
     async updateBoard(board) {
-
       try {
-
         this.validateToken();
 
         const headers = this.isTokenExpired
@@ -628,9 +609,8 @@ export const useBoardStore = defineStore("board", {
               "Content-Type": "application/json",
             };
 
-          
         let response = await axios.patch(`${backend}/board/update`, board, {
-          headers
+          headers,
         });
         if (response.headers["new-refresh-token"] != null) {
           if (
@@ -790,7 +770,6 @@ export const useBoardStore = defineStore("board", {
     },
     async findMyBoardListByCategory(boardCategoryIdx, option, page = 1) {
       try {
-
         this.validateToken();
 
         const headers = this.isTokenExpired
@@ -813,7 +792,7 @@ export const useBoardStore = defineStore("board", {
             "?page=" +
             (page - 1),
           {
-            headers
+            headers,
           }
         );
         if (response.headers["new-refresh-token"] != null) {
@@ -859,7 +838,6 @@ export const useBoardStore = defineStore("board", {
     },
     async findBoardScrapListByCategory(boardCategoryIdx, option, page = 1) {
       try {
-
         this.validateToken();
 
         const headers = this.isTokenExpired
@@ -882,7 +860,7 @@ export const useBoardStore = defineStore("board", {
             "?page=" +
             (page - 1),
           {
-            headers
+            headers,
           }
         );
         if (response.headers["new-refresh-token"] != null) {
@@ -929,7 +907,6 @@ export const useBoardStore = defineStore("board", {
 
     async deleteBoard(boardIdx) {
       try {
-
         this.validateToken();
 
         const headers = this.isTokenExpired
@@ -946,7 +923,7 @@ export const useBoardStore = defineStore("board", {
         let response = await axios.delete(
           backend + "/board/delete/" + boardIdx,
           {
-            headers
+            headers,
           }
         );
 
