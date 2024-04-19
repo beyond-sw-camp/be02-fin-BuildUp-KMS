@@ -179,7 +179,7 @@
 
 #### - 지식공유 게시판
 
-  <img src ="./docs/gif/지식공유게시판_조회.gif" width="600" height="400">
+  <img src ="https://github.com/beyond-sw-camp/be02-fin-BuildUp-KMS/assets/148953522/e6e0c876-3196-470f-ad95-19018c1b4494" width="600" height="400">
 
 #### - Q&A 게시판
 
@@ -197,7 +197,7 @@
 
 #### 지식공유, QnA 게시판도 동일합니다.
 
-  <img src ="./docs/gif/스터디게시판_상세조회.gif" width="600" height="400">
+  <img src ="./docs/gif/게시글 상세조회.gif" width="600" height="400">
   </details>
 
   <details>
@@ -221,7 +221,7 @@
 ➡ 게시글 목록에서 작성하기 버튼으로 게시글 작성 페이지로 이동할 수 있다.  
 ➡ [ 카테고리, 제목, 태그, 내용 ] 을 입력하여 등록한다.
 
-  <img src ="./docs/gif/게시물 등록.gif" width="600" height="400">
+  <img src ="./docs/gif/게시글 작성.gif" width="600" height="400">
 
   </details>
 
@@ -279,7 +279,7 @@
 ➡ 게시글 목록에서 작성하기 버튼으로 게시글 작성 페이지로 이동할 수 있다.  
 ➡ [ 카테고리, 제목, 내용, 과정명, 평점 ] 을 입력하여 등록한다.
 
-  <img src ="./docs/gif/후기 게시판 등록.gif" width="600" height="400">
+  <img src ="./docs/gif/후기 게시글 작성.gif" width="600" height="400">
   </details>
 
   <details>
@@ -399,7 +399,7 @@
   </details>
 
   <details>
-    <summary> 게시글 취소 </summary>
+    <summary> 게시글 추천 취소 </summary>
 <br>
 
 ➡ 일반/인증회원은 모든 게시판의 게시글을 추천 취소할 수 있다.  
@@ -456,6 +456,7 @@
 <br>
 
 ➡ 관리자는 회원을 삭제할 수 있다.
+
 <img src = "./docs/gif/관리자 회원 삭제.gif" width="600"  height="400">
 </details>
 <!------------------------------------- 관리자 게시판 카테고리  ---------------------------------------->
