@@ -156,7 +156,7 @@ public class ReviewControllerTest {
                 .andDo(print());
     }
 
-    @DisplayName("후기글 생성 실패")
+    @DisplayName("후기글 생성 실패 - 제목 중복")
     @WithCustomMockUser
     @Test
     void reviewController_create_failed() throws Exception {
@@ -187,7 +187,7 @@ public class ReviewControllerTest {
     }
 
 
-    @DisplayName("인증회원 작성 후기글 목록 조회 성공")
+    @DisplayName("회원 본인이 작성한 후기글 목록 조회 성공")
     @WithCustomMockUser
     @Test
     void reviewController_myList_success() throws Exception {
@@ -289,7 +289,7 @@ public class ReviewControllerTest {
                 .andDo(print());
     }
 
-    @DisplayName("후기글 삭제 실패")
+    @DisplayName("후기글 삭제 실패 - 후기글 미존재")
     @WithCustomMockUser
     @Test
     void reviewController_deleteReview_failed() throws Exception {

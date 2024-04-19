@@ -71,7 +71,7 @@
             @click="toggleReplyForm(comment)"
             v-if="!comment.isEditing"
           >
-            대댓글쓰기
+            대댓글 작성하기
           </p>
           <button
             class="css-update"
@@ -671,7 +671,7 @@ html {
   align-items: center;
   justify-content: center;
   gap: 4px;
-  margin-left: 233px;
+  margin-left: 200px;
 }
 
 .css-wqf8ry {
@@ -1014,6 +1014,7 @@ html {
   letter-spacing: 0.07em;
   font-size: 10px;
   white-space: pre-wrap;
+  word-break: break-all;
 }
 
 ::v-deep .ql-container {
@@ -1032,5 +1033,6 @@ html {
   font-family: Monaco;
   letter-spacing: 0.07em;
   font-size: 10px;
+  word-break: break-all;
 }
 </style>

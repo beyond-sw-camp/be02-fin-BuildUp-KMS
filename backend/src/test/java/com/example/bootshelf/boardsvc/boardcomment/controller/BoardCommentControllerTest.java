@@ -108,7 +108,7 @@ class BoardCommentControllerTest {
     }
 
     @Test
-    @DisplayName("게시글 댓글 등록 실패 - 댓글 내용이 작성되지 않았을 때")
+    @DisplayName("게시글 댓글 등록 실패 - 댓글 내용 미작성")
     @WithCustomMockUser
     void boardCommentController_create_fail_commentContentEmpty() throws Exception {
         // Given
@@ -131,7 +131,7 @@ class BoardCommentControllerTest {
                 .andDo(print());
     }
 
-    @DisplayName("게시글 댓글 조회 성공 테스트")
+    @DisplayName("게시글 댓글 조회 성공")
     @Test
     @WithAnonymousUser
     void boardCommentController_list_success() throws Exception {

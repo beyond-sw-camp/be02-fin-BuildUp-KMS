@@ -235,17 +235,6 @@ export const useBoardCommentStore = defineStore({
 
         console.log(this.commentList);
 
-        for (let comment of this.commentList) {
-          let checkResponse = await this.checkBoardCommentUp(
-            accessToken,
-            comment.idx
-          );
-          if (checkResponse.data && checkResponse.data.result) {
-            comment.isCommentRecommended = checkResponse.data.result.status;
-          } else {
-            comment.isCommentRecommended = false;
-          }
-        }
       } catch (error) {
         console.error(error);
       }

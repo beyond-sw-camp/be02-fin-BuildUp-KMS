@@ -30,14 +30,14 @@ spec:
               cpu: "2000m"
           readinessProbe:
             httpGet:
-              path: /board/category/1/1?page=0
+              path: /review/list/1/1?page=0
               port: 8080
             initialDelaySeconds: 20
             periodSeconds: 10
             successThreshold: 3
           livenessProbe:
             httpGet:
-              path: /board/category/1/1?page=0
+              path: /review/list/1/1?page=0
               port: 8080
             initialDelaySeconds: 20
             periodSeconds: 10

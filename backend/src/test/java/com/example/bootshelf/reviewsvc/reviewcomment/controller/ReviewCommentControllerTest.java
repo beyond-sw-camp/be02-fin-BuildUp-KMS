@@ -94,7 +94,7 @@ class ReviewCommentControllerTest {
     }
 
     @Test
-    @DisplayName("후기글 댓글 등록 실패 - 댓글 내용이 작성되지 않았을 때")
+    @DisplayName("후기글 댓글 등록 실패 - 댓글 내용 미작성")
     @WithCustomMockUser
     void reviewCommentController_create_fail_CommentContentIsEmpty() throws Exception {
         // Given
