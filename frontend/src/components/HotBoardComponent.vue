@@ -94,7 +94,7 @@
                 </svg>
               </div>
               <div class="css-1ry6usa"></div>
-              <div class="css-updatedTimeGms">{{ this.$moment(totals.createdAt).format('YYYY-MM-DD HH:mm:ss') }}</div>
+              <div class="css-updatedTimeGms">{{ this.$moment.utc(totals.createdAt).local().format('YYYY-MM-DD HH:mm:ss') }}</div>
               <div class="css-5zcuovs" v-if="totals.courseName !== null">
                 <div class="css-1sika4is">
                   {{ totals.courseName }}

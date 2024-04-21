@@ -72,9 +72,9 @@
             >
               회원가입
             </button>
-            <!-- 로그인 되었을 때 닉네임을 표시. -->
-            <div id="userNickName" v-if="isAuthenticated" class="user-info">
-              <span class="user-nickname">{{ userStore.user.nickName }}</span>
+            <!-- 로그인 되었을 때 닉네임을 표시 -->
+            <div v-if="isAuthenticated" class="user-info">
+              <span class="user-nickname">{{ decodedToken.nickName }}</span>
             </div>
           </div>
           <div
@@ -405,7 +405,7 @@
       </div>
       <div class="css-1djguz4">
         <div class="css-yj1ay2">
-          <div class="css-bbe5fx">이메일 로그인(로그인 버튼 바로 클릭)</div>
+          <div class="css-bbe5fx">이메일 로그인 ( 바로 로그인 클릭 )</div>
           <form id="loginForm" @submit.prevent="onLoginFormSubmit">
             <div direction="vertical" size="40" class="css-ygt1wz"></div>
             <input
@@ -844,7 +844,9 @@ export default {
   },
   methods: {
     loginKakao() {
-      window.location.href = "http://www.bootshelf.kro.kr/api/oauth2/authorization/kakao";
+      // window.location.href = "http://localhost:8080/oauth2/authorization/kakao";
+      localStorage.setItem('preLoginUrl', window.location.pathname + window.location.search);
+      window.location.href = "http://www.bootshelf-yhd.kro.kr/api/oauth2/authorization/kakao";
     },
     openLoginModal() {
       this.isLogin = true;
@@ -945,8 +947,8 @@ export default {
         await this.userStore.login(this.email, this.password);
         if (this.userStore.isAuthenticated === true) {
           this.closeAllLoginModal();
-          window.location.href = "/";
           // this.$router.push("/");
+          this.$router.go();
           this.closeLoginModal();
         }
       } catch (error) {

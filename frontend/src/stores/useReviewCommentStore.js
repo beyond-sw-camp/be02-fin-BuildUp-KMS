@@ -17,14 +17,16 @@ export const useReviewCommentStore = defineStore("reviewComment", {
   }),
   actions: {
     validateToken() {
-      const decodedAccessToken = VueJwtDecode.decode(accessToken);
-      const expirationTime = decodedAccessToken.exp;
-      const currentTime = Math.floor(Date.now() / 1000);
+      if (accessToken) {
+        const decodedAccessToken = VueJwtDecode.decode(accessToken);
+        const expirationTime = decodedAccessToken.exp;
+        const currentTime = Math.floor(Date.now() / 1000);
 
-      if (expirationTime - currentTime < 30) {
-        this.isTokenExpired = true;
-      } else {
-        this.isTokenExpired = false;
+        if (expirationTime - currentTime < 30) {
+          this.isTokenExpired = true;
+        } else {
+          this.isTokenExpired = false;
+        }
       }
     },
 
@@ -41,7 +43,6 @@ export const useReviewCommentStore = defineStore("reviewComment", {
         );
 
         this.reviewCommentList = response.data.result;
-        console.log(this.reviewCommentList);
       } catch (e) {
         console.log(e);
       }
@@ -355,8 +356,6 @@ export const useReviewCommentStore = defineStore("reviewComment", {
             );
           }
         }
-
-        console.log("Comment recommendation successful");
       } catch (error) {
         if (error.response && error.response.data.code === "REVIEWUP-001") {
           // This specific error code indicates the comment is already recommended
@@ -420,7 +419,6 @@ export const useReviewCommentStore = defineStore("reviewComment", {
           }
         }
 
-        console.log("Comment recommendation cancellation successful");
         // You may want to update your store's state here to reflect the cancellation
       } catch (error) {
         console.error("Error canceling comment recommendation:", error);
@@ -431,7 +429,6 @@ export const useReviewCommentStore = defineStore("reviewComment", {
     async updateCommentRecommendationStatus() {
       const accessToken = localStorage.getItem("accessToken");
       if (!accessToken) {
-        console.error("Authentication accessToken not found.");
         return;
       }
 

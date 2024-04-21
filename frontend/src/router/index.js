@@ -52,7 +52,7 @@ const requireAuth = () => (from, to, next) => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
 
-    window.location.href="/";
+    // window.location.href="/";
 
   } else {
     const tokenData = VueJwtDecode.decode(refreshToken);
@@ -63,7 +63,7 @@ const requireAuth = () => (from, to, next) => {
 
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
-      window.location.href="/";
+      // window.location.href="/";
 
     } else {
       next();
@@ -83,7 +83,7 @@ const requireUserAuth = () => (from, to, next) => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
 
-    window.location.href="/";
+    // window.location.href="/";
   
   } else {
 
@@ -98,7 +98,7 @@ const requireUserAuth = () => (from, to, next) => {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
 
-      window.location.href="/";
+      // window.location.href="/";
 
     } else if (userAuth.ROLE !== "ROLE_AUTHUSER") {
 

@@ -461,7 +461,7 @@ export default {
     },
 
     validatePassword() {
-      const regex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,45}$/;
+      const regex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,20}$/;
       this.passwordValid = regex.test(this.password);
       this.passwordValidationMessage = this.passwordValid
         ? ""

@@ -69,34 +69,13 @@
                     </div>
                   </div>
                 </div>
-                <div
-                  v-show="isActive"
-                  class="layer pop_product pop_shopping_bag"
-                >
-                  <div
-                    class="layer_cont"
-                    style="margin: -140.5px 0px 0px -225px"
-                  >
-                    <p>마이페이지로 이동하시겠습니까?</p>
-                    <div class="btn_wrap">
-                      <button
-                        type="button"
-                        class="btn gray small"
-                        @click="dontMoveMyPage"
-                      >
-                        머무르기
-                      </button>
-                      <button
-                        type="button"
-                        class="btn black small"
-                        @click="moveMyPage"
-                      >
-                        이동하기
-                      </button>
-                    </div>
-                  </div>
-                  <span></span>
-                </div>
+                <ConfirmDialogComponent
+                  v-if="showMyPageConfirmDialog"
+                  :isVisible="showMyPageConfirmDialog"
+                  message="마이페이지로 이동하시겠습니까?"
+                  :onConfirm="moveMyPage"
+                  :onCancel="dontMoveMyPage"
+                />
                 <div class="css-99cwur">
                   <div class="css-1fhge30">
                     <div class="css-aw18wm">
@@ -150,14 +129,7 @@
                           <circle cx="1" cy="1" r="1" fill="#9DA7AE"></circle>
                         </svg>
                       </div>
-                      <div class="css-1ry6usa">
-                        {{
-                          this.$moment
-                            .utc(boardDetail.createdAt)
-                            .local()
-                            .format("YYYY-MM-DD HH:mm:ss")
-                        }}
-                      </div>
+                      <div class="css-1ry6usa">{{ this.$moment.utc(boardDetail.createdAt).local().format('YYYY-MM-DD HH:mm:ss') }}</div>
                     </div>
                   </div>
                 </div>
@@ -165,14 +137,11 @@
               </div>
             </div>
             <div class="css-luqgif">
-              <div
-                v-dompurify-html="boardDetail.boardContent"
-                class="editedQ_QContent"
-              >
-                <!-- <p class="css-content">
+              <div class="editedQ_QContent">
+                <p class="css-content">
                   {{ boardDetail.boardContent }}
-                </p> -->
-                <!-- <div
+                </p>
+                <div
                   v-if="
                     boardDetail.boardImageList &&
                     boardDetail.boardImageList.length > 0
@@ -184,7 +153,7 @@
                     :alt="`이미지 ${index + 1}`"
                     :src="image.boardImage"
                   />
-                </div> -->
+                </div>
               </div>
               <div class="css-iqys2n">
                 <!-- 태그 컴포넌트 자리-->
@@ -233,14 +202,12 @@
                   </div>
                   <div class="css-13ljjbe">
                     <div class="commentEditor">
-                      <div class="quill">
-                        <quill-editor
-                          ref="quillEditor"
-                          v-model:value="state.content"
-                          :options="state.editorOption"
-                          :disabled="false"
-                        ></quill-editor>
-                      </div>
+                      <input
+                        class="css-001"
+                        type="text"
+                        placeholder="댓글을 남겨주세요"
+                        v-model="boardCommentContent"
+                      />
                     </div>
                     <div class="css-btn-div">
                       <button class="css-btn" @click="submitComment()">
@@ -272,61 +239,17 @@ import { useBoardCommentStore } from "../stores/useBoardCommentStore";
 import { useBoardStore } from "@/stores/useBoardStore";
 import { useUserStore } from "@/stores/useUserStore";
 import { mapStores } from "pinia";
-import hljs from "highlight.js";
-import "highlight.js/styles/monokai-sublime.css";
-
-hljs.configure({
-  languages: [
-    "javascript",
-    "java",
-    "python",
-    "html",
-    "css",
-    "c",
-    "cpp",
-    "csharp",
-    "ruby",
-    "php",
-    "typescript",
-    "kotlin",
-    "bash",
-  ],
-});
+import ConfirmDialogComponent from "/src/components/ConfirmDialogComponent.vue";
 
 export default {
-  name: "BoardDetailsPage",
+  name: "StudyDetailsPage",
   components: {
     BoardCommentComponent,
     TagComponent,
+    ConfirmDialogComponent,
   },
   data() {
     return {
-      state: {
-        content: "",
-        _content: "",
-        editorOption: {
-          placeholder: "댓글을 남겨주세요",
-          modules: {
-            syntax: {
-              highlight: (text) => hljs.highlightAuto(text).value,
-            },
-            toolbar: {
-              container: [
-                [
-                  "bold",
-                  "underline",
-                  "code-block",
-                  { header: 1 },
-                  { header: 2 },
-                  { color: [] },
-                  { background: [] },
-                ],
-              ],
-            },
-          },
-        },
-        disabled: false,
-      },
       boardCommentContent: "",
       boardDetail: null,
       boardIdx: null,
@@ -337,13 +260,10 @@ export default {
       isScrapped: false,
       boardUpIdx: null,
       boardScrapIdx: null,
-      isActive: false,
     };
   },
   computed: {
-    ...mapStores(useBoardStore, useBoardCommentStore, useUserStore, [
-      "tagList",
-    ]),
+    ...mapStores(useBoardStore, useBoardCommentStore, useUserStore, ["tagList"]),
     isLoggedIn() {
       return !!localStorage.getItem("accessToken");
     },
@@ -363,7 +283,7 @@ export default {
     }
   },
   async mounted() {
-    const boardIdx = this.$route.params.idx;
+    const boardIdx = this.$route.params.boardIdx;
 
     this.boardIdx = boardIdx;
 
@@ -376,44 +296,20 @@ export default {
     await this.checkBoardUp();
     await this.checkBoardScrap();
 
-    this.highlightCode();
+    const previousPath = localStorage.getItem("previousPath");
+    if (previousPath) {
+      this.boardStore.setPreviousPath(previousPath);
+    }
   },
   methods: {
-    highlightCode() {
-      this.$nextTick(() => {
-        document.querySelectorAll("pre").forEach((block) => {
-          hljs.highlightBlock(block);
-        });
-      });
-    },
-
-    openModal() {
-      this.isActive = true;
-    },
-    closeModal() {
-      this.isActive = false;
-    },
     goBack() {
-      if (this.boardDetail.boardCategoryName === "지식 공유") {
-        window.location.href = "/board/knowledge";
-      } else if (this.boardDetail.boardCategoryName === "QnA") {
-        window.location.href = "/board/qna";
-      } else if (this.boardDetail.boardCategoryName === "스터디") {
-        window.location.href = "/study";
-      }
+        this.$router.go(-1);
     },
     async submitComment() {
-      let accessToken = window.localStorage.getItem("accessToken");
-
-      if (!accessToken) {
-        alert("로그인 후 댓글을 작성할 수 있습니다.");
-        return;
-      }
-
       let isAuthenticated = this.userStore.isAuthenticated;
       try {
         await useBoardCommentStore().createBoardComment(
-          this.state.content,
+          this.boardCommentContent,
           this.boardIdx,
           isAuthenticated
         );
@@ -424,125 +320,104 @@ export default {
     },
     async createBoardUp() {
       let accessToken = window.localStorage.getItem("accessToken");
+      let requestBody = {
+        boardIdx: this.boardIdx,
+      };
 
-      if (accessToken == null) {
-        alert("로그인 후 이용해주세요.");
-      } else {
-        let requestBody = {
-          boardIdx: this.boardIdx,
-        };
+      try {
+        if (this.isRecommended) {
+          await this.boardStore.cancelBoardUp(accessToken, this.boardUpIdx);
+          console.log("게시글 추천 취소 성공");
+          this.isRecommended = false;
 
-        try {
-          if (this.isRecommended) {
-            await this.boardStore.cancelBoardUp(accessToken, this.boardUpIdx);
-            console.log("게시글 추천 취소 성공");
-            this.isRecommended = false;
+          window.location.reload();
+        } else {
+          const response = await this.boardStore.createBoardUp(
+            accessToken,
+            requestBody
+          );
 
-            window.location.reload();
+          if (response.status === 200 && response.data) {
+            console.log("게시글 추천 성공!");
+            this.isRecommended = true;
+            this.showMyPageConfirmDialog = true;
           } else {
-            const response = await this.boardStore.createBoardUp(
-              accessToken,
-              requestBody
-            );
-
-            if (response.status === 200 && response.data) {
-              console.log("게시글 추천 성공!");
-              this.isRecommended = true;
-              window.location.reload();
-            } else {
-              console.error("게시글 추천 실패");
-              alert("게시글 추천 실패");
-            }
+            console.error("게시글 추천 실패");
+            alert("게시글 추천 실패");
           }
-        } catch (e) {
-          console.error("게시글 추천 과정에서 문제가 발생했습니다!", e);
         }
+      } catch (e) {
+        console.error("게시글 추천 과정에서 문제가 발생했습니다!", e);
       }
     },
     async createBoardScrap() {
       let accessToken = window.localStorage.getItem("accessToken");
+      let requestBody = {
+        boardIdx: this.boardIdx,
+      };
 
-      if (accessToken == null) {
-        alert("로그인 후 이용해주세요.");
-      } else {
-        let requestBody = {
-          boardIdx: this.boardIdx,
-        };
+      try {
+        if (this.isScrapped) {
+          await this.boardStore.cancelBoardScrap(accessToken, this.boardScrapIdx);
+          console.log("게시글 스크랩 취소 성공");
+          this.isScrapped = false;
 
-        try {
-          if (this.isScrapped) {
-            await this.boardStore.cancelBoardScrap(
-              accessToken,
-              this.boardScrapIdx
-            );
-            console.log("게시글 스크랩 취소 성공");
-            this.isScrapped = false;
+          window.location.reload();
+        } else {
+          const response = await this.boardStore.createBoardScrap(
+            accessToken,
+            requestBody
+          );
 
-            window.location.reload();
+          if (response.status === 200 && response.data) {
+            console.log("게시글 스크랩 성공!");
+            this.isScrapped = true;
+            this.showMyPageConfirmDialog = true;
           } else {
-            const response = await this.boardStore.createBoardScrap(
-              accessToken,
-              requestBody
-            );
-
-            if (response.status === 200 && response.data) {
-              console.log("게시글 스크랩 성공!");
-              this.isScrapped = true;
-              this.isActive = true;
-            } else {
-              console.error("게시글 스크랩 실패");
-              alert("게시글 스크랩 실패");
-            }
+            console.error("게시글 스크랩 실패");
+            alert("게시글 스크랩 실패");
           }
-        } catch (e) {
-          console.error("게시글 스크랩 과정에서 문제가 발생했습니다!", e);
         }
+      } catch (e) {
+        console.error("게시글 스크랩 과정에서 문제가 발생했습니다!", e);
       }
     },
     moveMyPage() {
-      this.isActive = false;
+      this.showMyPageConfirmDialog = false;
       this.$router.push("/mypage");
     },
     dontMoveMyPage() {
-      this.isActive = false;
+      this.showMyPageConfirmDialog = false;
       window.location.reload();
     },
     async checkBoardUp() {
       try {
         let accessToken = window.localStorage.getItem("accessToken");
-        if (accessToken) {
-          let response = await this.boardStore.checkBoardUp(
-            accessToken,
-            this.boardIdx
-          );
+        let response = await this.boardStore.checkBoardUp(accessToken, this.boardIdx);
 
-          if (response.data && response.data.result.status === true) {
-            this.isRecommended = true;
-            this.boardUpIdx = response.data.result.boardUpIdx;
-          } else {
-            this.isRecommended = false;
-          }
+        if (response.data && response.data.result.status === true) {
+          this.isRecommended = true;
+          this.boardUpIdx = response.data.result.boardUpIdx;
+        } else {
+          this.isRecommended = false;
         }
       } catch (e) {
         console.error(e);
       }
     },
-
     async checkBoardScrap() {
       try {
         let accessToken = window.localStorage.getItem("accessToken");
-        if (accessToken) {
-          let response = await this.boardStore.checkBoardScrap(
-            accessToken,
-            this.boardIdx
-          );
+        let response = await this.boardStore.checkBoardScrap(
+          accessToken,
+          this.boardIdx
+        );
 
-          if (response.data && response.data.result.status === true) {
-            this.isScrapped = true;
-            this.boardScrapIdx = response.data.result.boardScrapIdx;
-          } else {
-            this.isScrapped = false;
-          }
+        if (response.data && response.data.result.status === true) {
+          this.isScrapped = true;
+          this.boardScrapIdx = response.data.result.boardScrapIdx;
+        } else {
+          this.isScrapped = false;
         }
       } catch (e) {
         console.error(e);
@@ -833,73 +708,9 @@ img {
   letter-spacing: normal;
 }
 
-::v-deep .editedQ_QContent {
-  font-size: 14px;
-  color: #505254;
-  line-height: 1.8;
-  word-break: break-all;
-  font-weight: 400;
-  margin-top: 2px;
-  margin-bottom: 2px;
-  font-family: Pretendard, -apple-system, “system-ui”, "Malgun Gothic",
-    "맑은 고딕", sans-serif;
-}
-
-::v-deep .editedQ_QContent p {
-  font-size: 14px;
-  color: #505254;
-  line-height: 1.8;
-  word-break: break-all;
-  font-weight: 400;
-  margin-top: 2px;
-  margin-bottom: 2px;
-  font-family: Pretendard, -apple-system, “system-ui”, "Malgun Gothic",
-    "맑은 고딕", sans-serif;
-}
-
-::v-deep .editedQ_QContent strong {
-  font-weight: 700;
-}
-
-::v-deep .editedQ_QContent img {
+.editedQ_QContent img {
   margin-top: 20px;
-  max-width: 300px;
-}
-
-::v-deep .editedQ_QContent li {
-  margin-bottom: 4px;
-  line-height: 1.3;
-  font-size: 14px;
-  color: #505254;
-  font-weight: 400;
-  list-style-position: inside;
-}
-
-::v-deep .editedQ_QContent pre.ql-syntax {
-  overflow-x: auto;
-  background-color: black;
-  border: 1px solid #eaebed;
-  padding: 14px 20px;
-  border-radius: 8px;
-  margin-top: 20px;
-  max-width: 90vw;
-  white-space: pre;
-  line-height: 1.42;
-  font-family: Monaco;
-  letter-spacing: 0.07em;
-  font-size: 12px;
-  word-break: break-all;
-}
-
-::v-deep .editedQ_QContent .ql-align-center {
-  text-align: center;
-}
-
-::v-deep .editedQ_QContent .ql-align-right {
-  text-align: right;
-}
-::v-deep .editedQ_QContent .ql-align-justify {
-  text-align: justify;
+  max-width: 89vw;
 }
 
 @media (min-width: 1024px) {
@@ -1100,6 +911,13 @@ img {
   width: 100%;
   border: 1px solid #eaebed;
   border-radius: 12px;
+  height: 90px;
+}
+
+.commentEditor {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
 }
 
 .css-001 {
@@ -1128,7 +946,6 @@ img {
   margin-right: 10px;
   cursor: pointer;
   font-family: Pretendard;
-  margin-bottom: 10px;
 }
 
 .css-5zcuov {
@@ -1190,435 +1007,5 @@ img {
 
 .css-scrap {
   margin-left: 4px;
-}
-
-/*------------확인 모달창-------------*/
-.layer.active,
-.layer_ov_ly.actve {
-  display: block;
-}
-.layer *,
-.layer_ov_ly * {
-  font-family: "ProximaNova-Regular", "Apple SD Gothic Neo", "Noto Sans KR",
-    "Malgun Gothic", "맑은 고딕", sans-serif;
-}
-.layer_cont {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  z-index: 110;
-  min-width: 480px;
-  overflow: hidden;
-  padding: 40px 40px 50px;
-  border: 1px solid #000;
-  background: #fff;
-}
-.layer.pop_shopping_bag .layer_cont {
-  min-width: 330px;
-  border-radius: 15px;
-  border-color: white;
-}
-.layer.pop_shopping_bag p {
-  padding: 40px 0 15px;
-  font-family: "Pretendard";
-  font-size: 16px;
-  font-weight: 500px;
-  line-height: 1.9;
-  text-align: center;
-}
-.layer.pop_product .btn_wrap {
-  margin-top: 15px;
-  text-align: center;
-  margin-bottom: 20px;
-}
-.layer_cont {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  z-index: 110;
-  min-width: 480px;
-  overflow: hidden;
-  padding: 10px 20px 10px;
-  border: 1px solid #000;
-  background: #fff;
-}
-.layer.pop_shopping_bag .layer_cont {
-  min-width: 330px;
-}
-a.btn,
-button.btn,
-input.btn,
-span.btn {
-  display: inline-block;
-  min-width: 180px;
-  padding: 0 20px;
-  height: 50px;
-  text-align: center;
-  line-height: 48px;
-  border: 1px solid #333;
-  background-color: #fff;
-  color: #000;
-  font-family: "ProximaNova-Semibold", "Apple SD Gothic Neo",
-    "NotoSansKR-Medium", "Malgun Gothic", "맑은 고딕", sans-serif;
-  font-size: 14px;
-}
-a.btn.gray,
-button.btn.gray,
-input.btn.gray,
-span.btn.gray {
-  border-color: #7d7d7d;
-  background-color: #7d7d7d;
-  color: #fff;
-}
-a.btn.small,
-button.btn.small,
-input.btn.small,
-span.btn.small {
-  height: 35px;
-  font-size: 12px;
-  line-height: 30px;
-}
-.layer.pop_product .btn_wrap .btn {
-  min-width: 100px;
-  margin: 0 8px;
-}
-a.btn.black,
-button.btn.black,
-input.btn.black,
-span.btn.black {
-  border-color: #000;
-  background-color: #000;
-  color: #fff;
-}
-.layer_cont .btn_close,
-.layer_cont .pop_in_pop_close {
-  overflow: hidden;
-  position: absolute;
-  top: 25px;
-  right: 25px;
-  width: 53px;
-  height: 53px;
-  padding: 15px;
-  line-height: 99em;
-  vertical-align: top;
-  background-color: white;
-  border-color: white;
-}
-.layer_cont .btn_close:before,
-.layer_cont .pop_in_pop_close:before {
-  display: block;
-  width: 12px;
-  height: 12px;
-  background: url(//static.wconcept.co.kr/web/images/common/layer_close_23.png)
-    no-repeat;
-  background-size: 100%;
-  content: "";
-}
-.layer > span,
-.layer_ov_ly > span {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 101;
-  background: #0e0e0e;
-  opacity: 0.4;
-  filter: alpha(opacity=40);
-  content: "";
-  display: block;
-}
-
-.css-myjkxi {
-  position: absolute;
-  top: 18px;
-  right: 16px;
-  font-family: Pretendard;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 26px;
-  color: rgb(58, 62, 65);
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  cursor: pointer;
-}
-/* 코드 블럭*/
-.editedQ_QContent pre.ql-syntax {
-  overflow-x: auto;
-  background-color: #f4f5f6;
-  border: 1px solid #eaebed;
-  padding: 14px 20px;
-  border-radius: 8px;
-  margin-top: 20px;
-  max-width: 90vw;
-  white-space: pre;
-  line-height: 1.42;
-  word-break: break-all;
-}
-
-/* editor */
-.quill {
-  min-height: 280px;
-}
-
-@media (min-width: 1024px) {
-  .ql-editor,
-  .quill {
-    min-height: 280px;
-  }
-}
-
-.commentEditor .quill {
-  min-height: 57px;
-}
-
-.ql-snow,
-.ql-snow * {
-  box-sizing: border-box;
-}
-
-.ql-toolbar {
-  position: relative;
-  border-bottom-left-radius: 12px;
-  border-bottom-right-radius: 12px;
-  border: none !important;
-  background-color: #f4f5f6;
-  box-sizing: border-box;
-  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-  padding: 12px 15px !important;
-  height: 52px;
-}
-
-@media (min-width: 1024px) {
-  .ql-toolbar {
-    position: relative;
-    border: none !important;
-    display: block;
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
-    background-color: #f4f5f6;
-    box-sizing: border-box;
-    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-    padding: 13px 15px !important;
-    height: 56px;
-    border-radius: 10px;
-  }
-}
-
-.ql-toolbar {
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-  font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-  padding: 8px;
-  border-radius: 10px;
-}
-
-::v-deep .ql-toolbar.ql-snow {
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-  padding: 0px;
-  border-radius: 10px;
-}
-::v-deep .ql-toolbar.ql-snow .ql-formats {
-  margin-right: 15px;
-  margin-left: 15px;
-}
-.ql-snow,
-.ql-snow * {
-  box-sizing: border-box;
-}
-
-@media (min-width: 1024px) {
-  .ql-container {
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-    min-height: 520px;
-  }
-}
-
-.ql-container {
-  min-height: 200px;
-}
-.ql-container {
-  border: 1px solid #ccc;
-}
-.ql-container.ql-snow {
-  border: 1px solid #ccc;
-}
-.commentEditor .ql-container {
-  min-height: 56px;
-}
-.ql-container.ql-snow {
-  border: none !important;
-}
-.ql-editor {
-  height: 100%;
-  overflow-y: auto;
-  padding: 12px 15px;
-}
-.ql-snow,
-.ql-snow * {
-  box-sizing: border-box;
-}
-@media (min-width: 1024px) {
-  .ql-editor,
-  .quill {
-    min-height: 280px;
-  }
-}
-@media (min-width: 1024px) {
-  .ql-editor {
-    color: #6b6e72;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.3;
-    letter-spacing: normal;
-    font-weight: 500;
-    width: 100%;
-    margin: auto;
-    padding: 24px 20px !important;
-  }
-}
-.ql-editor {
-  color: #6b6e72;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.3;
-  letter-spacing: normal;
-  font-weight: 500;
-  min-height: 200px;
-  width: 100%;
-  margin: auto;
-  padding: 24px 20px !important;
-}
-.ql-editor {
-  box-sizing: border-box;
-  line-height: 1.42;
-  outline: none;
-  padding: 12px 0;
-  tab-size: 4;
-  -moz-tab-size: 4;
-  text-align: left;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-}
-.commentEditor .ql-editor {
-  min-height: 56px;
-  padding: 14px 20px !important;
-}
-.ql-editor.ql-blank::before {
-  color: rgba(0, 0, 0, 0.6);
-  content: attr(data-placeholder);
-  font-style: italic;
-  left: 15px;
-  pointer-events: none;
-  position: absolute;
-  right: 15px;
-}
-.ql-editor.ql-blank:before {
-  left: 15px;
-}
-.ql-editor.ql-blank:before {
-  color: rgba(0, 0, 0, 0.6);
-  content: attr(data-placeholder);
-  font-style: italic;
-  left: 20px;
-  pointer-events: none;
-  position: absolute;
-  right: 15px;
-  font-weight: 350;
-}
-.ql-editor.ql-blank::before {
-  color: rgba(0, 0, 0, 0.6);
-  content: attr(data-placeholder);
-  font-style: italic;
-  left: 15px;
-  pointer-events: none;
-  position: absolute;
-  right: 15px;
-}
-.quill > .ql-container > .ql-editor.ql-blank:before {
-  color: #c7c9cb;
-  font-style: normal;
-  font-size: 14px;
-  white-space: pre-wrap;
-  line-height: 1.5;
-  padding: 5px;
-}
-.ql-editor * {
-  font-stretch: normal;
-  font-style: normal;
-  letter-spacing: normal;
-  font-family: Pretendard;
-}
-.ql-editor blockquote,
-.ql-editor h1,
-.ql-editor h2,
-.ql-editor h3,
-.ql-editor h4,
-.ql-editor h5,
-.ql-editor h6,
-.ql-editor ol,
-.ql-editor p,
-.ql-editor pre,
-.ql-editor ul {
-  margin: 0;
-  padding: 0;
-  counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
-}
-.ql-editor *,
-.ql-editor p {
-  font-weight: 400;
-  line-height: 1.5;
-}
-.ql-editor p {
-  color: #505254;
-  margin-top: 2px;
-  margin-bottom: 2px;
-  font-size: 14px;
-  word-break: break-word;
-  width: 100%;
-  overflow-x: clip;
-}
-.ql-editor > * {
-  cursor: text;
-}
-
-::v-deep .ql-snow.ql-toolbar button,
-.ql-snow .ql-toolbar button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  display: inline-block;
-  float: left;
-  height: 24px;
-  padding: 3px 5px;
-  width: 28px;
-  margin-right: 10px;
-}
-
-::v-deep .ql-snow .ql-picker {
-  color: #444;
-  display: inline-block;
-  float: left;
-  font-size: 14px;
-  font-weight: 500;
-  height: 24px;
-  position: relative;
-  vertical-align: middle;
-  margin-right: 10px;
-}
-
-::v-deep .ql-snow .ql-editor pre.ql-syntax {
-  background-color: #23241f;
-  color: #f8f8f2;
-  overflow: visible;
-  font-family: Monaco;
-  letter-spacing: 0.07em;
-  font-size: 10px;
-  word-break: break-all;
 }
 </style>

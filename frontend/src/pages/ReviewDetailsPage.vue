@@ -160,9 +160,10 @@
                       </div>
                       <div class="css-1ry6usa">
                         {{
-                          this.$moment(reviewStore.review.createdAt).format(
-                            "YYYY-MM-DD HH:mm:ss"
-                          )
+                          this.$moment
+                            .utc(reviewStore.review.createdAt)
+                            .local()
+                            .format("YYYY-MM-DD HH:mm:ss")
                         }}
                       </div>
                     </div>
@@ -382,6 +383,13 @@ export default {
     },
 
     async submitComment() {
+      let accessToken = window.localStorage.getItem("accessToken");
+
+      if (!accessToken) {
+        alert("로그인 후 댓글을 작성할 수 있습니다.");
+        return;
+      }
+
       const reviewIdx = this.$route.params.idx;
       try {
         await this.reviewCommentStore.createReviewComment(
@@ -485,11 +493,9 @@ export default {
     },
 
     async checkReviewUp() {
-      if (window.localStorage.getItem("accessToken") == null) {
-        return;
-      } else {
-        try {
-          let accessToken = window.localStorage.getItem("accessToken");
+      try {
+        let accessToken = window.localStorage.getItem("accessToken");
+        if (accessToken) {
           let response = await this.reviewStore.checkReviewUp(
             accessToken,
             this.reviewIdx
@@ -501,18 +507,16 @@ export default {
           } else {
             this.isRecommended = false;
           }
-        } catch (e) {
-          console.error(e);
         }
+      } catch (e) {
+        console.error(e);
       }
     },
 
     async checkReviewScrap() {
-      if (window.localStorage.getItem("accessToken") == null) {
-        return;
-      } else {
-        try {
-          let accessToken = window.localStorage.getItem("accessToken");
+      try {
+        let accessToken = window.localStorage.getItem("accessToken");
+        if (accessToken) {
           let response = await this.reviewStore.checkReviewScrap(
             accessToken,
             this.reviewIdx
@@ -524,9 +528,9 @@ export default {
           } else {
             this.isScrapped = false;
           }
-        } catch (e) {
-          console.error(e);
         }
+      } catch (e) {
+        console.error(e);
       }
     },
   },
