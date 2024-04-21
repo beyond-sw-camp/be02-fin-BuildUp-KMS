@@ -110,6 +110,7 @@ public class ReviewService {
                     .commentCnt(review.getCommentCnt())
                     .type("review")
                     .boardType("write")
+                    .createdAt(review.getCreatedAt())
                     .updatedAt(review.getUpdatedAt())
                     .build();
 
@@ -159,6 +160,7 @@ public class ReviewService {
                     .upCnt(review.getUpCnt())
                     .scrapCnt(review.getScrapCnt())
                     .commentCnt(review.getCommentCnt())
+                    .createdAt(review.getCreatedAt())
                     .updatedAt(review.getUpdatedAt())
                     .build();
 
@@ -228,6 +230,7 @@ public class ReviewService {
                 .upCnt(review.getUpCnt())
                 .scrapCnt(review.getScrapCnt())
                 .commentCnt(review.getCommentCnt())
+                .createdAt(review.getCreatedAt())
                 .updatedAt(review.getUpdatedAt())
                 .reviewCommentList(getListCommentReviewResList)
                 .build();
@@ -258,6 +261,7 @@ public class ReviewService {
                 .profileImage(reviewComment.getUser().getProfileImage())
                 .reviewCommentContent(reviewComment.getReviewCommentContent())
                 .upCnt(reviewComment.getUpCnt())
+                .createdAt(reviewComment.getCreatedAt())
                 .updatedAt(reviewComment.getUpdatedAt())
                 .children(childCommentsRes)
                 .build();
@@ -433,6 +437,7 @@ public class ReviewService {
                     .upCnt(review.getUpCnt())
                     .scrapCnt(review.getScrapCnt())
                     .commentCnt(review.getCommentCnt())
+                    .createdAt(review.getCreatedAt())
                     .updatedAt(review.getUpdatedAt())
                     .build();
 

@@ -23,5 +23,6 @@ public class GetMyListReviewRes {
     private Integer commentCnt;
     private String type;
     private String boardType;
+    private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

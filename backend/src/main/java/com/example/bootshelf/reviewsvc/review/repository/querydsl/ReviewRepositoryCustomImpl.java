@@ -1,5 +1,6 @@
 package com.example.bootshelf.reviewsvc.review.repository.querydsl;
 
+import com.example.bootshelf.boardsvc.board.model.entity.Board;
 import com.example.bootshelf.common.error.ErrorCode;
 import com.example.bootshelf.common.error.entityexception.ReviewException;
 import com.example.bootshelf.reviewsvc.review.model.entity.QReview;
@@ -87,7 +88,7 @@ public class ReviewRepositoryCustomImpl extends QuerydslRepositorySupport implem
         // sortType에 따른 동적 정렬 조건 설정.
         switch (sortType) {
             case 1:
-                orderSpecifiers.add(review.updatedAt.desc());
+                orderSpecifiers.add(review.createdAt.desc());
                 break;
             case 2:
                 orderSpecifiers.add(review.upCnt.desc());
@@ -102,7 +103,7 @@ public class ReviewRepositoryCustomImpl extends QuerydslRepositorySupport implem
                 orderSpecifiers.add(review.commentCnt.desc());
                 break;
             default:
-                orderSpecifiers.add(review.updatedAt.desc());
+                orderSpecifiers.add(review.createdAt.desc());
         }
         return orderSpecifiers.toArray(new OrderSpecifier[0]);
     }
@@ -135,7 +136,8 @@ public class ReviewRepositoryCustomImpl extends QuerydslRepositorySupport implem
         long total = from(review)
                 .leftJoin(review.reviewCategory, reviewCategory)
                 .leftJoin(review.user, user)
-                .where(searchCondition)
+                .where(review.reviewCategory.idx.eq(reviewCategoryIdx)
+                        .and(searchCondition).and(review.status.eq(true)))
                 .fetchCount();
 
         return new PageImpl<>(result, pageable, total);

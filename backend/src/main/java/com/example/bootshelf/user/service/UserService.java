@@ -66,7 +66,7 @@ public class UserService {
 
         if (profileImage == null || profileImage.isEmpty()) {
             // 프로필 이미지가 없는 경우 기본 이미지 경로를 설정
-            savePath = "https://bootshelf-profile.s3.ap-northeast-2.amazonaws.com/2024/03/14/6a0ac29b-55c8-4fd0-808a-fcd1b9deda76_default.png";
+            savePath = "https://bootshelfprofile.s3.ap-northeast-2.amazonaws.com/2024/04/18/00abb22b-bf7c-4576-83d0-08fbdb8a1ad3_kakaodefault.png";
         } else {
             // 프로필 이미지가 있는 경우 S3에 업로드
             savePath = ImageUtils.makeImagePath(profileImage.getOriginalFilename());

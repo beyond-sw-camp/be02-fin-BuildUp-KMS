@@ -17,7 +17,7 @@ spring:
               - profile_nickname
               - profile_image
             authorization-grant-type: authorization_code
-            redirect-uri:  http://192.168.0.61/api/logino/oauth2/code/kaka
+            redirect-uri:  http://www.bootshelf.kro.kr/api/login/oauth2/code/kakao
             client-name: Kakao
             client-authentication-method: POST
         provider:
@@ -68,6 +68,8 @@ spring:
       hibernate:
         default_batch_fetch_size: 1000
         format_sql: true
+        javax.persistence.query.timeout: 1200000
+        jdbc.time_zone: Asia/Seoul
     show-sql: true
 
   servlet:
