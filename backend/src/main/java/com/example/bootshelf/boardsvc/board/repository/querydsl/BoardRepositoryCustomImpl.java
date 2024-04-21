@@ -114,7 +114,7 @@ public class BoardRepositoryCustomImpl extends QuerydslRepositorySupport impleme
 
         switch (sortIdx) {
             case 1:
-                orderSpecifiers.add(board.updatedAt.desc());
+                orderSpecifiers.add(board.createdAt.desc());
                 break;
             case 2:
                 orderSpecifiers.add(board.upCnt.desc());
@@ -129,7 +129,7 @@ public class BoardRepositoryCustomImpl extends QuerydslRepositorySupport impleme
                 orderSpecifiers.add(board.commentCnt.desc());
                 break;
             default:
-                orderSpecifiers.add(board.updatedAt.desc());
+                orderSpecifiers.add(board.createdAt.desc());
         }
         return orderSpecifiers.toArray(new OrderSpecifier[0]);
     }

@@ -25,6 +25,7 @@ public class GetReadReviewRes {
     private Integer scrapCnt;
     private Integer upCnt;
     private Integer commentCnt;
+    private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private List<GetListCommentReviewRes> reviewCommentList;
 

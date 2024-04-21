@@ -18,6 +18,7 @@ public class GetListCommentReviewRes {
     private String profileImage;
     private String reviewCommentContent;
     private Integer upCnt;
+    private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private List<GetListCommentReviewRes> children; // 대댓글 목록을 위한 필드 추가
 }

@@ -105,7 +105,6 @@ public class BoardService {
 
         Board board = result.get();
         board.increaseViewCnt();
-        board.setUpdatedAt(LocalDateTime.now());
         boardRepository.save(board);
 
         // 댓글 조회

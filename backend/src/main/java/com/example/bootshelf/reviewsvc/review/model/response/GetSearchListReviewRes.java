@@ -25,5 +25,6 @@ public class GetSearchListReviewRes {
     private Integer upCnt;
     private Integer scrapCnt;
     private Integer commentCnt;
+    private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
