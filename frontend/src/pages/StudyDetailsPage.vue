@@ -129,7 +129,7 @@
                           <circle cx="1" cy="1" r="1" fill="#9DA7AE"></circle>
                         </svg>
                       </div>
-                      <div class="css-1ry6usa">{{ this.$moment(boardDetail.updatedAt).format('YYYY-MM-DD HH:mm:ss') }}</div>
+                      <div class="css-1ry6usa">{{ this.$moment.utc(boardDetail.createdAt).local().format('YYYY-MM-DD HH:mm:ss') }}</div>
                     </div>
                   </div>
                 </div>

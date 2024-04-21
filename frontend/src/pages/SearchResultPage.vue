@@ -44,7 +44,7 @@
                               d="M13.0498 7.3501V8.6501H8.65083V13.0501H7.34983V8.6501H2.94983V7.3501H7.34983V2.9501H8.65083V7.3501H13.0498Z"
                             ></path>
                           </svg>
-                          <span>새 질문 작성</span>
+                          <span>새 후기글 작성</span>
                         </div>
                       </a>
                     </router-link>
@@ -262,7 +262,7 @@
                                     class="text-gray-600 flex-shrink-0"
                                     title="2024. 2. 17. 오후 7:25:30"
                                     >{{
-                                      this.$moment(review.updatedAt).format(
+                                      this.$moment.utc(review.createdAt).local().format(
                                         "YYYY-MM-DD HH:mm:ss"
                                       )
                                     }}

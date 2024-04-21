@@ -28,14 +28,16 @@ export const useBoardStore = defineStore("board", {
 
   actions: {
     validateToken() {
-      const decodedAccessToken = VueJwtDecode.decode(accessToken);
-      const expirationTime = decodedAccessToken.exp;
-      const currentTime = Math.floor(Date.now() / 1000);
+      if (accessToken) {
+        const decodedAccessToken = VueJwtDecode.decode(accessToken);
+        const expirationTime = decodedAccessToken.exp;
+        const currentTime = Math.floor(Date.now() / 1000);
 
-      if (expirationTime - currentTime < 30) {
-        this.isTokenExpired = true;
-      } else {
-        this.isTokenExpired = false;
+        if (expirationTime - currentTime < 30) {
+          this.isTokenExpired = true;
+        } else {
+          this.isTokenExpired = false;
+        }
       }
     },
 

@@ -160,9 +160,10 @@
                       </div>
                       <div class="css-1ry6usa">
                         {{
-                          this.$moment(reviewStore.review.updatedAt).format(
-                            "YYYY-MM-DD HH:mm:ss"
-                          )
+                          this.$moment
+                            .utc(reviewStore.review.createdAt)
+                            .local()
+                            .format("YYYY-MM-DD HH:mm:ss")
                         }}
                       </div>
                     </div>
@@ -382,6 +383,13 @@ export default {
     },
 
     async submitComment() {
+      let accessToken = window.localStorage.getItem("accessToken");
+
+      if (!accessToken) {
+        alert("로그인 후 댓글을 작성할 수 있습니다.");
+        return;
+      }
+
       const reviewIdx = this.$route.params.idx;
       try {
         await this.reviewCommentStore.createReviewComment(
@@ -404,7 +412,10 @@ export default {
 
         try {
           if (this.isRecommended) {
-            await this.reviewStore.cancelReviewUp(accessToken, this.reviewUpIdx);
+            await this.reviewStore.cancelReviewUp(
+              accessToken,
+              this.reviewUpIdx
+            );
             console.log("후기 추천 취소 성공");
             this.isRecommended = false;
 
@@ -484,16 +495,18 @@ export default {
     async checkReviewUp() {
       try {
         let accessToken = window.localStorage.getItem("accessToken");
-        let response = await this.reviewStore.checkReviewUp(
-          accessToken,
-          this.reviewIdx
-        );
+        if (accessToken) {
+          let response = await this.reviewStore.checkReviewUp(
+            accessToken,
+            this.reviewIdx
+          );
 
-        if (response.data && response.data.result.status === true) {
-          this.isRecommended = true;
-          this.reviewUpIdx = response.data.result.reviewUpIdx;
-        } else {
-          this.isRecommended = false;
+          if (response.data && response.data.result.status === true) {
+            this.isRecommended = true;
+            this.reviewUpIdx = response.data.result.reviewUpIdx;
+          } else {
+            this.isRecommended = false;
+          }
         }
       } catch (e) {
         console.error(e);
@@ -503,16 +516,18 @@ export default {
     async checkReviewScrap() {
       try {
         let accessToken = window.localStorage.getItem("accessToken");
-        let response = await this.reviewStore.checkReviewScrap(
-          accessToken,
-          this.reviewIdx
-        );
+        if (accessToken) {
+          let response = await this.reviewStore.checkReviewScrap(
+            accessToken,
+            this.reviewIdx
+          );
 
-        if (response.data && response.data.result.status === true) {
-          this.isScrapped = true;
-          this.reviewScrapIdx = response.data.result.reviewScrapIdx;
-        } else {
-          this.isScrapped = false;
+          if (response.data && response.data.result.status === true) {
+            this.isScrapped = true;
+            this.reviewScrapIdx = response.data.result.reviewScrapIdx;
+          } else {
+            this.isScrapped = false;
+          }
         }
       } catch (e) {
         console.error(e);
@@ -1430,26 +1445,27 @@ span.btn.black {
 }
 
 .ql-toolbar {
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-    font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-    padding: 8px;
-    border-radius: 10px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  padding: 8px;
+  border-radius: 10px;
 }
 
 ::v-deep .ql-toolbar.ql-snow {
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-    padding: 0px;
-    border-radius: 10px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  padding: 0px;
+  border-radius: 10px;
 }
 ::v-deep .ql-toolbar.ql-snow .ql-formats {
-    margin-right: 15px;
-    margin-left: 15px;
+  margin-right: 15px;
+  margin-left: 15px;
 }
-.ql-snow, .ql-snow * {
-    box-sizing: border-box;
+.ql-snow,
+.ql-snow * {
+  box-sizing: border-box;
 }
 
 @media (min-width: 1024px) {
@@ -1457,36 +1473,38 @@ span.btn.black {
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
     min-height: 520px;
-}
+  }
 }
 
 .ql-container {
-    min-height: 200px;
+  min-height: 200px;
 }
 .ql-container {
-    border: 1px solid #ccc;
+  border: 1px solid #ccc;
 }
 .ql-container.ql-snow {
-    border: 1px solid #ccc;
+  border: 1px solid #ccc;
 }
 .commentEditor .ql-container {
-    min-height: 56px;
+  min-height: 56px;
 }
 .ql-container.ql-snow {
-    border: none !important;
+  border: none !important;
 }
 .ql-editor {
-    height: 100%;
-    overflow-y: auto;
-    padding: 12px 15px;
+  height: 100%;
+  overflow-y: auto;
+  padding: 12px 15px;
 }
-.ql-snow, .ql-snow * {
-    box-sizing: border-box;
+.ql-snow,
+.ql-snow * {
+  box-sizing: border-box;
 }
 @media (min-width: 1024px) {
-  .ql-editor, .quill {
+  .ql-editor,
+  .quill {
     min-height: 280px;
-}
+  }
 }
 @media (min-width: 1024px) {
   .ql-editor {
@@ -1499,124 +1517,136 @@ span.btn.black {
     width: 100%;
     margin: auto;
     padding: 24px 20px !important;
-}
-}
-.ql-editor {
-    color: #6b6e72;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.3;
-    letter-spacing: normal;
-    font-weight: 500;
-    min-height: 200px;
-    width: 100%;
-    margin: auto;
-    padding: 24px 20px !important;
+  }
 }
 .ql-editor {
-    box-sizing: border-box;
-    line-height: 1.42;
-    outline: none;
-    padding: 12px 0;
-    tab-size: 4;
-    -moz-tab-size: 4;
-    text-align: left;
-    white-space: pre-wrap;
-    word-wrap: break-word;
+  color: #6b6e72;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.3;
+  letter-spacing: normal;
+  font-weight: 500;
+  min-height: 200px;
+  width: 100%;
+  margin: auto;
+  padding: 24px 20px !important;
+}
+.ql-editor {
+  box-sizing: border-box;
+  line-height: 1.42;
+  outline: none;
+  padding: 12px 0;
+  tab-size: 4;
+  -moz-tab-size: 4;
+  text-align: left;
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 .commentEditor .ql-editor {
-    min-height: 56px;
-    padding: 14px 20px !important;
+  min-height: 56px;
+  padding: 14px 20px !important;
 }
 .ql-editor.ql-blank::before {
-    color: rgba(0, 0, 0, 0.6);
-    content: attr(data-placeholder);
-    font-style: italic;
-    left: 15px;
-    pointer-events: none;
-    position: absolute;
-    right: 15px;
+  color: rgba(0, 0, 0, 0.6);
+  content: attr(data-placeholder);
+  font-style: italic;
+  left: 15px;
+  pointer-events: none;
+  position: absolute;
+  right: 15px;
 }
 .ql-editor.ql-blank:before {
-    left: 15px;
+  left: 15px;
 }
 .ql-editor.ql-blank:before {
-    color: rgba(0, 0, 0, .6);
-    content: attr(data-placeholder);
-    font-style: italic;
-    left: 20px;
-    pointer-events: none;
-    position: absolute;
-    right: 15px;
-    font-weight: 350;
+  color: rgba(0, 0, 0, 0.6);
+  content: attr(data-placeholder);
+  font-style: italic;
+  left: 20px;
+  pointer-events: none;
+  position: absolute;
+  right: 15px;
+  font-weight: 350;
 }
 .ql-editor.ql-blank::before {
-    color: rgba(0, 0, 0, 0.6);
-    content: attr(data-placeholder);
-    font-style: italic;
-    left: 15px;
-    pointer-events: none;
-    position: absolute;
-    right: 15px;
+  color: rgba(0, 0, 0, 0.6);
+  content: attr(data-placeholder);
+  font-style: italic;
+  left: 15px;
+  pointer-events: none;
+  position: absolute;
+  right: 15px;
 }
-.quill>.ql-container>.ql-editor.ql-blank:before {
-    color: #c7c9cb;
-    font-style: normal;
-    font-size: 14px;
-    white-space: pre-wrap;
-    line-height: 1.5;
-    padding: 5px;
+.quill > .ql-container > .ql-editor.ql-blank:before {
+  color: #c7c9cb;
+  font-style: normal;
+  font-size: 14px;
+  white-space: pre-wrap;
+  line-height: 1.5;
+  padding: 5px;
 }
 .ql-editor * {
-    font-stretch: normal;
-    font-style: normal;
-    letter-spacing: normal;
-    font-family: Pretendard;
+  font-stretch: normal;
+  font-style: normal;
+  letter-spacing: normal;
+  font-family: Pretendard;
 }
-.ql-editor blockquote, .ql-editor h1, .ql-editor h2, .ql-editor h3, .ql-editor h4, .ql-editor h5, .ql-editor h6, .ql-editor ol, .ql-editor p, .ql-editor pre, .ql-editor ul {
-    margin: 0;
-    padding: 0;
-    counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
+.ql-editor blockquote,
+.ql-editor h1,
+.ql-editor h2,
+.ql-editor h3,
+.ql-editor h4,
+.ql-editor h5,
+.ql-editor h6,
+.ql-editor ol,
+.ql-editor p,
+.ql-editor pre,
+.ql-editor ul {
+  margin: 0;
+  padding: 0;
+  counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
 }
-.ql-editor *, .ql-editor p {
-    font-weight: 400;
-    line-height: 1.5;
+.ql-editor *,
+.ql-editor p {
+  font-weight: 400;
+  line-height: 1.5;
 }
 .ql-editor p {
-    color: #505254;
-    margin-top: 2px;
-    margin-bottom: 2px;
-    font-size: 14px;
-    word-break: break-word;
-    width: 100%;
-    overflow-x: clip;
+  color: #505254;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  font-size: 14px;
+  word-break: break-word;
+  width: 100%;
+  overflow-x: clip;
 }
-.ql-editor>* {
-    cursor: text;
+.ql-editor > * {
+  cursor: text;
 }
 
-::v-deep .ql-snow.ql-toolbar button, .ql-snow .ql-toolbar button {
+::v-deep .ql-snow.ql-toolbar button,
+.ql-snow .ql-toolbar button {
   background: none;
-    border: none;
-    cursor: pointer;
-    display: inline-block;
-    float: left;
-    height: 24px;
-    padding: 3px 5px;
-    width: 28px;
-    margin-right: 10px;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  float: left;
+  height: 24px;
+  padding: 3px 5px;
+  width: 28px;
+  margin-right: 10px;
 }
 
 ::v-deep .ql-snow .ql-picker {
-    color: #444;
-    display: inline-block;
-    float: left;
-    font-size: 14px;
-    font-weight: 500;
-    height: 24px;
-    position: relative;
-    vertical-align: middle;
-    margin-right: 10px;
+  color: #444;
+  display: inline-block;
+  float: left;
+  font-size: 14px;
+  font-weight: 500;
+  height: 24px;
+  position: relative;
+  vertical-align: middle;
+  margin-right: 10px;
 }
 
 ::v-deep .ql-snow .ql-editor pre.ql-syntax {

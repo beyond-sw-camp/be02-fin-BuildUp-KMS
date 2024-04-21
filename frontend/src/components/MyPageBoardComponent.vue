@@ -57,7 +57,7 @@
       <!--사진-->
     </div>
     <div class="css-99cwur">
-      <div class="css-1ry6usa">{{ this.$moment(totals.updatedAt).format('YYYY-MM-DD HH:mm:ss') }}</div>
+      <div class="css-1ry6usa">{{ this.$moment.utc(totals.createdAt).local().format('YYYY-MM-DD HH:mm:ss') }}</div>
       <div class="css-o01lup">
         <div class="css-ts29it">
           <div class="css-1ry6usa">댓글</div>

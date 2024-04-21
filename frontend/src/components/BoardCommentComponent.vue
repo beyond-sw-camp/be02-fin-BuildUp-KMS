@@ -18,7 +18,12 @@
             <div class="css-wqf8ry">{{ comment.nickName }}</div>
             <div class="css-emxp16"></div>
             <div class="css-emxp16">
-              {{ this.$moment(comment.createAt).format("YYYY-MM-DD HH:mm:ss") }}
+              {{
+                this.$moment
+                  .utc(comment.createAt)
+                  .local()
+                  .format("YYYY-MM-DD HH:mm:ss")
+              }}
             </div>
           </div>
           <div class="css-dyzp2y-001" v-if="showBtn(comment.userIdx)">
@@ -152,9 +157,10 @@
                 <div class="css-emxp16-001"></div>
                 <div class="css-emxp16-001">
                   {{
-                    this.$moment(childComment.createAt).format(
-                      "YYYY-MM-DD HH:mm:ss"
-                    )
+                    this.$moment
+                      .utc(childComment.createAt)
+                      .local()
+                      .format("YYYY-MM-DD HH:mm:ss")
                   }}
                 </div>
               </div>
@@ -399,9 +405,16 @@ export default {
     },
 
     toggleReplyForm(comment) {
+      
+      let accessToken = window.localStorage.getItem("accessToken");
+
+      if (!accessToken) {
+        alert("로그인 후 대댓글을 작성할 수 있습니다.");
+        return;
+      }
       if (comment.showReplyForm) {
         comment.showReplyForm = false; // 닫기 버튼을 클릭하여 대댓글 입력 폼을 닫음
-        this.state.content=""
+        this.state.content = "";
       } else {
         comment.showReplyForm = true; // 대댓글쓰기 버튼을 클릭하여 대댓글 입력 폼을 엶
       }

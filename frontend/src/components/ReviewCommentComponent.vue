@@ -18,9 +18,10 @@
             <div class="css-emxp16"></div>
             <div class="css-emxp16">
               {{
-                this.$moment(reviewComment.createAt).format(
-                  "YYYY-MM-DD HH:mm:ss"
-                )
+                this.$moment
+                  .utc(reviewComment.createAt)
+                  .local()
+                  .format("YYYY-MM-DD HH:mm:ss")
               }}
             </div>
           </div>
@@ -167,9 +168,10 @@
                 <div class="css-emxp16-001"></div>
                 <div class="css-emxp16-001">
                   {{
-                    this.$moment(childComment.createAt).format(
-                      "YYYY-MM-DD HH:mm:ss"
-                    )
+                    this.$moment
+                      .utc(childComment.createAt)
+                      .local()
+                      .format("YYYY-MM-DD HH:mm:ss")
                   }}
                 </div>
               </div>
@@ -209,8 +211,7 @@
               <div
                 v-dompurify-html="childComment.reviewCommnetContent"
                 class="editedCommentContent"
-              >
-              </div>
+              ></div>
             </div>
             <div v-if="childComment.isEditing">
               <quill-editor
@@ -422,7 +423,6 @@ export default {
       }
     },
 
-    
     toggleReplyEditMode(childComment) {
       this.filteredReviewComments.forEach((c) => {
         if (c.idx !== childComment.idx) {
@@ -443,9 +443,16 @@ export default {
     // },
 
     toggleReplyForm(reviewComment) {
+      let accessToken = window.localStorage.getItem("accessToken");
+
+      if (!accessToken) {
+        alert("로그인 후 대댓글을 작성할 수 있습니다.");
+        return;
+      }
+
       if (reviewComment.showReplyForm) {
         reviewComment.showReplyForm = false; // 닫기 버튼을 클릭하여 대댓글 입력 폼을 닫음
-        this.state.content=""
+        this.state.content = "";
       } else {
         reviewComment.showReplyForm = true; // 대댓글쓰기 버튼을 클릭하여 대댓글 입력 폼을 엶
       }

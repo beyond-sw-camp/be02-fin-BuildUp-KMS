@@ -24,15 +24,19 @@ export const useReviewStore = defineStore("review", {
   }),
   actions: {
     validateToken() {
-      const decodedAccessToken = VueJwtDecode.decode(accessToken);
-      const expirationTime = decodedAccessToken.exp;
-      const currentTime = Math.floor(Date.now() / 1000);
-
-      if (expirationTime - currentTime < 30) {
-        this.isTokenExpired = true;
-      } else {
-        this.isTokenExpired = false;
+      
+      if(accessToken) {
+        const decodedAccessToken = VueJwtDecode.decode(accessToken);
+        const expirationTime = decodedAccessToken.exp;
+        const currentTime = Math.floor(Date.now() / 1000);
+  
+        if (expirationTime - currentTime < 30) {
+          this.isTokenExpired = true;
+        } else {
+          this.isTokenExpired = false;
+        }
       }
+
     },
 
     async createReview(review) {
